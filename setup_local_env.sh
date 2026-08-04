@@ -27,12 +27,33 @@
 
 set -euo pipefail
 
-PYVER=$(python3 -c 'import sys; print(f"{sys.version_info[0]}.{sys.version_info[1]}")')
-echo "Python version: $PYVER"
+PY_MAJOR=$(python3 -c 'import sys; print(sys.version_info[0])')
+PY_MINOR=$(python3 -c 'import sys; print(sys.version_info[1])')
+echo "Python version: $PY_MAJOR.$PY_MINOR"
 
-pip install -q -U pip
-pip install -q --no-deps kaggle-environments
-pip install -q jsonschema requests
+# kaggle-environments on PyPI has required Python >=3.10 since release 1.20.0
+# (checked against PyPI metadata 2026-08-04). Below that, `pip install` will
+# fail outright with a "requires a different Python" error - not a bug in
+# this script, just a real version floor. Fail fast with a clear message
+# instead of a confusing pip error.
+if [ "$PY_MAJOR" -lt 3 ] || { [ "$PY_MAJOR" -eq 3 ] && [ "$PY_MINOR" -lt 10 ]; }; then
+    echo ""
+    echo "ERROR: kaggle-environments requires Python 3.10+ (you have $PY_MAJOR.$PY_MINOR)."
+    echo "Install a newer Python and re-run this script with it, e.g.:"
+    echo "  brew install python@3.12"
+    echo "  /opt/homebrew/bin/python3.12 -m venv .venv && source .venv/bin/activate"
+    echo "  ./setup_local_env.sh"
+    echo "(3.11+ also lets you install kaggle-environments straight from GitHub"
+    echo "source, which already has kaggriculture registered - no vendoring hack needed.)"
+    exit 1
+fi
+
+# Use `python3 -m pip` rather than a bare `pip` - more portable across
+# macOS Python installs where the `pip` command isn't always on PATH.
+PIP="python3 -m pip"
+$PIP install -q -U pip
+$PIP install -q --no-deps kaggle-environments
+$PIP install -q jsonschema requests
 
 echo "==> Checking if kaggriculture is already registered (in case PyPI has caught up)"
 if python3 -c "from kaggle_environments import make; make('kaggriculture', configuration={'episodeSteps': 10})" 2>/dev/null; then
