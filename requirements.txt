@@ -1,0 +1,16 @@
+# Kaggriculture local dev dependencies
+#
+# The Kaggriculture engine (kaggriculture.py) is on the kaggle-environments
+# GitHub main branch but has NOT been released to PyPI yet (confirmed 2026-08-04:
+# latest PyPI release is 1.25.9, which does not include the kaggriculture env).
+# The GitHub repo also declares Python >=3.11 as of the current main branch.
+#
+# If you're on Python 3.11+, install straight from source:
+#   pip install "git+https://github.com/Kaggle/kaggle-environments.git"
+#
+# If PyPI has since caught up, this will also work and is preferred:
+#   pip install -U kaggle-environments
+#
+# Run setup_local_env.sh to do this automatically with the right fallback.
+
+kaggle

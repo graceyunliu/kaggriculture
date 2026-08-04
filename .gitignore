@@ -1,0 +1,18 @@
+# Replay archive (regenerable via `kaggle competitions replay <EPISODE_ID>`, ~180MB+)
+Replays/
+
+# Harness DB (rebuilt from replays via `python3 harness.py ingest ...`)
+kaggriculture.db
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# OS
+.DS_Store
+
+# Vendored engine source (fetched by setup_local_env.sh, not hand-edited)
+vendor/kaggle_environments_engine/visualizer/
