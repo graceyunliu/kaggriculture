@@ -3,6 +3,19 @@ Replays/
 
 # Harness DB (rebuilt from replays via `python3 harness.py ingest ...`)
 kaggriculture.db
+kaggriculture.db-journal
+kaggriculture.db.stale
+kaggriculture.db-journal.stale
+
+# Kaggle API credentials -- should live in ~/.kaggle/, never in this repo,
+# but ignore them here too as a safety net
+kaggle.json
+access_token
+.kaggle/
+
+# Sandbox debugging artifacts, safe to delete
+*.DELETE_ME_stray_fuse_artifact
+test_journal.db*
 
 # Python
 __pycache__/

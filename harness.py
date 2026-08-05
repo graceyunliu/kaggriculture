@@ -121,6 +121,10 @@ def extract(path):
 
 def ingest(paths):
     con = sqlite3.connect(DB)
+    # The project folder is FUSE-mounted (Cowork sandbox <-> real disk), which
+    # rejects the unlink() sqlite's default rollback journal relies on and
+    # raises "disk I/O error". MEMORY keeps the journal off-disk entirely.
+    con.execute("PRAGMA journal_mode=MEMORY")
     con.executescript(SCHEMA)
     added = skipped = 0
     for path in paths:
