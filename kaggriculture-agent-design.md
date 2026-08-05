@@ -381,3 +381,206 @@ Each major decision, its driver, and its provenance, grouped by the phase it cam
 - Whether wheat farming is worth building out as a standalone play now that D41 flags it as chronically scarce (~$45 vs $25 base) in the animal meta
 - D44's liquidation-ramp idea for extending the melon cutoff past day 16 — deferred, needs joint re-test with the sell-logic fix
 - The three v6-review requirements (schema-verification gate, no strategy changes disguised as reliability fixes, lifetime attempt caps on state machines) were previously logged as D42–D44 but are superseded by this renumbering — they're preserved narratively in 5a/5b but currently have no decision-log entry. Worth a deliberate renumbering pass if they should stay traceable in section 6.
+
+---
+
+## 8. V8 Phase 1 — Foundation (`main_v8.py`)
+
+**Status:** built, verified as an exact behavioral no-op vs `main_v7.6.py`. Not submitted to the ladder (there is no reason to — it plays identically to v7.6, which is the current champion).
+
+**Why a deliberately inert release.** The v8 design spec (`kaggriculture-v8-design-spec.md`) scopes six phases. This project's consistent experience across the v7.1, v7.2, v7.5, v7.6 and v7.7 rounds is that a change only earns trust through seeded A/B testing, and that plausible-sounding changes fail that test often enough to make it non-negotiable. A foundation that also changed behavior could not be A/B'd cleanly: any regression would be unattributable between "the refactor broke something" and "the new policy is worse." So the substrate ships first, provably inert, and each behavioral change is tested against it one at a time.
+
+### 8.1 What Phase 1 adds
+
+| Component | Purpose | Spec ref |
+|---|---|---|
+| `build_state()` | One normalized read-only state object per turn: `my` / `opponent` / `market` / `capacity`. Nothing reads it for decisions yet. Phase 2+ scorers read it instead of digging into raw `obs` at each call site — that shared basis is what makes decisions comparable. | 5.1 |
+| `analyze_opponent()` | Direct extraction of the opponent's visible farm: crop tiles, mature and near-mature counts, fleet by species, land, hands, and a Herfindahl concentration score. Not a classifier — Kaggriculture is fully observable, so present-state facts are read, never inferred. | 5.2 |
+| `DecisionLog` | Records each strategic decision with the state that produced it, plus an empty `alternatives` field that Phase 2+ scorers populate without a schema change. Also `snapshot()` for per-turn mechanism traces. | 11 |
+| `capacity` metrics | Crop backlog, animal workload, weed ratio, crop pressure, weighted work — surfaced together in one place. v7.6 recomputes overlapping versions of these in three separate rules with three slightly different definitions of "work"; unifying them is a later phase, because changing any definition changes behavior. | 5.1 |
+
+**Logging is on by default** (`DECISION_LOG = True`). It initially shipped dormant, on the reasoning that a logging fault in a submitted file could cost a real match. That was reconsidered: downloaded ladder replays record what the agent *did*, not the state or rule branch that produced it, so a dormant log means real matches — the only games against real opponents — generate no diagnostic data at all, which is precisely where it is most valuable.
+
+The cost objection did not survive scrutiny either. Measured agent time is ~21ms against a 1s/turn budget (D30/D35), the log is in-memory with no I/O, and a full 720-turn game produces 1,862 records. The *real* objection was `agent()`'s crash guard: it swallows any exception and returns a PASS turn, so a bug in diagnostic-only code could silently forfeit a turn's entire action set — invisibly, and only on the ladder.
+
+`_log_safe(kind, day, hour, build)` closes that. It takes a **thunk** rather than assembled arguments, which matters for two reasons: the risky part of a record is the `inputs` dict (nested `.get()` chains, division by base prices, arithmetic on engine values), and passing pre-built arguments would assemble it at the call site *outside* any handler. Building it inside one try/except means a logging bug costs one record and increments `DECISION_LOG_SINK.errors` — never a turn. Taking a thunk also keeps the disabled path genuinely free, since the payload never evaluates, so `disable_decision_log()` remains a real kill switch rather than merely suppressing storage.
+
+Harnesses call `enable_decision_log()` (which also clears prior records) and read `DECISION_LOG_SINK.records` or `.to_jsonl(path)`.
+
+**Deliberately absent:** no EV engine, no candidate scoring, no adaptive selling. Those are Phases 2–4. v7.8's sheep work is also not merged; when it lands it becomes a scored candidate inside the Phase 4 expansion model rather than a hand-merge.
+
+### 8.2 Verification
+
+Static: `diff main_v7.6.py main_v8.py` removes exactly two lines — the `economy()` signature and its call site, both re-added with an optional `state=None` parameter. Every other change is additive.
+
+Empirical: `seeded_h2h.py main_v8.py main_v7.6.py --both-seats` scores **exactly 0.0 margin on every seed**, re-confirmed after logging was switched on by default.
+
+**Fault injection.** Monkey-patching `DecisionLog.record` to raise on every call, then playing a full 720-turn match: **1,862 logging failures, final scores bit-identical to the clean run (49,023 / 51,035), status DONE/DONE.** Total logging failure is invisible to gameplay — which is the property that makes running the log live on the ladder safe. `disable_decision_log()` was verified to produce the same scores with zero records.
+
+**Smoke tests.** `smoke_test.py` against `starter` / `random` / `pass` at 720 turns, plus a truncated 48-turn episode: all DONE/DONE, no crashes, no `GUARD swallowed exception` output. vs `starter` scored $86,573 vs $3,494 — matching v7.6's own logged smoke-test figure exactly. (Earlier verification runs had piped stderr to `/dev/null`, which would have hidden guard messages; these were re-run with stderr captured and counted.)
+
+**Opponent-pool no-op matrix.** v8 and v7.6 played against `starter`, `random`, `pass`, `opp_frontier_v12` and `opp_scenario_v14`, each at 720 / 48 / 3 turns (the 3-turn case exercising the early-return and terminal paths). **14 of 15 cells bit-identical**, `DECISION_LOG_SINK.errors == 0` in every cell, zero guard invocations.
+
+The one non-matching cell was `random` at 720 turns. Control: v7.6 vs `random` at a fixed seed across four repeated runs scored 76,628 / 76,896 / 75,801 / 77,955 — a ~$2,150 spread with the agent held constant, since the built-in `random` opponent draws from its own unseeded RNG that `env.info["seed"]` does not reach. v8's value sat inside that band. **`random` is therefore not usable as an A/B opponent at all** — it is a crash-stability check only. `starter` repeated at a fixed seed reproduced exactly (77,160 twice) and is the deterministic choice.
+
+### 8.3 D62 — `--swap-half` was never a seat control, and it invalidated the v7.7 result
+
+Verifying the no-op surfaced a measurement bug affecting every A/B result this project has recorded.
+
+`main_v8.py` vs `main_v7.6.py` under the standard 11-seed `--swap-half` protocol returned 2/11, mean −$2,772, min −$6,544, max +$5,407. Those are, to the dollar, the numbers recorded for v7.7's rejection. Running `main_v7.6.py` against **itself** under the same protocol reproduced the identical table.
+
+**Cause.** `_end_of_day` builds one RNG per day and calls `_spawn_weeds` for each player sequentially from the same stream, so seat 0 and seat 1 receive different weed layouts even under identical code (this was already known from the Savko/Subin An analysis — what was missed is that it biases the harness, not just individual matches). `--swap-half` alternates which seed lands in which seat, but each seed is still played in only one seat, so the seat effect is shuffled rather than cancelled, and at n=11 it does not average out. The residual is a ≈−$2,772 offset against whichever agent is passed first.
+
+**Consequences.**
+
+1. **v7.7 was rejected on a false negative.** Its measured "regression" is the mirror-match table. It never demonstrably changed behavior in those 11 games. The rejection should not be treated as evidence against price-aware selling.
+2. **Prior margins carry an uncorrected offset.** v7.6's +$6,081 over v7.5 and v7.5's +$4,658 over v7.3 were measured with the same protocol and the same agent-ordering. Correcting for the baseline moves both in the challenger's favor, so the promotion decisions still stand — but the *magnitudes* are wrong, and the seeds reported as near-ties or narrow losses are the least reliable of the set.
+3. **The fix is `--both-seats`** (added to `seeded_h2h.py`): every seed is played in both seat assignments and summed money is compared, which cancels the seat effect exactly. An agent against itself scores a clean 0.0. Cost is 2× the games. `--swap-half` is retained only to reproduce historical numbers, and now prints a warning.
+
+### 8.4 D63 — the calendar attack dump fires at most once per match
+
+First real finding from the decision log, and it redirects Phase 2.
+
+Instrumenting the six branches of the selling rule and counting them over full matches:
+
+| Seed | attack_dump | holding_phase | price_strong | paced | liquidate |
+|---|---|---|---|---|---|
+| 1 | 1 | 22 | 90 | 246 | 11 |
+| 42 | **0** | 0 | 92 | 197 | 10 |
+| 202 | 1 | 22 | 82 | 228 | 12 |
+| 8080 | 1 | 22 | 90 | 225 | 11 |
+
+The `DemandTimingEngine` attack window is a single turn (`t in (214, 454)` — hardcoded seed 42, so identical every game), and premium-crop inventory is usually not staged in the shed at that exact instant. Out of roughly 330 sell decisions per match, **zero or one** is an attack dump.
+
+This explains v7.7 mechanically, independent of the harness bug: gating the attack dump could only ever affect 0–1 decisions per game, so it was never going to move a score. It also means the "stronger version" proposed as v7.7's successor — comparing 0%/30%/70% dump quantities by expected proceeds — is aimed at the same near-dead branch and should be expected to do just as little.
+
+**Phase 2 should target `paced` (197–246 decisions/match) and `price_strong` (82–92/match).** Together those are ~95% of all selling. The `price_strong` branch in particular sells an item's *entire* holding whenever price ≥ 1.05 × base, with no quantity comparison and no market-impact estimate — that is where a sell-value model has room to work.
+
+### 8.5 Decision log additions
+
+| ID | Decision | Rationale | Evidence |
+|---|---|---|---|
+| D62 | `--swap-half` deprecated as a control; `--both-seats` added and required for any actionable result | Mirror-match under `--swap-half` returns a −$2,772 mean bias, reproducing v7.7's rejection numbers exactly; per-seed margins are dominated by a seat×seed interaction | v7.6-vs-itself control run, 11 seeds |
+| D63 | Phase 2 adaptive selling targets the `paced` and `price_strong` branches, not the attack dump | Branch counting over 4 full matches: attack dump fires 0–1 times per game vs ~330 total sell decisions | Decision-log branch instrumentation |
+| D64 | v8 Phase 1 ships behaviorally inert, verified at 0.0 seat-controlled margin | A foundation that also changed behavior would make any later regression unattributable between refactor and policy | `--both-seats` verification, all seeds exactly 0 |
+| D66 | The built-in `random` opponent is a stability check only, never an A/B opponent | Its RNG is unseeded and unreachable by `env.info["seed"]` — v7.6 against it at a fixed seed varies ~$2,150 across repeated identical runs, while `starter` reproduces exactly | 4-run control, agent held constant |
+| D65 | Decision log runs ON by default on the ladder, via `_log_safe()` taking a thunk so assembly and write share one try/except | Replays capture actions but not the state or branch behind them, so a dormant log yields no data from the only real-opponent games. The lone real risk was the crash guard converting a logging bug into a forfeited turn; fault injection (1,862 forced failures) produced bit-identical scores and DONE status, removing it | Fault-injection run, seed 42 |
+
+### 8.6 D67 — v8/v7.6 loses 0/12 to the strong fixed bots, and the gap is production volume, not sell timing
+
+The first seat-controlled measurement of the current champion against `opp_frontier_v12` and `opp_scenario_v14` (the real bots extracted from the Hamburger notebook). Six seeds each, `--both-seats`:
+
+| Opponent | Record | Our money | Their money | Mean paired margin | t |
+|---|---|---|---|---|---|
+| frontier_v12 | 0/6 | $45.6–58.0k | $127.5–146.5k | **−$165,591** | −20.1 |
+| scenario_v14 | 0/6 | $49.4–60.3k | $121.0–140.0k | **−$155,641** | −34.6 |
+
+Not noise: t of −20 and −35, and every individual seed loses by more than $135k.
+
+**This was hiding in the record.** The v7.5 round logged our own money against these two bots ($51–57k / $52–63k) but never logged *theirs*, so a version comparison that looked like clear progress (v7.5 > v7.3 on both matchups) was measured entirely between our own versions while both were being beaten roughly 2.5:1 by the fixed opponent. The v7.4 round did record the opponent side (frontier $131–143k vs v7.4's $20–29k) — so the lineage has roughly doubled our own score since then while the target has not moved. **Any future opponent-pool result must log both sides.**
+
+**Where the gap is.** Seed 42 vs frontier ($57,764 vs $136,495), realized sell volume from the action stream plus the v8 decision log:
+
+| Item | v8 units | frontier units |
+|---|---|---|
+| WHEAT | 243 | **1,027** |
+| WOOL | **0** | **263** |
+| STRAWBERRY | 44 | **204** |
+| FERTILIZER | 85 | 202 |
+| MELON | 156 | 108 |
+| MILK | 164 | 102 |
+| **Total** | **731** | **1,921** |
+
+v8's realized prices are *good*: MILK $215/unit, STRAWBERRY $221/unit, MELON $190/unit, WHEAT $48/unit against a $25 base. Prices are running well above base because town demand drains market inventory — and we do not have the goods to sell into it. Frontier also hires 324 times to our 207 and issues 252 `BUY_PRODUCT` orders to our 92.
+
+**This partially walks back D63's Phase 2 recommendation.** D63 correctly showed the attack dump is near-dead and that `paced`/`price_strong` carry the volume — but it does not follow that selling logic is where the money is. We are selling at strong prices; we are producing roughly a third of the units. Sell-timing improvements operate on a small base.
+
+The three largest single line items are all production, not selling:
+
+1. **WOOL: 0 vs 263 units.** `SHEEP_ENABLED = False`. This is exactly what `main_v7.8.py` changes, and it has never been A/B'd. At WOOL's $200 base this line alone is plausibly a large fraction of the gap.
+2. **WHEAT: 243 vs 1,027.** Wheat is realizing ~1.9× base, and is also our own feed input, so more of it cuts the `BUY_PRODUCT` spend too.
+3. **STRAWBERRY: 44 vs 204.** Already flagged in real ladder losses (an opponent made $69,878 off 294 units in a game we lost by $22,931).
+
+**Revised sequencing suggestion:** A/B `main_v7.8.py` under `--both-seats` before starting Phase 2, since it targets the single largest line item and is already built. Phase 2 adaptive selling should be re-scoped as a multiplier on production volume rather than as the primary lever.
+
+| ID | Decision | Rationale | Evidence |
+|---|---|---|---|
+| D67 | Opponent-pool results must record both sides' money; production volume, not sell timing, is the current binding constraint | 0/12 vs frontier/scenario at −$155k to −$166k paired margin, with our realized prices strong ($48/unit wheat vs $25 base) but total sell volume 731 vs 1,921 units | 24 seat-controlled games + seed-42 decision-log breakdown |
+
+### 8.7 D68 — v7.8 (sheep) tested and rejected: sheep are strictly worse per pasture slot at our production scale
+
+**This supersedes the sheep recommendation in D67, which was wrong.**
+
+`main_v7.8.py` had never been A/B'd — no result existed anywhere in this document or the project notes. Tested now, `--both-seats`, 6 seeds vs `main_v7.6.py`: **1/6, mean paired margin −$11,912** (min −$24,469, max +$3,458, stdev $9,027, t = −3.23). A real regression.
+
+**It is not a fleet-size effect.** Final fleet sizes are essentially unchanged (v7.8 / v7.6 by seed: 11/10, 7/11, 8/8, 10/9, 10/9). The first seed inspected happened to show a shrink, which would have been the wrong conclusion from one game.
+
+**The actual mechanism — a fixed, unfavourable product substitution.** Across every seed tested:
+
+| Seed | Δ MILK units | Δ WOOL units | Δ money |
+|---|---|---|---|
+| 1 | −94 | +62 | −$9,150 |
+| 7 | −96 | +53 | −$12,614 |
+| 99 | −88 | +61 | −$5,705 |
+| 123 | −85 | +60 | −$6,714 |
+| 202 | −97 | +56 | −$10,689 |
+
+Roughly 90 milk units traded for 58 wool units, every time — a ratio of ~1.55. That is the engine's yield-interval ratio almost exactly:
+
+```
+COW:   cost 400, first_yield_day 8, interval 2, MILK base $160  ->  $80.0/day
+SHEEP: cost 500, first_yield_day 6, interval 3, WOOL base $200  ->  $66.7/day
+```
+
+3/2 = 1.5 observed as 1.55. A sheep occupies the same pasture slot, consumes the same 1 WHEAT/day (feed is species-agnostic in the engine), and demands the same care labour as a cow — while costing **25% more** and producing **17% less value per day**. Swapping cows for sheep is a downgrade on identical resources.
+
+**Sheep's one real advantage is worthless to us right now.** Sheep yield 2 days earlier (day 6 vs 8), and diversifying avoids saturating the MILK market. But v7.6 realizes MILK at **$215/unit against a $160 base** — milk price sits *above* base for the whole match, meaning we never sell enough to depress it. There is no saturation to hedge against, so we pay sheep's full cost for none of its benefit. Diversification into WOOL only starts paying once MILK volume is high enough to push realized milk price below wool's, which is a problem we do not have.
+
+**Correcting D67.** D67 read "WOOL 0 vs 263 units" as the largest addressable line item and recommended enabling sheep. That inverted cause and effect. Frontier's 263 WOOL is not a species choice we can copy — it is a symptom of an animal economy roughly twice our size, funded by a crop economy roughly four times ours (1,027 WHEAT to our 243). Species substitution cannot close a scale gap; at our scale it makes things worse.
+
+**What this leaves.** The production-volume diagnosis in D67 stands — 731 units to frontier's 1,921 — but the lever is **scale**, not **mix**. The open question is why our fleet plateaus around 8–11 animals and our wheat output sits near 243 units while frontier reaches 1,027, not which animal fills a pasture. `SHEEP_ENABLED` should stay `False` unless milk saturation ever actually appears in the decision log.
+
+| ID | Decision | Rationale | Evidence |
+|---|---|---|---|
+| D68 | v7.8 rejected; `SHEEP_ENABLED` stays False until MILK realized price falls below base | Sheep cost 25% more, yield 17% less value/day, and occupy identical slot/feed/labour; observed as a fixed ~90 MILK for ~58 WOOL trade on every seed, matching the engine's 3:2 interval ratio. Their diversification benefit is nil while MILK realizes $215 against a $160 base | 12 seat-controlled games + 5-seed mechanism trace |
+
+### 8.8 D69 — the top bug is order-slot contention in hiring, which no v8 phase addresses
+
+Following D67's "scale, not mix" conclusion, the decision log was used to find what actually caps our scale. Seed 42 vs frontier_v12 ($57,764 vs $136,495).
+
+**Ruled out first.** Seed purchases do *not* freeze — v8 buys seeds on 21 of 30 days, last purchase day 26. The seed-freeze pattern from the v7.5 ladder replays was genuinely fixed by v7.6 and is no longer a live issue. Land completes by day 11 (all 4 quadrants). Budget is not binding late: the hire loop reports $23,558 / $34,933 / $41,183 left over on days 24 / 26 / 28.
+
+**The binding constraint is labour, and not for the reason the hiring formula thinks.** `work` climbs to 101–112, so `target = ceil(work/5)` pins to the `HAND_TARGET_MAX = 18` cap on **17 of 29 days**. v7.6 duly issues up to 18 `HIRE` orders. But actual hands held, sampled at hour 12, are only **5–9** — and *declining* late (day 28: 5).
+
+The orders do not land:
+
+| | v8 / v7.6 | frontier_v12 |
+|---|---|---|
+| Total HIRE orders | 207 | **324** |
+| Hours of day used for hiring | **{1}** | **{1, 2}** |
+| Mean hires/day | 6.9 | **10.8** |
+| Turns at the 10-order cap | 23 | 28 |
+| Hands held (day 12→28) | 8, 9, 6, 8, 5 | **12, 12, 12, 12, 11** |
+
+v7.6 fires its entire daily hiring burst inside a single turn (`if hour == 0`), where the engine's hard `maxMarketOrdersPerTurn = 10` is shared with sells, seeds, land, animals and feed. Frontier splits hiring across **two** turns per day and consequently lands ~57% more hands. Because hands wipe to zero at every day boundary, this is re-paid daily — it is not a one-off.
+
+So the hiring formula asks for 18, the budget can afford 18, and roughly 7 arrive. Every downstream throughput number — watering, weeding, harvesting, wheat output — is gated by that.
+
+**Does any v8 phase address this? No.**
+
+| Phase | Addresses the scale gap? |
+|---|---|
+| 2 — Adaptive selling | **No.** Aimed at a non-problem: realized prices are already above base (MILK $215/$160, WHEAT $48/$25). Its stated rationale — "large score variation from realized melon prices" — is not what these games show. |
+| 3 — Unified crop/seed scoring | **Partly, but its premise is stale.** Its headline goal is eliminating purchased-but-unused seeds; seeds no longer freeze. Tile-allocation gains may remain. |
+| 4 — Adaptive animal/land expansion | **Partly.** Section 6.3 models the marginal value of the *next hand* — but it assumes a hire decision executes. Here the decision is correct and does not execute. |
+| 5 — Forecasting / 6 — Coordination | No. |
+
+The spec's framing is "compare candidate actions on a shared value model." This bug is a different species: the chosen action is right and fails to land because order slots are a scarce resource the agent never allocates deliberately. Section 3 lists "market-order limit" under *real constraints to keep hard-coded*, and section 12 states the execution layer "remains stable unless replay evidence identifies a mechanical failure" — this is that mechanical failure.
+
+It is also a reminder that the spec was written against **v7.2** and is three versions stale: its evidence items 2.1 (hard fleet ceiling) and 2.2 (wheat seed/planting mismatch) are already fixed.
+
+**Cheapest next experiment:** spread the daily hire burst across two or three turns instead of one, so hire orders stop colliding with sell orders for the same 10 slots. Pure scheduling change, no new model, directly targets the measured bottleneck.
+
+| ID | Decision | Rationale | Evidence |
+|---|---|---|---|
+| D69 | Order-slot contention, not decision quality, is the current top bug; hire spreading is the next experiment | Hiring asks for 18/day with budget to spare, but fires in one turn against a shared 10-order cap and lands ~7; frontier splits across two turns and holds 12 hands to our 5–9 | Decision-log + action-stream analysis, seed 42 |

@@ -3,20 +3,151 @@ import random
 import sys
 
 # =====================================================================
-# MAIN V7.5
+# MAIN V8 CANDIDATE G -- Candidate F's gate fix + the wheat lever from the
+# prior round's Candidate D/E2, layered on the FIXED gate (not on
+# unfixed v7.9). Adds: (a) D's fertilize-WHEAT pipeline (perceive()
+# fert_wheat tracking, FERTILIZER_RESERVE kept in shed, fertilize_action
+# called by farmer/hands before falling to ordinary crop tasks), and
+# (b) E2's want["WHEAT"] target raised from flat 8 to min(space, 16).
+# Nothing else changed -- no v7.11 order-priority resequencing, no
+# E2's own (different, since-superseded) gate fix.
 #
-# Base: v7.3, unchanged except how fleet growth is kept in check. v7.3's
-# animal-expansion gate has no fixed count; testing confirmed a flat cap
-# doesn't generalize (a 15-cap helped one opponent, hurt another just as
-# much). Instead of touching the gate, v7.5 strengthens what animals
-# compete against for budget:
-#   1. Land expansion and seed buying now run BEFORE animal purchase each
-#      turn (previously animals had unconditional first claim on cash).
-#   2. TOMATO enabled as a 5th crop (was fully priced/costed but never
-#      included in PLANT_PRIORITY, so it sat unused).
-#   3. Crop-land tile reserve scales with unlocked land instead of a
-#      flat 8 tiles.
-# The animal feasibility gate itself is unchanged from v7.3.
+# See main_v8_candidateF.py's header for the gate-fix rationale and
+# main_v8_candidateD.py / main_v8_candidateE2.py for the fertilize-pipeline
+# and wheat-target rationale, both unchanged here except for being layered
+# onto F's gate instead of v7.9's original.
+# =====================================================================
+#
+# =====================================================================
+# MAIN V8 CANDIDATE F -- feasibility-gate fix ONLY, layered on v7.9.
+# Base: main_v7.9.py, byte-identical except for two lines inside
+# _animal_expansion_feasible() (and threading seeds/day into its
+# signature/call site to support the second one). No seed targets, hire
+# logic, land timing, or sell logic changed.
+#
+# --- Why (two confirmed gate bugs, see project memory) ---
+#
+# 1. `neglect_work` only counted water + urgent_water + harvest -- never
+#    weeds. The gate was structurally blind to weed infestation: a fleet
+#    could keep expanding while weeds climbed unchecked, which is the
+#    exact collapse pattern seen in every failed v8 candidate this
+#    session (mechanism traces showed fleet ballooning to 13-15 animals
+#    vs v7.9's own safely-sustained 8-10, with a weed/backlog spiral).
+#    Fix: neglect_work now also includes len(view["weeds"]).
+#
+# 2. `available_for_crops = len(view["empty"]) - len(reserved_sites) - 1`
+#    treated a high raw empty-tile COUNT as "plenty of spare crop land,
+#    safe to give up one more tile to a pasture." But empty tiles pile up
+#    specifically WHEN planting throughput is falling behind (seeds
+#    bought but not yet planted, or hands too busy elsewhere to plant) --
+#    i.e. the same signal that should mean "hands are already stretched"
+#    was being read as "there's slack." Fix: subtract the genuine
+#    plantable backlog (seeds on hand that could/should be planted, same
+#    calc _agent() already does for n_plantable/tasks["plant"]) from
+#    available_for_crops, so tiles already earmarked to be planted from
+#    seed-on-hand don't count as spare.
+#
+# --- Original v7.9 header follows, unchanged ---
+#
+# MAIN V7.9 -- strawberry scale-up, ISOLATED. Base: v7.6, byte-identical
+# except for the two crop-mix constants noted below. Nothing else is
+# touched: no selling change, no animal change, no labor change.
+#
+# --- Why (demand-side analysis, Aug 5) ---
+#
+# Market inventory is shared, persistent, starts at I0=10000, and the
+# TOWN drains it faster than either player supplies. In all 5 real v7.5
+# ladder loss replays final inventory ends BELOW I0 for nearly every
+# product, so prices INFLATE over the match: final STRAWBERRY $243-309
+# (base 120), WOOL $244-252 (200), MILK $193-249 (160), WHEAT $54-60
+# (25). Only MELON and FERTILIZER end oversupplied. This game is
+# supply-constrained, not price-constrained.
+#
+# Simulating the real shop-unlock schedule (`SHOPS` +
+# TOWN_CENTER_DEMAND_SCHEDULE, 8 shops one per 3 days) gives the units
+# the town absorbs per match before price falls below base:
+#
+#   WHEAT 635 | STRAWBERRY 534 | MILK 440 | CARROT 431 | EGG 341
+#   WOOL 336  | TOMATO 335     | MELON 140 | FERTILIZER 0
+#
+# MELON is in NO shop (town-center drain only). We give it
+# PLANT_PRIORITY[0] -- first pick of every tile -- i.e. the smallest
+# demand pool in the game gets our best land.
+#
+# Measured per-game revenue across those 5 loss replays:
+#   STRAWBERRY: us $2,517 (12 units) vs opponents $28,578 (116 units),
+#               both realizing $217-246/unit.  Gap ~$26k/game.
+#
+# --- The bug ---
+#
+# v7.6 line ~368: want["STRAWBERRY"] = 3, commented "ongoing crop, small
+# standing patch is enough". The premise is wrong. Read the engine:
+# a strawberry plant produces exactly max_yield=4 times (interval 2, on
+# days 10/12/14/16 of its life), then `_daily_refresh_plants` sets
+# max_lifespan_step and it dies. It is NOT perpetual. 3 seeds in stock
+# x 4 units = ~12 units/game, exactly what the replays show.
+#
+# Compounding it: `plantable_crops()` returns PLANT_PRIORITY order and
+# the planting task always takes the FIRST entry, so strawberry only
+# ever reaches a tile after melon stock hits zero. Raising the seed
+# target alone would just stockpile seeds.
+#
+# --- The change (exactly two constants) ---
+#
+#  1. PLANT_PRIORITY: STRAWBERRY moved ahead of MELON.
+#  2. want["STRAWBERRY"]: 3 -> min(space, 6 if early else 10), the same
+#     shape melon already uses.
+#
+# MELON's own target is deliberately NOT reduced -- melon still gets
+# every tile strawberry doesn't claim. That keeps this a strawberry
+# change rather than a confounded strawberry-up/melon-down swap.
+#
+# --- What could make this fail ---
+#
+# Per tile-day at OBSERVED average prices melon is competitive
+# (strawberry 4 units/16 days x $246 = ~$62/tile-day; melon 6 units/13
+# days x $166 = ~$76/tile-day). The bet is on the MARGINAL unit, not the
+# average: melon's `af` curve is "sq" against a 140-unit pool and our
+# melon market already ends oversupplied, so our marginal melon is worth
+# far less than $166 -- while our marginal strawberry is still worth
+# ~$250 because we sell 12 into a 534-unit pool. If that reasoning is
+# wrong the A/B will say so.
+#
+# --- Inherited from v7.6 (unchanged) ---
+# MAIN V7.6 -- ships Variant A ("protected crop hands") after A/B testing
+# against Variant B (hiring-formula-only, main_v7.6b.py) -- see decision
+# log / project memory. Variant A won 7/8 seeded games vs v7.5 (mean
+# margin +$6,081); Variant B lost to v7.5, 3/8 (mean margin -$2,667).
+#
+# Base: v7.5, unchanged except for labor allocation. Real ladder loss
+# replays (5/5, episodes 90064167/90066909/90068269/90070304/90070988)
+# showed a reproducible late-game collapse: seed inventory freezes
+# ~day 10-15 through day 29, WEED tiles climb from single digits to
+# 20-37/100, planted-crop tiles collapse from a mid-game peak of 33-45
+# down to 0-8, while WATER actions fall from ~20-38/day to near zero
+# and FEED+CARE actions climb from ~2/day to 9-11/day over the same
+# window. Root cause confirmed by reading the code: `animal_maintenance
+# _action` has unconditional first claim on every hand and the farmer,
+# every turn (v7.5's `_agent` loop), regardless of whether crops are
+# already neglected -- so as the fleet's maintenance burden grows, crop
+# watering/weeding/planting gets crowded out and never recovers. Two
+# more contributing bugs, also fixed here: (1) weeds were last in
+# TASK_ORDER and excluded entirely for day > 27; (2) hiring's own
+# workload formula and the animal-expansion neglect gate both ignore
+# weeds, so a heavily-weeded farm doesn't hire more or block further
+# animal purchases because of it (see v7.6b for that fix in isolation).
+#
+# v7.6a's fix: reserve a protected fraction of hands for crop work only.
+# Reserved hands may still respond to feed-critical animal needs
+# (an animal already missed a feeding, or is due today) since animal
+# survival should still preempt crops -- but they never do the
+# *optional* animal work (CARE, HARVEST, COLLECT_FERTILIZER, product
+# deposit) that was crowding out watering/weeding in the replays. The
+# farmer and any hands beyond the reserved count keep v7.5's original
+# unconditional-maintenance-first behavior. Weed removal is also
+# promoted ahead of ordinary watering (and, once severe, ahead of
+# planting) once weed count crosses a threshold, and the day<=27 cutoff
+# on weed-clearing is removed.
 #
 # Full version history, replay evidence, and decision rationale for this
 # and every prior version: see kaggriculture-agent-design.md and
@@ -66,6 +197,13 @@ SETUP_MAX_RETRIES = 3
 FEED_CARRY_TARGET = 2
 PRODUCT_DEPOSIT_AT = 3         # PLACE milk/wool when carrying this many
 
+# --- v8 candidate D/G: WHEAT fertilize pipeline ---
+FERTILIZER_RESERVE = 8      # keep this many FERTILIZER in shed for wheat use;
+                              # the rest still gets sold every turn like v7.9
+WHEAT_FERT_MAX_AGE = 2       # only chase the fertilize bonus while age <= 2
+                              # (yield window is ages 2-4); a single
+                              # application at age 2 covers the whole window
+
 # Real hiring cost model (kaggriculture.py: FARM_HAND_COST_MULT=1, fib(0)=1,1,2,3,5,...)
 FARM_HAND_COST_MULT = 1
 HAND_TARGET_MIN = 4
@@ -74,6 +212,21 @@ HAND_TARGET_MAX = 18
 # Market-order category slot reservations
 MAX_HIRE_SLOTS = HAND_TARGET_MAX
 MAX_SEED_SLOTS = 5   # fits MELON/STRAWBERRY/TOMATO/WHEAT/CARROT
+
+# --- v7.6a: protected crop-hand reservation ---
+# Fraction of the current hand count that is walled off for crop-only work
+# (watering/weeding/harvest/planting), scaled up once the farm is showing
+# real symptoms of neglect rather than always being a flat number.
+WEED_RATIO_HIGH = 0.10          # weeds / unlocked-tile-count threshold
+CROP_PRESSURE_HAND_MULT = 4     # crop backlog vs. hand count threshold
+PROTECTED_FRACTION_LOW = 0.50
+PROTECTED_FRACTION_HIGH = 0.70
+MIN_RESERVED_CROP_HANDS = 2
+TILES_PER_QUAD = 25              # 10x10 board / 4 quadrants
+
+# Weed-priority escalation thresholds (tune TASK_ORDER as infestation grows).
+WEED_PRIORITY_THRESHOLD = 5     # promote weeds ahead of ordinary planting
+WEED_URGENT_THRESHOLD = 20      # promote weeds ahead of ordinary watering too
 
 CROPS = {
     "WHEAT":      {"seed": 10,  "first": 2,  "max_day": 4,  "interval": 0, "max_yield": 6, "ongoing": False},
@@ -96,9 +249,20 @@ MARKET_PARAMS = {
 }
 
 CUTOFF = {"WHEAT": 25, "CARROT": 26, "MELON": 16, "STRAWBERRY": 18, "TOMATO": 20}
-PLANT_PRIORITY = ["MELON", "STRAWBERRY", "TOMATO", "WHEAT", "CARROT"]
+# v7.9 change 1 of 2: STRAWBERRY ahead of MELON. plantable_crops() returns
+# this order and the plant task always takes the first entry, so whatever
+# sits at index 0 gets first claim on every empty tile. MELON has a
+# 140-unit/match town demand pool (it is in no shop); STRAWBERRY has 534.
+PLANT_PRIORITY = ["STRAWBERRY", "MELON", "TOMATO", "WHEAT", "CARROT"]
 PREMIUM_CROPS = {"STRAWBERRY", "MELON"}
 ANIMAL_PRODUCTS = ("MILK", "WOOL", "EGG", "FERTILIZER")
+
+# --- instrumentation (v8 candidate G, mirrors D/E2) ---
+FERT_STATS = {
+    "fertilize_ops": 0, "age_hist": {0: 0, 1: 0, 2: 0},
+    "wheat_units_sold": 0, "wheat_revenue": 0.0,
+    "fert_units_sold": 0, "peak_animals": 0,
+}
 
 
 def _shape(func, x):
@@ -164,6 +328,8 @@ def perceive(me, opp, day):
     urgent_water, water, harvest, empty, weeds = [], [], [], [], []
     my_pastures = []          # (pos, tile) for pastures WITH an animal
     empty_pastures = []
+    fert_wheat = []            # v8G: WHEAT tiles eligible for FERTILIZE
+    fert_wheat_age = {}        # v8G: pos -> age, for instrumentation
 
     for y, row in enumerate(me["tiles"]):
         for x, t in enumerate(row):
@@ -194,6 +360,14 @@ def perceive(me, opp, day):
                             (yu >= c["max_yield"] or age >= c["max_day"]))
                     if yu > 0 and ready:
                         harvest.append((x, y))
+                # v8G (from D): WHEAT fertilize eligibility -- age <= 2, not
+                # already covering today. A single application at age 2
+                # covers the whole ages-2-4 bonus window with one unit.
+                if t.get("crop") == "WHEAT":
+                    age = day - t.get("planted_day", day)
+                    if 0 <= age <= WHEAT_FERT_MAX_AGE and t.get("fertilized_until_day", -1) < day:
+                        fert_wheat.append((x, y))
+                        fert_wheat_age[(x, y)] = age
 
     imminent = {}
     for row in opp["tiles"]:
@@ -210,6 +384,7 @@ def perceive(me, opp, day):
         "empty": empty, "weeds": weeds,
         "my_pastures": my_pastures, "empty_pastures": empty_pastures,
         "opp_imminent": imminent,
+        "fert_wheat": fert_wheat, "fert_wheat_age": fert_wheat_age,
     }
 
 
@@ -240,7 +415,7 @@ def _pending_animal_work(view):
                   or (not t.get("cared_today", True)) or t.get("fertilizer_available", False))
 
 
-def _animal_expansion_feasible(obs, view, budget, shed, n_animals, n_hands, quads):
+def _animal_expansion_feasible(obs, view, budget, shed, n_animals, n_hands, quads, seeds, day):
     """Gate for buying the (n_animals+1)th animal. All five must hold:
       1. Survival: no existing pasture is already missing a feeding.
       2. Wheat affordability: the market-buy needed to cover one more
@@ -250,9 +425,11 @@ def _animal_expansion_feasible(obs, view, budget, shed, n_animals, n_hands, quad
          plus animal workload, must stay under HAND_TARGET_MAX.
       4. Crops not already neglected (real, not projected): do the hands we
          actually have right now already have their hands full with crop
-         backlog alone?
+         backlog alone (including weeds)?
       5. Crop space: reserving one more near-shed tile for a pasture must
-         still leave enough open land for crops.
+         still leave enough open land for crops, after accounting for the
+         genuine plantable-seed backlog (tiles already earmarked to be
+         planted don't count as spare).
     """
     if any(not t.get("fed_today", True) and t.get("consecutive_unfed", 0) >= 1
            for _pos, t in view["my_pastures"]):
@@ -266,7 +443,10 @@ def _animal_expansion_feasible(obs, view, budget, shed, n_animals, n_hands, quad
         return False
 
     animal_work = _pending_animal_work(view)
-    neglect_work = len(view["water"]) + len(view["urgent_water"]) + len(view["harvest"])
+    # Candidate F fix 1/2: neglect_work was blind to weeds -- a fleet could
+    # keep expanding while weed infestation climbed unchecked. Now counts.
+    neglect_work = (len(view["water"]) + len(view["urgent_water"]) +
+                     len(view["harvest"]) + len(view["weeds"]))
     crop_work = neglect_work + len(view["empty"])
     projected_work = crop_work + (animal_work + 1) * ANIMAL_WORK_WEIGHT
     if math.ceil(projected_work / 5) > HAND_TARGET_MAX:
@@ -275,7 +455,13 @@ def _animal_expansion_feasible(obs, view, budget, shed, n_animals, n_hands, quad
     if neglect_work > n_hands * CROP_NEGLECT_TASKS_PER_HAND:
         return False
 
-    available_for_crops = len(view["empty"]) - len(reserved_sites) - 1
+    # Candidate F fix 2/2: a high raw empty-tile count was being read as
+    # "spare land" even when it was really an unplanted-seed backlog piling
+    # up because planting throughput was falling behind. Mirrors the
+    # n_plantable calc in _agent() (~line 935).
+    plantable = plantable_crops(seeds, day)
+    plantable_backlog = min(len(view["empty"]), sum(seeds.get(c, 0) for c in plantable))
+    available_for_crops = len(view["empty"]) - len(reserved_sites) - 1 - plantable_backlog
     if available_for_crops < EXPANSION_MIN_CROP_TILES_PER_QUAD * quads:
         return False
 
@@ -330,13 +516,22 @@ def economy(obs, me, opp, view, seeds, day, hour, timing_engine, animal_plans):
             melon_target = min(melon_target, 3)
         want["MELON"] = melon_target
     if day <= CUTOFF["STRAWBERRY"] and budget > 900:
-        want["STRAWBERRY"] = 3   # ongoing crop, small standing patch is enough
+        # v7.9 change 2 of 2: was a flat 3 ("ongoing crop, small standing
+        # patch is enough"). A strawberry plant produces exactly max_yield=4
+        # times then dies -- it is not perpetual, so a 3-seed buffer caps us
+        # at ~12 units/game against a 534-unit town demand pool. Same target
+        # shape melon uses.
+        want["STRAWBERRY"] = min(space, 6 if ph == 0 else 10)
     if day <= CUTOFF["TOMATO"] and budget > 600:
         want["TOMATO"] = 3   # ongoing crop, same small-standing-patch approach
     if day <= CUTOFF["CARROT"]:
         want["CARROT"] = 4
     if day <= CUTOFF["WHEAT"]:
-        want["WHEAT"] = 8
+        # v8G (from E2): was flat 8. Fertilize pipeline makes WHEAT a real
+        # ~2x yield lever (see main_v8_candidateD.py header) against a
+        # 635-unit town demand pool v7.9 barely dents -- raised to
+        # min(space, 16), same shape melon/strawberry already use.
+        want["WHEAT"] = min(space, 16)
 
     reserve = 500 if ph == 0 else 200
     for crop, tgt in want.items():
@@ -363,7 +558,7 @@ def economy(obs, me, opp, view, seeds, day, hour, timing_engine, animal_plans):
             for species in ANIMAL_SPECIES_ORDER:
                 if species == "SHEEP" and not SHEEP_ENABLED:
                     continue
-                if _animal_expansion_feasible(obs, view, budget, shed, n_animals, len(me["hands"]), quads):
+                if _animal_expansion_feasible(obs, view, budget, shed, n_animals, len(me["hands"]), quads, seeds, day):
                     target_plan = {"species": species, "stage": "NONE", "site": None,
                                     "stage_turn": None, "retries": 0}
                     break
@@ -390,10 +585,15 @@ def economy(obs, me, opp, view, seeds, day, hour, timing_engine, animal_plans):
                 feed_orders.append(["BUY_PRODUCT", "WHEAT", qty])
                 budget -= cost
 
-    # --- Fertilizer straight to market ---
+    # --- Fertilizer straight to market, minus a reserve for wheat use ---
+    # v8G (from D): was "sell everything"; now keep FERTILIZER_RESERVE
+    # units in the shed so the fertilize pipeline (fertilize_action,
+    # below) has stock to PICKUP for WHEAT tiles.
     fert = shed.get("FERTILIZER", 0)
-    if fert > 0:
-        sell_orders.append(["SELL", "FERTILIZER", fert])
+    fert_sellable = fert - FERTILIZER_RESERVE
+    if fert_sellable > 0:
+        sell_orders.append(["SELL", "FERTILIZER", fert_sellable])
+        FERT_STATS["fert_units_sold"] += fert_sellable
 
     # --- Paced selling + demand-timing attack ---
     # force_dump relieves shed overflow by selling only the amount needed,
@@ -456,6 +656,9 @@ def economy(obs, me, opp, view, seeds, day, hour, timing_engine, animal_plans):
             qty = units_sellable_above(item, inv.get(item, I0), floor * relax, int(n))
         if qty > 0:
             sell_orders.append(["SELL", item, qty])
+            if item == "WHEAT":  # v8G instrumentation
+                FERT_STATS["wheat_units_sold"] += qty
+                FERT_STATS["wheat_revenue"] += qty * price_now
 
     # --- Hiring: real Fibonacci cost, counts animal maintenance workload
     # alongside crops so the hand pool scales with the fleet too. ---
@@ -492,6 +695,27 @@ def economy(obs, me, opp, view, seeds, day, hour, timing_engine, animal_plans):
                         orders[i] = order
                         break
                 break
+
+    # v8G: mechanism trace, printed every turn of the last day (see
+    # main_v8_candidateD.py's comment on why day=29/hour=23 is never an
+    # actual input observation -- take the LAST such line per game).
+    n_animals_now = len(view["my_pastures"])
+    FERT_STATS["peak_animals"] = max(FERT_STATS["peak_animals"], n_animals_now)
+    if day >= 29:
+        hist = FERT_STATS["age_hist"]
+        avg_price = (FERT_STATS["wheat_revenue"] / FERT_STATS["wheat_units_sold"]
+                     if FERT_STATS["wheat_units_sold"] else 0.0)
+        print(
+            f"FERTTRACE fertilize_ops={FERT_STATS['fertilize_ops']} "
+            f"age_hist={hist} "
+            f"wheat_units_sold={FERT_STATS['wheat_units_sold']} "
+            f"wheat_avg_price={avg_price:.1f} "
+            f"wheat_revenue={FERT_STATS['wheat_revenue']:.0f} "
+            f"fert_units_sold={FERT_STATS['fert_units_sold']} "
+            f"peak_animals={FERT_STATS['peak_animals']} "
+            f"end_weeds={len(view['weeds'])}",
+            file=sys.stderr,
+        )
     return orders
 
 
@@ -521,6 +745,43 @@ def _dist(a, b):
 
 def _nearest_center(pos):
     return _nearest(pos, CENTER_TILES)
+
+
+# =====================================================================
+# FERTILIZE PIPELINE (v8 candidate D, unchanged here) -- proactively
+# fetches FERTILIZER from the shed and applies it to WHEAT tiles in
+# view["fert_wheat"] before their yield-bonus window closes. Mirrors the
+# PICKUP-then-carry pattern animal_maintenance_action already uses for
+# WHEAT-as-feed.
+# =====================================================================
+
+def fertilize_action(pos, view, shed, carry, day, exclude=()):
+    """Returns (op_or_None, claimed_pos_or_None). Only engages when there's
+    an eligible WHEAT tile (age <= WHEAT_FERT_MAX_AGE, not yet covering
+    today) and either the worker is already carrying FERTILIZER or the
+    shed has some to spare above FERTILIZER_RESERVE."""
+    targets = [t for t in view["fert_wheat"] if t not in exclude]
+    if not targets:
+        return None, None
+    tpos = _nearest(pos, targets)
+    carry_fert = carry.get("FERTILIZER", 0)
+
+    if pos == tpos and carry_fert > 0:
+        FERT_STATS["fertilize_ops"] += 1
+        age = view.get("fert_wheat_age", {}).get(tpos)
+        if age in FERT_STATS["age_hist"]:
+            FERT_STATS["age_hist"][age] += 1
+        return ["FERTILIZE"], tpos
+
+    if carry_fert > 0:
+        return [_step_toward(pos, tpos)], tpos
+
+    avail = shed.get("FERTILIZER", 0) - FERTILIZER_RESERVE
+    if avail <= 0:
+        return None, None
+    if pos in CENTER_TILES:
+        return ["PICKUP", "FERTILIZER", 1], tpos
+    return [_step_toward(pos, _nearest_center(pos))], tpos
 
 
 # =====================================================================
@@ -644,7 +905,7 @@ def _pasture_priority(pos, farmer_pos, tile):
     return (rank, _dist(pos, farmer_pos))
 
 
-def animal_maintenance_action(pos, view, shed, carry, day, hour, exclude=()):
+def animal_maintenance_action(pos, view, shed, carry, day, hour, exclude=(), critical_only=False):
     """Stateless daily care across the whole active fleet. Targets whichever
     pasture has the most urgent pending need (see _pasture_priority).
 
@@ -653,24 +914,36 @@ def animal_maintenance_action(pos, view, shed, carry, day, hour, exclude=()):
     worker this turn, so multiple workers don't converge on the same
     animal.
 
+    `critical_only` (v7.6a): when True, this worker will only engage with
+    feed-related survival work (an animal due for feeding today, or
+    already overdue) -- never CARE, HARVEST, COLLECT_FERTILIZER, or
+    carried-product deposit trips. This is what lets a reserved crop hand
+    still respond to an animal-death risk without being pulled into
+    optional animal upkeep that isn't a survival matter. Real ladder
+    replays showed exactly this optional work (CARE/HARVEST/FERTILIZER
+    collection climbing from ~2/day to 9-11/day) crowding out crop
+    watering/weeding as the fleet grew.
+
     Returns (op_or_None, claimed_pos_or_None) -- callers should add the
     claimed position to their `exclude` set before calling this for the
     next worker."""
     candidates = [(p, t) for p, t in view["my_pastures"] if p not in exclude]
+    if critical_only:
+        candidates = [(p, t) for p, t in candidates if not t.get("fed_today", True)]
     if not candidates:
         return None, None
     (ppos, tile) = min(candidates, key=lambda pt: _pasture_priority(pt[0], pos, pt[1]))
 
     needs_feed = not tile.get("fed_today", True)
-    needs_care = not tile.get("cared_today", True)
-    has_yield = tile.get("yield_units", 0) > 0
-    has_fert = tile.get("fertilizer_available", False)
+    needs_care = (not critical_only) and (not tile.get("cared_today", True))
+    has_yield = (not critical_only) and tile.get("yield_units", 0) > 0
+    has_fert = (not critical_only) and tile.get("fertilizer_available", False)
     urgent_feed = needs_feed and tile.get("consecutive_unfed", 0) >= 1
     # Only claim ppos if it has real pending work.
     claim = ppos if (needs_feed or needs_care or has_yield or has_fert) else None
 
     carry_wheat = carry.get("WHEAT", 0)
-    carry_products = {i: carry.get(i, 0) for i in ANIMAL_PRODUCTS if carry.get(i, 0) > 0}
+    carry_products = {} if critical_only else {i: carry.get(i, 0) for i in ANIMAL_PRODUCTS if carry.get(i, 0) > 0}
     deposit_due = sum(carry_products.values()) >= PRODUCT_DEPOSIT_AT or (
         carry_products and (needs_feed and carry_wheat == 0))
     fetch_wheat_due = needs_feed and carry_wheat == 0 and shed.get("WHEAT", 0) > 0
@@ -714,7 +987,6 @@ def animal_maintenance_action(pos, view, shed, carry, day, hour, exclude=()):
 # CROP TASK ALLOCATION
 # =====================================================================
 
-TASK_ORDER = ["urgent_water", "harvest", "water", "plant", "weeds"]
 TASK_ACTION = {
     "urgent_water": ["WATER"],
     "harvest": ["HARVEST"],
@@ -723,9 +995,22 @@ TASK_ACTION = {
 }
 
 
-def unit_action(pos, tasks, seeds, day):
+def _task_order(n_weeds):
+    """v7.6a: weeds start last (matches v7.5) but get promoted as
+    infestation grows -- ahead of ordinary planting once there are a
+    few, ahead of ordinary watering too once it's severe. Real replays
+    showed weed count climbing unchecked to 20-37/100 tiles while weeds
+    stayed lowest priority the whole match."""
+    if n_weeds >= WEED_URGENT_THRESHOLD:
+        return ["urgent_water", "harvest", "weeds", "water", "plant"]
+    if n_weeds >= WEED_PRIORITY_THRESHOLD:
+        return ["urgent_water", "harvest", "water", "weeds", "plant"]
+    return ["urgent_water", "harvest", "water", "plant", "weeds"]
+
+
+def unit_action(pos, tasks, seeds, day, task_order):
     x, y = pos
-    for key in TASK_ORDER:
+    for key in task_order:
         if (x, y) in tasks[key]:
             tasks[key].remove((x, y))
             if key == "plant":
@@ -736,7 +1021,7 @@ def unit_action(pos, tasks, seeds, day):
                 continue
             return TASK_ACTION[key]
 
-    for key in TASK_ORDER:
+    for key in task_order:
         tgt = _nearest((x, y), tasks[key])
         if tgt:
             step = _step_toward((x, y), tgt)
@@ -763,6 +1048,25 @@ def _init_reserved_sites(view):
     return reserved_sites
 
 
+def _reserved_crop_hand_count(view, seeds, day, n_hands, quads):
+    """v7.6a: how many of the current hands are walled off for crop-only
+    work this turn. Scales with real symptoms of neglect (weed density,
+    crop backlog relative to hand count) rather than a flat number."""
+    if n_hands <= 0:
+        return 0
+    unlocked_tiles = max(1, TILES_PER_QUAD * max(1, quads))
+    weed_ratio = len(view["weeds"]) / unlocked_tiles
+    plantable = plantable_crops(seeds, day)
+    n_plantable = sum(seeds.get(c, 0) for c in plantable)
+    crop_pressure = (len(view["urgent_water"]) + len(view["water"]) +
+                      len(view["weeds"]) + min(len(view["empty"]), n_plantable))
+    if weed_ratio >= WEED_RATIO_HIGH or crop_pressure > n_hands * CROP_PRESSURE_HAND_MULT:
+        fraction = PROTECTED_FRACTION_HIGH
+    else:
+        fraction = PROTECTED_FRACTION_LOW
+    return min(n_hands, max(MIN_RESERVED_CROP_HANDS, math.ceil(n_hands * fraction)))
+
+
 def _agent(obs):
     p = obs["player"]
     me, opp = obs["farms"][p], obs["farms"][1 - p]
@@ -783,12 +1087,17 @@ def _agent(obs):
     crops_now = plantable_crops(seeds, day)
     n_plantable = sum(seeds.get(c, 0) for c in crops_now)
 
+    task_order = _task_order(len(view["weeds"]))
     tasks = {
         "urgent_water": list(view["urgent_water"]),
         "harvest": list(view["harvest"]),
         "water": list(view["water"]),
         "plant": (view["empty"][:n_plantable] if crops_now and hour < 21 else []),
-        "weeds": list(view["weeds"]) if day <= 27 else [],
+        # v7.6a: weed-clearing no longer shuts off for the last two days --
+        # replays showed the collapse was already well underway by day 25,
+        # long before that cutoff mattered, and disabling it just let the
+        # infestation stand unchallenged during the final push.
+        "weeds": list(view["weeds"]),
     }
     # Never plant on an in-progress pasture site or an unclaimed reserved
     # near-shed slot -- keeps it available/close for whenever the next
@@ -797,6 +1106,10 @@ def _agent(obs):
     excluded = claimed_sites | set(sites)
     if excluded:
         tasks["plant"] = [t for t in tasks["plant"] if t not in excluded]
+
+    quads = len(me["unlocked_quadrants"])
+    n_hands = len(me["hands"])
+    reserved_count = _reserved_crop_hand_count(view, seeds, day, n_hands, quads)
 
     farmer_pos = tuple(me["farmer"])
     active_setup_plan = next((pl for pl in animal_plans if pl["stage"] in ("BOUGHT", "CARRYING")), None)
@@ -807,10 +1120,13 @@ def _agent(obs):
         for _pos, t in view["my_pastures"]
     )
     claimed_pastures = set()
+    claimed_fert = set()   # v8G (from D)
     farmer_op = None
     if active_setup_plan is not None and not urgent_existing_feed:
         farmer_op = animal_setup_action(farmer_pos, view, shed, farmer_carry, active_setup_plan, day, hour, sites)
     if farmer_op is None:
+        # Farmer keeps v7.5's original unconditional (critical_only=False)
+        # maintenance-first behavior -- only the hand pool is split below.
         farmer_op, claim = animal_maintenance_action(farmer_pos, view, shed, farmer_carry, day, hour, claimed_pastures)
         if claim is not None:
             claimed_pastures.add(claim)
@@ -819,22 +1135,41 @@ def _agent(obs):
         # back to setup work rather than idling.
         farmer_op = animal_setup_action(farmer_pos, view, shed, farmer_carry, active_setup_plan, day, hour, sites)
     if farmer_op is None:
-        farmer_op = unit_action(farmer_pos, tasks, seeds, day)
+        # v8G (from D): fertilize-wheat gets priority over ordinary crop
+        # work (ahead of the plain WATER task) when the farmer has nothing
+        # more urgent to do.
+        farmer_op, fclaim = fertilize_action(farmer_pos, view, shed, farmer_carry, day, claimed_fert)
+        if fclaim is not None:
+            claimed_fert.add(fclaim)
+    if farmer_op is None:
+        farmer_op = unit_action(farmer_pos, tasks, seeds, day, task_order)
 
-    # Hands help with animal maintenance whenever pasture work remains
-    # after the farmer's own pick; once it's empty, remaining hands just
-    # do crops as before.
+    # v7.6a: the first `reserved_count` hands are walled off for crop work
+    # -- they may still answer a feed-critical animal need (critical_only
+    # still checks fed_today), but never the optional maintenance
+    # (CARE/HARVEST/COLLECT_FERTILIZER/product deposit) that was crowding
+    # out watering/weeding in the real loss replays. Remaining hands keep
+    # v7.5's original full-priority behavior.
     hand_ops = []
     for i, h in enumerate(me["hands"]):
         hand_pos = tuple(h)
         hand_carry = inventories[i + 1] if len(inventories) > i + 1 else {}
-        op, claim = animal_maintenance_action(hand_pos, view, shed, hand_carry, day, hour, claimed_pastures)
+        is_reserved = i < reserved_count
+        op, claim = animal_maintenance_action(hand_pos, view, shed, hand_carry, day, hour,
+                                                claimed_pastures, critical_only=is_reserved)
         if op is not None:
             hand_ops.append(op)
             if claim is not None:
                 claimed_pastures.add(claim)
+            continue
+        # v8G (from D): fertilize-wheat before falling to ordinary crop tasks.
+        fop, fclaim = fertilize_action(hand_pos, view, shed, hand_carry, day, claimed_fert)
+        if fop is not None:
+            hand_ops.append(fop)
+            if fclaim is not None:
+                claimed_fert.add(fclaim)
         else:
-            hand_ops.append(unit_action(hand_pos, tasks, seeds, day))
+            hand_ops.append(unit_action(hand_pos, tasks, seeds, day, task_order))
 
     return {"farmer": farmer_op, "hands": hand_ops, "market": market}
 

@@ -3,20 +3,34 @@ import random
 import sys
 
 # =====================================================================
-# MAIN V7.5
+# MAIN V7.6b -- "hiring-formula only" variant
 #
-# Base: v7.3, unchanged except how fleet growth is kept in check. v7.3's
-# animal-expansion gate has no fixed count; testing confirmed a flat cap
-# doesn't generalize (a 15-cap helped one opponent, hurt another just as
-# much). Instead of touching the gate, v7.5 strengthens what animals
-# compete against for budget:
-#   1. Land expansion and seed buying now run BEFORE animal purchase each
-#      turn (previously animals had unconditional first claim on cash).
-#   2. TOMATO enabled as a 5th crop (was fully priced/costed but never
-#      included in PLANT_PRIORITY, so it sat unused).
-#   3. Crop-land tile reserve scales with unlocked land instead of a
-#      flat 8 tiles.
-# The animal feasibility gate itself is unchanged from v7.3.
+# Base: v7.5, unchanged except for what counts as "work" when deciding
+# how many hands to hire and whether crops are already neglected. The
+# scheduler itself (animal-maintenance-first for every hand, every turn)
+# is untouched here -- see v7.6a for that fix in isolation. This variant
+# isolates the other bug real ladder loss replays exposed: the hiring
+# workload formula and the animal-expansion neglect gate both ignore
+# weeds entirely, and both count every empty tile as "work" even when
+# there are no seeds left to plant on it.
+#
+#   - v7.5's hire-target formula: work = water + urgent_water + harvest
+#     + empty + animal_work*2. Weeds never appear, so a farm that's 30%
+#     weeds doesn't hire more hands because of it.
+#   - v7.5's animal-expansion neglect gate: neglect_work = water +
+#     urgent_water + harvest. Same omission -- a heavily-weeded farm can
+#     still pass the "crops aren't neglected" check and greenlight
+#     another animal purchase.
+#   - Both also count every empty tile as "work" regardless of whether
+#     there's an actual seed to plant there, which inflates the target
+#     when land is open but seed-starved and, more importantly, doesn't
+#     compensate for the fact that weeds (which DO require a real DIG
+#     action) were never counted at all.
+#
+# v7.6b's fix: replace raw empty-tile count with a seed-gated planting
+# backlog, and add weeds to both formulas, so the hand pool and the
+# animal-expansion gate both react to a farm that's actually losing
+# ground to weeds -- without touching who does what once hands exist.
 #
 # Full version history, replay evidence, and decision rationale for this
 # and every prior version: see kaggriculture-agent-design.md and
@@ -74,6 +88,11 @@ HAND_TARGET_MAX = 18
 # Market-order category slot reservations
 MAX_HIRE_SLOTS = HAND_TARGET_MAX
 MAX_SEED_SLOTS = 5   # fits MELON/STRAWBERRY/TOMATO/WHEAT/CARROT
+
+# v7.6b: urgent watering counts double in the workload formula (an
+# unwatered-twice tile is one step from crop death), matching the
+# weighting already given to animal work.
+URGENT_WATER_WORK_WEIGHT = 2
 
 CROPS = {
     "WHEAT":      {"seed": 10,  "first": 2,  "max_day": 4,  "interval": 0, "max_yield": 6, "ongoing": False},
@@ -240,7 +259,18 @@ def _pending_animal_work(view):
                   or (not t.get("cared_today", True)) or t.get("fertilizer_available", False))
 
 
-def _animal_expansion_feasible(obs, view, budget, shed, n_animals, n_hands, quads):
+def _plant_backlog(view, seeds, day):
+    """v7.6b: how many empty tiles actually have a seed available to fill
+    them right now -- replaces raw empty-tile counts in the workload
+    formulas below. v7.5 counted every empty tile as 'work' even with
+    zero seeds left to plant, while never counting weeds (which DO need
+    a real DIG action) at all -- backwards given what the real loss
+    replays showed."""
+    n_plantable = sum(seeds.get(c, 0) for c in plantable_crops(seeds, day))
+    return min(len(view["empty"]), n_plantable)
+
+
+def _animal_expansion_feasible(obs, view, budget, shed, n_animals, n_hands, quads, seeds, day):
     """Gate for buying the (n_animals+1)th animal. All five must hold:
       1. Survival: no existing pasture is already missing a feeding.
       2. Wheat affordability: the market-buy needed to cover one more
@@ -250,7 +280,7 @@ def _animal_expansion_feasible(obs, view, budget, shed, n_animals, n_hands, quad
          plus animal workload, must stay under HAND_TARGET_MAX.
       4. Crops not already neglected (real, not projected): do the hands we
          actually have right now already have their hands full with crop
-         backlog alone?
+         backlog alone? (v7.6b: now includes weeds.)
       5. Crop space: reserving one more near-shed tile for a pasture must
          still leave enough open land for crops.
     """
@@ -266,8 +296,11 @@ def _animal_expansion_feasible(obs, view, budget, shed, n_animals, n_hands, quad
         return False
 
     animal_work = _pending_animal_work(view)
-    neglect_work = len(view["water"]) + len(view["urgent_water"]) + len(view["harvest"])
-    crop_work = neglect_work + len(view["empty"])
+    # v7.6b: weeds now count toward neglect (they didn't in v7.5), and
+    # raw empty-tile count is replaced by the seed-gated planting backlog.
+    neglect_work = (len(view["water"]) + len(view["urgent_water"]) +
+                     len(view["harvest"]) + len(view["weeds"]))
+    crop_work = neglect_work + _plant_backlog(view, seeds, day)
     projected_work = crop_work + (animal_work + 1) * ANIMAL_WORK_WEIGHT
     if math.ceil(projected_work / 5) > HAND_TARGET_MAX:
         return False
@@ -363,7 +396,7 @@ def economy(obs, me, opp, view, seeds, day, hour, timing_engine, animal_plans):
             for species in ANIMAL_SPECIES_ORDER:
                 if species == "SHEEP" and not SHEEP_ENABLED:
                     continue
-                if _animal_expansion_feasible(obs, view, budget, shed, n_animals, len(me["hands"]), quads):
+                if _animal_expansion_feasible(obs, view, budget, shed, n_animals, len(me["hands"]), quads, seeds, day):
                     target_plan = {"species": species, "stage": "NONE", "site": None,
                                     "stage_turn": None, "retries": 0}
                     break
@@ -457,12 +490,15 @@ def economy(obs, me, opp, view, seeds, day, hour, timing_engine, animal_plans):
         if qty > 0:
             sell_orders.append(["SELL", item, qty])
 
-    # --- Hiring: real Fibonacci cost, counts animal maintenance workload
-    # alongside crops so the hand pool scales with the fleet too. ---
+    # --- Hiring: real Fibonacci cost. v7.6b: workload formula now counts
+    # weeds and a seed-gated planting backlog instead of raw empty tiles,
+    # so the hand pool actually scales with real crop-side neglect, not
+    # just animal workload and open land. ---
     if hour == 0 and day < 29:
         animal_work = _pending_animal_work(view)
-        work = (len(view["water"]) + len(view["urgent_water"]) +
-                len(view["harvest"]) + len(view["empty"]) +
+        work = (len(view["urgent_water"]) * URGENT_WATER_WORK_WEIGHT +
+                len(view["water"]) + len(view["harvest"]) + len(view["weeds"]) +
+                _plant_backlog(view, seeds, day) +
                 animal_work * ANIMAL_WORK_WEIGHT)
         target = max(HAND_TARGET_MIN, min(HAND_TARGET_MAX, math.ceil(work / 5)))
         need = max(0, target - len(me["hands"]))
@@ -655,7 +691,10 @@ def animal_maintenance_action(pos, view, shed, carry, day, hour, exclude=()):
 
     Returns (op_or_None, claimed_pos_or_None) -- callers should add the
     claimed position to their `exclude` set before calling this for the
-    next worker."""
+    next worker.
+
+    v7.6b: unchanged from v7.5 -- this variant only touches the hiring
+    and expansion-gate formulas, not who does what once hands exist."""
     candidates = [(p, t) for p, t in view["my_pastures"] if p not in exclude]
     if not candidates:
         return None, None
@@ -823,7 +862,7 @@ def _agent(obs):
 
     # Hands help with animal maintenance whenever pasture work remains
     # after the farmer's own pick; once it's empty, remaining hands just
-    # do crops as before.
+    # do crops as before. (v7.6b: unchanged from v7.5.)
     hand_ops = []
     for i, h in enumerate(me["hands"]):
         hand_pos = tuple(h)

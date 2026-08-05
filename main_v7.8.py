@@ -3,23 +3,63 @@ import random
 import sys
 
 # =====================================================================
-# MAIN V7.5
+# MAIN V7.8 -- enables SHEEP with a diversifying purchase order
 #
-# Base: v7.3, unchanged except how fleet growth is kept in check. v7.3's
-# animal-expansion gate has no fixed count; testing confirmed a flat cap
-# doesn't generalize (a 15-cap helped one opponent, hurt another just as
-# much). Instead of touching the gate, v7.5 strengthens what animals
-# compete against for budget:
-#   1. Land expansion and seed buying now run BEFORE animal purchase each
-#      turn (previously animals had unconditional first claim on cash).
-#   2. TOMATO enabled as a 5th crop (was fully priced/costed but never
-#      included in PLANT_PRIORITY, so it sat unused).
-#   3. Crop-land tile reserve scales with unlocked land instead of a
-#      flat 8 tiles.
-# The animal feasibility gate itself is unchanged from v7.3.
+# Base: v7.6 (Variant A, "protected crop hands"), NOT v7.7. v7.7's
+# price-aware attack-dump gate (only fire the scheduled MELON/STRAWBERRY
+# dump if a real condition justifies it) tested poorly and is skipped
+# here per direct instruction -- v7.8's selling logic is byte-identical
+# to v7.6's, isolating this version to one change: the animal fleet.
 #
-# Full version history, replay evidence, and decision rationale for this
-# and every prior version: see kaggriculture-agent-design.md and
+# --- Why SHEEP was off, and what actually needed to change ---
+#
+# SHEEP_ENABLED=False in v7.6 was believed to be guarding against two
+# things: (a) the D60 fleet-size collapse (feed-wheat cost + reserved-
+# tile crop-capacity loss starving the melon dump once total animals
+# exceeded 4), and (b) the feasibility gate maybe mis-costing sheep's
+# feed relative to cows. Re-reading the vendored engine source before
+# touching anything (vendor/kaggle_environments_engine/kaggriculture.py):
+#
+#   - FEED consumes exactly 1 WHEAT per animal per day, unconditionally,
+#     regardless of species (`_inv_take(inv, "WHEAT", 1)`, no species
+#     branch at all). So _animal_expansion_feasible()'s wheat-shortfall
+#     math (`(n_animals + 1) * 2 + FEED_CARRY_TARGET`) is NOT cow-shaped
+#     -- it's already correct for either species, since feed cost per
+#     animal genuinely doesn't vary by species. No change needed there.
+#   - Every other shared-resource check in that gate (hand capacity,
+#     crop neglect, crop-tile space) is keyed on n_animals/counts only,
+#     also correctly species-agnostic -- concern (b) turned out to be
+#     unfounded on inspection, not something that needed a fix.
+#   - ANIMAL_PRODUCTS already includes "WOOL", MARKET_PARAMS already
+#     has a WOOL entry (base $200, vs MILK's $160), and the sell-
+#     exclusion filter already carves out COW/SHEEP/GOOSE from being
+#     accidentally sold as inventory. Selling and deposit logic for
+#     wool already work with zero changes.
+#
+# So concern (a) -- the real D60 mechanism -- is what the feasibility
+# gate (already shipped in v7.6, replacing the old fixed FLEET_TARGET
+# cap) exists to guard against, for any species. The one actual gap:
+# with SHEEP_ENABLED simply flipped to True, SHEEP would almost never
+# get bought in practice. The species-selection loop tried candidates
+# in a fixed ANIMAL_SPECIES_ORDER = ["COW", "SHEEP"] and broke on the
+# first one for which the (species-agnostic) feasibility gate passed --
+# since that gate doesn't depend on species, COW always wins the race
+# whenever a purchase is feasible at all, every single time. Flipping
+# the flag alone would have shipped dead code.
+#
+# v7.8's fix: pick the *least-represented owned species* among enabled
+# ones first (ties broken by ANIMAL_SPECIES_ORDER, so COW still wins
+# the very first purchase, matching its day-0-start/lower-min-money
+# advantage). This produces a roughly alternating COW/SHEEP fleet
+# instead of either all-cow or a permanently-dead SHEEP path, while
+# reusing the exact same D60-guarding feasibility gate, unchanged, for
+# every purchase regardless of species.
+#
+# Everything else (labor allocation, weed priority, hiring, land,
+# selling) is byte-identical to v7.6.
+#
+# Full version history, replay evidence, and decision rationale for
+# prior versions: see kaggriculture-agent-design.md and
 # kaggriculture-v7.3-plan.md in the project folder.
 # =====================================================================
 
@@ -41,8 +81,11 @@ ANIMAL_SPECS = {
     "COW":   {"cost": 400, "min_money": 700, "start_day": 0,  "last_day": 22},
     "SHEEP": {"cost": 500, "min_money": 800, "start_day": 3,  "last_day": 22},
 }
-ANIMAL_SPECIES_ORDER = ["COW", "SHEEP"]   # priority order when considering the next purchase
-SHEEP_ENABLED = False   # disabled -- COW-only fleet scaling for now
+ANIMAL_SPECIES_ORDER = ["COW", "SHEEP"]   # tie-break order when counts are equal
+SHEEP_ENABLED = True   # v7.8: re-enabled -- see header for why this is now safe
+                        # to test (feed cost is genuinely species-agnostic in
+                        # the real engine; the fleet-size gate below already
+                        # guards the D60 collapse mechanism for any species)
 
 # Dynamic fleet expansion: no fixed animal-count cap. Each next purchase is
 # gated live by _animal_expansion_feasible() (survival/wheat/hands/crop-space
@@ -74,6 +117,21 @@ HAND_TARGET_MAX = 18
 # Market-order category slot reservations
 MAX_HIRE_SLOTS = HAND_TARGET_MAX
 MAX_SEED_SLOTS = 5   # fits MELON/STRAWBERRY/TOMATO/WHEAT/CARROT
+
+# --- v7.6a: protected crop-hand reservation ---
+# Fraction of the current hand count that is walled off for crop-only work
+# (watering/weeding/harvest/planting), scaled up once the farm is showing
+# real symptoms of neglect rather than always being a flat number.
+WEED_RATIO_HIGH = 0.10          # weeds / unlocked-tile-count threshold
+CROP_PRESSURE_HAND_MULT = 4     # crop backlog vs. hand count threshold
+PROTECTED_FRACTION_LOW = 0.50
+PROTECTED_FRACTION_HIGH = 0.70
+MIN_RESERVED_CROP_HANDS = 2
+TILES_PER_QUAD = 25              # 10x10 board / 4 quadrants
+
+# Weed-priority escalation thresholds (tune TASK_ORDER as infestation grows).
+WEED_PRIORITY_THRESHOLD = 5     # promote weeds ahead of ordinary planting
+WEED_URGENT_THRESHOLD = 20      # promote weeds ahead of ordinary watering too
 
 CROPS = {
     "WHEAT":      {"seed": 10,  "first": 2,  "max_day": 4,  "interval": 0, "max_yield": 6, "ongoing": False},
@@ -253,6 +311,11 @@ def _animal_expansion_feasible(obs, view, budget, shed, n_animals, n_hands, quad
          backlog alone?
       5. Crop space: reserving one more near-shed tile for a pasture must
          still leave enough open land for crops.
+
+    Species-agnostic by design (v7.8 confirmed this is correct, not a bug):
+    the engine's FEED action consumes exactly 1 WHEAT/animal/day regardless
+    of species, so this gate's shared-resource checks apply identically to
+    a COW or a SHEEP purchase.
     """
     if any(not t.get("fed_today", True) and t.get("consecutive_unfed", 0) >= 1
            for _pos, t in view["my_pastures"]):
@@ -292,6 +355,23 @@ def _grow_reserved_sites(view):
         return
     candidates.sort(key=lambda t: _dist(t, _nearest_center(t)))
     reserved_sites.append(candidates[0])
+
+
+def _next_species_order(view):
+    """v7.8: candidate species for the next purchase, ordered by least-
+    represented-owned-species-first (ties broken by ANIMAL_SPECIES_ORDER,
+    so COW -- day-0 start, lower min_money -- still wins the very first
+    purchase). Replaces v7.6's fixed-order loop, which always re-picked
+    COW once SHEEP_ENABLED went True: the feasibility gate is species-
+    agnostic, so a fixed-order "break on first feasible" loop never
+    reached SHEEP as long as COW kept passing the same gate."""
+    enabled = [s for s in ANIMAL_SPECIES_ORDER if not (s == "SHEEP" and not SHEEP_ENABLED)]
+    owned = {s: 0 for s in enabled}
+    for _pos, t in view["my_pastures"]:
+        sp = t.get("animal")
+        if sp in owned:
+            owned[sp] += 1
+    return sorted(enabled, key=lambda s: (owned[s], ANIMAL_SPECIES_ORDER.index(s)))
 
 
 def economy(obs, me, opp, view, seeds, day, hour, timing_engine, animal_plans):
@@ -360,9 +440,7 @@ def economy(obs, me, opp, view, seeds, day, hour, timing_engine, animal_plans):
     if not in_progress:
         target_plan = next((p for p in animal_plans if p["stage"] == "NONE"), None)
         if target_plan is None:
-            for species in ANIMAL_SPECIES_ORDER:
-                if species == "SHEEP" and not SHEEP_ENABLED:
-                    continue
+            for species in _next_species_order(view):
                 if _animal_expansion_feasible(obs, view, budget, shed, n_animals, len(me["hands"]), quads):
                     target_plan = {"species": species, "stage": "NONE", "site": None,
                                     "stage_turn": None, "retries": 0}
@@ -644,7 +722,7 @@ def _pasture_priority(pos, farmer_pos, tile):
     return (rank, _dist(pos, farmer_pos))
 
 
-def animal_maintenance_action(pos, view, shed, carry, day, hour, exclude=()):
+def animal_maintenance_action(pos, view, shed, carry, day, hour, exclude=(), critical_only=False):
     """Stateless daily care across the whole active fleet. Targets whichever
     pasture has the most urgent pending need (see _pasture_priority).
 
@@ -653,24 +731,36 @@ def animal_maintenance_action(pos, view, shed, carry, day, hour, exclude=()):
     worker this turn, so multiple workers don't converge on the same
     animal.
 
+    `critical_only` (v7.6a): when True, this worker will only engage with
+    feed-related survival work (an animal due for feeding today, or
+    already overdue) -- never CARE, HARVEST, COLLECT_FERTILIZER, or
+    carried-product deposit trips. This is what lets a reserved crop hand
+    still respond to an animal-death risk without being pulled into
+    optional animal upkeep that isn't a survival matter. Real ladder
+    replays showed exactly this optional work (CARE/HARVEST/FERTILIZER
+    collection climbing from ~2/day to 9-11/day) crowding out crop
+    watering/weeding as the fleet grew.
+
     Returns (op_or_None, claimed_pos_or_None) -- callers should add the
     claimed position to their `exclude` set before calling this for the
     next worker."""
     candidates = [(p, t) for p, t in view["my_pastures"] if p not in exclude]
+    if critical_only:
+        candidates = [(p, t) for p, t in candidates if not t.get("fed_today", True)]
     if not candidates:
         return None, None
     (ppos, tile) = min(candidates, key=lambda pt: _pasture_priority(pt[0], pos, pt[1]))
 
     needs_feed = not tile.get("fed_today", True)
-    needs_care = not tile.get("cared_today", True)
-    has_yield = tile.get("yield_units", 0) > 0
-    has_fert = tile.get("fertilizer_available", False)
+    needs_care = (not critical_only) and (not tile.get("cared_today", True))
+    has_yield = (not critical_only) and tile.get("yield_units", 0) > 0
+    has_fert = (not critical_only) and tile.get("fertilizer_available", False)
     urgent_feed = needs_feed and tile.get("consecutive_unfed", 0) >= 1
     # Only claim ppos if it has real pending work.
     claim = ppos if (needs_feed or needs_care or has_yield or has_fert) else None
 
     carry_wheat = carry.get("WHEAT", 0)
-    carry_products = {i: carry.get(i, 0) for i in ANIMAL_PRODUCTS if carry.get(i, 0) > 0}
+    carry_products = {} if critical_only else {i: carry.get(i, 0) for i in ANIMAL_PRODUCTS if carry.get(i, 0) > 0}
     deposit_due = sum(carry_products.values()) >= PRODUCT_DEPOSIT_AT or (
         carry_products and (needs_feed and carry_wheat == 0))
     fetch_wheat_due = needs_feed and carry_wheat == 0 and shed.get("WHEAT", 0) > 0
@@ -714,7 +804,6 @@ def animal_maintenance_action(pos, view, shed, carry, day, hour, exclude=()):
 # CROP TASK ALLOCATION
 # =====================================================================
 
-TASK_ORDER = ["urgent_water", "harvest", "water", "plant", "weeds"]
 TASK_ACTION = {
     "urgent_water": ["WATER"],
     "harvest": ["HARVEST"],
@@ -723,9 +812,22 @@ TASK_ACTION = {
 }
 
 
-def unit_action(pos, tasks, seeds, day):
+def _task_order(n_weeds):
+    """v7.6a: weeds start last (matches v7.5) but get promoted as
+    infestation grows -- ahead of ordinary planting once there are a
+    few, ahead of ordinary watering too once it's severe. Real replays
+    showed weed count climbing unchecked to 20-37/100 tiles while weeds
+    stayed lowest priority the whole match."""
+    if n_weeds >= WEED_URGENT_THRESHOLD:
+        return ["urgent_water", "harvest", "weeds", "water", "plant"]
+    if n_weeds >= WEED_PRIORITY_THRESHOLD:
+        return ["urgent_water", "harvest", "water", "weeds", "plant"]
+    return ["urgent_water", "harvest", "water", "plant", "weeds"]
+
+
+def unit_action(pos, tasks, seeds, day, task_order):
     x, y = pos
-    for key in TASK_ORDER:
+    for key in task_order:
         if (x, y) in tasks[key]:
             tasks[key].remove((x, y))
             if key == "plant":
@@ -736,7 +838,7 @@ def unit_action(pos, tasks, seeds, day):
                 continue
             return TASK_ACTION[key]
 
-    for key in TASK_ORDER:
+    for key in task_order:
         tgt = _nearest((x, y), tasks[key])
         if tgt:
             step = _step_toward((x, y), tgt)
@@ -763,6 +865,25 @@ def _init_reserved_sites(view):
     return reserved_sites
 
 
+def _reserved_crop_hand_count(view, seeds, day, n_hands, quads):
+    """v7.6a: how many of the current hands are walled off for crop-only
+    work this turn. Scales with real symptoms of neglect (weed density,
+    crop backlog relative to hand count) rather than a flat number."""
+    if n_hands <= 0:
+        return 0
+    unlocked_tiles = max(1, TILES_PER_QUAD * max(1, quads))
+    weed_ratio = len(view["weeds"]) / unlocked_tiles
+    plantable = plantable_crops(seeds, day)
+    n_plantable = sum(seeds.get(c, 0) for c in plantable)
+    crop_pressure = (len(view["urgent_water"]) + len(view["water"]) +
+                      len(view["weeds"]) + min(len(view["empty"]), n_plantable))
+    if weed_ratio >= WEED_RATIO_HIGH or crop_pressure > n_hands * CROP_PRESSURE_HAND_MULT:
+        fraction = PROTECTED_FRACTION_HIGH
+    else:
+        fraction = PROTECTED_FRACTION_LOW
+    return min(n_hands, max(MIN_RESERVED_CROP_HANDS, math.ceil(n_hands * fraction)))
+
+
 def _agent(obs):
     p = obs["player"]
     me, opp = obs["farms"][p], obs["farms"][1 - p]
@@ -783,12 +904,17 @@ def _agent(obs):
     crops_now = plantable_crops(seeds, day)
     n_plantable = sum(seeds.get(c, 0) for c in crops_now)
 
+    task_order = _task_order(len(view["weeds"]))
     tasks = {
         "urgent_water": list(view["urgent_water"]),
         "harvest": list(view["harvest"]),
         "water": list(view["water"]),
         "plant": (view["empty"][:n_plantable] if crops_now and hour < 21 else []),
-        "weeds": list(view["weeds"]) if day <= 27 else [],
+        # v7.6a: weed-clearing no longer shuts off for the last two days --
+        # replays showed the collapse was already well underway by day 25,
+        # long before that cutoff mattered, and disabling it just let the
+        # infestation stand unchallenged during the final push.
+        "weeds": list(view["weeds"]),
     }
     # Never plant on an in-progress pasture site or an unclaimed reserved
     # near-shed slot -- keeps it available/close for whenever the next
@@ -797,6 +923,10 @@ def _agent(obs):
     excluded = claimed_sites | set(sites)
     if excluded:
         tasks["plant"] = [t for t in tasks["plant"] if t not in excluded]
+
+    quads = len(me["unlocked_quadrants"])
+    n_hands = len(me["hands"])
+    reserved_count = _reserved_crop_hand_count(view, seeds, day, n_hands, quads)
 
     farmer_pos = tuple(me["farmer"])
     active_setup_plan = next((pl for pl in animal_plans if pl["stage"] in ("BOUGHT", "CARRYING")), None)
@@ -811,6 +941,8 @@ def _agent(obs):
     if active_setup_plan is not None and not urgent_existing_feed:
         farmer_op = animal_setup_action(farmer_pos, view, shed, farmer_carry, active_setup_plan, day, hour, sites)
     if farmer_op is None:
+        # Farmer keeps v7.5's original unconditional (critical_only=False)
+        # maintenance-first behavior -- only the hand pool is split below.
         farmer_op, claim = animal_maintenance_action(farmer_pos, view, shed, farmer_carry, day, hour, claimed_pastures)
         if claim is not None:
             claimed_pastures.add(claim)
@@ -819,22 +951,27 @@ def _agent(obs):
         # back to setup work rather than idling.
         farmer_op = animal_setup_action(farmer_pos, view, shed, farmer_carry, active_setup_plan, day, hour, sites)
     if farmer_op is None:
-        farmer_op = unit_action(farmer_pos, tasks, seeds, day)
+        farmer_op = unit_action(farmer_pos, tasks, seeds, day, task_order)
 
-    # Hands help with animal maintenance whenever pasture work remains
-    # after the farmer's own pick; once it's empty, remaining hands just
-    # do crops as before.
+    # v7.6a: the first `reserved_count` hands are walled off for crop work
+    # -- they may still answer a feed-critical animal need (critical_only
+    # still checks fed_today), but never the optional maintenance
+    # (CARE/HARVEST/COLLECT_FERTILIZER/product deposit) that was crowding
+    # out watering/weeding in the real loss replays. Remaining hands keep
+    # v7.5's original full-priority behavior.
     hand_ops = []
     for i, h in enumerate(me["hands"]):
         hand_pos = tuple(h)
         hand_carry = inventories[i + 1] if len(inventories) > i + 1 else {}
-        op, claim = animal_maintenance_action(hand_pos, view, shed, hand_carry, day, hour, claimed_pastures)
+        is_reserved = i < reserved_count
+        op, claim = animal_maintenance_action(hand_pos, view, shed, hand_carry, day, hour,
+                                                claimed_pastures, critical_only=is_reserved)
         if op is not None:
             hand_ops.append(op)
             if claim is not None:
                 claimed_pastures.add(claim)
         else:
-            hand_ops.append(unit_action(hand_pos, tasks, seeds, day))
+            hand_ops.append(unit_action(hand_pos, tasks, seeds, day, task_order))
 
     return {"farmer": farmer_op, "hands": hand_ops, "market": market}
 
