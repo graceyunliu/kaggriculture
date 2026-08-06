@@ -3,6 +3,20 @@ import random
 import sys
 
 # =====================================================================
+# MAIN V9.4 -- v9.3 fertilize dispatch, tuned per code review:
+#   1. Harvest-first, precisely: tiles at yield_units >= 3 are excluded
+#      (only they can truncate the +2 against the 4-unit accumulator cap),
+#      and a worker standing on a pending harvest/urgent-water tile is
+#      never diverted to fertilize -- it does that tile's work instead.
+#   2. Value-ranked targeting: STRAWBERRY (~$220/unit) pool is exhausted
+#      before TOMATO (~$69/unit) is considered.
+#   3. Reserve only when useful: the 6-unit shed fertilizer reserve drops
+#      to 0 whenever no eligible targets exist (and after day 26).
+#   Header correction vs v9.3: iter F DID add opportunistic shed pickups
+#   (2 units, only for workers already standing at the shed) -- that is
+#   the variant that reached 62-88 fertilizes/game; carried-only managed
+#   19/game and was a wash.
+#
 # MAIN V9.3 -- FERTILIZE CYCLE-COMPRESSION on top of v9.2.
 # Action-census vs opp_scenario_v14 (seed 1): they run 82 FERTILIZE/game,
 # we ran 0; they extract ~6 strawberry units per planted lifecycle vs our
@@ -18,15 +32,8 @@ import sys
 # ~150 collections/game) and have fallen through to ordinary crop duty
 # get dispatched to the nearest eligible ongoing-crop tile (STRAWBERRY/
 # TOMATO, production events remaining, no active fertilizer, age inside
-# the event window) instead of generic task matching. Plus (iter F) a
-# 6-unit shed reserve and OPPORTUNISTIC shed pickups -- 2 units, only by
-# workers already standing at the shed after a deposit; carried-only
-# managed 19 fertilizes/game (wash), this variant reaches 62-88. No new
-# hires; note the dispatch draws from the ordinary-crop-duty pool, which
-# sits below animal work but is not strictly below the harvest tier --
-# v9.4 tested exact harvest-first guards + value-ranked targeting +
-# dynamic reserve: statistical wash (-$586/game, t=-1.08, 14/14), so
-# this simpler version stands.
+# the event window) instead of generic task matching. No shed pickups, no
+# new hires, no preemption of urgent water/feed/harvest.
 #
 # MAIN V9.2 -- PARALLEL HERD ASSEMBLY on top of v9.1 (buy-feed herd).
 # v9.1's serial farmer-only build pipeline completed the 10-animal fleet
@@ -791,6 +798,7 @@ def perceive(me, opp, day):
     # v9.3: ongoing-crop tiles worth fertilizing -- events remaining,
     # no active fertilizer, inside the production-event window.
     fert_targets = []
+    fert_targets_low = []  # v9.4: TOMATO etc., used only when strawberry pool empty
     for y, row in enumerate(me["tiles"]):
         for x, t in enumerate(row):
             if not (isinstance(t, dict) and t.get("kind") == "PLANT"):
@@ -802,8 +810,12 @@ def perceive(me, opp, day):
             step_i = max(1, c["interval"])
             events_done = 0 if age < c["first"] else (age - c["first"]) // step_i + 1
             if (events_done < c["max_yield"] and age >= c["first"] - 1
-                    and t.get("fertilized_until_day", -1) < day):
-                fert_targets.append((x, y))
+                    and t.get("fertilized_until_day", -1) < day
+                    and t.get("yield_units", 0) < 3):  # v9.4: only near-cap tiles risk truncating the +2 (cap 4)
+                if t.get("crop") == "STRAWBERRY":
+                    fert_targets.append((x, y))
+                else:
+                    fert_targets_low.append((x, y))  # v9.4: lower-value crops
 
     imminent = {}
     for row in opp["tiles"]:
@@ -821,6 +833,7 @@ def perceive(me, opp, day):
         "my_pastures": my_pastures, "empty_pastures": empty_pastures,
         "opp_imminent": imminent,
         "fert_targets": fert_targets,  # v9.3
+        "fert_targets_low": fert_targets_low,  # v9.4
     }
 
 
@@ -1199,6 +1212,9 @@ def economy(obs, me, opp, view, seeds, day, hour, timing_engine, animal_plans):
     fert = shed.get("FERTILIZER", 0)
     # v9.3 iter F: hold a small working stock for the fertilize dispatch
     # (workers restock at the shed); liquidate it near season end.
+    # v9.4: reverted the "no targets -> sell reserve" rule -- the eligible
+    # set flickers per turn and each empty flicker dumped the stock,
+    # starving the dispatch (-$2-2.6k on smoke seeds). Flat rule stands.
     fert_reserve = FERT_SHED_RESERVE if day < 26 else 0
     if fert - fert_reserve > 0:
         priced_orders.append((_sell_priority("paced", shed_load), ["SELL", "FERTILIZER", fert - fert_reserve]))
@@ -1877,20 +1893,25 @@ def _agent(obs):
     # independent except for exact-distance ties.
     # v9.3: fertilize dispatch -- fertilizer-carrying units headed for
     # ordinary crop duty divert to the nearest eligible ongoing-crop tile.
-    fert_pool = list(view["fert_targets"])
-    if fert_pool:
+    fert_pool = list(view["fert_targets"])          # strawberry: always first
+    fert_pool_low = list(view["fert_targets_low"])  # v9.4: tomato only when straw pool empty
+    if fert_pool or fert_pool_low:
         def _fert_op(pos2):
-            if pos2 in fert_pool:
-                fert_pool.remove(pos2)
-                return ["FERTILIZE"]
-            tgt = _nearest(pos2, fert_pool)
-            if tgt:
-                st = _step_toward(pos2, tgt)
-                if st:
-                    fert_pool.remove(tgt)
-                    return [st]
+            for pool in (fert_pool, fert_pool_low):
+                if pos2 in pool:
+                    pool.remove(pos2)
+                    return ["FERTILIZE"]
+            for pool in (fert_pool, fert_pool_low):
+                tgt = _nearest(pos2, pool)
+                if tgt:
+                    st = _step_toward(pos2, tgt)
+                    if st:
+                        pool.remove(tgt)
+                        return [st]
             return None
-        if farmer_needs_crop and farmer_carry.get("FERTILIZER", 0) > 0:
+        harvest_pending = set(tasks["harvest"]) | set(tasks["urgent_water"])  # v9.4
+        if (farmer_needs_crop and farmer_carry.get("FERTILIZER", 0) > 0
+                and farmer_pos not in harvest_pending):
             op = _fert_op(farmer_pos)
             if op is not None:
                 farmer_op = op
@@ -1900,9 +1921,10 @@ def _agent(obs):
         for (i, pos2) in hand_needs_crop:
             carry_i = inventories[i + 1] if len(inventories) > i + 1 else {}
             op = None
-            if carry_i.get("FERTILIZER", 0) > 0 and fert_pool:
+            if (carry_i.get("FERTILIZER", 0) > 0 and (fert_pool or fert_pool_low)
+                    and pos2 not in harvest_pending):  # v9.4
                 op = _fert_op(pos2)
-            elif (fert_shed_avail >= 2 and fert_pool and pos2 in CENTER_TILES):
+            elif (fert_shed_avail >= 2 and (fert_pool or fert_pool_low) and pos2 in CENTER_TILES):
                 # v9.3 iter F: already at the shed (deposit trips end here)
                 # with dispatch targets pending -- restock instead of
                 # walking off empty-handed.
