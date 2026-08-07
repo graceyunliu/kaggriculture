@@ -3,6 +3,16 @@ import random
 import sys
 
 # =====================================================================
+# v9.3fix (Aug 6, post-gate correctness pass on the v9.2 parallel-build
+# machinery; no strategy change): (1) ORDERED purchase-confirmation stage
+# -- a BUY_ANIMAL order no longer becomes BOUGHT until the stock lands in
+# the shed (orders can be truncated past the 10-order cap or fail
+# affordability; phantoms held build slots and enabled double-buys);
+# (2) build slots clamped to today's roster + per-turn re-pinning of
+# orphaned plans (fixes a permanent deadlock: BOUGHT-with-shed-stock
+# pinned to a never-hired hand could not time out). See the ANIMAL
+# PIPELINE section header and the v9.3fix pass in _agent().
+#
 # MAIN V9.3 -- FERTILIZE CYCLE-COMPRESSION on top of v9.2.
 # Action-census vs opp_scenario_v14 (seed 1): they run 82 FERTILIZE/game,
 # we ran 0; they extract ~6 strawberry units per planted lifecycle vs our
@@ -637,6 +647,11 @@ FERT_SHED_RESERVE = 6       # v9.3 iter F: working stock for fertilize dispatch
 # establishment. The gates are correct; REVERTED.)
 SETUP_STAGE_TIMEOUT = 12
 SETUP_MAX_RETRIES = 3
+ORDER_CONFIRM_TIMEOUT = 2   # v9.3fix: hours before an unexecuted
+                            # BUY_ANIMAL order (ORDERED stage) reverts to
+                            # NONE -- confirmation normally lands on the
+                            # very next observation, so 2 is one turn of
+                            # grace, not the 12-hour setup timeout
 FEED_CARRY_TARGET = 2
 PRODUCT_DEPOSIT_AT = 3         # PLACE milk/wool when carrying this many
 
@@ -1094,12 +1109,20 @@ def economy(obs, me, opp, view, seeds, day, hour, timing_engine, animal_plans):
     # v9.2 iter D: runs BEFORE the seed pipeline so herd capital gets
     # first claim on early-game budget (the herd script's pattern);
     # purchase windows close by day 12/15 so late-game order is unchanged.
-    # Serialized: only start a new purchase (or retry a stalled one) if
-    # nothing is currently BOUGHT/CARRYING -- one farmer can only
-    # build+carry+place one animal at a time.
+    # v9.2: up to MAX_CONCURRENT_BUILDS purchases may be in flight at
+    # once (each pinned to a worker slot once confirmed); at most one NEW
+    # order is submitted per turn. v9.3fix: a new order enters as ORDERED
+    # (a market-slot intention, not a completed purchase -- the final
+    # order list is truncated to MAX_MARKET_ORDERS and the engine
+    # affordability-gates it); it only becomes BOUGHT once _agent's
+    # confirmation pass sees the stock actually land in the shed.
+    # ORDERED counts toward the fleet/concurrency gates here so the
+    # ceilings can't be overshot while an order awaits confirmation, but
+    # deliberately NOT toward feed targets / wheat floor / service hands
+    # (an unconfirmed animal needs no support yet).
     n_animals = (len(view["my_pastures"]) +
-                 sum(1 for p in animal_plans if p["stage"] in ("BOUGHT", "CARRYING")))
-    n_in_progress = sum(1 for p in animal_plans if p["stage"] in ("BOUGHT", "CARRYING"))
+                 sum(1 for p in animal_plans if p["stage"] in ("ORDERED", "BOUGHT", "CARRYING")))
+    n_in_progress = sum(1 for p in animal_plans if p["stage"] in ("ORDERED", "BOUGHT", "CARRYING"))
     if n_in_progress < MAX_CONCURRENT_BUILDS:  # v9.2: was serialized to 1
         target_plan = next((p for p in animal_plans if p["stage"] == "NONE"), None)
         if target_plan is None:
@@ -1111,7 +1134,7 @@ def economy(obs, me, opp, view, seeds, day, hour, timing_engine, animal_plans):
             # cow's own gate happens to fire first every turn.
             n_sheep_owned = sum(1 for p in animal_plans
                                   if p["species"] == "SHEEP"
-                                  and p["stage"] in ("ACTIVE", "BOUGHT", "CARRYING"))
+                                  and p["stage"] in ("ACTIVE", "ORDERED", "BOUGHT", "CARRYING"))
             composition_wants_sheep = (SHEEP_ENABLED and
                 n_sheep_owned < _min_sheep_for_fleet(n_animals + 1))
 
@@ -1143,12 +1166,18 @@ def economy(obs, me, opp, view, seeds, day, hour, timing_engine, animal_plans):
                 priced_orders.append((PRIORITY_MEDIUM, ["BUY_ANIMAL", target_plan["species"], 1]))
                 if target_plan not in animal_plans:
                     animal_plans.append(target_plan)
-                used_slots = {p.get("worker") for p in animal_plans
-                              if p["stage"] in ("BOUGHT", "CARRYING")}
-                slot = next(k for k in range(MAX_CONCURRENT_BUILDS) if k not in used_slots)
-                _advance(target_plan, "BOUGHT", day, hour, worker=slot)
+                # v9.3fix: do NOT advance to BOUGHT / pin a worker slot /
+                # grow the site reserve here -- all of that now happens in
+                # _agent's confirmation pass, only once the purchase
+                # verifiably executed. BUY_ANIMAL sits at PRIORITY_MEDIUM
+                # (below every seed buy and hire), so truncation past the
+                # 10-order cap is most likely exactly in the busy early
+                # build window; treating a submitted order as a completed
+                # purchase created phantom plans that held a build slot,
+                # counted into n_animals, and (via negative
+                # unclaimed_in_shed) permitted same-species double-buys.
+                _advance(target_plan, "ORDERED", day, hour)
                 budget -= spec["cost"]
-                _grow_reserved_sites(view)  # claim a tile now that we've committed
 
     # --- Seed pipeline ---
     ph = phase(day)
@@ -1334,12 +1363,22 @@ def _nearest_center(pos):
 
 
 # =====================================================================
-# ANIMAL PIPELINE (farmer-owned)
+# ANIMAL PIPELINE (worker-slot concurrent -- v9.2, corrected v9.3fix)
 #
-# Setup stages per plan: NONE -> BOUGHT -> (build) -> CARRYING -> ACTIVE;
-# ABANDONED on repeated failure. Only one plan is ever BOUGHT/CARRYING at
-# a time. Maintenance is stateless and fleet-wide: it always operates on
-# the nearest tile in view["my_pastures"], which naturally includes every
+# Setup stages per plan:
+#   NONE -> ORDERED (BUY_ANIMAL submitted, awaiting confirmation)
+#        -> BOUGHT (stock confirmed in shed) -> (build) -> CARRYING
+#        -> ACTIVE;  ABANDONED on repeated failure.
+# Up to MAX_CONCURRENT_BUILDS plans may be BOUGHT/CARRYING at once, each
+# pinned to a worker slot (0 = farmer, k>=1 = hands[k-1]). Slots are
+# POSITIONS in today's roster, not persistent worker identities: hands
+# reset nightly, so _agent re-validates every turn that each plan's slot
+# exists and re-pins orphaned plans (see the v9.3fix pass in _agent).
+# ORDERED promotion/reversion is also handled there, not in
+# animal_reconcile, because it needs the full plan list to compute
+# already-claimed shed stock.
+# Maintenance is stateless and fleet-wide: it always operates on the
+# nearest tile in view["my_pastures"], which naturally includes every
 # ACTIVE plan's site regardless of species or how many are active.
 # =====================================================================
 
@@ -1362,6 +1401,8 @@ def animal_reconcile(plan, view, shed, farmer_carry, day, hour):
     """Verify last turn's animal-setup action against the new observation."""
     species = plan["species"]
     stage = plan["stage"]
+    if stage == "ORDERED":
+        return  # v9.3fix: confirmation handled in _agent's pre-pass
     turn = day * 24 + hour
     timed_out = plan.get("stage_turn") is not None and turn - plan["stage_turn"] >= SETUP_STAGE_TIMEOUT
     site = plan.get("site")
@@ -1394,7 +1435,7 @@ def animal_setup_action(pos, view, shed, farmer_carry, plan, day, hour, reserved
     to release the farmer to maintenance/crop work."""
     species = plan["species"]
     stage = plan["stage"]
-    if stage in ("NONE", "ABANDONED", "ACTIVE"):
+    if stage in ("NONE", "ORDERED", "ABANDONED", "ACTIVE"):
         return None
 
     carrying = farmer_carry.get(species, 0) > 0
@@ -1733,11 +1774,58 @@ def _agent(obs):
 
     view = perceive(me, opp, day)
     sites = _init_reserved_sites(view)
+
+    # --- v9.3fix: purchase confirmation + build-slot hygiene ---
+    # Runs before reconcile/economy so this turn's decisions see honest
+    # state. Two jobs:
+    # 1. ORDERED -> BOUGHT only when the animal verifiably landed in the
+    #    shed (stock beyond what existing BOUGHT plans already claim);
+    #    an order that didn't execute reverts to NONE after
+    #    ORDER_CONFIRM_TIMEOUT, no retry penalty.
+    # 2. Build slots are positional, not worker identities: hands reset
+    #    nightly and hiring is budget-gated, so a plan can find itself
+    #    pinned to a slot with no hand behind it. Re-pin such plans to a
+    #    slot that exists in TODAY'S roster. Without this, a BOUGHT plan
+    #    whose animal sits in the shed never times out (reconcile's
+    #    shed>0 check short-circuits the timeout) and deadlocks forever.
+    n_valid_slots = min(MAX_CONCURRENT_BUILDS, 1 + len(me["hands"]))
+    used_slots = {p.get("worker") for p in animal_plans
+                  if p["stage"] in ("BOUGHT", "CARRYING")
+                  and p.get("worker") is not None}
+    turn_now = day * 24 + hour
+    for plan in animal_plans:
+        if plan["stage"] == "ORDERED":
+            sp = plan["species"]
+            claimed = sum(1 for p in animal_plans
+                          if p["species"] == sp and p["stage"] == "BOUGHT")
+            if shed.get(sp, 0) > claimed:
+                slot = next((k for k in range(n_valid_slots)
+                             if k not in used_slots), None)
+                _advance(plan, "BOUGHT", day, hour, worker=slot)
+                if slot is not None:
+                    used_slots.add(slot)
+                _grow_reserved_sites(view)  # commit a tile now it's real
+            elif (plan.get("stage_turn") is not None
+                    and turn_now - plan["stage_turn"] >= ORDER_CONFIRM_TIMEOUT):
+                plan["stage"] = "NONE"  # order truncated/unaffordable
+        elif (plan["stage"] == "BOUGHT"
+                and (plan.get("worker") is None
+                     or not 0 <= plan["worker"] < n_valid_slots)):
+            slot = next((k for k in range(n_valid_slots)
+                         if k not in used_slots), None)
+            if slot is not None:
+                plan["worker"] = slot
+                used_slots.add(slot)
+
     for plan in animal_plans:
         # v9.2: verify against the pinned build worker's own carry
         # (slot 0 = farmer = inventories[0], slot k = hands[k-1] =
         # inventories[k]); non-building plans keep the farmer default.
+        # v9.3fix: worker may be None (confirmed purchase, no free valid
+        # slot yet) -- fall back to farmer carry for verification.
         w = plan.get("worker", 0) if plan["stage"] in ("BOUGHT", "CARRYING") else 0
+        if w is None:
+            w = 0
         carry_w = inventories[w] if len(inventories) > w else {}
         animal_reconcile(plan, view, shed, carry_w, day, hour)
 
