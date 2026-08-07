@@ -12,6 +12,10 @@ import sys
 # orphaned plans (fixes a permanent deadlock: BOUGHT-with-shed-stock
 # pinned to a never-hired hand could not time out). See the ANIMAL
 # PIPELINE section header and the v9.3fix pass in _agent().
+# v9.3fix2: reconcile moved BEFORE ORDERED confirmation -- closes a race
+# where an animal dropped to the shed overnight by a stranded CARRYING
+# plan could be double-claimed by a truncated ORDERED plan (see the
+# pass-order comment in _agent()).
 #
 # MAIN V9.3 -- FERTILIZE CYCLE-COMPRESSION on top of v9.2.
 # Action-census vs opp_scenario_v14 (seed 1): they run 82 FERTILIZE/game,
@@ -1775,9 +1779,33 @@ def _agent(obs):
     view = perceive(me, opp, day)
     sites = _init_reserved_sites(view)
 
+    # --- v9.3fix pass order (v9.3fix2: reconcile FIRST) ---
+    # 1. Reconcile BOUGHT/CARRYING plans against the new observation.
+    #    Must run before ORDERED confirmation: overnight the hands reset
+    #    and a CARRYING plan's animal auto-drops to the shed. If
+    #    confirmation ran first, that dropped animal would look like
+    #    unclaimed stock (claimed counts BOUGHT only) and could confirm
+    #    an ORDERED plan whose own order was truncated -- then reconcile
+    #    would fall the stranded CARRYING plan back to BOUGHT too, and
+    #    two plans would own one shed animal (wasted duplicate pasture,
+    #    n_animals overcount, half-day stall). Reconciling first returns
+    #    the stranded plan to BOUGHT before ORDERED asks what's free.
+    # 2. Confirm/expire ORDERED plans against post-reconcile claims.
+    # 3. Re-pin BOUGHT plans whose worker slot isn't in today's roster.
+    # 4. economy() and dispatch run on honest state.
+    for plan in animal_plans:
+        # v9.2: verify against the pinned build worker's own carry
+        # (slot 0 = farmer = inventories[0], slot k = hands[k-1] =
+        # inventories[k]); non-building plans keep the farmer default.
+        # v9.3fix: worker may be None (confirmed purchase, no free valid
+        # slot yet) -- fall back to farmer carry for verification.
+        w = plan.get("worker", 0) if plan["stage"] in ("BOUGHT", "CARRYING") else 0
+        if w is None:
+            w = 0
+        carry_w = inventories[w] if len(inventories) > w else {}
+        animal_reconcile(plan, view, shed, carry_w, day, hour)
+
     # --- v9.3fix: purchase confirmation + build-slot hygiene ---
-    # Runs before reconcile/economy so this turn's decisions see honest
-    # state. Two jobs:
     # 1. ORDERED -> BOUGHT only when the animal verifiably landed in the
     #    shed (stock beyond what existing BOUGHT plans already claim);
     #    an order that didn't execute reverts to NONE after
@@ -1816,18 +1844,6 @@ def _agent(obs):
             if slot is not None:
                 plan["worker"] = slot
                 used_slots.add(slot)
-
-    for plan in animal_plans:
-        # v9.2: verify against the pinned build worker's own carry
-        # (slot 0 = farmer = inventories[0], slot k = hands[k-1] =
-        # inventories[k]); non-building plans keep the farmer default.
-        # v9.3fix: worker may be None (confirmed purchase, no free valid
-        # slot yet) -- fall back to farmer carry for verification.
-        w = plan.get("worker", 0) if plan["stage"] in ("BOUGHT", "CARRYING") else 0
-        if w is None:
-            w = 0
-        carry_w = inventories[w] if len(inventories) > w else {}
-        animal_reconcile(plan, view, shed, carry_w, day, hour)
 
     market = economy(obs, me, opp, view, seeds, day, hour, timing_engine, animal_plans)
 
