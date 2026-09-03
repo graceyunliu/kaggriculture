@@ -1,5 +1,32 @@
 # evolve — autonomous candidate search for Kaggriculture
 
+## Continuous mode (v2, Sep 3 evening)
+
+`evolve/supervisor.sh` runs forever on the Air (launchd `KeepAlive`): pull → 2-hour loop segment →
+report + `archive.json` pushed to the **`results`** branch → LLM proposal round → repeat.
+
+* **Chassis with typed mutation blocks**: `evolve/chassis.py` is a frozen K.py with 8 marked blocks
+  (`hiring, demand, economy, animal_routing, siting, crop_admission, sweep, dispatch`; see `blocks.py`).
+  A candidate = 36 params + optional replacement source per block. Rebuild after merging K.py changes:
+  `python3 evolve/blocks.py build` (then every existing key changes — that's intended; scores are per-chassis).
+* **Islands**: `v312`, `c1`, `wide` (sigma 0.5), `queue` (external candidates). Parents from the island's
+  own pool; 10% migration from the global top-10.
+* **Queue**: drop JSON into `evolve/queue/` (on master; the Air pulls it). `{"kind":"candidate", "base":"c1",
+  "params":{..}, "blocks":{..}, "origin":"...", "note":"..."}` or `{"kind":"factorial","axes":{..},"block_options":{..}}`.
+* **Auto-ablation**: every held-out passer gets each single change reverted and scored (dev stage).
+* **LLM proposer** (`propose.py`): every ≥30 min, reads `archive.json` + `RULES.md` + two block sources,
+  asks Claude (Claude Code CLI, subscription login) for 6 candidates, validates (compile + 1 game), queues them.
+  `RULES.md` is the constitution — edit it when a direction is proven closed or open.
+* **Results**: `evolve/reports/latest.md` and `evolve/archive.json` on the `results` branch.
+  Read from the Mac with `git fetch origin results && git show origin/results:evolve/reports/latest.md`.
+
+Air setup for v2: `curl -fsSL https://claude.ai/install.sh | bash`, then run `claude` once interactively
+to log in with the subscription; copy `.github/token`; `launchctl unload/load` the plist (now KeepAlive).
+Stop: `launchctl unload ~/Library/LaunchAgents/com.grace.kaggriculture-evolve.plist`.
+
+---
+
+
 An evolution loop over the parameters of the knobbed V3.12 chassis (`candidates/K.py`), judged by the
 real ladder engine, with a cascaded evaluator, a population archive, and a morning report. Phase 1 of
 the program in `docs/cs329a-applied-to-kaggriculture.md`: constants-only search, no LLM, to prove the

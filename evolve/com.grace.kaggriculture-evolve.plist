@@ -5,30 +5,35 @@
     <key>Label</key>
     <string>com.grace.kaggriculture-evolve</string>
 
-    <!-- EDIT: absolute path to the Kaggriculture folder on the Air -->
+    <!-- absolute path to the Kaggriculture checkout on the Air -->
     <key>WorkingDirectory</key>
     <string>/Users/graceliu/Kaggriculture</string>
 
+    <!-- continuous mode: the supervisor loops forever; launchd restarts it if it exits -->
     <key>ProgramArguments</key>
     <array>
         <string>/bin/bash</string>
-        <string>evolve/run_nightly.sh</string>
-        <string>9</string>
+        <string>evolve/supervisor.sh</string>
     </array>
-
-    <!-- every day at 21:00; the run stops itself after 9 h (06:00) and writes the report -->
-    <key>StartCalendarInterval</key>
-    <dict>
-        <key>Hour</key>
-        <integer>21</integer>
-        <key>Minute</key>
-        <integer>0</integer>
-    </dict>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>ThrottleInterval</key>
+    <integer>60</integer>
 
     <key>EnvironmentVariables</key>
     <dict>
         <key>PATH</key>
-        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+        <string>/Users/graceliu/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+        <key>HOME</key>
+        <string>/Users/graceliu</string>
+        <key>SEGMENT_HOURS</key>
+        <string>2</string>
+        <key>PROPOSE_N</key>
+        <string>6</string>
+        <key>PROPOSE_INTERVAL</key>
+        <string>1800</string>
     </dict>
 
     <key>StandardOutPath</key>

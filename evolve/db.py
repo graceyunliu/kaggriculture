@@ -28,6 +28,9 @@ CREATE TABLE IF NOT EXISTS candidates (
     held_margin REAL, held_t REAL, held_wins INTEGER, held_losses INTEGER,
     held_clone_margin REAL,
     descriptor TEXT,
+    island TEXT DEFAULT 'c1',
+    blocks TEXT,
+    ablation TEXT,
     games INTEGER DEFAULT 0,
     seconds REAL DEFAULT 0,
     note TEXT
@@ -73,17 +76,23 @@ class DB:
             # An in-memory journal works there; on a real disk (the Air) the default is kept.
             self.conn.execute("PRAGMA journal_mode=MEMORY")
         self.conn.executescript(SCHEMA)
+        cols = {r["name"] for r in self.conn.execute("PRAGMA table_info(candidates)")}
+        for col, decl in (("island", "TEXT DEFAULT 'c1'"), ("blocks", "TEXT"), ("ablation", "TEXT")):
+            if col not in cols:
+                self.conn.execute(f"ALTER TABLE candidates ADD COLUMN {col} {decl}")
+        self.conn.commit()
 
     # -- candidates
     def get(self, key):
         r = self.conn.execute("SELECT * FROM candidates WHERE key=?", (key,)).fetchone()
         return dict(r) if r else None
 
-    def insert(self, key, params, run_id, gen, parents, origin, path):
+    def insert(self, key, params, run_id, gen, parents, origin, path, island="c1", blocks=None):
         self.conn.execute(
-            "INSERT OR IGNORE INTO candidates(key, run_id, gen, parents, origin, params, path, created) "
-            "VALUES(?,?,?,?,?,?,?,?)",
-            (key, run_id, gen, json.dumps(parents), origin, json.dumps(params), str(path), time.time()))
+            "INSERT OR IGNORE INTO candidates(key, run_id, gen, parents, origin, params, path, created, island, blocks) "
+            "VALUES(?,?,?,?,?,?,?,?,?,?)",
+            (key, run_id, gen, json.dumps(parents), origin, json.dumps(params), str(path), time.time(), island,
+             json.dumps(blocks) if blocks else None))
         self.conn.commit()
 
     def update(self, key, **fields):
@@ -95,12 +104,20 @@ class DB:
         self.conn.execute("UPDATE candidates SET games=games+?, seconds=seconds+? WHERE key=?", (n, seconds, key))
         self.conn.commit()
 
-    def alive(self, limit=None):
-        q = ("SELECT * FROM candidates WHERE status IN ('alive','held_pass','held_fail') AND dev_margin IS NOT NULL "
-             "ORDER BY dev_margin DESC")
+    def alive(self, limit=None, island=None, k_sha=None):
+        q = ("SELECT c.* FROM candidates c JOIN runs r ON r.run_id=c.run_id "
+             "WHERE c.status IN ('alive','held_pass','held_fail') AND c.dev_margin IS NOT NULL")
+        args = []
+        if island:
+            q += " AND c.island=?"
+            args.append(island)
+        if k_sha:
+            q += " AND r.k_sha=?"
+            args.append(k_sha)
+        q += " ORDER BY c.dev_margin DESC"
         if limit:
             q += f" LIMIT {int(limit)}"
-        return [dict(r) for r in self.conn.execute(q)]
+        return [dict(r) for r in self.conn.execute(q, args)]
 
     def by_fingerprint(self, fp):
         r = self.conn.execute("SELECT key FROM candidates WHERE fingerprint=? AND status<>'noop' LIMIT 1", (fp,)).fetchone()

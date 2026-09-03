@@ -104,26 +104,41 @@ def write_report(db, run_id):
     L.append("## Held-out results (the only numbers that count)")
     L.append("")
     if held:
-        L.append("| key | origin | held vs frontier | t | W-L | held vs clone | dev | changes vs C1 |")
-        L.append("|---|---|---:|---:|---:|---:|---:|---|")
+        L.append("| key | island | origin | held vs frontier | t | W-L | held vs clone | dev | changes vs C1 | ablation (loss if reverted) |")
+        L.append("|---|---|---|---:|---:|---:|---:|---:|---|---|")
         for r in held[:15]:
             d = space.diff(json.loads(r["params"]), c1)
             ds = ", ".join(f"{k} {a}→{b}" for k, (a, b) in d.items())
-            L.append(f"| `{r['key']}` | {r['origin']} | **{_fmt(r['held_margin'])}** | {_fmt(r['held_t'], False)} | "
-                     f"{r['held_wins']}-{r['held_losses']} | {_fmt(r['held_clone_margin'])} | {_fmt(r['dev_margin'])} | {ds} |")
+            if r.get("blocks"):
+                ds += " · blocks: " + ",".join(sorted(json.loads(r["blocks"])))
+            ab = ""
+            if r.get("ablation"):
+                ab = ", ".join(f"{k} {v:+,}" if v is not None else f"{k} ?" for k, v in json.loads(r["ablation"]).items())
+            L.append(f"| `{r['key']}` | {r.get('island','')} | {r['origin']} | **{_fmt(r['held_margin'])}** | {_fmt(r['held_t'], False)} | "
+                     f"{r['held_wins']}-{r['held_losses']} | {_fmt(r['held_clone_margin'])} | {_fmt(r['dev_margin'])} | {ds} | {ab} |")
     else:
         L.append("None reached held-out this run.")
     L.append("")
 
     L.append("## Top 15 by dev margin (selection score; may be seed-fit — trust held-out)")
     L.append("")
-    L.append("| key | origin | dev | t | W-L | clone | status | changes vs C1 |")
-    L.append("|---|---|---:|---:|---:|---:|---|---|")
+    L.append("| key | island | origin | dev | t | W-L | clone | status | changes vs C1 |")
+    L.append("|---|---|---|---:|---:|---:|---:|---|---|")
     for r in alive[:15]:
         d = space.diff(json.loads(r["params"]), c1)
         ds = ", ".join(f"{k} {a}→{b}" for k, (a, b) in d.items())
-        L.append(f"| `{r['key']}` | {r['origin']} | {_fmt(r['dev_margin'])} | {_fmt(r['dev_t'], False)} | "
+        if r.get("blocks"):
+            ds += " · blocks: " + ",".join(sorted(json.loads(r["blocks"])))
+        L.append(f"| `{r['key']}` | {r.get('island','')} | {r['origin']} | {_fmt(r['dev_margin'])} | {_fmt(r['dev_t'], False)} | "
                  f"{r['dev_wins']}-{r['dev_losses']} | {_fmt(r['clone_margin'])} | {r['status']} | {ds} |")
+    L.append("")
+    by_island = defaultdict(list)
+    for r in alive:
+        by_island[r.get("island") or "c1"].append(r)
+    L.append("## Islands (best dev margin, population size)")
+    L.append("")
+    for name, lst in sorted(by_island.items()):
+        L.append(f"- {name}: best {_fmt(lst[0]['dev_margin'])} (`{lst[0]['key']}`), n={len(lst)}")
     L.append("")
 
     L.append("## Where the signal is (mean dev margin by parameter value, all runs)")

@@ -38,15 +38,29 @@ def _req(method, url, token, body=None):
         return e.code, json.loads(e.read() or b"{}")
 
 
-def push(path, token, message):
+def ensure_branch(branch, token):
+    """Create `branch` from master if it does not exist."""
+    status, _ = _req("GET", f"https://api.github.com/repos/{REPO}/git/ref/heads/{branch}", token)
+    if status == 200:
+        return
+    status, ref = _req("GET", f"https://api.github.com/repos/{REPO}/git/ref/heads/{BRANCH}", token)
+    if status != 200:
+        raise SystemExit(f"cannot read {BRANCH}: {status}")
+    status, resp = _req("POST", f"https://api.github.com/repos/{REPO}/git/refs", token,
+                        {"ref": f"refs/heads/{branch}", "sha": ref["object"]["sha"]})
+    if status not in (200, 201):
+        raise SystemExit(f"cannot create branch {branch}: {status} {resp.get('message')}")
+
+
+def push(path, token, message, branch=BRANCH):
     rel = str(Path(path).resolve().relative_to(ROOT))
     url = f"https://api.github.com/repos/{REPO}/contents/{rel}"
-    status, cur = _req("GET", url + f"?ref={BRANCH}", token)
+    status, cur = _req("GET", url + f"?ref={branch}", token)
     sha = cur.get("sha") if status == 200 else None
     content = base64.b64encode(Path(path).read_bytes()).decode()
     if sha and cur.get("content") and base64.b64decode(cur["content"].replace("\n", "")) == Path(path).read_bytes():
         return "unchanged"
-    body = {"message": message, "content": content, "branch": BRANCH}
+    body = {"message": message, "content": content, "branch": branch}
     if sha:
         body["sha"] = sha
     status, resp = _req("PUT", url, token, body)
@@ -59,14 +73,17 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("files", nargs="+")
     ap.add_argument("-m", "--message", default="frontier refresh: new opponent tapes")
+    ap.add_argument("-b", "--branch", default=BRANCH, help="target branch (results go to 'results', code to master)")
     a = ap.parse_args()
     if not TOKEN_FILE.exists():
         print(f"no token at {TOKEN_FILE}. Create a fine-grained GitHub token (repo {REPO}, Contents: read/write), "
               f"save it there, chmod 600. Until then, commit by hand:\n  git add {' '.join(a.files)} && git commit -m '{a.message}' && git push")
         return 2
     token = TOKEN_FILE.read_text().strip()
+    if a.branch != BRANCH:
+        ensure_branch(a.branch, token)
     for f in a.files:
-        print(f"{f}: {push(f, token, a.message)}")
+        print(f"{f}: {push(f, token, a.message, a.branch)}")
     return 0
 
 

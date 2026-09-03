@@ -13,14 +13,18 @@ import hashlib
 import json
 import random
 import re
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-K_LIVE = ROOT / "candidates" / "K.py"        # the chassis other sessions keep editing
-BASE_DIR = ROOT / "evolve" / "base"          # frozen snapshots of it, one per sha
+K_LIVE = ROOT / "evolve" / "chassis.py"      # frozen chassis with typed mutation blocks (see blocks.py)
+BASE_DIR = ROOT / "evolve" / "base"          # per-run snapshots of it, one per sha
 GEN_DIR = ROOT / "evolve" / "gen"
 K_SRC = K_LIVE                               # the snapshot in use; set by freeze_base()
 BASE_SHA = ""
+
+sys.path.insert(0, str(ROOT / "evolve"))
+import blocks as _blocks  # noqa: E402
 
 
 def freeze_base(src=K_LIVE):
@@ -145,15 +149,17 @@ def crossover(a, b, rng=random):
     return mutate(child, rate=0.05, rng=rng)
 
 
-def params_key(params):
-    """Identity of a candidate = its parameters + the chassis snapshot they are rendered into."""
-    payload = json.dumps({k: params[k] for k in sorted(SPACE)}, sort_keys=True) + "|" + BASE_SHA
+def params_key(params, blocks=None):
+    """Identity of a candidate = parameters + block overrides + the chassis snapshot they render into."""
+    payload = json.dumps({k: params[k] for k in sorted(SPACE)}, sort_keys=True) + "|" + BASE_SHA + "|" + _blocks.blocks_key(blocks)
     return hashlib.sha256(payload.encode()).hexdigest()[:12]
 
 
-def render(params, out_dir=GEN_DIR):
-    """Write a concrete agent file for these params; returns its path."""
+def render(params, blocks=None, out_dir=GEN_DIR):
+    """Write a concrete agent file for these params (+ optional block overrides); returns its path."""
     text, knobs, consts = _read_base()
+    if blocks:
+        text = _blocks.substitute(text, blocks)
     knobs = dict(knobs)
     for k in KNOB_SPACE:
         knobs[k] = params[k]
@@ -162,7 +168,7 @@ def render(params, out_dir=GEN_DIR):
     for name in CONST_SPACE:
         text = re.sub(rf"^{name}\s*=\s*[^#\n]+", f"{name} = {params[name]!r}", text, count=1, flags=re.M)
     out_dir.mkdir(parents=True, exist_ok=True)
-    path = out_dir / f"cand_{params_key(params)}.py"
+    path = out_dir / f"cand_{params_key(params, blocks)}.py"
     if not path.exists():
         path.write_text(text)
     return path
