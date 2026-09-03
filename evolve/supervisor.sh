@@ -8,7 +8,7 @@ cd "$(dirname "$0")/.."
 export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
 PY="${PYTHON:-python3}"
 SEGMENT_HOURS="${SEGMENT_HOURS:-2}"
-if command -v sysctl >/dev/null 2>&1 && sysctl -n hw.ncpu >/dev/null 2>&1; then CORES=$(sysctl -n hw.ncpu); else CORES=$(nproc); fi
+if [ -x /usr/sbin/sysctl ]; then CORES=$(/usr/sbin/sysctl -n hw.ncpu); else CORES=$(nproc 2>/dev/null || echo 4); fi
 JOBS="${JOBS:-$(( CORES > 1 ? CORES - 1 : 1 ))}"
 FRONTIER="${FRONTIER:-candidates/V3_12.py}"
 mkdir -p evolve/logs evolve/reports evolve/queue

@@ -74,12 +74,24 @@ def main():
     ap.add_argument("files", nargs="+")
     ap.add_argument("-m", "--message", default="frontier refresh: new opponent tapes")
     ap.add_argument("-b", "--branch", default=BRANCH, help="target branch (results go to 'results', code to master)")
+    ap.add_argument("--fetch", action="store_true", help="download the files from the branch into the working tree instead of pushing")
     a = ap.parse_args()
     if not TOKEN_FILE.exists():
         print(f"no token at {TOKEN_FILE}. Create a fine-grained GitHub token (repo {REPO}, Contents: read/write), "
               f"save it there, chmod 600. Until then, commit by hand:\n  git add {' '.join(a.files)} && git commit -m '{a.message}' && git push")
         return 2
     token = TOKEN_FILE.read_text().strip()
+    if a.fetch:
+        for f in a.files:
+            rel = str(Path(f).resolve().relative_to(ROOT))
+            status, cur = _req("GET", f"https://api.github.com/repos/{REPO}/contents/{rel}?ref={a.branch}", token)
+            if status != 200 or not cur.get("content"):
+                print(f"{f}: not found on {a.branch} ({status})")
+                continue
+            Path(f).parent.mkdir(parents=True, exist_ok=True)
+            Path(f).write_bytes(base64.b64decode(cur["content"].replace("\n", "")))
+            print(f"{f}: fetched from {a.branch}")
+        return 0
     if a.branch != BRANCH:
         ensure_branch(a.branch, token)
     for f in a.files:
