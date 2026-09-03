@@ -44,6 +44,8 @@ while true; do
     "$PY" evolve/gh_push.py -b results evolve/reports/latest.md evolve/archive.json -m "evolve: results $RUN_ID" >> "$LOG" 2>&1 || say "push failed"
     [ -f "evolve/reports/$RUN_ID.md" ] && "$PY" evolve/gh_push.py -b results "evolve/reports/$RUN_ID.md" -m "evolve: report $RUN_ID" >> "$LOG" 2>&1
   fi
+  # 4b. phone alert if a new candidate beats C1 (needs evolve/notify.conf)
+  [ -f evolve/notify.conf ] && bash evolve/notify.sh alerts >> "$LOG" 2>&1
   # 5. ask the LLM for the next batch (rate-limited inside propose.py)
   if [ "${NO_PROPOSE:-0}" != "1" ] && command -v claude >/dev/null 2>&1; then
     "$PY" evolve/propose.py --n "${PROPOSE_N:-6}" --min-interval "${PROPOSE_INTERVAL:-1800}" >> "$LOG" 2>&1 || say "propose failed (see evolve/logs/propose.log)"
