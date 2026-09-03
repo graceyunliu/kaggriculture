@@ -7,6 +7,15 @@ cd "$(dirname "$0")/.."
 
 HOURS="${1:-${HOURS:-8}}"
 FRONTIER="${2:-${FRONTIER:-candidates/V3_12.py}}"
+# secondary opponent = current ladder frontier tape (Opponents/frontier.txt, maintained by
+# evolve/refresh_frontier.py on the Mac); falls back to the September frontier tape.
+if [ -z "${CLONE:-}" ]; then
+  if [ -f Opponents/frontier.txt ] && [ -f "$(cat Opponents/frontier.txt)" ]; then
+    CLONE="$(cat Opponents/frontier.txt)"
+  else
+    CLONE="Opponents/tape_yuan800_104892947.py"
+  fi
+fi
 if command -v sysctl >/dev/null 2>&1 && sysctl -n hw.ncpu >/dev/null 2>&1; then
   CORES=$(sysctl -n hw.ncpu)
 else
@@ -21,13 +30,13 @@ mkdir -p evolve/logs evolve/reports
 if [ -d .git ] && [ "${NO_PULL:-0}" != "1" ]; then
   git pull --ff-only -q 2>&1 | tee -a evolve/logs/nightly.log || true
 fi
-echo "[$(date)] starting run $RUN_ID: hours=$HOURS jobs=$JOBS frontier=$FRONTIER python=$($PY --version 2>&1)" | tee -a evolve/logs/nightly.log
+echo "[$(date)] starting run $RUN_ID: hours=$HOURS jobs=$JOBS frontier=$FRONTIER clone=$CLONE python=$($PY --version 2>&1)" | tee -a evolve/logs/nightly.log
 
 # caffeinate keeps a Mac awake for the duration (no-op elsewhere)
 if command -v caffeinate >/dev/null 2>&1; then
-  caffeinate -i "$PY" evolve/loop.py --hours "$HOURS" --jobs "$JOBS" --frontier "$FRONTIER" --run-id "$RUN_ID"
+  caffeinate -i "$PY" evolve/loop.py --hours "$HOURS" --jobs "$JOBS" --frontier "$FRONTIER" --clone "$CLONE" --run-id "$RUN_ID"
 else
-  "$PY" evolve/loop.py --hours "$HOURS" --jobs "$JOBS" --frontier "$FRONTIER" --run-id "$RUN_ID"
+  "$PY" evolve/loop.py --hours "$HOURS" --jobs "$JOBS" --frontier "$FRONTIER" --clone "$CLONE" --run-id "$RUN_ID"
 fi
 
 cp "evolve/reports/$RUN_ID.md" evolve/reports/latest.md

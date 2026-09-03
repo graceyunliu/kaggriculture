@@ -79,6 +79,21 @@ Useful flags on `loop.py`: `--max-candidates N`, `--jobs N`, `--frontier`, `--cl
 5. Get results back: `evolve/reports/latest.md` is the morning read. To bring the population home,
    copy `evolve/evolve.db` and `evolve/gen/` (the files named in the report) — or just `scp air.local:~/Kaggriculture/evolve/reports/latest.md .`
 
+## Keeping the yardstick current (ladder → Air)
+
+The loop's secondary opponent is `Opponents/frontier.txt` (falls back to the September Yuan800 tape).
+The Mac's 2:04 PM daily task runs, after the replay sync:
+
+```bash
+python3 evolve/refresh_frontier.py     # cluster newest scouted replays by opening; build tapes for new ≥10% clusters; set frontier.txt
+python3 evolve/gh_push.py Opponents/tapes.json Opponents/frontier.txt Opponents/tape_<new>.py   # Contents-API push, no local git
+```
+
+`gh_push.py` needs a fine-grained GitHub token (this repo, Contents read/write) at `.github/token`
+(gitignored). Without it the task prints the `git add/commit/push` line for you. The Air's nightly
+`git pull` then picks the tapes up, so a ladder regime change on Monday is the Air's opponent Monday night.
+The Air never touches Kaggle; the Mac never runs the loop.
+
 ## Reading the report
 
 Only the **held-out** table counts. Dev margins are the selection score and will be seed-fit for the
