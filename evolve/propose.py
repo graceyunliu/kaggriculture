@@ -64,6 +64,11 @@ def build_prompt(block_names, n, archive, chassis_text):
                  "An exact simulator evaluates every candidate you propose (paired, both seats, vs the current frontier). "
                  "Your job is volume and diversity of *mechanisms*; the evaluator decides what is good.\n")
     parts.append("# CONSTITUTION\n" + RULES.read_text())
+    if archive.get("frontier_gap") and archive["frontier_gap"].get("text"):
+        fg = archive["frontier_gap"]
+        parts.append("# EXECUTION GAP TO THE LADDER FRONTIER (process trace, seed 1)\n" + fg["text"] +
+                     "\nC1 execution: " + json.dumps(fg.get("c1")) + "\nfrontier tape execution: " + json.dumps(fg.get("tape")) +
+                     "\n(travel_per_task = move turns per work action; missed_feed = animal-days unfed; feed_hour/water_hour = mean hour of first service)")
     parts.append("# CURRENT ARCHIVE (machine summary)\n" + json.dumps({
         "frontier": archive.get("frontier"), "clone": archive.get("clone"),
         "counts_all_runs": archive.get("counts_all_runs"),

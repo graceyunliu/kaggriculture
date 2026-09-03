@@ -33,6 +33,18 @@ Read before proposing. Everything here was measured on the ladder engine, both s
 - Frontier tapes bank $130–175k where we bank $85–100k. Decomposition: wheat sales (−$15k; tapes plant ~5 wheat tiles/day continuously and sell ~400 units late), melon timing (tapes sell 72 melons on day 10 at $242; we sell later at $166), fertilizer volume, strawberry price ($78 vs $93).
 - Our labor per obligation is ~2× the winners' (11.3 vs 6.6 unit-turns per animal-day). Every scaling knob loses because the dispatcher cannot convert extra capacity into serviced obligations. Changes to `sweep`, `dispatch`, `animal_routing`, `crop_admission` are where the remaining value is; `economy` knob changes are mostly exhausted.
 
+## Measured execution gap (process traces, seed 1, Sep 3) — the numbers to move
+- **travel per work action: C1 1.5–1.6 vs frontier tapes 0.97–1.05.** Same hand count (12–13). That is the whole
+  labor-efficiency gap in one number: the tapes do ~250 more work actions in days 8–15 with fewer moves.
+- **The tapes skip feeding on non-production days**: missed_feed 37 (Milan Leonard) / 12 (Yuan800) vs C1's 13/7 — an
+  animal only escapes after 2 consecutive unfed days, and cows produce every 2 days, sheep every 3. C1 feeds everything
+  daily. Deliberate alternate-day feeding of animals not due to produce frees ~10–15 unit-turns/day.
+- Tapes water later in the day (water_hour 14.2–14.3 vs 13.1) but miss fewer plant-days (334–407 vs 430–564): they
+  batch watering into fewer, fuller sweeps instead of scattering it.
+- Tapes carry more idle (13% vs 8%) and still win: idle is not the problem, wasted movement is.
+- Net-worth divergence starts at **day 10** in both tape matchups — the days-8–15 window (second land quadrant,
+  herd at 10–14, 50–60 plants) is where the sweep/dispatch design decides the game.
+
 ## Rules for proposals
 - Propose mechanisms, not knob nudges; each proposal should change behaviour in a way visible in the per-day trace.
 - Prefer execution-layer blocks. Batching, alternate-day watering of low-yield tiles, fertilize-from-carry, same-day deposit-and-sell, wheat cadence, fewer reversals, route merging.

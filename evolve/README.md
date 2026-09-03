@@ -121,6 +121,25 @@ python3 evolve/gh_push.py Opponents/tapes.json Opponents/frontier.txt Opponents/
 `git pull` then picks the tapes up, so a ladder regime change on Monday is the Air's opponent Monday night.
 The Air never touches Kaggle; the Mac never runs the loop.
 
+## Process traces (diagnosis, not just verdicts)
+
+`evolve/trace.py` re-runs a game with the driver watching engine state and emits per-day execution metrics for
+both players: net worth (cash + inventory at market price + animals), sales/buys, hands, animals, plants, missed
+feed/water (obligation-days), escapes, weeds, feed/water service hour, unit-turns split into move/work/idle,
+reversals, **travel per work action**, shed/carried inventory. `diagnose()` compares a candidate with a reference
+on the same seed/seat and names the divergence day and the drivers ("falls behind C1 from day 10; drivers:
+sales_rev −15k, work_turns −279, missed_water +26").
+
+In the loop: every candidate that reaches the smoke stage gets one traced game vs the frontier and a diagnosis vs
+C1 (`diagnosis`, `exec_summary` columns; `diag`/`exec` in archive.json). `archive.json.frontier_gap` is the standing
+C1-vs-frontier-tape diagnosis; the proposer sees it, and `RULES.md` carries the measured facts.
+
+```bash
+python3 evolve/trace.py candidates/C1.py candidates/V3_12.py --seed 1                      # metrics table
+python3 evolve/trace.py cand.py candidates/V3_12.py --seed 1 --ref candidates/C1.py        # diagnosis vs C1
+python3 evolve/trace.py candidates/C1.py Opponents/tape_yuan800_104892947.py --seed 1 --vs-opponent
+```
+
 ## Reading the report
 
 Only the **held-out** table counts. Dev margins are the selection score and will be seed-fit for the

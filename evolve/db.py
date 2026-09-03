@@ -31,6 +31,8 @@ CREATE TABLE IF NOT EXISTS candidates (
     island TEXT DEFAULT 'c1',
     blocks TEXT,
     ablation TEXT,
+    diagnosis TEXT,
+    exec_summary TEXT,
     games INTEGER DEFAULT 0,
     seconds REAL DEFAULT 0,
     note TEXT
@@ -77,7 +79,7 @@ class DB:
             self.conn.execute("PRAGMA journal_mode=MEMORY")
         self.conn.executescript(SCHEMA)
         cols = {r["name"] for r in self.conn.execute("PRAGMA table_info(candidates)")}
-        for col, decl in (("island", "TEXT DEFAULT 'c1'"), ("blocks", "TEXT"), ("ablation", "TEXT")):
+        for col, decl in (("island", "TEXT DEFAULT 'c1'"), ("blocks", "TEXT"), ("ablation", "TEXT"), ("diagnosis", "TEXT"), ("exec_summary", "TEXT")):
             if col not in cols:
                 self.conn.execute(f"ALTER TABLE candidates ADD COLUMN {col} {decl}")
         self.conn.commit()

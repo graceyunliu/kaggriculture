@@ -115,6 +115,7 @@ class Loop:
         snap, self.k_sha = space.freeze_base(args.base) if args.base else space.freeze_base()
         self.cfg["base"] = str(snap)
         self.chassis_text = snap.read_text()
+        self.cfg["reference"] = str(space.render(space.c1_params()))   # diagnosis baseline = C1 on this chassis
         self.db.start_run(self.run_id, self.engine_sha, self.k_sha, args.frontier, args.clone, self.cfg)
         self.stats = defaultdict(int)
         self.gen = 0
@@ -378,6 +379,8 @@ def export_archive(db, run_id, k_sha):
                 "diff_vs_c1": {k: [a, b] for k, (a, b) in space.diff(p, c1).items()},
                 "blocks": sorted(json.loads(r["blocks"]).keys()) if r.get("blocks") else [],
                 "ablation": json.loads(r["ablation"]) if r.get("ablation") else None,
+                "diag": r.get("diagnosis"),
+                "exec": json.loads(r["exec_summary"]) if r.get("exec_summary") else None,
                 "descriptor": json.loads(r["descriptor"]) if r.get("descriptor") else None,
                 "note": r.get("note")}
 
@@ -385,8 +388,19 @@ def export_archive(db, run_id, k_sha):
     held = sorted([r for r in rows if r["status"] in ("held_pass", "held_fail")], key=lambda r: -(r["held_margin"] or -1e9))
     imp = report_mod.knob_importance(db.all(), c1)
     dead = [dict(r) for r in db.conn.execute(
-        "SELECT origin, note, smoke_margin, status FROM candidates WHERE status IN ('dead_smoke','error') ORDER BY created DESC LIMIT 40")]
+        "SELECT origin, note, smoke_margin, status, diagnosis FROM candidates WHERE status IN ('dead_smoke','error') ORDER BY created DESC LIMIT 40")]
+    # execution gap between C1 and the frontier tape (clone) on seed 1 -- the standing diagnosis for the LLM
     run = db.run(run_id) or {}
+    frontier_gap = None
+    try:
+        import trace as trace_mod
+        c1_path = space.render(c1)
+        if run.get("clone"):
+            g = trace_mod.traced(str(c1_path), str(run["clone"]), 1)
+            dg = trace_mod.diagnose(g["trace"][0], g["trace"][1], "C1", Path(run["clone"]).stem)
+            frontier_gap = {"text": dg["text"], "c1": trace_mod.summary_row(g["trace"][0]), "tape": trace_mod.summary_row(g["trace"][1])}
+    except Exception as e:  # noqa: BLE001
+        frontier_gap = {"error": repr(e)[:200]}
     out = {
         "generated": datetime.now().isoformat(timespec="seconds"),
         "run_id": run_id, "chassis_sha": k_sha, "frontier": run.get("frontier"), "clone": run.get("clone"),
@@ -396,6 +410,7 @@ def export_archive(db, run_id, k_sha):
         "held_out": [slim(r) for r in held[:20]],
         "param_importance": [{"param": k, "spread": round(s), "best": b, "c1": c, "means": m} for s, k, b, c, m in imp[:20]],
         "recent_dead": dead,
+        "frontier_gap": frontier_gap,
         "reference": {"c1": slim(db.get(space.params_key(c1))) if db.get(space.params_key(c1)) else None},
     }
     ARCHIVE.write_text(json.dumps(out, indent=1, default=str))

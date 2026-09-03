@@ -63,6 +63,14 @@ def main():
         top = held[0]
         L.append(f"Best held-out: {top['key']} {fmt(top.get('held'))} (t{top.get('held_t', 0):.1f}, {top.get('dev_wl')}) "
                  f"[{top.get('island')}/{top.get('origin')}]" + (f" :: {top['note'][:90]}" if top.get("note") else ""))
+        if top.get("diag"):
+            L.append(f"  why: {top['diag'][:220]}")
+    fg = d.get("frontier_gap") or {}
+    if fg.get("text"):
+        c1e, te = fg.get("c1") or {}, fg.get("tape") or {}
+        L.append(f"Gap to frontier tape: {fg['text'][:200]}")
+        L.append(f"  travel/task C1 {c1e.get('travel_per_task')} vs tape {te.get('travel_per_task')}; missed_feed {c1e.get('missed_feed')} vs {te.get('missed_feed')}; "
+                 f"missed_water {c1e.get('missed_water')} vs {te.get('missed_water')}; sales {fmt(c1e.get('sales'))} vs {fmt(te.get('sales'))}")
     counts = d.get("counts_all_runs") or {}
     L.append(f"Last segment: {s.get('evaluated', 0)} candidates, {s.get('games', 0):,} games ({s.get('games_per_hour', 0):,}/h). "
              f"Cumulative: " + ", ".join(f"{k} {v}" for k, v in sorted(counts.items())))

@@ -104,8 +104,8 @@ def write_report(db, run_id):
     L.append("## Held-out results (the only numbers that count)")
     L.append("")
     if held:
-        L.append("| key | island | origin | held vs frontier | t | W-L | held vs clone | dev | changes vs C1 | ablation (loss if reverted) |")
-        L.append("|---|---|---|---:|---:|---:|---:|---:|---|---|")
+        L.append("| key | island | origin | held vs frontier | t | W-L | held vs clone | dev | changes vs C1 | ablation (loss if reverted) | diagnosis vs C1 |")
+        L.append("|---|---|---|---:|---:|---:|---:|---:|---|---|---|")
         for r in held[:15]:
             d = space.diff(json.loads(r["params"]), c1)
             ds = ", ".join(f"{k} {a}→{b}" for k, (a, b) in d.items())
@@ -115,7 +115,7 @@ def write_report(db, run_id):
             if r.get("ablation"):
                 ab = ", ".join(f"{k} {v:+,}" if v is not None else f"{k} ?" for k, v in json.loads(r["ablation"]).items())
             L.append(f"| `{r['key']}` | {r.get('island','')} | {r['origin']} | **{_fmt(r['held_margin'])}** | {_fmt(r['held_t'], False)} | "
-                     f"{r['held_wins']}-{r['held_losses']} | {_fmt(r['held_clone_margin'])} | {_fmt(r['dev_margin'])} | {ds} | {ab} |")
+                     f"{r['held_wins']}-{r['held_losses']} | {_fmt(r['held_clone_margin'])} | {_fmt(r['dev_margin'])} | {ds} | {ab} | {(r.get('diagnosis') or '')[:200]} |")
     else:
         L.append("None reached held-out this run.")
     L.append("")

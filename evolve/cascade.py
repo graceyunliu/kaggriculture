@@ -21,6 +21,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 import mini_engine as me  # noqa: E402
+sys.path.insert(0, str(ROOT / "evolve"))
+import trace as trace_mod  # noqa: E402
 
 FP_SEEDS = [1, 2]
 SMOKE_SEEDS = [1, 2, 3]
@@ -114,6 +116,22 @@ def _eval(cand, opp, seeds, engine, jobs):
     return r, time.time() - t0
 
 
+def diagnose_candidate(db, key, cand_path, frontier, reference, engine="master", log=print):
+    """Process-trace diagnosis of the candidate vs the reference agent (both seat 0 vs frontier, seed 1).
+    One traced game for the candidate; the reference trace is cached. Stores text + execution summary."""
+    try:
+        rc = get_pool().apply(trace_mod.traced, (str(cand_path), str(frontier), 1, engine))
+        rr = get_pool().apply(trace_mod.traced, (str(reference), str(frontier), 1, engine))
+        d = trace_mod.diagnose(rc["trace"][0], rr["trace"][0], "cand", "C1")
+        summ = trace_mod.summary_row(rc["trace"][0])
+        db.update(key, diagnosis=d["text"], exec_summary=json.dumps(summ))
+        log(f"    diag: {d['text'][:220]}")
+        return d, summ
+    except Exception as e:  # noqa: BLE001
+        log(f"    diag failed: {e!r}"[:200])
+        return None, None
+
+
 def run_cascade(db, key, cand_path, frontier, clone, cfg, jobs=None, log=print):
     """Push one candidate through the cascade, updating the DB as it goes. Returns final status."""
     engine = cfg.get("engine", "master")
@@ -137,6 +155,8 @@ def run_cascade(db, key, cand_path, frontier, clone, cfg, jobs=None, log=print):
     r, dt = _eval(cand_path, frontier, SMOKE_SEEDS, engine, jobs)
     db.add_games(key, 2 * len(SMOKE_SEEDS), dt)
     db.update(key, smoke_margin=r["mean_margin_per_game"], stage=1)
+    if cfg.get("reference"):
+        diagnose_candidate(db, key, cand_path, frontier, cfg["reference"], engine, log)
     if r["agent_errors"][0] > 0:
         db.update(key, status="dead_smoke", note=f"agent errors: {r['agent_errors']}")
         return "dead_smoke"
