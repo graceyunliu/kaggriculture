@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "track": "V2_4_TRACK_D_CROSS_POLICY_COUNTERFACTUAL",
+  "status": "NO_LARGE_OPPORTUNITY_FOUND",
+  "engine": "kaggle_environments==1.32.3",
+  "python_venv": "/tmp/v23p_env (python 3.11.15)",
+  "source_hashes_verified_before_and_after": {
+    "V10_6_primary_control": {
+      "path": "experiments/V2_3B_V10_6_SELF_CONTAINED/candidate/main.py",
+      "sha256": "f6abd7f066685bf43a797d468b0694eefa15956375850e68b8f76174d45c907e",
+      "unchanged": true
+    },
+    "V9_3_historical_reference": {
+      "path": "experiments/V2_3B_V9_3_SELF_CONTAINED/candidate/main.py",
+      "sha256": "9d2703faf8e58c55697dc3948d06c3a1f4caac52927a38358e131d9b0344bf0b",
+      "unchanged": true
+    }
+  },
+  "prior_evidence_read": [
+    "docs/V2_3F_V93_V106_DIFFERENTIAL_AUDIT.md",
+    "artifacts/v2_3f/v93_v106_differential.json",
+    "docs/V2_3R_GLOBAL_WORKER_TASK_ASSIGNMENT.md",
+    "docs/V2_3J_JOINT_PRODUCTION_CHAIN_ASSIGNMENT.md",
+    "docs/V2_3H_DEADLINE_AWARE_CROSS_DOMAIN_ARBITRATION.md",
+    "docs/V2_3G_SERVICE_CAPACITY_EXPERIMENT.md",
+    "docs/V2_3S_TRACK_A_DYNAMIC_SERVICE_CAPACITY.md",
+    "docs/V2_3I_PRODUCTION_EVENT_AWARE_FERTILIZER_SCHEDULING.md",
+    "docs/V2_3L_PRODUCTION_COHORT_SYNCHRONIZATION.md",
+    "docs/V2_3S_TRACK_B_MOVEMENT_TIME_SHARE.md"
+  ],
+  "controlled_source_difference_confirmed": {
+    "category": "crop_siting",
+    "description": "V9.3/V10.6 differ ONLY in radius-3 near/far crop siting. All economic targets, seed quantities, animal gates, labor rules, fertilizer rules, land rules, selling, routing, and opponent observation code are byte-identical between the two policies (per V2_3F audit, re-confirmed by direct inspection of animal_maintenance_action and the SELL dispatch code in V10.6's source)."
+  },
+  "seams_considered": [
+    {
+      "seam": "fertilizer_collection_vs_application_sequencing",
+      "verdict": "already_closed",
+      "reason": "Identical territory to V2_3I (production-event-aware fertilizer scheduling / in-transit target ordering). V2_3I froze a real trace-derived bound (24 missed events seed 920, $4,896 upper bound / $67,932 across 16 seeds) and lost the seed-920 gate by -$9,686. Re-testing under a new name would violate the do-not-retest instruction."
+    },
+    {
+      "seam": "animal_product_MILK_WOOL_collection_timing",
+      "verdict": "not_a_source_difference",
+      "reason": "animal_maintenance_action / _pasture_priority code is byte-identical between V9.3 and V10.6 (confirmed by audit statement and direct source inspection). MILK +103 / WOOL -73 sale deltas are downstream consequences of siting-driven worker-position and crop-mix shifts, not a distinct collection-order rule differing between the two policies. A new rule here would be a hindsight-fitted heuristic on already-closed service/routing territory (V2_3G/V2_3H/V2_3R), not a cross-policy-derived mechanism."
+    },
+    {
+      "seam": "sales_timing_and_reinvestment_behavior",
+      "verdict": "not_a_source_difference",
+      "reason": "market_price / _sell_priority / SELL dispatch code is byte-identical between V9.3 and V10.6. The sale-mix shift (995 more MELON, 292 more CARROT, 424 more FERTILIZER, 103 more MILK sold; 501 fewer STRAWBERRY, 415 fewer TOMATO) is fully explained as a consequence of the crop-mix shift caused by siting, with no independently controllable sales-timing rule identifiable."
+    },
+    {
+      "seam": "production_cohort_synchronization",
+      "verdict": "already_closed",
+      "reason": "V2_3L tested this directly with a real trace gate and found no completable-harvest opportunity from delaying/reordering plantings; classified LOW_VALUE, no candidate built."
+    },
+    {
+      "seam": "deadline_aware_cross_domain_arbitration",
+      "verdict": "already_closed",
+      "reason": "V2_3H already tested and rejected this exact mechanism family."
+    }
+  ],
+  "frozen_hypothesis": null,
+  "bound": {
+    "computed": false,
+    "reason": "No seam qualified as a genuinely separate, non-rejected, non-hindsight-fitted mechanism, so Phase 2 (bound computation) was not entered. The only directly relevant real bound on record is V2_3I's ($4,896 seed-920 upper bound / $67,932 across 16 seeds), which was tested and resulted in a -$9,686 loss on seed 920 -- reinforcing closure of that seam rather than leaving it open."
+  },
+  "candidate_built": false,
+  "seed_results": [],
+  "classification": "NO_LARGE_OPPORTUNITY_FOUND",
+  "packaged": false
+}

@@ -1,0 +1,558 @@
+[
+  {
+    "id": 1,
+    "file": "blend_01_balanced8_compact.py",
+    "policy": "8 hands, modest land delay, original portfolio",
+    "config": {
+      "h": [
+        3,
+        8,
+        7,
+        2
+      ],
+      "land": [
+        4,
+        1200
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "file": "blend_02_balanced8_no_fert.py",
+    "policy": "8 hands, modest land delay, skip fertilizer logistics",
+    "config": {
+      "h": [
+        3,
+        8,
+        7,
+        2
+      ],
+      "land": [
+        4,
+        1200
+      ],
+      "fert": false
+    }
+  },
+  {
+    "id": 3,
+    "file": "blend_03_balanced8_altcare.py",
+    "policy": "8 hands, modest land delay, alternate care",
+    "config": {
+      "h": [
+        3,
+        8,
+        7,
+        2
+      ],
+      "land": [
+        4,
+        1200
+      ],
+      "care": "alternate",
+      "fert": false
+    }
+  },
+  {
+    "id": 4,
+    "file": "blend_04_balanced9_compact.py",
+    "policy": "9 hands, compact land, original portfolio",
+    "config": {
+      "h": [
+        3,
+        9,
+        7,
+        2
+      ],
+      "land": [
+        4,
+        1200
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "file": "blend_05_balanced10_compact.py",
+    "policy": "10 hands, compact land, original portfolio",
+    "config": {
+      "h": [
+        4,
+        10,
+        6,
+        2
+      ],
+      "land": [
+        4,
+        1200
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "file": "blend_06_ongoing8_compact.py",
+    "policy": "8 hands, compact land, ongoing crop core",
+    "config": {
+      "h": [
+        3,
+        8,
+        7,
+        2
+      ],
+      "land": [
+        5,
+        1500
+      ],
+      "p": [
+        "STRAWBERRY",
+        "TOMATO",
+        "MELON",
+        "WHEAT",
+        "CARROT"
+      ],
+      "seed": [
+        [
+          4,
+          7
+        ],
+        [
+          11,
+          18
+        ],
+        6,
+        1,
+        18
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "file": "blend_07_melon8_compact.py",
+    "policy": "8 hands, compact land, melon batch core",
+    "config": {
+      "h": [
+        3,
+        8,
+        7,
+        2
+      ],
+      "land": [
+        5,
+        1500
+      ],
+      "p": [
+        "MELON",
+        "STRAWBERRY",
+        "WHEAT",
+        "TOMATO",
+        "CARROT"
+      ],
+      "seed": [
+        [
+          12,
+          20
+        ],
+        [
+          5,
+          8
+        ],
+        1,
+        1,
+        18
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "file": "blend_08_wheatcow8_compact.py",
+    "policy": "8 hands, compact land, wheat-fed cow fleet",
+    "config": {
+      "h": [
+        3,
+        8,
+        6,
+        2
+      ],
+      "land": [
+        5,
+        1500
+      ],
+      "p": [
+        "WHEAT",
+        "STRAWBERRY",
+        "MELON",
+        "TOMATO",
+        "CARROT"
+      ],
+      "seed": [
+        [
+          4,
+          7
+        ],
+        [
+          6,
+          10
+        ],
+        1,
+        1,
+        40
+      ],
+      "animal": [
+        false,
+        16,
+        22,
+        0
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "file": "blend_09_smallcow8_compact.py",
+    "policy": "8 hands, compact land, small cow-only fleet",
+    "config": {
+      "h": [
+        3,
+        8,
+        7,
+        1
+      ],
+      "land": [
+        5,
+        1500
+      ],
+      "animal": [
+        false,
+        12,
+        22,
+        0
+      ],
+      "fert": false
+    }
+  },
+  {
+    "id": 10,
+    "file": "blend_10_smallmixed8_compact.py",
+    "policy": "8 hands, compact land, shorter mixed expansion",
+    "config": {
+      "h": [
+        3,
+        8,
+        7,
+        2
+      ],
+      "land": [
+        5,
+        1500
+      ],
+      "animal": [
+        true,
+        14,
+        14,
+        2
+      ],
+      "fert": false
+    }
+  },
+  {
+    "id": 11,
+    "file": "blend_11_cropguard8_compact.py",
+    "policy": "8 hands, compact land, stronger crop protection",
+    "config": {
+      "h": [
+        3,
+        8,
+        7,
+        2
+      ],
+      "land": [
+        5,
+        1500
+      ],
+      "protect": [
+        0.62,
+        0.78
+      ],
+      "animal": [
+        true,
+        16,
+        16,
+        2
+      ],
+      "fert": false
+    }
+  },
+  {
+    "id": 12,
+    "file": "blend_12_animallean8_compact.py",
+    "policy": "8 hands, compact land, animal-oriented allocation",
+    "config": {
+      "h": [
+        3,
+        8,
+        6,
+        3
+      ],
+      "land": [
+        5,
+        1500
+      ],
+      "protect": [
+        0.35,
+        0.5
+      ],
+      "animal": [
+        true,
+        14,
+        16,
+        3
+      ],
+      "fert": false
+    }
+  },
+  {
+    "id": 13,
+    "file": "blend_13_nine_altcare_compact.py",
+    "policy": "9 hands, alternate care, compact land",
+    "config": {
+      "h": [
+        3,
+        9,
+        7,
+        2
+      ],
+      "land": [
+        5,
+        1500
+      ],
+      "care": "alternate",
+      "fert": false
+    }
+  },
+  {
+    "id": 14,
+    "file": "blend_14_nine_smallfleet_compact.py",
+    "policy": "9 hands, small mixed fleet, compact land",
+    "config": {
+      "h": [
+        3,
+        9,
+        7,
+        2
+      ],
+      "land": [
+        5,
+        1500
+      ],
+      "animal": [
+        true,
+        14,
+        14,
+        2
+      ],
+      "fert": false
+    }
+  },
+  {
+    "id": 15,
+    "file": "blend_15_ten_smallfleet_compact.py",
+    "policy": "10 hands, small mixed fleet, compact land",
+    "config": {
+      "h": [
+        4,
+        10,
+        6,
+        2
+      ],
+      "land": [
+        5,
+        1500
+      ],
+      "animal": [
+        true,
+        14,
+        14,
+        2
+      ],
+      "fert": false
+    }
+  },
+  {
+    "id": 16,
+    "file": "blend_16_eight_latecare_compact.py",
+    "policy": "8 hands, delay care until production ramp",
+    "config": {
+      "h": [
+        3,
+        8,
+        7,
+        2
+      ],
+      "land": [
+        5,
+        1500
+      ],
+      "care": "late",
+      "fert": false
+    }
+  },
+  {
+    "id": 17,
+    "file": "blend_17_eight_straw_melon_compact.py",
+    "policy": "8 hands, compact premium crop blend",
+    "config": {
+      "h": [
+        3,
+        8,
+        7,
+        2
+      ],
+      "land": [
+        5,
+        1500
+      ],
+      "p": [
+        "STRAWBERRY",
+        "MELON",
+        "WHEAT",
+        "TOMATO",
+        "CARROT"
+      ],
+      "seed": [
+        [
+          9,
+          15
+        ],
+        [
+          9,
+          15
+        ],
+        2,
+        1,
+        22
+      ],
+      "animal": [
+        true,
+        14,
+        14,
+        2
+      ],
+      "fert": false
+    }
+  },
+  {
+    "id": 18,
+    "file": "blend_18_eight_melon_cow_compact.py",
+    "policy": "8 hands, melon emphasis, cow-only small fleet",
+    "config": {
+      "h": [
+        3,
+        8,
+        7,
+        2
+      ],
+      "land": [
+        5,
+        1500
+      ],
+      "p": [
+        "MELON",
+        "STRAWBERRY",
+        "WHEAT",
+        "TOMATO",
+        "CARROT"
+      ],
+      "seed": [
+        [
+          10,
+          17
+        ],
+        [
+          6,
+          10
+        ],
+        1,
+        1,
+        24
+      ],
+      "animal": [
+        false,
+        14,
+        22,
+        0
+      ],
+      "fert": false
+    }
+  },
+  {
+    "id": 19,
+    "file": "blend_19_nine_diverse_compact.py",
+    "policy": "9 hands, compact diversified crop and mixed fleet",
+    "config": {
+      "h": [
+        3,
+        9,
+        7,
+        2
+      ],
+      "land": [
+        4,
+        1300
+      ],
+      "p": [
+        "STRAWBERRY",
+        "MELON",
+        "WHEAT",
+        "TOMATO",
+        "CARROT"
+      ],
+      "seed": [
+        [
+          8,
+          13
+        ],
+        [
+          8,
+          13
+        ],
+        3,
+        3,
+        28
+      ],
+      "animal": [
+        true,
+        16,
+        16,
+        2
+      ],
+      "fert": false
+    }
+  },
+  {
+    "id": 20,
+    "file": "blend_20_eight_austerity_balanced.py",
+    "policy": "8 hands, strict compactness, reduced optional work",
+    "config": {
+      "h": [
+        3,
+        8,
+        8,
+        1
+      ],
+      "land": [
+        7,
+        2200
+      ],
+      "animal": [
+        true,
+        12,
+        12,
+        1
+      ],
+      "care": "alternate",
+      "fert": false,
+      "protect": [
+        0.58,
+        0.72
+      ]
+    }
+  }
+]

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.grace.kaggriculture-evolve</string>
+
+    <!-- EDIT: absolute path to the Kaggriculture folder on the Air -->
+    <key>WorkingDirectory</key>
+    <string>/Users/graceliu/Kaggriculture</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>evolve/run_nightly.sh</string>
+        <string>9</string>
+    </array>
+
+    <!-- every day at 21:00; the run stops itself after 9 h (06:00) and writes the report -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>21</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>evolve/logs/launchd.out</string>
+    <key>StandardErrorPath</key>
+    <string>evolve/logs/launchd.err</string>
+    <key>Nice</key>
+    <integer>5</integer>
+</dict>
+</plist>

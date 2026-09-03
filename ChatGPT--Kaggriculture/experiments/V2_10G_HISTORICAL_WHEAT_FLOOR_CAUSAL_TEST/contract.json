@@ -1,0 +1,45 @@
+{
+  "experiment_id": "V2_10G_HISTORICAL_WHEAT_FLOOR_CAUSAL_TEST",
+  "type": "controlled candidate causal test, fail-fast gated",
+  "pre_registered_intervention": "Restore WHEAT_FLOOR_MIN_TILES/PER_ANIMAL/MAX_TILES in V10.6 from (0,0.0,0) to v8.11's historical (3,0.4,6), no other change.",
+  "frozen_controls": {
+    "V9_3_oracle": {
+      "path": "experiments/V2_3B_V9_3_SELF_CONTAINED/candidate/main.py",
+      "sha256_expected": "9d2703faf8e58c55697dc3948d06c3a1f4caac52927a38358e131d9b0344bf0b",
+      "sha256_after": "9d2703faf8e58c55697dc3948d06c3a1f4caac52927a38358e131d9b0344bf0b",
+      "unchanged": true
+    },
+    "V10_6": {
+      "path": "experiments/V2_3B_V10_6_SELF_CONTAINED/candidate/main.py",
+      "sha256_expected": "f6abd7f066685bf43a797d468b0694eefa15956375850e68b8f76174d45c907e",
+      "sha256_after": "f6abd7f066685bf43a797d468b0694eefa15956375850e68b8f76174d45c907e",
+      "unchanged": true
+    }
+  },
+  "candidate": {
+    "path": "experiments/V2_10G_HISTORICAL_WHEAT_FLOOR_CAUSAL_TEST/candidate/main.py",
+    "sha256": "ccbadd06c23bea08706435e7d1162afddb726b097829f258e2d40a0fa87e7c13",
+    "diff_from_v10_6": "3-line change only: WHEAT_FLOOR_MIN_TILES 0->3, WHEAT_FLOOR_PER_ANIMAL 0.0->0.4, WHEAT_FLOOR_MAX_TILES 0->6 (with updated inline comments); no other line differs."
+  },
+  "engine": "kaggle_environments==1.32.3, Python 3.11 venv (/tmp/my_v23p_env)",
+  "gate": "MANDATORY SEED-920 GATE: candidate terminal cash must exceed V10.6 vanilla terminal cash to proceed past Phase 2.",
+  "seed_920_result": {
+    "vanilla_terminal_cash": 117008.0,
+    "candidate_terminal_cash": 117008.0,
+    "delta": 0.0,
+    "action_hash_vanilla": "d8e863473fe1b4bf7ebcfdf09bf319dd0838c44b01da054c70a3197a700351f6",
+    "action_hash_candidate_run1": "d8e863473fe1b4bf7ebcfdf09bf319dd0838c44b01da054c70a3197a700351f6",
+    "action_hash_candidate_run2": "d8e863473fe1b4bf7ebcfdf09bf319dd0838c44b01da054c70a3197a700351f6",
+    "determinism_confirmed": true,
+    "byte_identical_to_vanilla": true
+  },
+  "root_cause_found": "want[\"WHEAT\"] was deleted from the seed-buying dict at v9.1 (comment at file header line 71: 'Wheat PLANTING removed entirely: want[\"WHEAT\"] deleted, wheat-floor constants zeroed'). Since BUY_SEED is only ever issued for crops present as a key in `want`, seeds.get(\"WHEAT\",0) is provably always 0 in V10.6. plantable_crops() filters on seeds.get(c,0) > 0, so WHEAT can never appear in the plantable set regardless of plant_priority_current order. The wheat-floor priority-reorder block (lines ~1898-1903) is therefore structurally dead code independent of the WHEAT_FLOOR_* constant values -- restoring the constants alone cannot change behavior.",
+  "phase_2_classification": "EXACT TIE (candidate terminal cash == vanilla, byte-identical action hash across the whole game) -> per fail-fast rule, NOT REJECTED (not worse) and NOT CANDIDATE_VALIDATED (not better) -> classify per the 'exactly equal' branch: NO_LARGE_OPPORTUNITY_FOUND, since the identical-outcome result is fully explained by a directly-observed structural cause (dead code), not an unexplained wash.",
+  "phases_run": ["Phase 0", "Phase 1", "Phase 2", "Phase 4", "Phase 6", "Phase 7", "Phase 8"],
+  "phases_skipped": {
+    "Phase 3": "skipped -- only run when Phase 2 is positive (candidate beats vanilla); here it was an exact tie, not a win",
+    "Phase 5": "skipped -- only run when Phase 2 is positive"
+  },
+  "final_status": "NO_LARGE_OPPORTUNITY_FOUND",
+  "correction_note": "V2_10A and V2_10F characterized V10.6's WHEAT-floor formula as having 'no MAX_TILES cap' (i.e., only 2 constants). Verified directly in this experiment: V10.6 in fact has all THREE constants (WHEAT_FLOOR_MIN_TILES, WHEAT_FLOOR_PER_ANIMAL, WHEAT_FLOOR_MAX_TILES), all zeroed, consumed by the same 3-argument min(MAX, max(MIN, ceil(n*PER))) formula as v8.11. This is a correction to the prior record, not a new finding about the mechanism's dormancy."
+}

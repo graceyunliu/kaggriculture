@@ -1,0 +1,50 @@
+{
+  "experiment_id": "V2_3P_ANIMAL_FERTILIZER_EXTRACTION",
+  "objective": "Resolve V2_3O's upstream blockers by making V9.3's animal setup/maintenance target selection and fertilizer-diversion alternatives independently OBSERVABLE and, where possible, RECONSTRUCTIBLE via non-controlling shadow reimplementations diffed against oracle instrumentation of the real decision functions in real games.",
+  "constraints_honored": [
+    "Did not modify main_v9.3_fertilize.py, main_v10.6_radius3.py, or any file under 'Archived versions/' -- sha256 verified identical before and after.",
+    "No controlling candidate created -- instrumentation wraps and calls through to the real functions unmodified; shadow modules never feed back into any agent's decisions.",
+    "Nothing submitted to any ladder/leaderboard.",
+    "No policy tuning, no new priorities/scoring/worker counts/crop or animal targets/fertilizer rules/routing changes/opponent adaptation -- all new files are read-only instrumentation, shadow reimplementations, and a diff/report harness.",
+    "All new work is additive: new files under experiments/V2_3P_ANIMAL_FERTILIZER_EXTRACTION/ and artifacts/v2_3p/ and docs/ only."
+  ],
+  "seeds_used": [920, 921, 922, 923],
+  "opponent_used": "Opponents/opp_scenario_v14.py",
+  "inputs": {
+    "v93_file": "main_v9.3_fertilize.py",
+    "v93_sha256": "9d2703faf8e58c55697dc3948d06c3a1f4caac52927a38358e131d9b0344bf0b",
+    "v106_file": "main_v10.6_radius3.py",
+    "v106_sha256": "f6abd7f066685bf43a797d468b0694eefa15956375850e68b8f76174d45c907e",
+    "archived_versions_hash_manifest_before": "artifacts/v2_3p/_arch_hashes_before.txt",
+    "archived_versions_hash_manifest_after": "artifacts/v2_3p/_arch_hashes_after.txt",
+    "archived_versions_unchanged": true
+  },
+  "outputs": [
+    {"path": "docs/V2_3P_V93_ANIMAL_FERTILIZER_UPSTREAM_EXTRACTION.md",
+     "sha256": "efaf006e70224b001a632140c0a3ea47f2496afe3f2c2b4b42bd7d70a2a9d6a9"},
+    {"path": "artifacts/v2_3p/animal_fertilizer_upstream_extraction.json",
+     "sha256": "2d86c1ee8440fe0c7edd4648cd8e403290b0cf1cadda36aeb952371f710d116a"},
+    {"path": "artifacts/v2_3p/extraction_run_raw.json",
+     "sha256": "6d0070842bb88ed40a8041f32edfd3ddf9468d7dd6c8790a2c50aa1b7e116723",
+     "note": "Raw per-seed oracle-vs-shadow diff output from run_extraction.py, real games, real numbers."},
+    {"path": "experiments/V2_3P_ANIMAL_FERTILIZER_EXTRACTION/instrument_v93.py",
+     "sha256": "6862b6d95f93f48cca4abb9096e6f6f518d6d24b6ed811dba12176231f94182e"},
+    {"path": "experiments/V2_3P_ANIMAL_FERTILIZER_EXTRACTION/shadow_animal.py",
+     "sha256": "5e6581032af28fcf21fd5eff594652e1a20ccf0529cfd8bfcb3cee700d344a64"},
+    {"path": "experiments/V2_3P_ANIMAL_FERTILIZER_EXTRACTION/shadow_fertilizer.py",
+     "sha256": "286c810b3b81d2da29bac25817f306c47f1ceb70fd56639bf5cdf5f4bd6ea797"},
+    {"path": "experiments/V2_3P_ANIMAL_FERTILIZER_EXTRACTION/run_extraction.py",
+     "sha256": "bff4b45b35e0c4d865515107c2a43f70d73626d99078062dd3ebbee81566d66f"}
+  ],
+  "environment_note": "The sandbox had no kaggle_environments install and insufficient disk to build the upstream package (now requires Python >=3.11) from source. Resolved by following the project's own documented workaround (setup_local_env.sh): pip install --no-deps kaggle-environments==1.25.9, then vendor vendor/kaggle_environments_engine/kaggriculture.py into its envs/ dir and append the resolve_episode_seed shim to kaggle_environments/utils.py. This is a local, session-scoped pip environment change (installed under $HOME, not inside the Kaggriculture project) -- it does not touch any file inside the Kaggriculture repo tree.",
+  "key_results_summary": {
+    "animal_setup_action": "386 oracle calls, 0 mismatches",
+    "animal_maintenance_action": "25326 oracle calls, 0 mismatches",
+    "_animal_expansion_feasible": "2750 oracle calls, 0 mismatches (after fixing a harness bug, documented)",
+    "_sheep_expansion_feasible": "2714 oracle calls, 0 mismatches (after fixing a harness bug, documented)",
+    "fertilizer_legality_checks": "292/292 FERTILIZE ops legal, 641/641 restock ops legal",
+    "determinism_check": "same seed twice -> identical terminal money",
+    "instrumentation_neutrality_check": "instrumented run terminal money == plain rerun terminal money"
+  },
+  "final_status": "SHADOW_EXTRACTION_COMPLETE"
+}

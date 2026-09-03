@@ -1,0 +1,169 @@
+{
+  "base": "main_v8.3.py",
+  "definitions": {
+    "turn_efficiency": "Revenue generated per scarce unit action/turn; variants reduce recurring actions, travel, replanting, and optional maintenance.",
+    "labor_efficiency": "Revenue generated per hired hand-day; variants constrain team size and adapt production to the smaller workforce."
+  },
+  "agents": [
+    {
+      "family": "turn",
+      "id": 1,
+      "name": "ongoing_crop_core",
+      "file": "turn_01_ongoing_crop_core.py",
+      "objective": "Maximize revenue per unit action by reducing harvest/replant cycles.",
+      "changes": "Prioritize strawberry/tomato; suppress short-cycle carrot and excess wheat."
+    },
+    {
+      "family": "turn",
+      "id": 2,
+      "name": "melon_batch_farming",
+      "file": "turn_02_melon_batch_farming.py",
+      "objective": "Concentrate labor into infrequent, high-value batch harvests.",
+      "changes": "Melon-first portfolio; sharply reduce ongoing and short-cycle crops."
+    },
+    {
+      "family": "turn",
+      "id": 3,
+      "name": "wheat_batch_feed",
+      "file": "turn_03_wheat_batch_feed.py",
+      "objective": "Use simple four-day crop cycles and local feed to reduce market and routing actions.",
+      "changes": "Wheat-first planting; moderate cow window; sheep disabled."
+    },
+    {
+      "family": "turn",
+      "id": 4,
+      "name": "minimal_optional_animal_work",
+      "file": "turn_04_minimal_optional_animal_work.py",
+      "objective": "Reserve turns for mandatory feed, crop work, and harvest.",
+      "changes": "Disable animal care and fertilizer collection; retain v8.3 fleet economics."
+    },
+    {
+      "family": "turn",
+      "id": 5,
+      "name": "alternate_care",
+      "file": "turn_05_alternate_care.py",
+      "objective": "Capture some care bonus with half the routine care actions.",
+      "changes": "Care only on even-numbered days; fertilizer collection disabled."
+    },
+    {
+      "family": "turn",
+      "id": 6,
+      "name": "production_window_care",
+      "file": "turn_06_production_window_care.py",
+      "objective": "Spend care actions selectively rather than every eligible day.",
+      "changes": "Skip care every third day and skip fertilizer collection."
+    },
+    {
+      "family": "turn",
+      "id": 7,
+      "name": "compact_farm",
+      "file": "turn_07_compact_farm.py",
+      "objective": "Reduce walking turns by delaying expansion and keeping work near the shed.",
+      "changes": "Land purchases start day 8 and require an additional $2,000 reserve."
+    },
+    {
+      "family": "turn",
+      "id": 8,
+      "name": "small_cow_fleet",
+      "file": "turn_08_small_cow_fleet.py",
+      "objective": "Limit daily maintenance actions while retaining premium animal output.",
+      "changes": "Disable sheep; stop cow purchases after day 12; lower animal labor weighting."
+    },
+    {
+      "family": "turn",
+      "id": 9,
+      "name": "no_fertilizer_logistics",
+      "file": "turn_09_no_fertilizer_logistics.py",
+      "objective": "Eliminate collect, carry, deposit, and sale actions for a low-priority byproduct.",
+      "changes": "Fertilizer collection disabled; all other behavior unchanged."
+    },
+    {
+      "family": "turn",
+      "id": 10,
+      "name": "crop_only_batch",
+      "file": "turn_10_crop_only_batch.py",
+      "objective": "Avoid all animal setup and daily maintenance actions.",
+      "changes": "Disable sheep and close cow purchase window; melon/strawberry batch crop mix."
+    },
+    {
+      "family": "labor",
+      "id": 1,
+      "name": "six_hand_cap",
+      "file": "labor_01_six_hand_cap.py",
+      "objective": "Maximize farm output per worker by imposing a hard six-hand ceiling.",
+      "changes": "Hand target 3\u20136; maximum six hires; expansion gates inherit the cap."
+    },
+    {
+      "family": "labor",
+      "id": 2,
+      "name": "eight_hand_cap",
+      "file": "labor_02_eight_hand_cap.py",
+      "objective": "Use a moderate worker ceiling while preserving more throughput than the strict cap.",
+      "changes": "Hand target 3\u20138; maximum eight hires; seven work units per target hand."
+    },
+    {
+      "family": "labor",
+      "id": 3,
+      "name": "ten_hand_cap",
+      "file": "labor_03_ten_hand_cap.py",
+      "objective": "Seek a balanced labor frontier between v8.3 throughput and payroll footprint.",
+      "changes": "Hand target 4\u201310; maximum ten hires; six work units per target hand."
+    },
+    {
+      "family": "labor",
+      "id": 4,
+      "name": "crop_protected_small_team",
+      "file": "labor_04_crop_protected_small_team.py",
+      "objective": "Make a small team dependable by protecting most workers for crop survival.",
+      "changes": "Eight-hand cap and protected crop fraction raised to 70\u201385%."
+    },
+    {
+      "family": "labor",
+      "id": 5,
+      "name": "animal_specialist_small_team",
+      "file": "labor_05_animal_specialist_small_team.py",
+      "objective": "Use fewer workers but devote a larger share to high-value animal maintenance.",
+      "changes": "Eight-hand cap, low crop protection, animal workload counted at weight three."
+    },
+    {
+      "family": "labor",
+      "id": 6,
+      "name": "ongoing_crops_eight_hands",
+      "file": "labor_06_ongoing_crops_eight_hands.py",
+      "objective": "Reduce replant burden so each worker supports more occupied tiles.",
+      "changes": "Eight-hand cap plus strawberry/tomato-heavy ongoing-crop portfolio."
+    },
+    {
+      "family": "labor",
+      "id": 7,
+      "name": "melon_eight_hands",
+      "file": "labor_07_melon_eight_hands.py",
+      "objective": "Allocate a constrained workforce to a high-value, infrequent-harvest crop.",
+      "changes": "Eight-hand cap; melon-first portfolio; reduced crop variety."
+    },
+    {
+      "family": "labor",
+      "id": 8,
+      "name": "cow_wheat_eight_hands",
+      "file": "labor_08_cow_wheat_eight_hands.py",
+      "objective": "Use a constrained team on home-fed cows rather than a mixed premium fleet.",
+      "changes": "Eight-hand cap, sheep disabled, wheat-first portfolio, cows available through day 18."
+    },
+    {
+      "family": "labor",
+      "id": 9,
+      "name": "alternate_care_eight_hands",
+      "file": "labor_09_alternate_care_eight_hands.py",
+      "objective": "Stretch a limited workforce across animals by halving care cadence.",
+      "changes": "Eight-hand cap, alternate-day care, no fertilizer collection."
+    },
+    {
+      "family": "labor",
+      "id": 10,
+      "name": "four_hand_austerity",
+      "file": "labor_10_four_hand_austerity.py",
+      "objective": "Measure the extreme output-per-worker frontier with a four-hand ceiling.",
+      "changes": "Hand target 2\u20134, no sheep, no care, no fertilizer collection, delayed land."
+    }
+  ]
+}

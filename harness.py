@@ -38,6 +38,12 @@ CREATE TABLE IF NOT EXISTS profiles (
 CREATE TABLE IF NOT EXISTS tags (
     episode_id INTEGER, seat INTEGER, tag TEXT, detail TEXT
 );
+CREATE TABLE IF NOT EXISTS sell_events (
+    episode_id INTEGER, seat INTEGER, day INTEGER, item TEXT, qty INTEGER
+    -- one row per SELL order action; aggregate with GROUP BY for
+    -- per-day / per-item / per-opponent volumes. Raw, not deduped by day.
+);
+CREATE INDEX IF NOT EXISTS idx_sell_events_episode ON sell_events(episode_id);
 """
 
 
@@ -51,6 +57,7 @@ def extract(path):
     plantings = [defaultdict(int), defaultdict(int)]
     sells = [defaultdict(lambda: {"units": 0, "orders": 0, "first_day": None, "last_day": None}),
              defaultdict(lambda: {"units": 0, "orders": 0, "first_day": None, "last_day": None})]
+    sell_events = [[], []]  # (day, item, qty) per raw SELL order
     hires = [defaultdict(int), defaultdict(int)]
     land = [{}, {}]
     deaths = [0, 0]
@@ -90,6 +97,7 @@ def extract(path):
                     s["units"] += int(order[2]); s["orders"] += 1
                     s["first_day"] = day if s["first_day"] is None else s["first_day"]
                     s["last_day"] = day
+                    sell_events[p].append((day, order[1], int(order[2])))
 
     money = [steps[-1][0]["observation"]["farms"][p]["money"] for p in (0, 1)]
     winner = "TIE" if money[0] == money[1] else names[money[1] > money[0]]
@@ -101,7 +109,10 @@ def extract(path):
 
     rows = {"episode": (ep_id, path, names[0], names[1], money[0], money[1],
                         winner, my_seat, my_result),
-            "profiles": [], "tags": []}
+            "profiles": [], "tags": [], "sell_events": []}
+    for p in (0, 1):
+        for day, item, qty in sell_events[p]:
+            rows["sell_events"].append((ep_id, p, day, item, qty))
     for p in (0, 1):
         pl = plantings[p]
         rows["profiles"].append((
@@ -136,9 +147,43 @@ def ingest(paths):
         con.execute("INSERT INTO episodes VALUES (?,?,?,?,?,?,?,?,?)", r["episode"])
         con.executemany("INSERT INTO profiles VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)", r["profiles"])
         con.executemany("INSERT INTO tags VALUES (?,?,?,?)", r["tags"])
+        con.executemany("INSERT INTO sell_events VALUES (?,?,?,?,?)", r["sell_events"])
         added += 1
     con.commit()
     print(f"ingested {added}, skipped {skipped} already-known")
+
+
+def backfill_sell_events(paths):
+    """One-time/rerunnable backfill: populate sell_events for episodes that
+    are already in the episodes table (from before this table existed) by
+    re-reading their raw replay JSON off disk. Skips episodes that already
+    have sell_events rows, and any file whose episode isn't in the DB yet
+    (those get sell_events for free via normal ingest())."""
+    con = sqlite3.connect(DB)
+    con.execute("PRAGMA journal_mode=MEMORY")
+    con.executescript(SCHEMA)
+    known_eps = {row[0] for row in con.execute("SELECT episode_id FROM episodes")}
+    have_events = {row[0] for row in con.execute("SELECT DISTINCT episode_id FROM sell_events")}
+    filled = skipped_no_ep = skipped_have = errors = 0
+    for path in paths:
+        try:
+            r = extract(path)
+        except Exception as e:
+            errors += 1
+            continue
+        ep_id = r["episode"][0]
+        if ep_id not in known_eps:
+            skipped_no_ep += 1
+            continue
+        if ep_id in have_events:
+            skipped_have += 1
+            continue
+        con.executemany("INSERT INTO sell_events VALUES (?,?,?,?,?)", r["sell_events"])
+        have_events.add(ep_id)
+        filled += 1
+    con.commit()
+    print(f"backfilled sell_events for {filled} episodes "
+          f"(skipped {skipped_have} already-filled, {skipped_no_ep} not-in-DB, {errors} unreadable)")
 
 
 def report():
@@ -179,5 +224,7 @@ if __name__ == "__main__":
         print(__doc__)
     elif sys.argv[1] == "ingest":
         ingest(sys.argv[2:])
+    elif sys.argv[1] == "backfill-sells":
+        backfill_sell_events(sys.argv[2:])
     elif sys.argv[1] == "report":
         report()

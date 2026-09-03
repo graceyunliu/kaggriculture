@@ -1,0 +1,547 @@
+{
+  "files_inspected": 15,
+  "key_frequency": {
+    "kind": 1008240,
+    "yieldunits": 894964,
+    "consecutiveunwatered": 811960,
+    "crop": 811960,
+    "fertilizeduntilday": 811960,
+    "maxlifespanstep": 811960,
+    "plantedday": 811960,
+    "wateredtoday": 811960,
+    "wheat": 109947,
+    "carrot": 91997,
+    "melon": 90549,
+    "strawberry": 87913,
+    "tomato": 87341,
+    "animal": 83004,
+    "caredtoday": 83004,
+    "consecutiveunfed": 83004,
+    "fedtoday": 83004,
+    "fertilizeravailable": 83004,
+    "pendingcarebonus": 83004,
+    "placedday": 83004,
+    "fertilizer": 72980,
+    "egg": 69111,
+    "milk": 66429,
+    "wool": 65711,
+    "farmer": 64815,
+    "hands": 64815,
+    "market": 43230,
+    "hirestoday": 43200,
+    "money": 43200,
+    "tiles": 43200,
+    "unlockedquadrants": 43200,
+    "sheep": 22713,
+    "cow": 22297,
+    "goose": 21880,
+    "info": 21630,
+    "action": 21615,
+    "observation": 21615,
+    "reward": 21615,
+    "day": 21615,
+    "farms": 21615,
+    "hour": 21615,
+    "player": 21615,
+    "private": 21615,
+    "remainingoveragetime": 21615,
+    "town": 21615,
+    "status": 21600,
+    "inventory": 21600,
+    "prices": 21600,
+    "inventories": 21600,
+    "seeds": 21600,
+    "shed": 21600,
+    "unlockedshops": 21600,
+    "step": 10815,
+    "description": 405,
+    "default": 390,
+    "type": 390,
+    "minimum": 225,
+    "shared": 120,
+    "name": 45,
+    "seed": 45,
+    "configuration": 30,
+    "acttimeout": 30,
+    "boardsize": 30,
+    "episodesteps": 30,
+    "farmhandcostmult": 30,
+    "marketparams": 30,
+    "maxmarketordersperturn": 30,
+    "runtimeout": 30,
+    "shedcapacity": 30,
+    "startingmoney": 30,
+    "towncentersellinterval": 30,
+    "townshopsellinterval": 30,
+    "townshopunlockinterval": 30,
+    "turnsperday": 30,
+    "weedspawnchance": 30,
+    "agents": 30,
+    "thumbnailurl": 30,
+    "id": 15,
+    "moduleversion": 15,
+    "rewards": 15,
+    "schemaversion": 15,
+    "specification": 15,
+    "statuses": 15,
+    "steps": 15,
+    "title": 15,
+    "version": 15,
+    "episodeid": 15,
+    "livevideopath": 15,
+    "teamnames": 15,
+    "properties": 15
+  },
+  "examples": {
+    "configuration": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "dict",
+      "example_value": "{'actTimeout': 1, 'boardSize': 10, 'episodeSteps': 720, 'farmHandCostMult': 1, 'marketParams': {}, 'maxMarketOrdersPerTurn': 10, 'runTimeout': 1200, 'seed': None, 'shedCapacity': 100, 'startingMoney': 3000, 'townCenterSellInterval': 24, 'townShopSellInterval': 4, 'townShopUnlockInterval': 3, 'turnsP"
+    },
+    "description": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "str",
+      "example_value": "Advanced farming simulation: two players each tend a 10x10 farm of four 5x5 quadrants, growing crops, raising animals, hiring help, and trading with a dynamic market over one season."
+    },
+    "id": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "str",
+      "example_value": "34158dbe-a2d9-11f1-90fd-0242ac130203"
+    },
+    "info": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "dict",
+      "example_value": "{'Agents': [{'Name': 'Darsh Jilka', 'ThumbnailUrl': None}, {'Name': 'graceyunliu', 'ThumbnailUrl': None}], 'EpisodeId': 101674403, 'LiveVideoPath': None, 'TeamNames': ['Darsh Jilka', 'graceyunliu'], 'seed': 1159015661}"
+    },
+    "moduleversion": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "str",
+      "example_value": "1.32.7"
+    },
+    "name": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "str",
+      "example_value": "kaggriculture"
+    },
+    "rewards": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "list",
+      "example_value": "[4112.0, 32154.0]"
+    },
+    "schemaversion": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 1
+    },
+    "specification": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "dict",
+      "example_value": "{'action': {'default': {'farmer': ['PASS'], 'hands': [], 'market': []}, 'description': 'Per-turn action of the form {\"farmer\": [op, ...args], \"hands\": [[op, ...args], ...], \"market\": [[op, ...args], ...]}. Farmer/hand ops: NORTH, SOUTH, EAST, WEST, PASS, PICKUP <item> [n], PLANT <crop>, WATER, HARVE"
+    },
+    "statuses": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "list",
+      "example_value": "['DONE', 'DONE']"
+    },
+    "steps": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "list",
+      "example_value": "[[{'action': {'farmer': ['PASS'], 'hands': [], 'market': []}, 'info': {}, 'observation': {'day': 0, 'farms': [{'farmer': [4, 4], 'hands': [], 'hires_today': 0, 'money': 3000.0, 'tiles': [[None, None, None, None, None, 'LOCKED', 'LOCKED', 'LOCKED', 'LOCKED', 'LOCKED'], [None, None, None, None, None, "
+    },
+    "title": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "str",
+      "example_value": "Kaggriculture"
+    },
+    "version": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "str",
+      "example_value": "0.1.0"
+    },
+    "acttimeout": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 1
+    },
+    "boardsize": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 10
+    },
+    "episodesteps": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 720
+    },
+    "farmhandcostmult": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 1
+    },
+    "marketparams": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "dict",
+      "example_value": "{}"
+    },
+    "maxmarketordersperturn": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 10
+    },
+    "runtimeout": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 1200
+    },
+    "seed": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "NoneType",
+      "example_value": null
+    },
+    "shedcapacity": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 100
+    },
+    "startingmoney": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 3000
+    },
+    "towncentersellinterval": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 24
+    },
+    "townshopsellinterval": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 4
+    },
+    "townshopunlockinterval": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 3
+    },
+    "turnsperday": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 24
+    },
+    "weedspawnchance": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "float",
+      "example_value": 0.005
+    },
+    "agents": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "list",
+      "example_value": "[{'Name': 'Darsh Jilka', 'ThumbnailUrl': None}, {'Name': 'graceyunliu', 'ThumbnailUrl': None}]"
+    },
+    "episodeid": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 101674403
+    },
+    "livevideopath": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "NoneType",
+      "example_value": null
+    },
+    "teamnames": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "list",
+      "example_value": "['Darsh Jilka', 'graceyunliu']"
+    },
+    "thumbnailurl": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "NoneType",
+      "example_value": null
+    },
+    "action": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "dict",
+      "example_value": "{'default': {'farmer': ['PASS'], 'hands': [], 'market': []}, 'description': 'Per-turn action of the form {\"farmer\": [op, ...args], \"hands\": [[op, ...args], ...], \"market\": [[op, ...args], ...]}. Farmer/hand ops: NORTH, SOUTH, EAST, WEST, PASS, PICKUP <item> [n], PLANT <crop>, WATER, HARVEST, FERTILI"
+    },
+    "observation": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "dict",
+      "example_value": "{'day': {'default': 0, 'description': 'Current in-game day (0-indexed).', 'shared': True, 'type': 'integer'}, 'farms': {'default': [], 'description': 'Per-player public farm state visible to all agents (tiles, money, farmer/hand positions, unlocked quadrants, hire count). Indexed by player id. Oppon"
+    },
+    "reward": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "dict",
+      "example_value": "{'default': 0, 'description': 'Player money at end of game (final score).', 'type': ['number', 'null']}"
+    },
+    "default": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "dict",
+      "example_value": "{'farmer': ['PASS'], 'hands': [], 'market': []}"
+    },
+    "type": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "str",
+      "example_value": "object"
+    },
+    "farmer": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "list",
+      "example_value": "['PASS']"
+    },
+    "hands": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "list",
+      "example_value": "[]"
+    },
+    "market": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "list",
+      "example_value": "[]"
+    },
+    "minimum": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 0
+    },
+    "properties": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "dict",
+      "example_value": "{}"
+    },
+    "day": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "dict",
+      "example_value": "{'default': 0, 'description': 'Current in-game day (0-indexed).', 'shared': True, 'type': 'integer'}"
+    },
+    "farms": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "dict",
+      "example_value": "{'default': [], 'description': 'Per-player public farm state visible to all agents (tiles, money, farmer/hand positions, unlocked quadrants, hire count). Indexed by player id. Opponent shed and per-farmer inventories are NOT included here.', 'shared': True, 'type': 'array'}"
+    },
+    "hour": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "dict",
+      "example_value": "{'default': 0, 'description': 'Current turn within the day (0-indexed).', 'shared': True, 'type': 'integer'}"
+    },
+    "player": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "dict",
+      "example_value": "{'default': 0, 'description': 'Player ID (0 or 1).', 'type': 'integer'}"
+    },
+    "private": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "dict",
+      "example_value": "{'default': {}, 'description': 'Per-agent private state for THIS player only: shed inventory, per-farmer inventories, seed counts. Not shared.', 'shared': False, 'type': 'object'}"
+    },
+    "remainingoveragetime": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "dict",
+      "example_value": "{'default': 60, 'description': 'Total remaining banked time (seconds) that can be used in excess of per-step actTimeouts -- agent is disqualified with TIMEOUT status when this drops below 0.', 'minimum': 0, 'shared': False, 'type': 'number'}"
+    },
+    "step": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "dict",
+      "example_value": "{'default': 0, 'description': 'Current step within the episode.', 'minimum': 0, 'shared': True, 'type': 'integer'}"
+    },
+    "town": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "dict",
+      "example_value": "{'default': {}, 'description': 'Shared town state: list of unlocked shop names. Each unlocked shop generates per-tick demand for its products.', 'shared': True, 'type': 'object'}"
+    },
+    "shared": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "bool",
+      "example_value": true
+    },
+    "status": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "str",
+      "example_value": "ACTIVE"
+    },
+    "hirestoday": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 0
+    },
+    "money": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "float",
+      "example_value": 3000.0
+    },
+    "tiles": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "list",
+      "example_value": "[[None, None, None, None, None, 'LOCKED', 'LOCKED', 'LOCKED', 'LOCKED', 'LOCKED'], [None, None, None, None, None, 'LOCKED', 'LOCKED', 'LOCKED', 'LOCKED', 'LOCKED'], [None, None, None, None, None, 'LOCKED', 'LOCKED', 'LOCKED', 'LOCKED', 'LOCKED'], [None, None, None, None, None, 'LOCKED', 'LOCKED', 'L"
+    },
+    "unlockedquadrants": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "list",
+      "example_value": "['NW']"
+    },
+    "inventory": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "dict",
+      "example_value": "{'CARROT': 10000, 'EGG': 10000, 'FERTILIZER': 10000, 'MELON': 10000, 'MILK': 10000, 'STRAWBERRY': 10000, 'TOMATO': 10000, 'WHEAT': 10000, 'WOOL': 10000}"
+    },
+    "prices": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "dict",
+      "example_value": "{'CARROT': 35, 'EGG': 50, 'FERTILIZER': 100, 'MELON': 250, 'MILK': 160, 'STRAWBERRY': 120, 'TOMATO': 60, 'WHEAT': 25, 'WOOL': 200}"
+    },
+    "carrot": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 10000
+    },
+    "egg": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 10000
+    },
+    "fertilizer": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 10000
+    },
+    "melon": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 10000
+    },
+    "milk": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 10000
+    },
+    "strawberry": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 10000
+    },
+    "tomato": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 10000
+    },
+    "wheat": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 10000
+    },
+    "wool": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 10000
+    },
+    "inventories": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "list",
+      "example_value": "[{}]"
+    },
+    "seeds": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "dict",
+      "example_value": "{'CARROT': 0, 'MELON': 0, 'STRAWBERRY': 0, 'TOMATO': 0, 'WHEAT': 0}"
+    },
+    "shed": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "dict",
+      "example_value": "{'CARROT': 0, 'COW': 0, 'EGG': 0, 'FERTILIZER': 0, 'GOOSE': 0, 'MELON': 0, 'MILK': 0, 'SHEEP': 0, 'STRAWBERRY': 0, 'TOMATO': 0, 'WHEAT': 0, 'WOOL': 0}"
+    },
+    "cow": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 0
+    },
+    "goose": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 0
+    },
+    "sheep": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 0
+    },
+    "unlockedshops": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "list",
+      "example_value": "[]"
+    },
+    "consecutiveunwatered": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 1
+    },
+    "crop": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "str",
+      "example_value": "MELON"
+    },
+    "fertilizeduntilday": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": -1
+    },
+    "kind": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "str",
+      "example_value": "PLANT"
+    },
+    "maxlifespanstep": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 312
+    },
+    "plantedday": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 0
+    },
+    "wateredtoday": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "bool",
+      "example_value": false
+    },
+    "yieldunits": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101674403.json",
+      "value_type": "int",
+      "example_value": 1
+    },
+    "animal": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101678862.json",
+      "value_type": "str",
+      "example_value": "COW"
+    },
+    "caredtoday": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101678862.json",
+      "value_type": "bool",
+      "example_value": false
+    },
+    "consecutiveunfed": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101678862.json",
+      "value_type": "int",
+      "example_value": 0
+    },
+    "fedtoday": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101678862.json",
+      "value_type": "bool",
+      "example_value": false
+    },
+    "fertilizeravailable": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101678862.json",
+      "value_type": "bool",
+      "example_value": false
+    },
+    "pendingcarebonus": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101678862.json",
+      "value_type": "int",
+      "example_value": 0
+    },
+    "placedday": {
+      "example_file": "/sessions/affectionate-friendly-goodall/mnt/Kaggriculture/Chatgpt Agents/Replay/101678862.json",
+      "value_type": "int",
+      "example_value": 0
+    }
+  }
+}

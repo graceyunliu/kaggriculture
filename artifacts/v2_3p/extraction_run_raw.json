@@ -1,0 +1,88 @@
+{
+  "seeds": [
+    920,
+    921,
+    922,
+    923
+  ],
+  "games": [
+    {
+      "seed": 920,
+      "elapsed_s": 6.12,
+      "final_money_seat0": 89332.0,
+      "final_money_seat1": 134179.0,
+      "n_steps": 720
+    },
+    {
+      "seed": 921,
+      "elapsed_s": 6.36,
+      "final_money_seat0": 82145.0,
+      "final_money_seat1": 134127.0,
+      "n_steps": 720
+    },
+    {
+      "seed": 922,
+      "elapsed_s": 6.54,
+      "final_money_seat0": 69583.0,
+      "final_money_seat1": 133590.0,
+      "n_steps": 720
+    },
+    {
+      "seed": 923,
+      "elapsed_s": 6.19,
+      "final_money_seat0": 97961.0,
+      "final_money_seat1": 139622.0,
+      "n_steps": 720
+    }
+  ],
+  "track_a_setup": {
+    "n": 386,
+    "mismatches": []
+  },
+  "track_a_maintenance": {
+    "n": 25326,
+    "mismatches": []
+  },
+  "track_a_gates": {
+    "_animal_expansion_feasible": {
+      "n": 2750,
+      "mismatches": []
+    },
+    "_sheep_expansion_feasible": {
+      "n": 2714,
+      "mismatches": []
+    }
+  },
+  "track_b_fertilizer": {
+    "fertilize_ops": 292,
+    "fertilize_ok": 292,
+    "restock_ops": 641,
+    "restock_ok": 641,
+    "bad_examples": []
+  },
+  "determinism_check": {
+    "plain_rerun_1": {
+      "seed": 920,
+      "elapsed_s": 2.69,
+      "final_money_seat0": 89332.0,
+      "final_money_seat1": 134179.0,
+      "n_steps": 720
+    },
+    "plain_rerun_2": {
+      "seed": 920,
+      "elapsed_s": 2.65,
+      "final_money_seat0": 89332.0,
+      "final_money_seat1": 134179.0,
+      "n_steps": 720
+    },
+    "instrumented_run": {
+      "seed": 920,
+      "elapsed_s": 6.12,
+      "final_money_seat0": 89332.0,
+      "final_money_seat1": 134179.0,
+      "n_steps": 720
+    },
+    "plain_reruns_match": true,
+    "instrumentation_preserves_actions": true
+  }
+}

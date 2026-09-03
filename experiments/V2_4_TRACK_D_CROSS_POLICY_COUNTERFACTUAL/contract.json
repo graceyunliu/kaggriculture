@@ -1,0 +1,22 @@
+{
+  "experiment_id": "V2_4_TRACK_D_CROSS_POLICY_COUNTERFACTUAL",
+  "status": "NO_LARGE_OPPORTUNITY_FOUND",
+  "primary_control": {
+    "path": "experiments/V2_3B_V10_6_SELF_CONTAINED/candidate/main.py",
+    "sha256": "f6abd7f066685bf43a797d468b0694eefa15956375850e68b8f76174d45c907e"
+  },
+  "historical_reference": {
+    "path": "experiments/V2_3B_V9_3_SELF_CONTAINED/candidate/main.py",
+    "sha256": "9d2703faf8e58c55697dc3948d06c3a1f4caac52927a38358e131d9b0344bf0b"
+  },
+  "engine": "kaggle-environments==1.32.3",
+  "python_venv": "/tmp/v23p_env",
+  "seeds_planned": [920, 921, 922, 923],
+  "deliverables": {
+    "narrative": "docs/V2_4_TRACK_D_CROSS_POLICY_COUNTERFACTUAL.md",
+    "result_json": "artifacts/v2_4_track_d/cross_policy_counterfactual_result.json"
+  },
+  "candidate_built": false,
+  "package_built": false,
+  "outcome": "No downstream behavioral seam decomposed into a genuinely separate, online-feasible, non-hindsight-fitted, non-already-rejected mechanism. All investigated downstream differences (fertilizer sequencing, animal-product collection timing, sales timing) either duplicate an already-rejected sibling track (V2_3I fertilizer, V2_3L cohort sync, V2_3H arbitration) or trace to source code confirmed byte-identical between V9.3 and V10.6, meaning any new rule there would not be a real cross-policy-derived mechanism. No candidate was built or tested."
+}

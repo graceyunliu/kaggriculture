@@ -1,0 +1,100 @@
+{
+  "experiment_id": "V2_3P_ANIMAL_FERTILIZER_EXTRACTION",
+  "objective": "Resolve V2_3O's upstream blockers (animal setup/maintenance target selection, fertilizer-diversion alternatives) by instrumenting real V9.3 decision functions in real games and diffing non-controlling shadow reimplementations against the oracle call log.",
+  "subject_file": "main_v9.3_fertilize.py",
+  "seeds": [920, 921, 922, 923],
+  "opponent": "Opponents/opp_scenario_v14.py",
+  "raw_run_artifact": "artifacts/v2_3p/extraction_run_raw.json",
+  "games": [
+    {"seed": 920, "final_money_seat0_v93": 89332.0, "final_money_seat1_opp": 134179.0, "n_steps": 720},
+    {"seed": 921, "final_money_seat0_v93": 82145.0, "final_money_seat1_opp": 134127.0, "n_steps": 720},
+    {"seed": 922, "final_money_seat0_v93": 69583.0, "final_money_seat1_opp": 133590.0, "n_steps": 720},
+    {"seed": 923, "final_money_seat0_v93": 97961.0, "final_money_seat1_opp": 139622.0, "n_steps": 720}
+  ],
+  "downstream_equivalence": {
+    "determinism_same_seed_twice": true,
+    "instrumentation_preserves_actions_and_terminal_money": true,
+    "method": "Seed 920 rerun twice with plain (uninstrumented) agents; both terminal-money pairs identical to each other AND to the instrumented run's seed-920 terminal money."
+  },
+  "state_models": {
+    "animal_state": {
+      "fields_observed": ["species (COW/SHEEP)", "count via len(view.my_pastures) + in-flight plans",
+        "plan.stage (NONE/ORDERED/BOUGHT/CARRYING/ACTIVE/ABANDONED)", "plan.site (tile coords or None)",
+        "plan.worker (pinned build-slot index or None)", "plan.stage_turn", "plan.retries",
+        "tile.fed_today", "tile.consecutive_unfed", "tile.cared_today", "tile.yield_units",
+        "tile.fertilizer_available", "tile.pending_care_bonus (engine-internal, not read by V9.3 logic)",
+        "shed[species]", "inventories[worker][species] (carry state)"],
+      "classification": "EXACTLY_RECONSTRUCTED for every field V9.3's own logic reads. animal_plans is a per-game, module-level, mutated-in-place list (fresh empty on module (re)load) -- NOT rebuilt from obs each turn; it is genuinely persistent game memory. Verified: each animal plan is REGENERATED once (economy() appends a new plan dict when a purchase gate first passes) then CONTINUES across turns via ORDERED -> BOUGHT -> CARRYING -> ACTIVE, or is ABANDONED/reverted to NONE via animal_reconcile()'s timeout/failure paths -- never silently re-derived from current tile state alone (a still-open ORDERED plan with no matching shed stock is NOT reconstructible from single-turn tile state; it requires the plan history)."
+    },
+    "target_generation": {
+      "purchase_species_selection": "Deterministic 3-branch order each turn a build slot is free: sheep-floor composition check (_min_sheep_for_fleet) first if SHEEP_ENABLED and under quota and _sheep_expansion_feasible(); else _animal_expansion_feasible() (COW); else _sheep_expansion_feasible() again as fallback. Both gate functions read only obs/view/budget/shed/n_animals/n_hands/quads/day plus the module-global reserved_sites list (itself deterministic, grown only on confirmed purchases). Classification: EXACTLY_RECONSTRUCTED (0/2750 and 0/2714 mismatches, see equivalence_results).",
+      "site_selection": "animal_setup_action() picks the nearest reserved_sites member still in candidates, else the globally nearest-to-shed empty/empty_pasture tile, excluding CENTER_TILES and taken_sites. Pure function of view/reserved_sites/exclude_sites. Classification: EXACTLY_RECONSTRUCTED (0/386 mismatches).",
+      "persistence_classification_per_plan_lifecycle": {
+        "NONE_to_ORDERED": "newly-generated (economy(), one per turn max)",
+        "ORDERED_to_BOUGHT": "continuing, confirmed against real shed delta (_agent confirmation pass)",
+        "BOUGHT_to_CARRYING_to_ACTIVE": "continuing, driven by animal_setup_action each turn until the animal is PLACEd",
+        "any_stage_to_ABANDONED": "abandoned via animal_reconcile()'s SETUP_STAGE_TIMEOUT/SETUP_MAX_RETRIES logic, or ACTIVE->ABANDONED if the tile empties with no replacement in carry",
+        "note": "Never regenerated from scratch mid-lifecycle -- a plan's identity (species+site+worker) persists across turns as the same dict object in animal_plans."
+      }
+    },
+    "target_selection": {
+      "maintenance_priority": "_pasture_priority(): 6-tier rank (urgent-unfed > unfed > ready-harvest > needs-care > fertilizer-waiting > nothing-pending), distance tiebreak. Pure function of (pos, farmer_pos, tile). Classification: EXACTLY_RECONSTRUCTED (0/25326 mismatches across farmer+hand calls, all seeds).",
+      "worker_dispatch_order": "Farmer's pinned setup plan (slot 0) runs first unless an urgent existing feed need preempts it; then farmer's maintenance-first fallback; hands in roster order, each pinned-setup-plan-first, then maintenance (critical_only gated by reserved_count), else fall through to crop duty. Fully deterministic, driven only by module globals (animal_plans, reserved_sites) and per-turn view/shed/carry -- no RNG.",
+      "competing_target_worker_fertilizer_interaction": "A worker only reaches the crop-duty fallthrough (and hence fertilizer-diversion eligibility) after BOTH its pinned setup op (if any) AND animal_maintenance_action() return None for that turn -- i.e. fertilizer/crop competition is strictly downstream of animal-service competition, never upstream of it."
+    },
+    "fertilizer_diversion": {
+      "generation": "view.fert_targets: ongoing-crop tiles (TOMATO/STRAWBERRY) with production events remaining, inside the eligibility window, and fertilized_until_day < day. Pure function of me.tiles + day. Classification: EXACTLY_RECONSTRUCTED (implicit in the Track B check -- every FERTILIZE op executed by V9.3 stood on a tile independently verified to be in the shadow-derived fert_targets set, 292/292 across 4 seeds).",
+      "admission": "A unit is only fertilizer-eligible after both animal-service duty AND ordinary crop-duty pre-emption resolve to nothing else for that unit (farmer_needs_crop/hand_needs_crop). Eligibility itself (fed by crop-task admission, already proven in V2.3O) plus this round's animal-service admission fully determines the candidate pool.",
+      "selection": "First-fit nearest-target consumption: farmer (if carrying FERTILIZER) claims first, then hands in roster order; a carrying unit claims/steps toward the nearest remaining fert_targets tile; a fertilizer-less unit at a center tile with >=2 in shed restocks instead. Reimplemented in shadow_fertilizer.py (full pool-consumption order) but diffed at the LEGALITY/ADMISSION layer only in this round (every executed op verified against its documented precondition, not yet diffed op-for-op against the full farmer_needs_crop/hand_needs_crop reconstruction) -- see equivalence_results.fertilizer for exact counts and the open scope note.",
+      "execution": "Confirmed via the downstream-equivalence determinism check: instrumentation changed nothing about which ops actually executed."
+    },
+    "shared_worker_conflicts": {
+      "model": "Single deterministic pass per turn, no auction/negotiation: (1) pinned animal-setup plans claim their worker first (unless urgent feed preempts), (2) remaining workers try animal_maintenance_action (critical_only for the first reserved_count hands), (3) remaining fall through to crop assignment via assign_tasks() (V2.3O's territory), (4) fertilizer-carrying/restocking units among that crop-duty group divert before assign_tasks() sees them. reserved_count (the crop-protection wall from V2.3O) is computed BEFORE this pass and is capped downward once fleet size passes ANIMAL_SERVICE_FLEET_THRESHOLD -- the only place animal-fleet size feeds back into crop-worker protection.",
+      "classification": "OBSERVED + EXACTLY_RECONSTRUCTED for every individual decision in the chain (0 mismatches); the chain's ORDERING itself is read directly from source, not independently re-derived from a different implementation, since it IS the control flow, not a value to reconstruct."
+    }
+  },
+  "dependency_graph_edges": [
+    {"from": "tile.fed_today/consecutive_unfed/yield_units/cared_today/fertilizer_available", "to": "_pasture_priority rank", "class": "EXACTLY_RECONSTRUCTED"},
+    {"from": "_pasture_priority rank + distance", "to": "animal_maintenance_action target pasture", "class": "EXACTLY_RECONSTRUCTED"},
+    {"from": "animal_maintenance_action result", "to": "worker availability for crop duty", "class": "EXACTLY_RECONSTRUCTED"},
+    {"from": "animal_plans[i].stage", "to": "animal_setup_action branch taken", "class": "EXACTLY_RECONSTRUCTED"},
+    {"from": "animal_plans[i].site + reserved_sites + taken_sites", "to": "animal_setup_action site pick", "class": "EXACTLY_RECONSTRUCTED"},
+    {"from": "obs/view/budget/shed/n_animals/n_hands/quads/day + reserved_sites", "to": "_animal_expansion_feasible / _sheep_expansion_feasible", "class": "EXACTLY_RECONSTRUCTED"},
+    {"from": "expansion gate result", "to": "new animal_plans entry (species selection)", "class": "EXACTLY_RECONSTRUCTED (gate logic); DERIVED_FROM_RECONSTRUCTIBLE_STATE for the resulting plan object, since appending is a direct, deterministic consequence"},
+    {"from": "confirmed purchase (shed delta)", "to": "reserved_sites growth (_grow_reserved_sites)", "class": "EXACTLY_RECONSTRUCTED"},
+    {"from": "view.fert_targets (tile scan)", "to": "fert_pool contents", "class": "EXACTLY_RECONSTRUCTED"},
+    {"from": "farmer_needs_crop / hand_needs_crop (from animal-service fallthrough)", "to": "fert dispatch candidate pool", "class": "DERIVED_FROM_RECONSTRUCTIBLE_STATE (logic transcribed and code-verified; not yet diffed op-for-op end to end)"},
+    {"from": "fert dispatch selection", "to": "assign_tasks() crop-unit input list", "class": "EXACTLY_RECONSTRUCTED (V2.3O boundary, unchanged)"},
+    {"from": "timing_engine (match_seed=42, deterministic)", "to": "sell-order priced_orders (not animal/fert)", "class": "OBSERVED, out of scope for Tracks A/B"}
+  ],
+  "equivalence_results": {
+    "animal_setup_action": {"oracle_calls": 386, "mismatches": 0, "seeds": [920, 921, 922, 923]},
+    "animal_maintenance_action": {"oracle_calls": 25326, "mismatches": 0, "seeds": [920, 921, 922, 923]},
+    "_animal_expansion_feasible": {"oracle_calls": 2750, "mismatches": 0, "seeds": [920, 921, 922, 923],
+      "note": "First pass showed 65 mismatches from a test-harness bug (reading module-global reserved_sites post-hoc instead of at call time); fixed by capturing reserved_sites per-call. Documented, not silently patched."},
+    "_sheep_expansion_feasible": {"oracle_calls": 2714, "mismatches": 0, "seeds": [920, 921, 922, 923],
+      "note": "Same harness bug/fix as above."},
+    "fertilizer": {
+      "fertilize_ops_checked": 292, "fertilize_ops_legal": 292,
+      "restock_ops_checked": 641, "restock_ops_legal": 641,
+      "scope": "Admission/eligibility layer only (every executed op verified to satisfy its documented precondition on independently-derived fert_targets/shed/CENTER_TILES state). Does not yet replay the exact multi-unit pool-consumption ORDER against a full farmer_needs_crop/hand_needs_crop reconstruction -- shadow_fertilizer.py implements that replay but it was not exercised in this round. Classified EXTRACTION_READY, not yet SHADOW_EXTRACTION_COMPLETE, for that specific sub-piece."
+    }
+  },
+  "oracle_local_state": [
+    "None identified for Track A (animal setup, maintenance, expansion gates) -- all decision inputs and outputs are exactly reconstructible from obs + module-persistent animal_plans/reserved_sites, both of which are themselves exactly reconstructible from prior-turn obs deltas.",
+    "Track B's exact multi-unit fert_pool consumption ORDER (which of several simultaneously-eligible units claims which tile first) is DERIVED_FROM_RECONSTRUCTIBLE_STATE, not ORACLE_LOCAL -- the logic was transcribed and is believed exact, but was not diffed end-to-end this round, so it is reported as open rather than claimed complete.",
+    "timing_engine's internal RNG stream (match_seed=42) affects sell-order priority scores, not animal/fert decisions; not investigated here (out of Track A/B scope, carried over from V2.3O's economy() boundary)."
+  ],
+  "independent_modifiability": {
+    "animal_maintenance_action": "Replaceable in isolation: reads only (pos, view, shed, carry, day, hour, exclude, critical_only), writes nothing but its own return value. Swapping its priority function would not change crop-task generation, market resolution, or fertilizer targeting -- only which pasture a given worker services this turn.",
+    "animal_setup_action": "Replaceable in isolation for SITE/PACING policy, but its plan-stage state machine (ORDERED/BOUGHT/CARRYING/ACTIVE/ABANDONED) is shared with animal_reconcile() and the _agent confirmation pass -- a controlling replacement would need to preserve that stage contract or also replace reconcile/confirmation together.",
+    "expansion gates (_animal_expansion_feasible/_sheep_expansion_feasible)": "Replaceable in isolation: pure boolean gates, no side effects of their own. A new gate could change WHICH species/whether to buy this turn without touching worker assignment or crop generation -- this is the smallest clean control boundary identified (see below).",
+    "fertilizer dispatch": "Tightly coupled to the crop-duty fallthrough (farmer_needs_crop/hand_needs_crop) inside _agent -- not cleanly separable into its own function today; a controlling replacement would need to either extract it into a real function first (a pure refactor, not a policy change) or reproduce the exact inline ordering."
+  },
+  "economic_opportunity_audit": {
+    "method": "Qualitative, code-level (not a fresh quantitative displacement-instance count this round) plus reuse of the 18+ prior rejected hypotheses in this exact subsystem recorded in project memory (Kaggriculture project state: rounds 3-11 fertilizer/animal-allocation family, all rejected, several decisively).",
+    "finding": "NO_LARGE_OPPORTUNITY_FOUND. The expansion gates, service-floor cap, and fertilizer admission order are already the product of extensive prior tuning-and-rejection (service ceiling ~10 animals re-verified 3 independent ways; GOOSE/EGG closed twice; 4 round-11 reallocation candidates rejected 0/40; clone-replica capital-allocation port rejected decisively). This round's contribution is exact independent verification that the CURRENT mechanism is deterministic and matches its own source, not a new lever."
+  },
+  "smallest_potential_controlling_boundary": "_animal_expansion_feasible / _sheep_expansion_feasible: pure boolean gates with no side effects beyond their return value, fully reconstructed and diffed to 0 mismatches over 2750+2714 real calls. A controlling variant could replace just these two functions (species/timing of the NEXT animal purchase) without touching worker dispatch, crop-task generation, fertilizer routing, or market resolution -- but per project memory this exact territory (reallocation/dynamic-targeting of animal purchases) has already been tested 4 independent ways in round 11 and rejected 0/40, so a new gate variant should have a genuinely new economic hypothesis, not another reallocation timing tweak.",
+  "next_recommended_experiment": "Diff shadow_fertilizer.py's full pool-consumption order (already written) against a from-scratch reconstruction of farmer_needs_crop/hand_needs_crop per turn (requires wrapping/inferring the animal-service fallthrough boolean per unit, not just its op) to close Track B's one remaining open piece. This is a test-harness completion, not new game logic to discover -- the source is fully read and transcribed already."
+}

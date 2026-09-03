@@ -31,3 +31,15 @@ venv/
 vendor/kaggle_environments_engine/visualizer/
 .cache/
 .local/
+
+# evolution loop artefacts
+evolve/gen/
+evolve/logs/
+evolve/*.db
+evolve/*.db-journal
+evolve/evolve_bundle.zip
+.mini_engine_cache/
+
+# replay JSON dumps (regenerable, 200MB+)
+Chatgpt Agents/Replay/
+*.DELETE_ME_stray_fuse_artifact
