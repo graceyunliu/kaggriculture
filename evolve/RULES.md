@@ -45,6 +45,18 @@ Read before proposing. Everything here was measured on the ladder engine, both s
 - Net-worth divergence starts at **day 10** in both tape matchups — the days-8–15 window (second land quadrant,
   herd at 10–14, 50–60 plants) is where the sweep/dispatch design decides the game.
 
+## Routing oracle (evolve/oracle.py, Sep 3 night) — routing alone is NOT the lever
+- Counterfactual executor with travel made free (every relocation = 1 turn) on C1 vs the Yuan800 tape, seeds 1–8:
+  own money changes between **−$63k and +$25k per seed, mean ≈ 0**. Idle unit-turns explode (3–10× the base).
+  With travel free, C1 does not have enough work to give its hands, and its economy does not scale production
+  to use the freed labor (hires and seed purchases are driven by load and morning cash, not by capacity).
+- Halving travel ("speed2") is also ≈ 0 on average. Conclusion: **a better router bolted onto C1's allocation
+  is worth little.** The frontier's edge is *paired*: it generates more obligations (13–14 animals, ~5 wheat tiles
+  planted every day, 400 wheat units sold) AND services them at 1.0 moves per action.
+- So proposals must couple the two: raise the work available per hand-day (herd size, continuous wheat/one-shot
+  planting cadence, harvest batching) together with the execution change that makes it serviceable. Execution-only
+  or allocation-only changes have both been measured to fail.
+
 ## Rules for proposals
 - Propose mechanisms, not knob nudges; each proposal should change behaviour in a way visible in the per-day trace.
 - Prefer execution-layer blocks. Batching, alternate-day watering of low-yield tiles, fertilize-from-carry, same-day deposit-and-sell, wheat cadence, fewer reversals, route merging.
