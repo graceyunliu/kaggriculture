@@ -17,6 +17,10 @@ RUN_ID="$(date +%Y%m%d-%H%M)"
 PY="${PYTHON:-python3}"
 
 mkdir -p evolve/logs evolve/reports
+# keep the checkout current (no-op if not a git checkout or offline)
+if [ -d .git ] && [ "${NO_PULL:-0}" != "1" ]; then
+  git pull --ff-only -q 2>&1 | tee -a evolve/logs/nightly.log || true
+fi
 echo "[$(date)] starting run $RUN_ID: hours=$HOURS jobs=$JOBS frontier=$FRONTIER python=$($PY --version 2>&1)" | tee -a evolve/logs/nightly.log
 
 # caffeinate keeps a Mac awake for the duration (no-op elsewhere)
