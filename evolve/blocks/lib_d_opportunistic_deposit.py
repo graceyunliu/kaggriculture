@@ -1,14 +1,5 @@
 def _unit_action(i, pos, carry, obs, v, pools, seeds_left, shed, unlocked_shed):
     day, hour = obs["day"], obs["hour"]
-    if day == 0 and hour == 0:
-        S["opponent_mode"] = None
-    if S.get("opponent_mode") is None and day >= 1:
-        other = obs["farms"][1 - obs["player"]]
-        other_animals = sum(1 for row in other["tiles"] for t in row if isinstance(t, dict) and "animal" in t)
-        if day == 1 and (other_animals >= 5 or other.get("money", 0) > 100):
-            S["opponent_mode"] = "other"
-        elif day >= 2:
-            S["opponent_mode"] = "other" if other.get("money", 0) > 95 else "yuan"
     if any(carry.get(a, 0) > 0 for a in ANIMALS):
         op = _setup_step(i, pos, v, carry)
         if op is not None:
@@ -35,6 +26,15 @@ def _unit_action(i, pos, carry, obs, v, pools, seeds_left, shed, unlocked_shed):
                 return ["DROP"]
             if KNOBS["drop_radius"] > 0 and _shed_dist(pos) <= KNOBS["drop_radius"]:
                 return [_step(pos, _nearest(pos, unlocked_shed))]
+    # D: opportunistic deposit — not on a route, not carrying an animal or feed wheat,
+    # carrying a modest amount of product, and one step from a shed tile: step on and DROP
+    # now instead of waiting for the drop_min/drop_radius threshold or the next sweep decision.
+    if i not in S["routes"] and carry.get("WHEAT", 0) == 0 and 0 < prod_carried < 4 and day < 28 and hour >= 1:
+        if pos in unlocked_shed:
+            return ["DROP"]
+        nearest_shed = _nearest(pos, unlocked_shed)
+        if _dist(pos, nearest_shed) == 1:
+            return [_step(pos, nearest_shed)]
     if i in S["routes"]:
         op = _route_step(i, pos, v, day, hour, shed, carry, unlocked_shed)
         if op is not None:
@@ -67,4 +67,3 @@ def _unit_action(i, pos, carry, obs, v, pools, seeds_left, shed, unlocked_shed):
     if op is not None:
         return op
     return ["PASS"]
-

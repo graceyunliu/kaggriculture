@@ -32,7 +32,10 @@ def knob_importance(rows, ref):
             continue
         p = json.loads(r["params"])
         for k in space.SPACE:
-            by[k][p[k]].append(r["dev_margin"])
+            if k not in p:          # candidates rendered before the chassis gained this key
+                continue
+            v = p[k]
+            by[k][v if not isinstance(v, (list, dict)) else str(v)].append(r["dev_margin"])
     out = []
     for k, vals in by.items():
         if len(vals) < 2:
