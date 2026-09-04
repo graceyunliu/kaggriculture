@@ -43,6 +43,7 @@ ENGINES = {
     "1.32": ROOT / "vendor" / "kaggle_environments_engine",
 }
 CACHE_DIR = ROOT / ".mini_engine_cache"
+CACHE_VERSION = "v2"  # v2 adds plants/weeds to cached traces
 
 
 # --------------------------------------------------------------------------- shim
@@ -71,6 +72,21 @@ def structify(o):
         return o
     if isinstance(o, list):
         return [structify(v) for v in o]
+    return o
+
+
+def _fast_copy(o):
+    """Copy the JSON-like engine state without deepcopy's memo/reconstruction cost."""
+    kind = type(o)
+    if kind is Struct:
+        return Struct({k: _fast_copy(v) for k, v in o.items()})
+    if kind is dict:
+        return {k: _fast_copy(v) for k, v in o.items()}
+    if kind is list:
+        return [_fast_copy(v) for v in o]
+    if kind is tuple:
+        return tuple(_fast_copy(v) for v in o)
+    # Engine observations are restricted to immutable JSON scalars.
     return o
 
 
@@ -144,22 +160,31 @@ class _Env:
 # --------------------------------------------------------------------------- game
 def _snapshot(farm, private):
     animals = {}
+    plants = 0
+    weeds = 0
     for row in farm["tiles"]:
         for t in row:
             if isinstance(t, dict) and "animal" in t:
                 animals[t["animal"]] = animals.get(t["animal"], 0) + 1
+            if isinstance(t, dict) and t.get("kind") == "PLANT":
+                plants += 1
+            if isinstance(t, dict) and t.get("kind") == "WEED":
+                weeds += 1
     return {
         "money": farm["money"],
         "hands": len(farm["hands"]),
         "animals": sum(animals.values()),
         "animal_mix": animals,
+        "plants": plants,
+        "weeds": weeds,
         "land": len(farm["unlocked_quadrants"]),
         "shed": dict(private["shed"]),
         "seeds": dict(private.get("seeds", {})),
     }
 
 
-def run_game(agent_a, agent_b, seed, engine="master", config=None, trace=True, turns=None):
+def run_game(agent_a, agent_b, seed, engine="master", config=None, trace=True, turns=None,
+             debug_agent_mutation=False):
     """Play one game, agent_a in seat 0. Returns dict with money, winner, trace."""
     mod, defaults = load_engine(engine)
     cfg = dict(defaults)
@@ -182,6 +207,7 @@ def run_game(agent_a, agent_b, seed, engine="master", config=None, trace=True, t
     tpd = int(cfg["turnsPerDay"])
     steps = int(cfg["episodeSteps"])
     traces = [{"money": [], "hands": [], "animals": [], "land": [], "shed": [], "animal_mix": [],
+               "plants": [], "weeds": [],
                "sales": [], "buys": [], "hands_eod": []} for _ in range(2)]
     # --- sales/buy logging: wrap the engine's _commit_unit (looked up by global name)
     day_sales = [dict(), dict()]
@@ -212,7 +238,7 @@ def run_game(agent_a, agent_b, seed, engine="master", config=None, trace=True, t
         if obs0.hour == 0 and trace:
             for i in range(2):
                 snap = _snapshot(obs0.farms[i], state[i].observation.private)
-                for k in ("money", "hands", "animals", "land", "shed", "animal_mix"):
+                for k in ("money", "hands", "animals", "land", "shed", "animal_mix", "plants", "weeds"):
                     traces[i][k].append(snap[k])
                 if step > 0:
                     traces[i]["sales"].append(day_sales[i])
@@ -223,13 +249,16 @@ def run_game(agent_a, agent_b, seed, engine="master", config=None, trace=True, t
             for i in range(2):
                 traces[i]["hands_eod"].append(len(obs0.farms[i]["hands"]))
         for i in range(2):
-            obs = copy.deepcopy(state[i].observation)
+            before = copy.deepcopy(state) if debug_agent_mutation else None
+            obs = _fast_copy(state[i].observation)
             obs["step"] = step
             try:
-                act = agents[i](obs, copy.deepcopy(env.configuration))
+                act = agents[i](obs, _fast_copy(env.configuration))
             except Exception as e:  # noqa: BLE001 - agent crash = PASS turn, counted
                 errors[i] += 1
                 act = {}
+            if debug_agent_mutation and state != before:
+                raise AssertionError(f"agent {i} mutated engine state at step {step}")
             state[i].action = act if isinstance(act, dict) else {}
         state = mod.interpreter(state, env)
         step += 1
@@ -246,7 +275,7 @@ def run_game(agent_a, agent_b, seed, engine="master", config=None, trace=True, t
     if trace:
         for i in range(2):
             snap = _snapshot(obs0.farms[i], state[i].observation.private)
-            for k in ("money", "hands", "animals", "land", "shed", "animal_mix"):
+            for k in ("money", "hands", "animals", "land", "shed", "animal_mix", "plants", "weeds"):
                 traces[i][k].append(snap[k])
             traces[i]["sales"].append(day_sales[i])
             traces[i]["buys"].append(day_buys[i])
@@ -265,7 +294,7 @@ def _sha(path):
 
 def _cache_key(a, b, seed, engine, config):
     c = json.dumps(config or {}, sort_keys=True)
-    return f"{_sha(a)}_{_sha(b)}_{engine}_{hashlib.md5(c.encode()).hexdigest()[:8]}_{seed}"
+    return f"{CACHE_VERSION}_{_sha(a)}_{_sha(b)}_{engine}_{hashlib.md5(c.encode()).hexdigest()[:8]}_{seed}"
 
 
 def _job(args):
@@ -288,15 +317,18 @@ def _job(args):
     return res
 
 
-def evaluate(a, b, seeds, engine="master", config=None, both_seats=True, jobs=None, use_cache=True):
+def evaluate(a, b, seeds, engine="master", config=None, both_seats=True, jobs=None, use_cache=True, pool=None):
     """Paired evaluation of agent a vs b. Returns per-seed margins (a - b) and summary."""
     jobs_list = []
     for s in seeds:
         jobs_list.append((a, b, s, engine, config, use_cache, False))
         if both_seats:
             jobs_list.append((b, a, s, engine, config, use_cache, True))
-    with Pool(jobs or max(1, os.cpu_count() - 1)) as p:
-        results = p.map(_job, jobs_list)
+    if pool is not None:
+        results = pool.map(_job, jobs_list)
+    else:
+        with Pool(jobs or max(1, os.cpu_count() - 1)) as p:
+            results = p.map(_job, jobs_list)
     per_seed = {}
     for r in results:
         s = r["seed"]
