@@ -38,7 +38,7 @@ machinery and find whatever interaction effects the hand sweeps missed.
 population (SQLite)  ->  pick parent(s)  ->  mutate / crossover  ->  render agent file
         ^                                                                 |
         |                                                                 v
-   archive score  <-  cascade: fingerprint -> smoke -> dev -> held-out  <-+
+   archive score  <-  cascade: fingerprint -> pattern -> smoke -> dev -> held-out  <-+
 ```
 
 * **Search space** (`space.py`): 24 `KNOBS` of K.py + 12 numeric constants (`MAX_HANDS`, `NEAR_RADIUS`,
@@ -49,9 +49,11 @@ population (SQLite)  ->  pick parent(s)  ->  mutate / crossover  ->  render agen
   a run. Candidate keys include the snapshot sha; scores are only comparable within a snapshot.
 * **Cascade** (`cascade.py`), all paired both-seats on the master engine, cached by file sha:
   1. fingerprint — 2 games (seeds 1, 2) vs frontier; identical per-day trace to any known candidate ⇒ no-op, skipped
-  2. smoke — seeds 1–3 both seats vs frontier; agent errors or margin < −$6k ⇒ dead
-  3. dev — seeds 1–10 both seats vs frontier **and** vs the scenario-v14 clone; this is the selection score
-  4. held-out — seeds 11–30, only if dev margin ≥ +$1.5k with t ≥ 2; **never used for selection**
+  2. pattern death — reuses fingerprint seed 1 (no extra game); catches early animal escapes, ≥3 weeds,
+     or cash below $50 on ≥3 of days 1–8 while owning ≥3 animals
+  3. smoke — seeds 1–3 both seats vs frontier; agent errors or margin < −$6k ⇒ dead
+  4. dev — seeds 1–10 both seats vs frontier **and** vs the scenario-v14 clone; this is the selection score
+  5. held-out — seeds 11–30, only if dev margin ≥ +$1.5k with t ≥ 2; **never used for selection**
 * **Selection** (`loop.py`): parents by tournament from the top of the dev ranking (65%), a random
   behavioural cell — animals@day15 × land × hands (25%), or uniform (10%). Children: Gaussian/flip
   mutation (70%) or uniform crossover (30%). Duplicates are skipped by key.
@@ -81,7 +83,8 @@ python3 evolve/report.py
 ```
 
 Useful flags on `loop.py`: `--max-candidates N`, `--jobs N`, `--frontier`, `--clone`, `--base evolve/base/K_<sha>.py`
-(continue a population on an older chassis snapshot), `--smoke-floor`, `--dev-promote`, `--mutation-rate`, `--sigma`, `--seed`.
+(continue a population on an older chassis snapshot), `--smoke-floor`, `--dev-promote`, `--no-pattern-death`,
+`--mutation-rate`, `--sigma`, `--seed`.
 
 ## Put it on the MacBook Air
 
