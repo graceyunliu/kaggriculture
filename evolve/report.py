@@ -80,7 +80,7 @@ def write_report(db, run_id):
     L.append("")
     L.append("| status | candidates | games |")
     L.append("|---|---:|---:|")
-    for s in ("noop", "dead_smoke", "alive", "held_fail", "held_pass", "error"):
+    for s in ("noop", "dead_pattern", "dead_smoke", "alive", "held_fail", "held_pass", "error"):
         n, g = counts.get(s, (0, 0))
         L.append(f"| {s} | {n} | {g} |")
     L.append("")
