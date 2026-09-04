@@ -34,6 +34,10 @@ DEFAULTS = {
     "dev_promote": 1500.0,    # dev margin (vs frontier) needed to go to held-out
     "dev_promote_t": 2.0,
     "engine": "master",
+    "pattern_death_day": 12,
+    "pattern_death_weeds": 3,
+    "pattern_death_cash_days": 3,
+    "pattern_death_enabled": True,
 }
 
 
@@ -53,7 +57,31 @@ def fingerprint_game(cand, frontier, engine="master"):
         "money_d10": int(tr["money"][10]) if len(tr["money"]) > 10 else None,
     }
     errs = [sum(x["errors"][0] for x in rs), sum(x["errors"][1] for x in rs)]
-    return fp, desc, sum(x.get("seconds", 0.0) for x in rs), errs
+    return fp, desc, sum(x.get("seconds", 0.0) for x in rs), errs, tr
+
+
+def pattern_death_reason(tr, cfg):
+    """Return a conservative early-death reason from one existing fingerprint trace."""
+    last_day = min(int(cfg["pattern_death_day"]), len(tr.get("animals", [])) - 1)
+    mixes = tr.get("animal_mix", [])
+    sales = tr.get("sales", [])
+    for day in range(1, min(last_day + 1, len(mixes))):
+        sold = sales[day - 1] if day - 1 < len(sales) else {}
+        for species, previous in mixes[day - 1].items():
+            if previous - mixes[day].get(species, 0) >= 1 and not sold.get(species):
+                return f"animal escaped by day {day}: {species}"
+
+    weeds = tr.get("weeds", [])
+    weeds_created = sum(max(0, weeds[d] - weeds[d - 1])
+                        for d in range(1, min(last_day + 1, len(weeds))))
+    if weeds_created >= int(cfg["pattern_death_weeds"]):
+        return f"{weeds_created} weeds created by day {last_day}"
+
+    cash_days = sum(tr["money"][d] < 50 and tr["animals"][d] >= 3
+                    for d in range(1, min(9, last_day + 1, len(tr["money"]), len(tr["animals"]))))
+    if cash_days >= int(cfg["pattern_death_cash_days"]):
+        return f"cash trap on {cash_days} days (days 1-8)"
+    return None
 
 
 _POOL = None
@@ -137,7 +165,7 @@ def run_cascade(db, key, cand_path, frontier, clone, cfg, jobs=None, log=print):
     engine = cfg.get("engine", "master")
     # ---- stage 0: fingerprint
     try:
-        fp, desc, secs, errs = fingerprint_game(cand_path, frontier, engine)
+        fp, desc, secs, errs, fingerprint_trace = fingerprint_game(cand_path, frontier, engine)
     except Exception as e:  # noqa: BLE001
         db.update(key, status="error", note=f"fingerprint: {e!r}")
         return "error"
@@ -150,6 +178,13 @@ def run_cascade(db, key, cand_path, frontier, clone, cfg, jobs=None, log=print):
     if sum(errs) > 0:
         db.update(key, status="dead_smoke", note=f"agent errors in fingerprint game: {errs}")
         return "dead_smoke"
+
+    # ---- stage 0.5: pattern death (no extra game; uses the first fingerprint trace)
+    if cfg.get("pattern_death_enabled", True):
+        reason = pattern_death_reason(fingerprint_trace, cfg)
+        if reason:
+            db.update(key, status="dead_pattern", stage=0, note=reason)
+            return "dead_pattern"
 
     # ---- stage 1: smoke
     r, dt = _eval(cand_path, frontier, SMOKE_SEEDS, engine, jobs)
