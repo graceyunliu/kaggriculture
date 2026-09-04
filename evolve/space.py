@@ -22,6 +22,7 @@ BASE_DIR = ROOT / "evolve" / "base"          # per-run snapshots of it, one per 
 GEN_DIR = ROOT / "evolve" / "gen"
 K_SRC = K_LIVE                               # the snapshot in use; set by freeze_base()
 BASE_SHA = ""
+FRONTIER_SHA = ""                            # identity of the yardstick a candidate was scored against; set by set_frontier()
 
 sys.path.insert(0, str(ROOT / "evolve"))
 import blocks as _blocks  # noqa: E402
@@ -39,6 +40,14 @@ def freeze_base(src=K_LIVE):
         snap.write_text(src.read_text())
     K_SRC, BASE_SHA = snap, sha
     return snap, sha
+
+
+def set_frontier(frontier_path):
+    """Bind the yardstick a run scores candidates against into the candidate key, so dev/held margins
+    from one frontier (e.g. V3_12) can never collide with or masquerade as margins from another (e.g. H10)."""
+    global FRONTIER_SHA
+    FRONTIER_SHA = hashlib.sha256(Path(frontier_path).read_bytes()).hexdigest()[:12]
+    return FRONTIER_SHA
 
 # name -> (kind, low, high, step) ; kind in {"int", "float", "cat"}; for cat: (kind, choices)
 KNOB_SPACE = {
@@ -151,7 +160,7 @@ def crossover(a, b, rng=random):
 
 def params_key(params, blocks=None):
     """Identity of a candidate = parameters + block overrides + the chassis snapshot they render into."""
-    payload = json.dumps({k: params[k] for k in sorted(SPACE)}, sort_keys=True) + "|" + BASE_SHA + "|" + _blocks.blocks_key(blocks)
+    payload = json.dumps({k: params[k] for k in sorted(SPACE)}, sort_keys=True) + "|" + BASE_SHA + "|" + FRONTIER_SHA + "|" + _blocks.blocks_key(blocks)
     return hashlib.sha256(payload.encode()).hexdigest()[:12]
 
 

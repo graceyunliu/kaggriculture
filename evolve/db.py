@@ -106,7 +106,7 @@ class DB:
         self.conn.execute("UPDATE candidates SET games=games+?, seconds=seconds+? WHERE key=?", (n, seconds, key))
         self.conn.commit()
 
-    def alive(self, limit=None, island=None, k_sha=None):
+    def alive(self, limit=None, island=None, k_sha=None, frontier=None):
         q = ("SELECT c.* FROM candidates c JOIN runs r ON r.run_id=c.run_id "
              "WHERE c.status IN ('alive','held_pass','held_fail') AND c.dev_margin IS NOT NULL")
         args = []
@@ -116,6 +116,11 @@ class DB:
         if k_sha:
             q += " AND r.k_sha=?"
             args.append(k_sha)
+        if frontier:
+            # dev/held margins are only comparable within one yardstick; never mix candidates scored
+            # against different frontiers into the same pool or leaderboard.
+            q += " AND r.frontier=?"
+            args.append(frontier)
         q += " ORDER BY c.dev_margin DESC"
         if limit:
             q += f" LIMIT {int(limit)}"
