@@ -28,6 +28,12 @@ Correctness checks:
 - Debug mutation guards passed for both representative pairs; the guard deep-copies engine state and asserts
   equality after each agent call.
 
+Broader mutation verification after review: ten full seed-1 games (719 played steps each) passed the guard with zero
+agent errors: `C1.py`, `C2.py`, `E1.py`, `E_block.py`, `E_c956.py`, `E_daba.py`, `E_e4a4.py`,
+`E_fert1_block.py`, `H10.py`, and `H12.py`, each against `V3_12.py`. Because the guard checks after both agent
+calls on every turn, this exercised both the ten sampled agents and the common opponent for 14,380 guarded
+agent invocations in total.
+
 ## Pattern-death calibration
 
 The screen uses seed 1's existing fingerprint trace and adds no games. The results-branch `archive.json` was
