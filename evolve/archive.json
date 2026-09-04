@@ -1,27 +1,27 @@
 {
- "generated": "2026-09-04T13:45:42",
- "run_id": "20260904-114527",
+ "generated": "2026-09-04T15:46:19",
+ "run_id": "20260904-134610",
  "chassis_sha": "7bd4980c7158",
  "frontier": "candidates/H10.py",
  "clone": "Opponents/tape_milanleonard_102563171.py",
  "summary": {
-  "elapsed_s": 7214,
-  "evaluated": 477,
+  "elapsed_s": 7209,
+  "evaluated": 472,
   "counts": {
-   "alive": 374,
-   "dead_smoke": 82,
-   "noop": 21
+   "alive": 365,
+   "dead_smoke": 85,
+   "noop": 22
   },
-  "games": 18650,
-  "games_per_hour": 9306
+  "games": 18244,
+  "games_per_hour": 9111
  },
  "counts_all_runs": {
-  "alive": 2319,
-  "dead_smoke": 635,
+  "alive": 2684,
+  "dead_smoke": 720,
   "held_fail": 29,
   "held_pass": 452,
   "new": 2,
-  "noop": 457
+  "noop": 479
  },
  "islands": {
   "v312": [
@@ -858,113 +858,17 @@
     "note": null
    },
    {
-    "key": "7a8e7d017015",
+    "key": "c0dd5e8f98cc",
     "island": "v312",
-    "origin": "crossover",
+    "origin": "mutate",
     "status": "alive",
-    "dev": -6367.4,
-    "dev_t": -1.9489669397192924,
-    "dev_wl": [
-     3,
-     7
-    ],
-    "clone": -9166.05,
-    "held": null,
-    "held_t": null,
-    "held_clone": null,
-    "diff_vs_c1": {
-     "melon_floor": [
-      150,
-      0
-     ],
-     "min_hands": [
-      3,
-      5
-     ],
-     "load_per_hand": [
-      20,
-      18
-     ],
-     "open_wheat": [
-      7,
-      9
-     ],
-     "feed_spare_poor": [
-      0,
-      1
-     ],
-     "wheat_cap": [
-      18,
-      21
-     ],
-     "wheat_water_tier": [
-      0,
-      1
-     ],
-     "wheat_sell_price": [
-      30,
-      27
-     ],
-     "CROP_SWEEP_RADIUS": [
-      4,
-      3
-     ],
-     "MELON_MAX_TILES": [
-      40,
-      41
-     ],
-     "NEAR_RADIUS": [
-      3,
-      2
-     ],
-     "MAX_SHEEP": [
-      12,
-      14
-     ]
-    },
-    "blocks": [
-     "crop_admission"
-    ],
-    "ablation": null,
-    "diag": "cand pulls ahead of C1 from day 18 (gap +2,003 -> final +55,475); days 16-23 drivers: sales_rev +20,718, work_turns +100, feed_hour -1.45, missed_water -2. Hands 13 vs 13, animals 13 vs 10, plants 78 vs 79.",
-    "exec": {
-     "final_networth": 139940,
-     "sales": 177150,
-     "buys": 27074,
-     "missed_feed": 3,
-     "missed_water": 532,
-     "escapes": 1,
-     "weeds_new": 19,
-     "unit_turns": 7303,
-     "move_share": 0.536,
-     "idle_share": 0.089,
-     "travel_per_task": 1.43,
-     "reversals": 26,
-     "feed_hour": 9.9,
-     "water_hour": 13.9,
-     "max_hands": 13,
-     "max_animals": 13
-    },
-    "descriptor": {
-     "animals_d15": 11,
-     "land_final": 4,
-     "hands_max": 6,
-     "money_d10": 1898
-    },
-    "note": null
-   },
-   {
-    "key": "80a9443c5b67",
-    "island": "v312",
-    "origin": "crossover",
-    "status": "alive",
-    "dev": -6498.6,
-    "dev_t": -3.6030395079418374,
+    "dev": -5999.8,
+    "dev_t": -3.1548921602294224,
     "dev_wl": [
      2,
      8
     ],
-    "clone": -13551.6,
+    "clone": -6277.85,
     "held": null,
     "held_t": null,
     "held_clone": null,
@@ -972,10 +876,6 @@
      "melon_floor": [
       150,
       200
-     ],
-     "wheat_stock": [
-      0,
-      6
      ],
      "min_hands": [
       3,
@@ -1001,10 +901,6 @@
       5,
       6
      ],
-     "fert_buy": [
-      0,
-      1
-     ],
      "demand_share": [
       0.5,
       0.45
@@ -1013,15 +909,19 @@
       20,
       17
      ],
-     "wheat_per_animal": [
-      0.0,
-      0.1
-     ],
      "wheat_cap": [
       18,
       20
      ],
      "wheat_water_tier": [
+      0,
+      1
+     ],
+     "wheat_sell_price": [
+      30,
+      37
+     ],
+     "wheat_hold_days": [
       0,
       1
      ],
@@ -1033,13 +933,17 @@
       40,
       41
      ],
+     "MELON_PRICE_CUSHION": [
+      100,
+      121
+     ],
      "NEAR_RADIUS": [
       3,
       2
      ],
      "MAX_SHEEP": [
       12,
-      11
+      14
      ],
      "OPENING_MELONS": [
       10,
@@ -1050,22 +954,22 @@
      "crop_admission"
     ],
     "ablation": null,
-    "diag": "cand falls behind C1 from day 22 (gap -4,035 -> final -13,716); days 20-27 drivers: idle_turns +595, sales_rev -23,353, work_turns -54, reversals +4. Hands 13 vs 10, animals 17 vs 10, plants 30 vs 42.",
+    "diag": "cand falls behind C1 from day 22 (gap -4,453 -> final -14,214); days 20-27 drivers: sales_rev -25,101, idle_turns +508, work_turns -24, reversals +1. Hands 13 vs 10, animals 17 vs 10, plants 52 vs 42.",
     "exec": {
-     "final_networth": 70749,
-     "sales": 98098,
-     "buys": 24846,
-     "missed_feed": 3,
-     "missed_water": 211,
+     "final_networth": 70251,
+     "sales": 97078,
+     "buys": 24137,
+     "missed_feed": 1,
+     "missed_water": 230,
      "escapes": 0,
-     "weeds_new": 2,
-     "unit_turns": 7473,
-     "move_share": 0.371,
-     "idle_share": 0.322,
-     "travel_per_task": 1.21,
+     "weeds_new": 5,
+     "unit_turns": 7498,
+     "move_share": 0.387,
+     "idle_share": 0.302,
+     "travel_per_task": 1.24,
      "reversals": 35,
-     "feed_hour": 9.9,
-     "water_hour": 12.8,
+     "feed_hour": 9.8,
+     "water_hour": 13.2,
      "max_hands": 13,
      "max_animals": 17
     },
@@ -1073,33 +977,33 @@
      "animals_d15": 12,
      "land_final": 3,
      "hands_max": 6,
-     "money_d10": 5177
+     "money_d10": 5188
     },
     "note": null
    },
    {
-    "key": "68abcd931d88",
+    "key": "fbf6c9d64309",
     "island": "v312",
     "origin": "mutate",
     "status": "alive",
-    "dev": -6692.35,
-    "dev_t": -3.1055833197160427,
+    "dev": -6081.55,
+    "dev_t": -2.7759381125733666,
     "dev_wl": [
-     1,
-     9
+     2,
+     8
     ],
-    "clone": -4659.7,
+    "clone": -11814.5,
     "held": null,
     "held_t": null,
     "held_clone": null,
     "diff_vs_c1": {
      "melon_floor": [
       150,
-      200
+      0
      ],
      "harvest_min": [
       2,
-      1
+      3
      ],
      "min_hands": [
       3,
@@ -1121,9 +1025,141 @@
       2,
       3
      ],
+     "feed_spare_poor": [
+      0,
+      3
+     ],
      "demand_share": [
       0.5,
       0.6
+     ],
+     "max_animals": [
+      20,
+      17
+     ],
+     "wheat_cap": [
+      18,
+      20
+     ],
+     "wheat_water_tier": [
+      0,
+      1
+     ],
+     "MAX_HANDS": [
+      13,
+      12
+     ],
+     "CROP_SWEEP_RADIUS": [
+      4,
+      3
+     ],
+     "STRAW_CUTOFF": [
+      17,
+      19
+     ],
+     "MELON_PRICE_CUSHION": [
+      100,
+      91
+     ],
+     "HERD_LAST_DAY": [
+      19,
+      18
+     ],
+     "NEAR_RADIUS": [
+      3,
+      2
+     ],
+     "OPP_GROWTH": [
+      1.3,
+      1.2
+     ],
+     "MAX_SHEEP": [
+      12,
+      13
+     ],
+     "OPENING_MELONS": [
+      10,
+      11
+     ]
+    },
+    "blocks": [
+     "crop_admission"
+    ],
+    "ablation": null,
+    "diag": "cand falls behind C1 from day 20 (gap -5,971 -> final -38,747); days 18-25 drivers: sales_rev -30,715, work_turns -116, idle_turns +95, water_hour +1.19. Hands 12 vs 13, animals 10 vs 10, plants 54 vs 64.",
+    "exec": {
+     "final_networth": 45718,
+     "sales": 68213,
+     "buys": 21553,
+     "missed_feed": 1,
+     "missed_water": 345,
+     "escapes": 0,
+     "weeds_new": 0,
+     "unit_turns": 6926,
+     "move_share": 0.481,
+     "idle_share": 0.177,
+     "travel_per_task": 1.4,
+     "reversals": 23,
+     "feed_hour": 9.5,
+     "water_hour": 13.7,
+     "max_hands": 12,
+     "max_animals": 10
+    },
+    "descriptor": {
+     "animals_d15": 10,
+     "land_final": 3,
+     "hands_max": 6,
+     "money_d10": 2593
+    },
+    "note": null
+   },
+   {
+    "key": "67bac3cf0a80",
+    "island": "v312",
+    "origin": "mutate",
+    "status": "alive",
+    "dev": -6300.55,
+    "dev_t": -3.457037630799079,
+    "dev_wl": [
+     1,
+     9
+    ],
+    "clone": -3108.35,
+    "held": null,
+    "held_t": null,
+    "held_clone": null,
+    "diff_vs_c1": {
+     "wheat_stock": [
+      0,
+      6
+     ],
+     "min_hands": [
+      3,
+      5
+     ],
+     "load_per_hand": [
+      20,
+      16
+     ],
+     "open_melons": [
+      8,
+      5
+     ],
+     "open_wheat": [
+      7,
+      9
+     ],
+     "open_cows": [
+      2,
+      3
+     ],
+     "fert_buy": [
+      0,
+      1
+     ],
+     "demand_share": [
+      0.5,
+      0.55
      ],
      "max_animals": [
       20,
@@ -1141,9 +1177,17 @@
       4,
       3
      ],
-     "STRAW_CUTOFF": [
-      17,
-      15
+     "MELON_MAX_TILES": [
+      40,
+      41
+     ],
+     "MELON_PRICE_CUSHION": [
+      100,
+      143
+     ],
+     "HERD_LAST_DAY": [
+      19,
+      18
      ],
      "NEAR_RADIUS": [
       3,
@@ -1151,36 +1195,32 @@
      ],
      "OPP_GROWTH": [
       1.3,
-      1.2
+      1.4
      ],
      "MAX_SHEEP": [
       12,
       14
-     ],
-     "OPENING_MELONS": [
-      10,
-      11
      ]
     },
     "blocks": [
      "crop_admission"
     ],
     "ablation": null,
-    "diag": "cand falls behind C1 from day 20 (gap -7,212 -> final -33,050); days 18-25 drivers: sales_rev -27,482, idle_turns +174, work_turns -57, water_hour +1.54. Hands 12 vs 13, animals 10 vs 10, plants 52 vs 64.",
+    "diag": "cand falls behind C1 from day 19 (gap -1,632 -> final -33,085); days 17-24 drivers: sales_rev -20,986, idle_turns +131, work_turns -49, water_hour +1.25. Hands 13 vs 13, animals 10 vs 10, plants 63 vs 70.",
     "exec": {
-     "final_networth": 51415,
-     "sales": 75722,
-     "buys": 20906,
+     "final_networth": 51380,
+     "sales": 74842,
+     "buys": 20823,
      "missed_feed": 1,
-     "missed_water": 342,
+     "missed_water": 345,
      "escapes": 0,
-     "weeds_new": 0,
-     "unit_turns": 7263,
-     "move_share": 0.471,
-     "idle_share": 0.19,
-     "travel_per_task": 1.39,
-     "reversals": 18,
-     "feed_hour": 9.5,
+     "weeds_new": 2,
+     "unit_turns": 7215,
+     "move_share": 0.476,
+     "idle_share": 0.184,
+     "travel_per_task": 1.4,
+     "reversals": 22,
+     "feed_hour": 9.6,
      "water_hour": 13.7,
      "max_hands": 13,
      "max_animals": 10
@@ -1189,12 +1229,100 @@
      "animals_d15": 10,
      "land_final": 3,
      "hands_max": 6,
-     "money_d10": 2593
+     "money_d10": 2597
     },
     "note": null
    }
   ],
   "queue": [
+   {
+    "key": "2bf40c07f8d0",
+    "island": "queue",
+    "origin": "crossover",
+    "status": "alive",
+    "dev": -4901.35,
+    "dev_t": -2.7063635932678336,
+    "dev_wl": [
+     3,
+     7
+    ],
+    "clone": -21628.8,
+    "held": null,
+    "held_t": null,
+    "held_clone": null,
+    "diff_vs_c1": {
+     "min_hands": [
+      3,
+      4
+     ],
+     "open_wheat": [
+      7,
+      9
+     ],
+     "fert_buy": [
+      0,
+      2
+     ],
+     "wheat_water_tier": [
+      0,
+      1
+     ],
+     "MAX_HANDS": [
+      13,
+      12
+     ],
+     "CROP_SWEEP_RADIUS": [
+      4,
+      2
+     ],
+     "STRAW_CUTOFF": [
+      17,
+      16
+     ],
+     "MELON_PRICE_CUSHION": [
+      100,
+      67
+     ],
+     "OPP_GROWTH": [
+      1.3,
+      1.1
+     ],
+     "MAX_SHEEP": [
+      12,
+      10
+     ]
+    },
+    "blocks": [
+     "crop_admission"
+    ],
+    "ablation": null,
+    "diag": "cand pulls ahead of C1 from day 11 (gap +3,798 -> final +21,064); days 9-16 drivers: missed_water -34, feed_hour -1.83, idle_turns -21, missed_feed -1. Hands 9 vs 10, animals 10 vs 10, plants 58 vs 80.",
+    "exec": {
+     "final_networth": 105529,
+     "sales": 129350,
+     "buys": 23004,
+     "missed_feed": 1,
+     "missed_water": 413,
+     "escapes": 1,
+     "weeds_new": 6,
+     "unit_turns": 6126,
+     "move_share": 0.525,
+     "idle_share": 0.096,
+     "travel_per_task": 1.39,
+     "reversals": 19,
+     "feed_hour": 9.6,
+     "water_hour": 14.1,
+     "max_hands": 12,
+     "max_animals": 10
+    },
+    "descriptor": {
+     "animals_d15": 10,
+     "land_final": 3,
+     "hands_max": 6,
+     "money_d10": 1615
+    },
+    "note": null
+   },
    {
     "key": "d6d0ad010234",
     "island": "queue",
@@ -1528,6 +1656,90 @@
     "note": null
    },
    {
+    "key": "a40b8f5dd622",
+    "island": "queue",
+    "origin": "crossover",
+    "status": "alive",
+    "dev": -6815.75,
+    "dev_t": -3.2715836408105305,
+    "dev_wl": [
+     3,
+     7
+    ],
+    "clone": -19334.2,
+    "held": null,
+    "held_t": null,
+    "held_clone": null,
+    "diff_vs_c1": {
+     "harvest_min": [
+      2,
+      1
+     ],
+     "wheat_stock": [
+      0,
+      4
+     ],
+     "open_wheat": [
+      7,
+      8
+     ],
+     "demand_share": [
+      0.5,
+      0.55
+     ],
+     "wheat_cap": [
+      18,
+      20
+     ],
+     "MAX_HANDS": [
+      13,
+      12
+     ],
+     "CROP_SWEEP_RADIUS": [
+      4,
+      3
+     ],
+     "MELON_MAX_TILES": [
+      40,
+      31
+     ],
+     "OPP_GROWTH": [
+      1.3,
+      1.6
+     ]
+    },
+    "blocks": [
+     "crop_admission"
+    ],
+    "ablation": null,
+    "diag": "cand pulls ahead of C1 from day 17 (gap +3,759 -> final +13,971); days 15-22 drivers: sales_rev +7,543, feed_hour -2.29, work_turns +34, travel_per_task -0.24. Hands 12 vs 13, animals 11 vs 10, plants 76 vs 82.",
+    "exec": {
+     "final_networth": 98436,
+     "sales": 126092,
+     "buys": 23446,
+     "missed_feed": 0,
+     "missed_water": 517,
+     "escapes": 0,
+     "weeds_new": 15,
+     "unit_turns": 6568,
+     "move_share": 0.533,
+     "idle_share": 0.079,
+     "travel_per_task": 1.37,
+     "reversals": 27,
+     "feed_hour": 9.6,
+     "water_hour": 13.7,
+     "max_hands": 12,
+     "max_animals": 11
+    },
+    "descriptor": {
+     "animals_d15": 10,
+     "land_final": 4,
+     "hands_max": 6,
+     "money_d10": 1575
+    },
+    "note": null
+   },
+   {
     "key": "36526fbed860",
     "island": "queue",
     "origin": "crossover",
@@ -1704,6 +1916,94 @@
     "note": null
    },
    {
+    "key": "0a23e1cfa04c",
+    "island": "queue",
+    "origin": "mutate",
+    "status": "alive",
+    "dev": -7205.25,
+    "dev_t": -4.191848308314991,
+    "dev_wl": [
+     0,
+     10
+    ],
+    "clone": -23246.6,
+    "held": null,
+    "held_t": null,
+    "held_clone": null,
+    "diff_vs_c1": {
+     "load_per_hand": [
+      20,
+      22
+     ],
+     "open_wheat": [
+      7,
+      8
+     ],
+     "fert_buy": [
+      0,
+      2
+     ],
+     "demand_share": [
+      0.5,
+      0.55
+     ],
+     "wheat_sell_price": [
+      30,
+      31
+     ],
+     "MAX_HANDS": [
+      13,
+      14
+     ],
+     "CROP_SWEEP_RADIUS": [
+      4,
+      3
+     ],
+     "STRAW_CUTOFF": [
+      17,
+      18
+     ],
+     "MELON_MAX_TILES": [
+      40,
+      37
+     ],
+     "NEAR_RADIUS": [
+      3,
+      4
+     ]
+    },
+    "blocks": [
+     "crop_admission"
+    ],
+    "ablation": null,
+    "diag": "cand pulls ahead of C1 from day 11 (gap +3,674 -> final +19,743); days 9-16 drivers: missed_water -50, feed_hour -2.43, escapes -1, missed_feed -2. Hands 6 vs 10, animals 10 vs 10, plants 62 vs 80.",
+    "exec": {
+     "final_networth": 104208,
+     "sales": 126623,
+     "buys": 22526,
+     "missed_feed": 2,
+     "missed_water": 416,
+     "escapes": 0,
+     "weeds_new": 12,
+     "unit_turns": 5882,
+     "move_share": 0.518,
+     "idle_share": 0.091,
+     "travel_per_task": 1.32,
+     "reversals": 26,
+     "feed_hour": 9.5,
+     "water_hour": 14.0,
+     "max_hands": 14,
+     "max_animals": 12
+    },
+    "descriptor": {
+     "animals_d15": 10,
+     "land_final": 3,
+     "hands_max": 6,
+     "money_d10": 1492
+    },
+    "note": null
+   },
+   {
     "key": "e520199f8c3f",
     "island": "queue",
     "origin": "mutate",
@@ -1862,54 +2162,48 @@
      "money_d10": 1458
     },
     "note": null
-   },
+   }
+  ],
+  "wide": [
    {
-    "key": "8f6feeacdb4a",
-    "island": "queue",
-    "origin": "migrate",
+    "key": "e6f64fcfb041",
+    "island": "wide",
+    "origin": "crossover",
     "status": "alive",
-    "dev": -7259.25,
-    "dev_t": -4.833790825891448,
+    "dev": -5739.25,
+    "dev_t": -2.643245725151328,
     "dev_wl": [
-     1,
-     9
+     2,
+     8
     ],
-    "clone": -15414.1,
+    "clone": -16417.9,
     "held": null,
     "held_t": null,
     "held_clone": null,
     "diff_vs_c1": {
-     "harvest_min": [
-      2,
-      1
-     ],
-     "min_hands": [
-      3,
-      5
+     "melon_floor": [
+      150,
+      0
      ],
      "load_per_hand": [
       20,
-      17
-     ],
-     "open_melons": [
-      8,
-      5
+      15
      ],
      "open_wheat": [
       7,
-      9
+      10
      ],
-     "open_cows": [
-      2,
-      3
+     "early_hire_days": [
+      5,
+      8
      ],
-     "fert_keep": [
+     "fert_buy": [
       0,
-      2
+      1
      ],
      "demand_share": [
       0.5,
-      0.6
+      0.45
      ],
      "max_animals": [
       20,
@@ -1917,23 +2211,31 @@
      ],
      "wheat_cap": [
       18,
-      20
+      16
      ],
      "wheat_water_tier": [
       0,
       1
      ],
+     "wheat_sell_price": [
+      30,
+      26
+     ],
+     "MAX_HANDS": [
+      13,
+      12
+     ],
      "CROP_SWEEP_RADIUS": [
       4,
       2
      ],
-     "STRAW_CUTOFF": [
-      17,
-      15
+     "MELON_MAX_TILES": [
+      40,
+      43
      ],
-     "HERD_LAST_DAY": [
-      19,
-      16
+     "MELON_PRICE_CUSHION": [
+      100,
+      92
      ],
      "NEAR_RADIUS": [
       3,
@@ -1946,1069 +2248,51 @@
      "MAX_SHEEP": [
       12,
       14
-     ],
-     "OPENING_MELONS": [
-      10,
-      11
      ]
     },
     "blocks": [
      "crop_admission"
     ],
     "ablation": null,
-    "diag": "cand falls behind C1 from day 20 (gap -3,128 -> final -25,159); days 18-25 drivers: sales_rev -23,170, idle_turns +158, work_turns -56, water_hour +1.15. Hands 13 vs 13, animals 10 vs 10, plants 63 vs 64.",
+    "diag": "cand falls behind C1 from day 27 (gap -3,078 -> final -3,015); days 25-29 drivers: sales_rev -11,304, idle_turns +244, work_turns -53, water_hour +0.7. Hands 6 vs 6, animals 9 vs 10, plants 13 vs 26.",
     "exec": {
-     "final_networth": 59306,
-     "sales": 82427,
-     "buys": 20137,
-     "missed_feed": 1,
-     "missed_water": 345,
-     "escapes": 0,
-     "weeds_new": 7,
-     "unit_turns": 7144,
-     "move_share": 0.485,
-     "idle_share": 0.175,
-     "travel_per_task": 1.43,
-     "reversals": 22,
-     "feed_hour": 9.9,
-     "water_hour": 13.4,
-     "max_hands": 13,
-     "max_animals": 10
-    },
-    "descriptor": {
-     "animals_d15": 10,
-     "land_final": 3,
-     "hands_max": 6,
-     "money_d10": 2673
-    },
-    "note": null
-   },
-   {
-    "key": "33037f138141",
-    "island": "queue",
-    "origin": "crossover",
-    "status": "alive",
-    "dev": -7328.05,
-    "dev_t": -3.473159653499786,
-    "dev_wl": [
-     2,
-     8
-    ],
-    "clone": -10046.85,
-    "held": null,
-    "held_t": null,
-    "held_clone": null,
-    "diff_vs_c1": {
-     "melon_floor": [
-      150,
-      0
-     ],
-     "harvest_min": [
-      2,
-      1
-     ],
-     "wheat_stock": [
-      0,
-      4
-     ],
-     "open_wheat": [
-      7,
-      8
-     ],
-     "open_cows": [
-      2,
-      1
-     ],
-     "early_hire_days": [
-      5,
-      6
-     ],
-     "fert_buy": [
-      0,
-      1
-     ],
-     "wheat_cap": [
-      18,
-      20
-     ],
-     "CROP_SWEEP_RADIUS": [
-      4,
-      3
-     ],
-     "HERD_LAST_DAY": [
-      19,
-      20
-     ],
-     "OPP_GROWTH": [
-      1.3,
-      1.4
-     ],
-     "MAX_SHEEP": [
-      12,
-      13
-     ]
-    },
-    "blocks": [
-     "crop_admission"
-    ],
-    "ablation": null,
-    "diag": "cand pulls ahead of C1 from day 12 (gap +4,135 -> final +7,340); days 10-17 drivers: missed_water -49, sales_rev +4,424, idle_turns -39, feed_hour -1.75. Hands 9 vs 12, animals 11 vs 10, plants 55 vs 82.",
-    "exec": {
-     "final_networth": 91805,
-     "sales": 116242,
-     "buys": 21998,
-     "missed_feed": 0,
-     "missed_water": 398,
-     "escapes": 0,
-     "weeds_new": 15,
-     "unit_turns": 6406,
-     "move_share": 0.537,
-     "idle_share": 0.09,
-     "travel_per_task": 1.44,
-     "reversals": 25,
-     "feed_hour": 9.7,
-     "water_hour": 13.9,
-     "max_hands": 13,
-     "max_animals": 11
-    },
-    "descriptor": {
-     "animals_d15": 10,
-     "land_final": 3,
-     "hands_max": 6,
-     "money_d10": 700
-    },
-    "note": null
-   },
-   {
-    "key": "6b8d226bbbda",
-    "island": "queue",
-    "origin": "migrate",
-    "status": "alive",
-    "dev": -7331.65,
-    "dev_t": -5.278915322680571,
-    "dev_wl": [
-     1,
-     9
-    ],
-    "clone": -14172.05,
-    "held": null,
-    "held_t": null,
-    "held_clone": null,
-    "diff_vs_c1": {
-     "melon_floor": [
-      150,
-      100
-     ],
-     "load_per_hand": [
-      20,
-      19
-     ],
-     "open_melons": [
-      8,
-      7
-     ],
-     "open_wheat": [
-      7,
-      8
-     ],
-     "early_hire_days": [
-      5,
-      4
-     ],
-     "fert_carry": [
-      3,
-      4
-     ],
-     "wheat_per_animal": [
-      0.0,
-      0.3
-     ],
-     "wheat_cap": [
-      18,
-      13
-     ],
-     "CROP_SWEEP_LEN": [
-      6,
-      5
-     ],
-     "CROP_SWEEP_RADIUS": [
-      4,
-      2
-     ],
-     "HERD_LAST_DAY": [
-      19,
-      22
-     ],
-     "OPP_GROWTH": [
-      1.3,
-      1.5
-     ],
-     "MAX_SHEEP": [
-      12,
-      10
-     ],
-     "OPENING_MELONS": [
-      10,
-      12
-     ]
-    },
-    "blocks": [
-     "crop_admission"
-    ],
-    "ablation": null,
-    "diag": "cand falls behind C1 from day 22 (gap -4,715 -> final -31,802); days 20-27 drivers: sales_rev -32,606, idle_turns +107, work_turns -71, water_hour +1.13. Hands 13 vs 10, animals 8 vs 10, plants 42 vs 42.",
-    "exec": {
-     "final_networth": 52663,
-     "sales": 72658,
-     "buys": 18172,
-     "missed_feed": 1,
-     "missed_water": 357,
-     "escapes": 0,
-     "weeds_new": 11,
-     "unit_turns": 6401,
-     "move_share": 0.529,
-     "idle_share": 0.121,
-     "travel_per_task": 1.51,
-     "reversals": 21,
-     "feed_hour": 9.0,
-     "water_hour": 14.1,
-     "max_hands": 13,
-     "max_animals": 8
-    },
-    "descriptor": {
-     "animals_d15": 8,
-     "land_final": 3,
-     "hands_max": 4,
-     "money_d10": 2317
-    },
-    "note": null
-   }
-  ],
-  "c1": [
-   {
-    "key": "28106f468e99",
-    "island": "c1",
-    "origin": "crossover",
-    "status": "alive",
-    "dev": -6016.85,
-    "dev_t": -1.9519083966925705,
-    "dev_wl": [
-     4,
-     6
-    ],
-    "clone": -9621.7,
-    "held": null,
-    "held_t": null,
-    "held_clone": null,
-    "diff_vs_c1": {
-     "melon_floor": [
-      150,
-      100
-     ],
-     "open_melons": [
-      8,
-      9
-     ],
-     "open_wheat": [
-      7,
-      8
-     ],
-     "early_hire_days": [
-      5,
-      3
-     ],
-     "fert_carry": [
-      3,
-      2
-     ],
-     "wheat_cap": [
-      18,
-      20
-     ],
-     "wheat_water_tier": [
-      0,
-      1
-     ],
-     "CROP_SWEEP_RADIUS": [
-      4,
-      2
-     ],
-     "MELON_MAX_TILES": [
-      40,
-      47
-     ],
-     "HERD_LAST_DAY": [
-      19,
-      22
-     ],
-     "OPP_GROWTH": [
-      1.3,
-      1.5
-     ],
-     "MAX_SHEEP": [
-      12,
-      13
-     ]
-    },
-    "blocks": [
-     "crop_admission"
-    ],
-    "ablation": null,
-    "diag": "cand pulls ahead of C1 from day 11 (gap +3,734 -> final +41,608); days 9-16 drivers: missed_water -55, idle_turns -32, escapes -1, sales_rev +757. Hands 9 vs 10, animals 13 vs 10, plants 61 vs 80.",
-    "exec": {
-     "final_networth": 126073,
-     "sales": 153149,
-     "buys": 23989,
-     "missed_feed": 7,
-     "missed_water": 368,
-     "escapes": 2,
-     "weeds_new": 19,
-     "unit_turns": 6456,
-     "move_share": 0.541,
-     "idle_share": 0.094,
-     "travel_per_task": 1.48,
-     "reversals": 31,
-     "feed_hour": 10.4,
-     "water_hour": 13.5,
-     "max_hands": 13,
-     "max_animals": 16
-    },
-    "descriptor": {
-     "animals_d15": 12,
-     "land_final": 3,
-     "hands_max": 6,
-     "money_d10": 1595
-    },
-    "note": null
-   },
-   {
-    "key": "3bcf6941fb00",
-    "island": "c1",
-    "origin": "mutate",
-    "status": "alive",
-    "dev": -6389.9,
-    "dev_t": -4.089573378856964,
-    "dev_wl": [
-     2,
-     8
-    ],
-    "clone": -11347.65,
-    "held": null,
-    "held_t": null,
-    "held_clone": null,
-    "diff_vs_c1": {
-     "melon_floor": [
-      150,
-      100
-     ],
-     "load_per_hand": [
-      20,
-      19
-     ],
-     "open_melons": [
-      8,
-      7
-     ],
-     "open_wheat": [
-      7,
-      8
-     ],
-     "early_hire_days": [
-      5,
-      4
-     ],
-     "wheat_per_animal": [
-      0.0,
-      0.3
-     ],
-     "wheat_cap": [
-      18,
-      13
-     ],
-     "CROP_SWEEP_LEN": [
-      6,
-      5
-     ],
-     "CROP_SWEEP_RADIUS": [
-      4,
-      2
-     ],
-     "HERD_LAST_DAY": [
-      19,
-      22
-     ],
-     "OPP_GROWTH": [
-      1.3,
-      1.5
-     ],
-     "MAX_SHEEP": [
-      12,
-      13
-     ],
-     "OPENING_MELONS": [
-      10,
-      12
-     ]
-    },
-    "blocks": [
-     "crop_admission"
-    ],
-    "ablation": null,
-    "diag": "cand falls behind C1 from day 22 (gap -4,715 -> final -31,802); days 20-27 drivers: sales_rev -32,606, idle_turns +107, work_turns -71, water_hour +1.13. Hands 13 vs 10, animals 8 vs 10, plants 42 vs 42.",
-    "exec": {
-     "final_networth": 52663,
-     "sales": 72658,
-     "buys": 18172,
-     "missed_feed": 1,
-     "missed_water": 357,
-     "escapes": 0,
-     "weeds_new": 11,
-     "unit_turns": 6401,
-     "move_share": 0.529,
-     "idle_share": 0.121,
-     "travel_per_task": 1.51,
-     "reversals": 21,
-     "feed_hour": 9.0,
-     "water_hour": 14.1,
-     "max_hands": 13,
-     "max_animals": 8
-    },
-    "descriptor": {
-     "animals_d15": 8,
-     "land_final": 3,
-     "hands_max": 4,
-     "money_d10": 2317
-    },
-    "note": null
-   },
-   {
-    "key": "f8fa5f6517fb",
-    "island": "c1",
-    "origin": "crossover",
-    "status": "alive",
-    "dev": -6460.95,
-    "dev_t": -2.757133759591898,
-    "dev_wl": [
-     1,
-     9
-    ],
-    "clone": -8101.05,
-    "held": null,
-    "held_t": null,
-    "held_clone": null,
-    "diff_vs_c1": {
-     "melon_floor": [
-      150,
-      100
-     ],
-     "load_per_hand": [
-      20,
-      19
-     ],
-     "open_melons": [
-      8,
-      7
-     ],
-     "open_wheat": [
-      7,
-      8
-     ],
-     "wheat_cap": [
-      18,
-      13
-     ],
-     "CROP_SWEEP_LEN": [
-      6,
-      5
-     ],
-     "CROP_SWEEP_RADIUS": [
-      4,
-      2
-     ],
-     "HERD_LAST_DAY": [
-      19,
-      22
-     ],
-     "OPP_GROWTH": [
-      1.3,
-      1.4
-     ],
-     "MAX_SHEEP": [
-      12,
-      13
-     ],
-     "OPENING_MELONS": [
-      10,
-      12
-     ]
-    },
-    "blocks": [
-     "crop_admission"
-    ],
-    "ablation": null,
-    "diag": "cand pulls ahead of C1 from day 11 (gap +4,122 -> final +34,818); days 9-16 drivers: missed_water -30, work_turns +56, feed_hour -1.73, escapes -1. Hands 13 vs 10, animals 13 vs 10, plants 85 vs 80.",
-    "exec": {
-     "final_networth": 119283,
-     "sales": 155083,
-     "buys": 27237,
-     "missed_feed": 7,
-     "missed_water": 445,
-     "escapes": 0,
-     "weeds_new": 16,
-     "unit_turns": 7030,
-     "move_share": 0.553,
-     "idle_share": 0.072,
-     "travel_per_task": 1.47,
-     "reversals": 20,
-     "feed_hour": 9.9,
-     "water_hour": 13.2,
-     "max_hands": 13,
-     "max_animals": 16
-    },
-    "descriptor": {
-     "animals_d15": 12,
-     "land_final": 4,
-     "hands_max": 6,
-     "money_d10": 1895
-    },
-    "note": null
-   },
-   {
-    "key": "5b5e109fb5e3",
-    "island": "c1",
-    "origin": "mutate",
-    "status": "alive",
-    "dev": -6699.05,
-    "dev_t": -5.2038161380762045,
-    "dev_wl": [
-     0,
-     10
-    ],
-    "clone": -17176.75,
-    "held": null,
-    "held_t": null,
-    "held_clone": null,
-    "diff_vs_c1": {
-     "melon_floor": [
-      150,
-      0
-     ],
-     "harvest_min": [
-      2,
-      1
-     ],
-     "min_hands": [
-      3,
-      5
-     ],
-     "load_per_hand": [
-      20,
-      16
-     ],
-     "open_wheat": [
-      7,
-      5
-     ],
-     "early_hire_days": [
-      5,
-      3
-     ],
-     "fert_keep": [
-      0,
-      1
-     ],
-     "fert_carry": [
-      3,
-      2
-     ],
-     "max_animals": [
-      20,
-      19
-     ],
-     "wheat_cap": [
-      18,
-      19
-     ],
-     "CROP_SWEEP_RADIUS": [
-      4,
-      2
-     ],
-     "STRAW_CUTOFF": [
-      17,
-      15
-     ],
-     "MELON_MAX_TILES": [
-      40,
-      34
-     ],
-     "NEAR_RADIUS": [
-      3,
-      2
-     ],
-     "MAX_SHEEP": [
-      12,
-      14
-     ]
-    },
-    "blocks": [
-     "crop_admission"
-    ],
-    "ablation": null,
-    "diag": "cand pulls ahead of C1 from day 29 (gap +2,278 -> final +2,278); days 27-29 drivers: missed_water -15, feed_hour -2.35, sales_rev +250, work_turns +5. Hands 6 vs 6, animals 8 vs 10, plants 26 vs 26.",
-    "exec": {
-     "final_networth": 86743,
-     "sales": 114036,
-     "buys": 19644,
-     "missed_feed": 1,
-     "missed_water": 449,
-     "escapes": 0,
-     "weeds_new": 7,
-     "unit_turns": 7194,
-     "move_share": 0.516,
-     "idle_share": 0.131,
-     "travel_per_task": 1.46,
-     "reversals": 16,
-     "feed_hour": 9.7,
-     "water_hour": 14.0,
-     "max_hands": 13,
-     "max_animals": 8
-    },
-    "descriptor": {
-     "animals_d15": 8,
-     "land_final": 4,
-     "hands_max": 6,
-     "money_d10": 2216
-    },
-    "note": null
-   },
-   {
-    "key": "e08919f84e59",
-    "island": "c1",
-    "origin": "crossover",
-    "status": "alive",
-    "dev": -6845.4,
-    "dev_t": -2.5764534322254518,
-    "dev_wl": [
-     2,
-     8
-    ],
-    "clone": -11856.65,
-    "held": null,
-    "held_t": null,
-    "held_clone": null,
-    "diff_vs_c1": {
-     "melon_floor": [
-      150,
-      100
-     ],
-     "harvest_min": [
-      2,
-      1
-     ],
-     "wheat_tiles": [
-      0,
-      1
-     ],
-     "min_hands": [
-      3,
-      5
-     ],
-     "open_wheat": [
-      7,
-      5
-     ],
-     "early_hire_days": [
-      5,
-      3
-     ],
-     "fert_keep": [
-      0,
-      1
-     ],
-     "fert_carry": [
-      3,
-      2
-     ],
-     "max_animals": [
-      20,
-      19
-     ],
-     "wheat_cap": [
-      18,
-      19
-     ],
-     "wheat_sell_price": [
-      30,
-      29
-     ],
-     "CROP_SWEEP_RADIUS": [
-      4,
-      2
-     ],
-     "STRAW_CUTOFF": [
-      17,
-      15
-     ],
-     "MELON_PRICE_CUSHION": [
-      100,
-      140
-     ],
-     "NEAR_RADIUS": [
-      3,
-      2
-     ],
-     "MAX_SHEEP": [
-      12,
-      14
-     ]
-    },
-    "blocks": [
-     "crop_admission"
-    ],
-    "ablation": null,
-    "diag": "cand falls behind C1 from day 22 (gap -1,552 -> final -18,752); days 20-27 drivers: sales_rev -20,266, idle_turns +50, work_turns -49, water_hour +1.0. Hands 9 vs 10, animals 8 vs 10, plants 37 vs 42.",
-    "exec": {
-     "final_networth": 65713,
-     "sales": 85455,
-     "buys": 18917,
-     "missed_feed": 1,
-     "missed_water": 398,
-     "escapes": 0,
-     "weeds_new": 13,
-     "unit_turns": 6216,
-     "move_share": 0.507,
-     "idle_share": 0.128,
-     "travel_per_task": 1.39,
-     "reversals": 17,
-     "feed_hour": 9.6,
-     "water_hour": 14.1,
-     "max_hands": 12,
-     "max_animals": 8
-    },
-    "descriptor": {
-     "animals_d15": 8,
-     "land_final": 3,
-     "hands_max": 6,
-     "money_d10": 1953
-    },
-    "note": null
-   },
-   {
-    "key": "b467b93487e0",
-    "island": "c1",
-    "origin": "mutate",
-    "status": "alive",
-    "dev": -6879.75,
-    "dev_t": -5.281611781915498,
-    "dev_wl": [
-     0,
-     10
-    ],
-    "clone": -17348.85,
-    "held": null,
-    "held_t": null,
-    "held_clone": null,
-    "diff_vs_c1": {
-     "melon_floor": [
-      150,
-      0
-     ],
-     "harvest_min": [
-      2,
-      1
-     ],
-     "min_hands": [
-      3,
-      5
-     ],
-     "load_per_hand": [
-      20,
-      16
-     ],
-     "open_wheat": [
-      7,
-      5
-     ],
-     "early_hire_days": [
-      5,
-      3
-     ],
-     "fert_keep": [
-      0,
-      1
-     ],
-     "fert_carry": [
-      3,
-      2
-     ],
-     "max_animals": [
-      20,
-      18
-     ],
-     "wheat_cap": [
-      18,
-      23
-     ],
-     "CROP_SWEEP_RADIUS": [
-      4,
-      2
-     ],
-     "STRAW_CUTOFF": [
-      17,
-      14
-     ],
-     "MELON_MAX_TILES": [
-      40,
-      34
-     ],
-     "NEAR_RADIUS": [
-      3,
-      2
-     ],
-     "OPP_GROWTH": [
-      1.3,
-      1.0
-     ],
-     "MAX_SHEEP": [
-      12,
-      14
-     ]
-    },
-    "blocks": [
-     "crop_admission"
-    ],
-    "ablation": null,
-    "diag": "cand pulls ahead of C1 from day 29 (gap +2,278 -> final +2,278); days 27-29 drivers: missed_water -15, feed_hour -2.35, sales_rev +250, work_turns +5. Hands 6 vs 6, animals 8 vs 10, plants 26 vs 26.",
-    "exec": {
-     "final_networth": 86743,
-     "sales": 114036,
-     "buys": 19644,
-     "missed_feed": 1,
-     "missed_water": 449,
-     "escapes": 0,
-     "weeds_new": 7,
-     "unit_turns": 7194,
-     "move_share": 0.516,
-     "idle_share": 0.131,
-     "travel_per_task": 1.46,
-     "reversals": 16,
-     "feed_hour": 9.7,
-     "water_hour": 14.0,
-     "max_hands": 13,
-     "max_animals": 8
-    },
-    "descriptor": {
-     "animals_d15": 8,
-     "land_final": 4,
-     "hands_max": 6,
-     "money_d10": 2216
-    },
-    "note": null
-   },
-   {
-    "key": "845641ce8b4d",
-    "island": "c1",
-    "origin": "mutate",
-    "status": "alive",
-    "dev": -6945.7,
-    "dev_t": -2.725632043390997,
-    "dev_wl": [
-     2,
-     8
-    ],
-    "clone": -16704.35,
-    "held": null,
-    "held_t": null,
-    "held_clone": null,
-    "diff_vs_c1": {
-     "melon_floor": [
-      150,
-      100
-     ],
-     "wheat_stock": [
-      0,
-      2
-     ],
-     "open_wheat": [
-      7,
-      9
-     ],
-     "early_hire_days": [
-      5,
-      4
-     ],
-     "fert_keep": [
-      0,
-      1
-     ],
-     "wheat_per_animal": [
-      0.0,
-      0.2
-     ],
-     "wheat_water_tier": [
-      0,
-      1
-     ],
-     "MAX_HANDS": [
-      13,
-      12
-     ],
-     "CROP_SWEEP_RADIUS": [
-      4,
-      2
-     ],
-     "MELON_PRICE_CUSHION": [
-      100,
-      96
-     ],
-     "HERD_LAST_DAY": [
-      19,
-      22
-     ],
-     "OPP_GROWTH": [
-      1.3,
-      1.7
-     ],
-     "MAX_SHEEP": [
-      12,
-      13
-     ]
-    },
-    "blocks": [
-     "crop_admission"
-    ],
-    "ablation": null,
-    "diag": "cand falls behind C1 from day 24 (gap -9,118 -> final -34,598); days 22-29 drivers: sales_rev -42,887, idle_turns +16, missed_feed +1, water_hour +0.11. Hands 6 vs 6, animals 19 vs 10, plants 14 vs 26.",
-    "exec": {
-     "final_networth": 49867,
-     "sales": 76418,
-     "buys": 29717,
-     "missed_feed": 6,
-     "missed_water": 366,
-     "escapes": 0,
-     "weeds_new": 22,
-     "unit_turns": 6759,
-     "move_share": 0.535,
-     "idle_share": 0.081,
-     "travel_per_task": 1.4,
-     "reversals": 32,
-     "feed_hour": 10.6,
-     "water_hour": 13.7,
-     "max_hands": 12,
-     "max_animals": 19
-    },
-    "descriptor": {
-     "animals_d15": 17,
-     "land_final": 3,
-     "hands_max": 6,
-     "money_d10": 1996
-    },
-    "note": null
-   },
-   {
-    "key": "6a389403f56c",
-    "island": "c1",
-    "origin": "crossover",
-    "status": "alive",
-    "dev": -7189.55,
-    "dev_t": -4.734864612912625,
-    "dev_wl": [
-     0,
-     10
-    ],
-    "clone": -17173.05,
-    "held": null,
-    "held_t": null,
-    "held_clone": null,
-    "diff_vs_c1": {
-     "melon_floor": [
-      150,
-      100
-     ],
-     "open_melons": [
-      8,
-      10
-     ],
-     "open_wheat": [
-      7,
-      8
-     ],
-     "wheat_water_tier": [
-      0,
-      1
-     ],
-     "CROP_SWEEP_LEN": [
-      6,
-      5
-     ],
-     "CROP_SWEEP_RADIUS": [
-      4,
-      2
-     ],
-     "STRAW_CUTOFF": [
-      17,
-      18
-     ],
-     "MELON_PRICE_CUSHION": [
-      100,
-      116
-     ],
-     "HERD_LAST_DAY": [
-      19,
-      22
-     ],
-     "OPP_GROWTH": [
-      1.3,
-      1.4
-     ],
-     "OPENING_MELONS": [
-      10,
-      11
-     ]
-    },
-    "blocks": [
-     "crop_admission"
-    ],
-    "ablation": null,
-    "diag": "cand falls behind C1 from day 24 (gap -3,742 -> final -21,170); days 22-29 drivers: sales_rev -25,720, work_turns -117, weeds_new +4, idle_turns +24. Hands 5 vs 6, animals 8 vs 10, plants 14 vs 26.",
-    "exec": {
-     "final_networth": 63295,
-     "sales": 83359,
-     "buys": 19699,
+     "final_networth": 81450,
+     "sales": 103247,
+     "buys": 20125,
      "missed_feed": 2,
-     "missed_water": 415,
+     "missed_water": 329,
      "escapes": 0,
-     "weeds_new": 17,
-     "unit_turns": 6056,
-     "move_share": 0.545,
-     "idle_share": 0.098,
-     "travel_per_task": 1.52,
-     "reversals": 15,
-     "feed_hour": 9.5,
-     "water_hour": 13.5,
-     "max_hands": 13,
-     "max_animals": 8
+     "weeds_new": 0,
+     "unit_turns": 6615,
+     "move_share": 0.48,
+     "idle_share": 0.173,
+     "travel_per_task": 1.38,
+     "reversals": 19,
+     "feed_hour": 9.4,
+     "water_hour": 14.2,
+     "max_hands": 12,
+     "max_animals": 9
     },
     "descriptor": {
      "animals_d15": 8,
      "land_final": 3,
-     "hands_max": 5,
-     "money_d10": 1836
+     "hands_max": 6,
+     "money_d10": 1893
     },
     "note": null
    },
    {
-    "key": "415b188027e1",
-    "island": "c1",
-    "origin": "mutate",
+    "key": "10f009d255cf",
+    "island": "wide",
+    "origin": "crossover",
     "status": "alive",
-    "dev": -7295.25,
-    "dev_t": -2.670964125265133,
+    "dev": -6415.35,
+    "dev_t": -2.1130887269609877,
     "dev_wl": [
      3,
      7
     ],
-    "clone": -16354.15,
+    "clone": -12616.4,
     "held": null,
     "held_t": null,
     "held_clone": null,
@@ -3017,9 +2301,9 @@
       150,
       200
      ],
-     "open_melons": [
-      8,
-      10
+     "load_per_hand": [
+      20,
+      15
      ],
      "open_wheat": [
       7,
@@ -3033,114 +2317,18 @@
       0,
       1
      ],
-     "MAX_HANDS": [
-      13,
-      12
+     "demand_share": [
+      0.5,
+      0.45
      ],
-     "CROP_SWEEP_LEN": [
-      6,
-      5
-     ],
-     "CROP_SWEEP_RADIUS": [
-      4,
-      2
-     ],
-     "STRAW_CUTOFF": [
-      17,
-      18
-     ],
-     "MELON_PRICE_CUSHION": [
-      100,
-      116
-     ],
-     "HERD_LAST_DAY": [
-      19,
-      22
-     ],
-     "OPP_GROWTH": [
-      1.3,
-      1.4
-     ],
-     "MAX_SHEEP": [
-      12,
-      14
-     ],
-     "OPENING_MELONS": [
-      10,
-      11
-     ]
-    },
-    "blocks": [
-     "crop_admission"
-    ],
-    "ablation": null,
-    "diag": "cand falls behind C1 from day 26 (gap -7,585 -> final -12,647); days 24-29 drivers: sales_rev -15,282, work_turns -57, missed_feed +2, water_hour +0.32. Hands 6 vs 6, animals 9 vs 10, plants 23 vs 26.",
-    "exec": {
-     "final_networth": 71818,
-     "sales": 92824,
-     "buys": 21405,
-     "missed_feed": 7,
-     "missed_water": 394,
-     "escapes": 0,
-     "weeds_new": 12,
-     "unit_turns": 6014,
-     "move_share": 0.553,
-     "idle_share": 0.08,
-     "travel_per_task": 1.51,
-     "reversals": 20,
-     "feed_hour": 10.0,
-     "water_hour": 13.8,
-     "max_hands": 12,
-     "max_animals": 9
-    },
-    "descriptor": {
-     "animals_d15": 9,
-     "land_final": 3,
-     "hands_max": 6,
-     "money_d10": 1759
-    },
-    "note": null
-   },
-   {
-    "key": "cd21159070f8",
-    "island": "c1",
-    "origin": "mutate",
-    "status": "alive",
-    "dev": -7330.3,
-    "dev_t": -3.3650299419516276,
-    "dev_wl": [
-     2,
-     8
-    ],
-    "clone": -19545.9,
-    "held": null,
-    "held_t": null,
-    "held_clone": null,
-    "diff_vs_c1": {
-     "wheat_stock": [
-      0,
-      10
-     ],
-     "open_wheat": [
-      7,
-      9
-     ],
-     "early_hire_days": [
-      5,
-      4
-     ],
-     "wheat_per_animal": [
-      0.0,
-      0.2
+     "wheat_cap": [
+      18,
+      16
      ],
      "wheat_water_tier": [
       0,
       1
      ],
-     "wheat_sell_price": [
-      30,
-      27
-     ],
      "MAX_HANDS": [
       13,
       12
@@ -3149,60 +2337,54 @@
       4,
       2
      ],
-     "STRAW_CUTOFF": [
-      17,
-      20
+     "MELON_MAX_TILES": [
+      40,
+      43
      ],
-     "MELON_PRICE_CUSHION": [
-      100,
-      96
-     ],
-     "HERD_LAST_DAY": [
-      19,
-      22
+     "NEAR_RADIUS": [
+      3,
+      4
      ],
      "OPP_GROWTH": [
       1.3,
-      1.7
+      1.2
      ],
      "MAX_SHEEP": [
       12,
-      13
+      14
      ]
     },
     "blocks": [
      "crop_admission"
     ],
     "ablation": null,
-    "diag": "cand vs C1: net worth never diverged by >$1,500 (final +1,040).",
+    "diag": "cand falls behind C1 from day 28 (gap -2,847 -> final -2,676); days 26-29 drivers: sales_rev -5,300, weeds_new +3, idle_turns +34, missed_water +4. Hands 6 vs 6, animals 11 vs 10, plants 33 vs 26.",
     "exec": {
-     "final_networth": 85505,
-     "sales": 112895,
-     "buys": 30401,
-     "missed_feed": 5,
-     "missed_water": 320,
+     "final_networth": 81789,
+     "sales": 110444,
+     "buys": 23971,
+     "missed_feed": 3,
+     "missed_water": 504,
      "escapes": 0,
-     "weeds_new": 25,
-     "unit_turns": 6798,
-     "move_share": 0.532,
-     "idle_share": 0.082,
-     "travel_per_task": 1.38,
-     "reversals": 24,
-     "feed_hour": 10.0,
-     "water_hour": 14.0,
+     "weeds_new": 22,
+     "unit_turns": 6923,
+     "move_share": 0.519,
+     "idle_share": 0.109,
+     "travel_per_task": 1.39,
+     "reversals": 23,
+     "feed_hour": 9.2,
+     "water_hour": 13.6,
      "max_hands": 12,
-     "max_animals": 19
+     "max_animals": 11
     },
     "descriptor": {
-     "animals_d15": 19,
-     "land_final": 3,
+     "animals_d15": 8,
+     "land_final": 4,
      "hands_max": 6,
-     "money_d10": 166
+     "money_d10": 1775
     },
     "note": null
-   }
-  ],
-  "wide": [
+   },
    {
     "key": "040971804e1e",
     "island": "wide",
@@ -3756,6 +2938,122 @@
     "note": null
    },
    {
+    "key": "6326e8764ba1",
+    "island": "wide",
+    "origin": "crossover",
+    "status": "alive",
+    "dev": -7321.5,
+    "dev_t": -2.1227150972770246,
+    "dev_wl": [
+     2,
+     8
+    ],
+    "clone": -17582.55,
+    "held": null,
+    "held_t": null,
+    "held_clone": null,
+    "diff_vs_c1": {
+     "melon_floor": [
+      150,
+      200
+     ],
+     "load_per_hand": [
+      20,
+      15
+     ],
+     "open_wheat": [
+      7,
+      4
+     ],
+     "early_hire_days": [
+      5,
+      3
+     ],
+     "demand_share": [
+      0.5,
+      0.45
+     ],
+     "max_animals": [
+      20,
+      17
+     ],
+     "wheat_per_animal": [
+      0.0,
+      0.1
+     ],
+     "wheat_cap": [
+      18,
+      23
+     ],
+     "wheat_sell_price": [
+      30,
+      26
+     ],
+     "MAX_HANDS": [
+      13,
+      12
+     ],
+     "CROP_SWEEP_LEN": [
+      6,
+      7
+     ],
+     "CROP_SWEEP_RADIUS": [
+      4,
+      2
+     ],
+     "MELON_MAX_TILES": [
+      40,
+      50
+     ],
+     "MELON_PRICE_CUSHION": [
+      100,
+      62
+     ],
+     "OPP_GROWTH": [
+      1.3,
+      1.5
+     ],
+     "MAX_SHEEP": [
+      12,
+      14
+     ],
+     "OPENING_MELONS": [
+      10,
+      8
+     ]
+    },
+    "blocks": [
+     "crop_admission"
+    ],
+    "ablation": null,
+    "diag": "cand falls behind C1 from day 24 (gap -2,139 -> final -12,277); days 22-29 drivers: sales_rev -21,153, idle_turns +336, work_turns -112, escapes +1. Hands 6 vs 6, animals 8 vs 10, plants 19 vs 26.",
+    "exec": {
+     "final_networth": 72188,
+     "sales": 92492,
+     "buys": 18886,
+     "missed_feed": 7,
+     "missed_water": 304,
+     "escapes": 1,
+     "weeds_new": 2,
+     "unit_turns": 6617,
+     "move_share": 0.463,
+     "idle_share": 0.212,
+     "travel_per_task": 1.42,
+     "reversals": 19,
+     "feed_hour": 9.3,
+     "water_hour": 14.2,
+     "max_hands": 12,
+     "max_animals": 9
+    },
+    "descriptor": {
+     "animals_d15": 9,
+     "land_final": 3,
+     "hands_max": 6,
+     "money_d10": 1802
+    },
+    "note": null
+   },
+   {
     "key": "7f0633a61fb3",
     "island": "wide",
     "origin": "crossover",
@@ -3970,30 +3268,32 @@
      "money_d10": 1590
     },
     "note": null
-   },
+   }
+  ],
+  "c1": [
    {
-    "key": "c260ea9b1f70",
-    "island": "wide",
+    "key": "28106f468e99",
+    "island": "c1",
     "origin": "crossover",
     "status": "alive",
-    "dev": -7902.55,
-    "dev_t": -3.83733057094135,
+    "dev": -6016.85,
+    "dev_t": -1.9519083966925705,
     "dev_wl": [
-     1,
-     9
+     4,
+     6
     ],
-    "clone": -12235.15,
+    "clone": -9621.7,
     "held": null,
     "held_t": null,
     "held_clone": null,
     "diff_vs_c1": {
      "melon_floor": [
       150,
-      200
+      100
      ],
-     "load_per_hand": [
-      20,
-      15
+     "open_melons": [
+      8,
+      9
      ],
      "open_wheat": [
       7,
@@ -4001,23 +3301,835 @@
      ],
      "early_hire_days": [
       5,
-      8
+      3
      ],
-     "fert_buy": [
+     "fert_carry": [
+      3,
+      2
+     ],
+     "wheat_cap": [
+      18,
+      20
+     ],
+     "wheat_water_tier": [
       0,
       1
      ],
-     "demand_share": [
-      0.5,
-      0.45
+     "CROP_SWEEP_RADIUS": [
+      4,
+      2
      ],
-     "max_animals": [
+     "MELON_MAX_TILES": [
+      40,
+      47
+     ],
+     "HERD_LAST_DAY": [
+      19,
+      22
+     ],
+     "OPP_GROWTH": [
+      1.3,
+      1.5
+     ],
+     "MAX_SHEEP": [
+      12,
+      13
+     ]
+    },
+    "blocks": [
+     "crop_admission"
+    ],
+    "ablation": null,
+    "diag": "cand pulls ahead of C1 from day 11 (gap +3,734 -> final +41,608); days 9-16 drivers: missed_water -55, idle_turns -32, escapes -1, sales_rev +757. Hands 9 vs 10, animals 13 vs 10, plants 61 vs 80.",
+    "exec": {
+     "final_networth": 126073,
+     "sales": 153149,
+     "buys": 23989,
+     "missed_feed": 7,
+     "missed_water": 368,
+     "escapes": 2,
+     "weeds_new": 19,
+     "unit_turns": 6456,
+     "move_share": 0.541,
+     "idle_share": 0.094,
+     "travel_per_task": 1.48,
+     "reversals": 31,
+     "feed_hour": 10.4,
+     "water_hour": 13.5,
+     "max_hands": 13,
+     "max_animals": 16
+    },
+    "descriptor": {
+     "animals_d15": 12,
+     "land_final": 3,
+     "hands_max": 6,
+     "money_d10": 1595
+    },
+    "note": null
+   },
+   {
+    "key": "3bcf6941fb00",
+    "island": "c1",
+    "origin": "mutate",
+    "status": "alive",
+    "dev": -6389.9,
+    "dev_t": -4.089573378856964,
+    "dev_wl": [
+     2,
+     8
+    ],
+    "clone": -11347.65,
+    "held": null,
+    "held_t": null,
+    "held_clone": null,
+    "diff_vs_c1": {
+     "melon_floor": [
+      150,
+      100
+     ],
+     "load_per_hand": [
       20,
-      17
+      19
+     ],
+     "open_melons": [
+      8,
+      7
+     ],
+     "open_wheat": [
+      7,
+      8
+     ],
+     "early_hire_days": [
+      5,
+      4
      ],
      "wheat_per_animal": [
       0.0,
-      0.6
+      0.3
+     ],
+     "wheat_cap": [
+      18,
+      13
+     ],
+     "CROP_SWEEP_LEN": [
+      6,
+      5
+     ],
+     "CROP_SWEEP_RADIUS": [
+      4,
+      2
+     ],
+     "HERD_LAST_DAY": [
+      19,
+      22
+     ],
+     "OPP_GROWTH": [
+      1.3,
+      1.5
+     ],
+     "MAX_SHEEP": [
+      12,
+      13
+     ],
+     "OPENING_MELONS": [
+      10,
+      12
+     ]
+    },
+    "blocks": [
+     "crop_admission"
+    ],
+    "ablation": null,
+    "diag": "cand falls behind C1 from day 22 (gap -4,715 -> final -31,802); days 20-27 drivers: sales_rev -32,606, idle_turns +107, work_turns -71, water_hour +1.13. Hands 13 vs 10, animals 8 vs 10, plants 42 vs 42.",
+    "exec": {
+     "final_networth": 52663,
+     "sales": 72658,
+     "buys": 18172,
+     "missed_feed": 1,
+     "missed_water": 357,
+     "escapes": 0,
+     "weeds_new": 11,
+     "unit_turns": 6401,
+     "move_share": 0.529,
+     "idle_share": 0.121,
+     "travel_per_task": 1.51,
+     "reversals": 21,
+     "feed_hour": 9.0,
+     "water_hour": 14.1,
+     "max_hands": 13,
+     "max_animals": 8
+    },
+    "descriptor": {
+     "animals_d15": 8,
+     "land_final": 3,
+     "hands_max": 4,
+     "money_d10": 2317
+    },
+    "note": null
+   },
+   {
+    "key": "f8fa5f6517fb",
+    "island": "c1",
+    "origin": "crossover",
+    "status": "alive",
+    "dev": -6460.95,
+    "dev_t": -2.757133759591898,
+    "dev_wl": [
+     1,
+     9
+    ],
+    "clone": -8101.05,
+    "held": null,
+    "held_t": null,
+    "held_clone": null,
+    "diff_vs_c1": {
+     "melon_floor": [
+      150,
+      100
+     ],
+     "load_per_hand": [
+      20,
+      19
+     ],
+     "open_melons": [
+      8,
+      7
+     ],
+     "open_wheat": [
+      7,
+      8
+     ],
+     "wheat_cap": [
+      18,
+      13
+     ],
+     "CROP_SWEEP_LEN": [
+      6,
+      5
+     ],
+     "CROP_SWEEP_RADIUS": [
+      4,
+      2
+     ],
+     "HERD_LAST_DAY": [
+      19,
+      22
+     ],
+     "OPP_GROWTH": [
+      1.3,
+      1.4
+     ],
+     "MAX_SHEEP": [
+      12,
+      13
+     ],
+     "OPENING_MELONS": [
+      10,
+      12
+     ]
+    },
+    "blocks": [
+     "crop_admission"
+    ],
+    "ablation": null,
+    "diag": "cand pulls ahead of C1 from day 11 (gap +4,122 -> final +34,818); days 9-16 drivers: missed_water -30, work_turns +56, feed_hour -1.73, escapes -1. Hands 13 vs 10, animals 13 vs 10, plants 85 vs 80.",
+    "exec": {
+     "final_networth": 119283,
+     "sales": 155083,
+     "buys": 27237,
+     "missed_feed": 7,
+     "missed_water": 445,
+     "escapes": 0,
+     "weeds_new": 16,
+     "unit_turns": 7030,
+     "move_share": 0.553,
+     "idle_share": 0.072,
+     "travel_per_task": 1.47,
+     "reversals": 20,
+     "feed_hour": 9.9,
+     "water_hour": 13.2,
+     "max_hands": 13,
+     "max_animals": 16
+    },
+    "descriptor": {
+     "animals_d15": 12,
+     "land_final": 4,
+     "hands_max": 6,
+     "money_d10": 1895
+    },
+    "note": null
+   },
+   {
+    "key": "1ea17d314bd3",
+    "island": "c1",
+    "origin": "mutate",
+    "status": "alive",
+    "dev": -6534.15,
+    "dev_t": -2.7370347883322363,
+    "dev_wl": [
+     2,
+     8
+    ],
+    "clone": -11501.6,
+    "held": null,
+    "held_t": null,
+    "held_clone": null,
+    "diff_vs_c1": {
+     "melon_floor": [
+      150,
+      100
+     ],
+     "load_per_hand": [
+      20,
+      19
+     ],
+     "open_melons": [
+      8,
+      7
+     ],
+     "open_wheat": [
+      7,
+      8
+     ],
+     "early_hire_days": [
+      5,
+      4
+     ],
+     "wheat_per_animal": [
+      0.0,
+      0.3
+     ],
+     "wheat_cap": [
+      18,
+      13
+     ],
+     "CROP_SWEEP_LEN": [
+      6,
+      5
+     ],
+     "CROP_SWEEP_RADIUS": [
+      4,
+      2
+     ],
+     "MELON_PRICE_CUSHION": [
+      100,
+      102
+     ],
+     "HERD_LAST_DAY": [
+      19,
+      22
+     ],
+     "OPP_GROWTH": [
+      1.3,
+      1.5
+     ],
+     "MAX_SHEEP": [
+      12,
+      14
+     ],
+     "OPENING_MELONS": [
+      10,
+      12
+     ]
+    },
+    "blocks": [
+     "crop_admission"
+    ],
+    "ablation": null,
+    "diag": "cand falls behind C1 from day 22 (gap -4,715 -> final -31,802); days 20-27 drivers: sales_rev -32,606, idle_turns +107, work_turns -71, water_hour +1.13. Hands 13 vs 10, animals 8 vs 10, plants 42 vs 42.",
+    "exec": {
+     "final_networth": 52663,
+     "sales": 72658,
+     "buys": 18172,
+     "missed_feed": 1,
+     "missed_water": 357,
+     "escapes": 0,
+     "weeds_new": 11,
+     "unit_turns": 6401,
+     "move_share": 0.529,
+     "idle_share": 0.121,
+     "travel_per_task": 1.51,
+     "reversals": 21,
+     "feed_hour": 9.0,
+     "water_hour": 14.1,
+     "max_hands": 13,
+     "max_animals": 8
+    },
+    "descriptor": {
+     "animals_d15": 8,
+     "land_final": 3,
+     "hands_max": 4,
+     "money_d10": 2317
+    },
+    "note": null
+   },
+   {
+    "key": "5b5e109fb5e3",
+    "island": "c1",
+    "origin": "mutate",
+    "status": "alive",
+    "dev": -6699.05,
+    "dev_t": -5.2038161380762045,
+    "dev_wl": [
+     0,
+     10
+    ],
+    "clone": -17176.75,
+    "held": null,
+    "held_t": null,
+    "held_clone": null,
+    "diff_vs_c1": {
+     "melon_floor": [
+      150,
+      0
+     ],
+     "harvest_min": [
+      2,
+      1
+     ],
+     "min_hands": [
+      3,
+      5
+     ],
+     "load_per_hand": [
+      20,
+      16
+     ],
+     "open_wheat": [
+      7,
+      5
+     ],
+     "early_hire_days": [
+      5,
+      3
+     ],
+     "fert_keep": [
+      0,
+      1
+     ],
+     "fert_carry": [
+      3,
+      2
+     ],
+     "max_animals": [
+      20,
+      19
+     ],
+     "wheat_cap": [
+      18,
+      19
+     ],
+     "CROP_SWEEP_RADIUS": [
+      4,
+      2
+     ],
+     "STRAW_CUTOFF": [
+      17,
+      15
+     ],
+     "MELON_MAX_TILES": [
+      40,
+      34
+     ],
+     "NEAR_RADIUS": [
+      3,
+      2
+     ],
+     "MAX_SHEEP": [
+      12,
+      14
+     ]
+    },
+    "blocks": [
+     "crop_admission"
+    ],
+    "ablation": null,
+    "diag": "cand pulls ahead of C1 from day 29 (gap +2,278 -> final +2,278); days 27-29 drivers: missed_water -15, feed_hour -2.35, sales_rev +250, work_turns +5. Hands 6 vs 6, animals 8 vs 10, plants 26 vs 26.",
+    "exec": {
+     "final_networth": 86743,
+     "sales": 114036,
+     "buys": 19644,
+     "missed_feed": 1,
+     "missed_water": 449,
+     "escapes": 0,
+     "weeds_new": 7,
+     "unit_turns": 7194,
+     "move_share": 0.516,
+     "idle_share": 0.131,
+     "travel_per_task": 1.46,
+     "reversals": 16,
+     "feed_hour": 9.7,
+     "water_hour": 14.0,
+     "max_hands": 13,
+     "max_animals": 8
+    },
+    "descriptor": {
+     "animals_d15": 8,
+     "land_final": 4,
+     "hands_max": 6,
+     "money_d10": 2216
+    },
+    "note": null
+   },
+   {
+    "key": "e08919f84e59",
+    "island": "c1",
+    "origin": "crossover",
+    "status": "alive",
+    "dev": -6845.4,
+    "dev_t": -2.5764534322254518,
+    "dev_wl": [
+     2,
+     8
+    ],
+    "clone": -11856.65,
+    "held": null,
+    "held_t": null,
+    "held_clone": null,
+    "diff_vs_c1": {
+     "melon_floor": [
+      150,
+      100
+     ],
+     "harvest_min": [
+      2,
+      1
+     ],
+     "wheat_tiles": [
+      0,
+      1
+     ],
+     "min_hands": [
+      3,
+      5
+     ],
+     "open_wheat": [
+      7,
+      5
+     ],
+     "early_hire_days": [
+      5,
+      3
+     ],
+     "fert_keep": [
+      0,
+      1
+     ],
+     "fert_carry": [
+      3,
+      2
+     ],
+     "max_animals": [
+      20,
+      19
+     ],
+     "wheat_cap": [
+      18,
+      19
+     ],
+     "wheat_sell_price": [
+      30,
+      29
+     ],
+     "CROP_SWEEP_RADIUS": [
+      4,
+      2
+     ],
+     "STRAW_CUTOFF": [
+      17,
+      15
+     ],
+     "MELON_PRICE_CUSHION": [
+      100,
+      140
+     ],
+     "NEAR_RADIUS": [
+      3,
+      2
+     ],
+     "MAX_SHEEP": [
+      12,
+      14
+     ]
+    },
+    "blocks": [
+     "crop_admission"
+    ],
+    "ablation": null,
+    "diag": "cand falls behind C1 from day 22 (gap -1,552 -> final -18,752); days 20-27 drivers: sales_rev -20,266, idle_turns +50, work_turns -49, water_hour +1.0. Hands 9 vs 10, animals 8 vs 10, plants 37 vs 42.",
+    "exec": {
+     "final_networth": 65713,
+     "sales": 85455,
+     "buys": 18917,
+     "missed_feed": 1,
+     "missed_water": 398,
+     "escapes": 0,
+     "weeds_new": 13,
+     "unit_turns": 6216,
+     "move_share": 0.507,
+     "idle_share": 0.128,
+     "travel_per_task": 1.39,
+     "reversals": 17,
+     "feed_hour": 9.6,
+     "water_hour": 14.1,
+     "max_hands": 12,
+     "max_animals": 8
+    },
+    "descriptor": {
+     "animals_d15": 8,
+     "land_final": 3,
+     "hands_max": 6,
+     "money_d10": 1953
+    },
+    "note": null
+   },
+   {
+    "key": "4da18ba9fcfa",
+    "island": "c1",
+    "origin": "crossover",
+    "status": "alive",
+    "dev": -6872.15,
+    "dev_t": -2.270246885301463,
+    "dev_wl": [
+     2,
+     8
+    ],
+    "clone": -13323.05,
+    "held": null,
+    "held_t": null,
+    "held_clone": null,
+    "diff_vs_c1": {
+     "wheat_tiles": [
+      0,
+      1
+     ],
+     "wheat_stock": [
+      0,
+      10
+     ],
+     "open_wheat": [
+      7,
+      9
+     ],
+     "early_hire_days": [
+      5,
+      4
+     ],
+     "wheat_cap": [
+      18,
+      19
+     ],
+     "MAX_HANDS": [
+      13,
+      12
+     ],
+     "CROP_SWEEP_RADIUS": [
+      4,
+      2
+     ],
+     "STRAW_CUTOFF": [
+      17,
+      15
+     ],
+     "MELON_PRICE_CUSHION": [
+      100,
+      116
+     ],
+     "NEAR_RADIUS": [
+      3,
+      2
+     ],
+     "OPP_GROWTH": [
+      1.3,
+      1.7
+     ],
+     "MAX_SHEEP": [
+      12,
+      14
+     ]
+    },
+    "blocks": [
+     "crop_admission"
+    ],
+    "ablation": null,
+    "diag": "cand pulls ahead of C1 from day 24 (gap +1,702 -> final +7,775); days 22-29 drivers: sales_rev +7,698, missed_water -16, work_turns +78, idle_turns -15. Hands 6 vs 6, animals 14 vs 10, plants 21 vs 26.",
+    "exec": {
+     "final_networth": 92240,
+     "sales": 123273,
+     "buys": 25398,
+     "missed_feed": 3,
+     "missed_water": 502,
+     "escapes": 0,
+     "weeds_new": 29,
+     "unit_turns": 6605,
+     "move_share": 0.548,
+     "idle_share": 0.073,
+     "travel_per_task": 1.45,
+     "reversals": 25,
+     "feed_hour": 10.1,
+     "water_hour": 13.5,
+     "max_hands": 12,
+     "max_animals": 14
+    },
+    "descriptor": {
+     "animals_d15": 9,
+     "land_final": 4,
+     "hands_max": 6,
+     "money_d10": 2382
+    },
+    "note": null
+   },
+   {
+    "key": "b467b93487e0",
+    "island": "c1",
+    "origin": "mutate",
+    "status": "alive",
+    "dev": -6879.75,
+    "dev_t": -5.281611781915498,
+    "dev_wl": [
+     0,
+     10
+    ],
+    "clone": -17348.85,
+    "held": null,
+    "held_t": null,
+    "held_clone": null,
+    "diff_vs_c1": {
+     "melon_floor": [
+      150,
+      0
+     ],
+     "harvest_min": [
+      2,
+      1
+     ],
+     "min_hands": [
+      3,
+      5
+     ],
+     "load_per_hand": [
+      20,
+      16
+     ],
+     "open_wheat": [
+      7,
+      5
+     ],
+     "early_hire_days": [
+      5,
+      3
+     ],
+     "fert_keep": [
+      0,
+      1
+     ],
+     "fert_carry": [
+      3,
+      2
+     ],
+     "max_animals": [
+      20,
+      18
+     ],
+     "wheat_cap": [
+      18,
+      23
+     ],
+     "CROP_SWEEP_RADIUS": [
+      4,
+      2
+     ],
+     "STRAW_CUTOFF": [
+      17,
+      14
+     ],
+     "MELON_MAX_TILES": [
+      40,
+      34
+     ],
+     "NEAR_RADIUS": [
+      3,
+      2
+     ],
+     "OPP_GROWTH": [
+      1.3,
+      1.0
+     ],
+     "MAX_SHEEP": [
+      12,
+      14
+     ]
+    },
+    "blocks": [
+     "crop_admission"
+    ],
+    "ablation": null,
+    "diag": "cand pulls ahead of C1 from day 29 (gap +2,278 -> final +2,278); days 27-29 drivers: missed_water -15, feed_hour -2.35, sales_rev +250, work_turns +5. Hands 6 vs 6, animals 8 vs 10, plants 26 vs 26.",
+    "exec": {
+     "final_networth": 86743,
+     "sales": 114036,
+     "buys": 19644,
+     "missed_feed": 1,
+     "missed_water": 449,
+     "escapes": 0,
+     "weeds_new": 7,
+     "unit_turns": 7194,
+     "move_share": 0.516,
+     "idle_share": 0.131,
+     "travel_per_task": 1.46,
+     "reversals": 16,
+     "feed_hour": 9.7,
+     "water_hour": 14.0,
+     "max_hands": 13,
+     "max_animals": 8
+    },
+    "descriptor": {
+     "animals_d15": 8,
+     "land_final": 4,
+     "hands_max": 6,
+     "money_d10": 2216
+    },
+    "note": null
+   },
+   {
+    "key": "845641ce8b4d",
+    "island": "c1",
+    "origin": "mutate",
+    "status": "alive",
+    "dev": -6945.7,
+    "dev_t": -2.725632043390997,
+    "dev_wl": [
+     2,
+     8
+    ],
+    "clone": -16704.35,
+    "held": null,
+    "held_t": null,
+    "held_clone": null,
+    "diff_vs_c1": {
+     "melon_floor": [
+      150,
+      100
+     ],
+     "wheat_stock": [
+      0,
+      2
+     ],
+     "open_wheat": [
+      7,
+      9
+     ],
+     "early_hire_days": [
+      5,
+      4
+     ],
+     "fert_keep": [
+      0,
+      1
+     ],
+     "wheat_per_animal": [
+      0.0,
+      0.2
      ],
      "wheat_water_tier": [
       0,
@@ -4031,178 +4143,66 @@
       4,
       2
      ],
-     "MELON_MAX_TILES": [
-      40,
-      43
-     ],
      "MELON_PRICE_CUSHION": [
       100,
-      90
+      96
      ],
-     "NEAR_RADIUS": [
-      3,
-      4
+     "HERD_LAST_DAY": [
+      19,
+      22
      ],
      "OPP_GROWTH": [
       1.3,
-      1.2
+      1.7
      ],
      "MAX_SHEEP": [
       12,
-      14
-     ],
-     "OPENING_MELONS": [
-      10,
-      14
+      13
      ]
     },
     "blocks": [
      "crop_admission"
     ],
     "ablation": null,
-    "diag": "cand pulls ahead of C1 from day 11 (gap +4,121 -> final +47,263); days 9-16 drivers: missed_water -81, feed_hour -2.15, escapes -1, missed_feed -2. Hands 10 vs 10, animals 11 vs 10, plants 62 vs 80.",
+    "diag": "cand falls behind C1 from day 24 (gap -9,118 -> final -34,598); days 22-29 drivers: sales_rev -42,887, idle_turns +16, missed_feed +1, water_hour +0.11. Hands 6 vs 6, animals 19 vs 10, plants 14 vs 26.",
     "exec": {
-     "final_networth": 131728,
-     "sales": 154218,
-     "buys": 18108,
-     "missed_feed": 1,
-     "missed_water": 325,
+     "final_networth": 49867,
+     "sales": 76418,
+     "buys": 29717,
+     "missed_feed": 6,
+     "missed_water": 366,
      "escapes": 0,
-     "weeds_new": 4,
-     "unit_turns": 6820,
-     "move_share": 0.505,
-     "idle_share": 0.143,
-     "travel_per_task": 1.44,
-     "reversals": 25,
-     "feed_hour": 9.1,
-     "water_hour": 14.1,
+     "weeds_new": 22,
+     "unit_turns": 6759,
+     "move_share": 0.535,
+     "idle_share": 0.081,
+     "travel_per_task": 1.4,
+     "reversals": 32,
+     "feed_hour": 10.6,
+     "water_hour": 13.7,
      "max_hands": 12,
-     "max_animals": 11
+     "max_animals": 19
     },
     "descriptor": {
-     "animals_d15": 11,
+     "animals_d15": 17,
      "land_final": 3,
      "hands_max": 6,
-     "money_d10": 1831
+     "money_d10": 1996
     },
     "note": null
    },
    {
-    "key": "48a4890ef3fc",
-    "island": "wide",
-    "origin": "mutate",
+    "key": "6a389403f56c",
+    "island": "c1",
+    "origin": "crossover",
     "status": "alive",
-    "dev": -8020.95,
-    "dev_t": -3.878483234787189,
+    "dev": -7189.55,
+    "dev_t": -4.734864612912625,
     "dev_wl": [
-     1,
-     9
+     0,
+     10
     ],
-    "clone": -8808.9,
-    "held": null,
-    "held_t": null,
-    "held_clone": null,
-    "diff_vs_c1": {
-     "melon_floor": [
-      150,
-      200
-     ],
-     "load_per_hand": [
-      20,
-      15
-     ],
-     "open_wheat": [
-      7,
-      8
-     ],
-     "early_hire_days": [
-      5,
-      8
-     ],
-     "fert_buy": [
-      0,
-      1
-     ],
-     "demand_share": [
-      0.5,
-      0.45
-     ],
-     "max_animals": [
-      20,
-      17
-     ],
-     "wheat_cap": [
-      18,
-      16
-     ],
-     "wheat_water_tier": [
-      0,
-      1
-     ],
-     "CROP_SWEEP_RADIUS": [
-      4,
-      2
-     ],
-     "MELON_MAX_TILES": [
-      40,
-      43
-     ],
-     "MELON_PRICE_CUSHION": [
-      100,
-      93
-     ],
-     "NEAR_RADIUS": [
-      3,
-      2
-     ],
-     "MAX_SHEEP": [
-      12,
-      14
-     ]
-    },
-    "blocks": [
-     "crop_admission"
-    ],
-    "ablation": null,
-    "diag": "cand falls behind C1 from day 26 (gap -3,773 -> final -12,035); days 24-29 drivers: sales_rev -15,656, idle_turns +281, water_hour +2.03, work_turns -20. Hands 6 vs 6, animals 8 vs 10, plants 18 vs 26.",
-    "exec": {
-     "final_networth": 72430,
-     "sales": 95054,
-     "buys": 19668,
-     "missed_feed": 2,
-     "missed_water": 361,
-     "escapes": 0,
-     "weeds_new": 2,
-     "unit_turns": 6598,
-     "move_share": 0.469,
-     "idle_share": 0.183,
-     "travel_per_task": 1.35,
-     "reversals": 17,
-     "feed_hour": 9.0,
-     "water_hour": 14.5,
-     "max_hands": 13,
-     "max_animals": 8
-    },
-    "descriptor": {
-     "animals_d15": 8,
-     "land_final": 3,
-     "hands_max": 6,
-     "money_d10": 1991
-    },
-    "note": null
-   },
-   {
-    "key": "3d388ac7cdc5",
-    "island": "wide",
-    "origin": "migrate",
-    "status": "alive",
-    "dev": -8086.8,
-    "dev_t": -2.5670262021901347,
-    "dev_wl": [
-     2,
-     8
-    ],
-    "clone": -13659.05,
+    "clone": -17173.05,
     "held": null,
     "held_t": null,
     "held_clone": null,
@@ -4211,49 +4211,17 @@
       150,
       100
      ],
-     "harvest_min": [
-      2,
-      1
-     ],
-     "min_hands": [
-      3,
-      6
-     ],
-     "load_per_hand": [
-      20,
-      16
-     ],
      "open_melons": [
       8,
-      5
+      10
      ],
      "open_wheat": [
       7,
-      9
-     ],
-     "open_cows": [
-      2,
-      3
-     ],
-     "demand_share": [
-      0.5,
-      0.4
-     ],
-     "max_animals": [
-      20,
-      17
-     ],
-     "wheat_cap": [
-      18,
-      7
+      8
      ],
      "wheat_water_tier": [
       0,
       1
-     ],
-     "ROUTE_LEN": [
-      3,
-      2
      ],
      "CROP_SWEEP_LEN": [
       6,
@@ -4261,61 +4229,57 @@
      ],
      "CROP_SWEEP_RADIUS": [
       4,
-      3
+      2
      ],
      "STRAW_CUTOFF": [
       17,
-      15
+      18
+     ],
+     "MELON_PRICE_CUSHION": [
+      100,
+      116
      ],
      "HERD_LAST_DAY": [
       19,
-      14
-     ],
-     "NEAR_RADIUS": [
-      3,
-      2
+      22
      ],
      "OPP_GROWTH": [
       1.3,
-      1.2
-     ],
-     "MAX_SHEEP": [
-      12,
-      14
+      1.4
      ],
      "OPENING_MELONS": [
       10,
-      12
+      11
      ]
     },
     "blocks": [
      "crop_admission"
     ],
     "ablation": null,
-    "diag": "cand falls behind C1 from day 22 (gap -3,433 -> final -13,495); days 20-27 drivers: sales_rev -11,680, idle_turns +52, water_hour +1.44. Hands 13 vs 10, animals 16 vs 10, plants 42 vs 42.",
+    "diag": "cand falls behind C1 from day 24 (gap -3,742 -> final -21,170); days 22-29 drivers: sales_rev -25,720, work_turns -117, weeds_new +4, idle_turns +24. Hands 5 vs 6, animals 8 vs 10, plants 14 vs 26.",
     "exec": {
-     "final_networth": 70970,
-     "sales": 102164,
-     "buys": 28797,
-     "missed_feed": 3,
-     "missed_water": 336,
+     "final_networth": 63295,
+     "sales": 83359,
+     "buys": 19699,
+     "missed_feed": 2,
+     "missed_water": 415,
      "escapes": 0,
-     "weeds_new": 18,
-     "unit_turns": 7560,
-     "move_share": 0.491,
-     "idle_share": 0.162,
-     "travel_per_task": 1.42,
-     "reversals": 31,
-     "feed_hour": 8.5,
-     "water_hour": 13.8,
+     "weeds_new": 17,
+     "unit_turns": 6056,
+     "move_share": 0.545,
+     "idle_share": 0.098,
+     "travel_per_task": 1.52,
+     "reversals": 15,
+     "feed_hour": 9.5,
+     "water_hour": 13.5,
      "max_hands": 13,
-     "max_animals": 16
+     "max_animals": 8
     },
     "descriptor": {
-     "animals_d15": 16,
+     "animals_d15": 8,
      "land_final": 3,
-     "hands_max": 6,
-     "money_d10": 2953
+     "hands_max": 5,
+     "money_d10": 1836
     },
     "note": null
    }
@@ -4325,7 +4289,7 @@
  "param_importance": [
   {
    "param": "MELON_PRICE_CUSHION",
-   "spread": 22311,
+   "spread": 24591,
    "best": 145,
    "c1": 100,
    "means": {
@@ -4337,21 +4301,13 @@
      -507,
      26
     ],
-    "130": [
-     -1957,
-     5
-    ],
     "114": [
      -4027,
      43
     ],
-    "83": [
-     -4592,
-     9
-    ],
-    "98": [
-     -5449,
-     20
+    "130": [
+     -5163,
+     6
     ],
     "72": [
      -5795,
@@ -4361,6 +4317,10 @@
      -5851,
      8
     ],
+    "98": [
+     -5884,
+     22
+    ],
     "131": [
      -6046,
      8
@@ -4369,121 +4329,125 @@
      -6719,
      4
     ],
+    "83": [
+     -7173,
+     11
+    ],
     "127": [
-     -7940,
-     143
+     -8005,
+     147
     ],
     "100": [
-     -8813,
-     1875
+     -9306,
+     2074
     ],
     "124": [
-     -9180,
+     -9404,
+     3
+    ],
+    "121": [
+     -10061,
      2
     ],
-    "144": [
-     -9580,
-     2
+    "59": [
+     -11288,
+     3
     ],
-    "117": [
-     -11202,
-     8
+    "135": [
+     -11352,
+     3
     ],
     "105": [
-     -11547,
-     15
+     -11370,
+     16
     ],
     "129": [
-     -11578,
-     37
+     -11767,
+     39
     ],
-    "67": [
-     -11911,
+    "97": [
+     -11824,
+     10
+    ],
+    "117": [
+     -11874,
      10
     ],
     "112": [
      -12020,
      8
     ],
-    "140": [
-     -12027,
-     9
-    ],
-    "59": [
-     -12065,
-     2
-    ],
     "116": [
-     -12081,
-     63
-    ],
-    "133": [
-     -12173,
-     24
+     -12248,
+     79
     ],
     "78": [
      -12289,
      6
     ],
-    "97": [
-     -12411,
-     8
+    "91": [
+     -12302,
+     10
     ],
-    "135": [
-     -12487,
-     2
+    "67": [
+     -12305,
+     26
+    ],
+    "133": [
+     -12318,
+     33
     ],
     "50": [
      -12608,
      25
     ],
-    "92": [
-     -12829,
-     10
+    "77": [
+     -12660,
+     7
+    ],
+    "106": [
+     -12841,
+     6
+    ],
+    "140": [
+     -12957,
+     13
     ],
     "101": [
-     -12954,
-     28
+     -13089,
+     29
     ],
     "96": [
-     -13128,
-     30
+     -13321,
+     37
     ],
     "69": [
      -13405,
      3
     ],
-    "106": [
-     -13489,
-     5
+    "85": [
+     -13560,
+     30
     ],
     "150": [
-     -13551,
-     40
+     -13562,
+     46
     ],
-    "85": [
-     -13610,
-     26
+    "92": [
+     -13778,
+     20
     ],
-    "119": [
-     -13617,
+    "95": [
+     -13979,
      5
     ],
-    "91": [
-     -13671,
-     5
+    "87": [
+     -14046,
+     3
     ],
-    "93": [
-     -13707,
-     16
-    ],
-    "90": [
-     -13884,
-     22
-    ],
-    "94": [
-     -13963,
-     8
+    "144": [
+     -14072,
+     3
     ],
     "80": [
      -14082,
@@ -4493,61 +4457,65 @@
      -14104,
      2
     ],
-    "89": [
-     -14140,
-     4
+    "93": [
+     -14436,
+     21
     ],
-    "125": [
-     -14478,
+    "89": [
+     -14473,
+     5
+    ],
+    "94": [
+     -14500,
      9
+    ],
+    "75": [
+     -14643,
+     7
+    ],
+    "90": [
+     -14653,
+     34
     ],
     "88": [
      -14727,
      7
     ],
-    "118": [
-     -14769,
-     9
-    ],
-    "75": [
-     -14830,
-     6
-    ],
-    "95": [
-     -14876,
-     4
-    ],
-    "123": [
-     -14987,
+    "115": [
+     -15095,
      17
     ],
-    "115": [
-     -15006,
-     13
+    "102": [
+     -15137,
+     7
     ],
-    "132": [
-     -15127,
-     6
+    "118": [
+     -15218,
+     10
+    ],
+    "68": [
+     -15252,
+     4
     ],
     "73": [
-     -15145,
-     3
+     -15324,
+     5
     ],
     "110": [
      -15331,
      7
     ],
-    "113": [
-     -15511,
-     4
+    "123": [
+     -15394,
+     18
     ],
-    "107": [
-     -15539,
-     13
+    "119": [
+     -15576,
+     7
     ],
-    "84": [
-     -15624,
-     4
+    "103": [
+     -15643,
+     3
     ],
     "109": [
      -15672,
@@ -4556,6 +4524,26 @@
     "137": [
      -15708,
      2
+    ],
+    "132": [
+     -15741,
+     7
+    ],
+    "143": [
+     -15769,
+     3
+    ],
+    "62": [
+     -15808,
+     6
+    ],
+    "107": [
+     -16060,
+     14
+    ],
+    "125": [
+     -16061,
+     11
     ],
     "66": [
      -16165,
@@ -4569,13 +4557,9 @@
      -16552,
      4
     ],
-    "79": [
-     -16555,
-     11
-    ],
-    "77": [
-     -16735,
-     2
+    "84": [
+     -16741,
+     7
     ],
     "126": [
      -16797,
@@ -4585,13 +4569,13 @@
      -16844,
      3
     ],
-    "68": [
-     -17029,
-     2
-    ],
-    "111": [
-     -17086,
+    "79": [
+     -16945,
      12
+    ],
+    "113": [
+     -17057,
+     5
     ],
     "108": [
      -17351,
@@ -4601,29 +4585,25 @@
      -17422,
      4
     ],
-    "62": [
-     -17505,
-     5
-    ],
-    "103": [
-     -17571,
-     2
-    ],
-    "102": [
-     -17595,
-     5
+    "76": [
+     -17430,
+     6
     ],
     "139": [
      -17675,
      3
     ],
-    "76": [
-     -17890,
-     5
+    "111": [
+     -17722,
+     16
     ],
     "81": [
      -17903,
      10
+    ],
+    "128": [
+     -18034,
+     2
     ],
     "63": [
      -18295,
@@ -4636,166 +4616,66 @@
     "60": [
      -20456,
      2
-    ]
-   }
-  },
-  {
-   "param": "wheat_stock",
-   "spread": 20272,
-   "best": 16,
-   "c1": 0,
-   "means": {
-    "16": [
-     -1895,
-     5
     ],
-    "21": [
-     -5788,
-     10
-    ],
-    "7": [
-     -7342,
-     31
-    ],
-    "5": [
-     -8388,
-     65
-    ],
-    "0": [
-     -9174,
-     2163
-    ],
-    "10": [
-     -9486,
-     37
-    ],
-    "2": [
-     -9975,
-     110
-    ],
-    "12": [
-     -10556,
-     42
-    ],
-    "13": [
-     -10903,
-     15
-    ],
-    "14": [
-     -12474,
-     16
-    ],
-    "1": [
-     -12534,
-     52
-    ],
-    "6": [
-     -13089,
-     40
-    ],
-    "4": [
-     -13161,
-     113
-    ],
-    "11": [
-     -13834,
-     28
-    ],
-    "17": [
-     -14133,
-     3
-    ],
-    "15": [
-     -14437,
-     4
-    ],
-    "9": [
-     -14469,
-     10
-    ],
-    "3": [
-     -15061,
-     24
-    ],
-    "8": [
-     -16929,
-     7
-    ],
-    "35": [
-     -17198,
+    "64": [
+     -20739,
      2
     ],
-    "40": [
-     -18510,
-     4
-    ],
-    "23": [
-     -19111,
-     2
-    ],
-    "28": [
-     -19249,
-     2
-    ],
-    "22": [
-     -19282,
-     4
-    ],
-    "33": [
-     -22166,
+    "148": [
+     -22736,
      2
     ]
    }
   },
   {
    "param": "demand_share",
-   "spread": 19843,
-   "best": 0.8,
+   "spread": 18426,
+   "best": 0.75,
    "c1": 0.5,
    "means": {
-    "0.8": [
-     -5239,
-     6
-    ],
     "0.75": [
-     -5461,
-     20
+     -6655,
+     22
     ],
-    "0.7": [
-     -7517,
-     34
+    "0.8": [
+     -8415,
+     7
     ],
     "0.5": [
-     -8762,
-     1808
+     -9100,
+     1953
+    ],
+    "0.7": [
+     -9109,
+     40
     ],
     "0.45": [
-     -10026,
-     423
+     -10803,
+     521
     ],
     "0.4": [
-     -10856,
-     76
+     -11380,
+     84
     ],
     "0.55": [
-     -11754,
-     173
+     -12281,
+     231
     ],
     "0.35": [
-     -13762,
-     33
-    ],
-    "0.3": [
-     -14446,
-     85
+     -13900,
+     34
     ],
     "0.6": [
-     -14490,
-     106
+     -14500,
+     136
+    ],
+    "0.3": [
+     -14874,
+     96
     ],
     "0.65": [
-     -14693,
-     25
+     -15177,
+     30
     ],
     "0.95": [
      -17648,
@@ -4812,138 +4692,254 @@
    }
   },
   {
+   "param": "wheat_stock",
+   "spread": 17838,
+   "best": 16,
+   "c1": 0,
+   "means": {
+    "16": [
+     -4328,
+     6
+    ],
+    "21": [
+     -5788,
+     10
+    ],
+    "7": [
+     -7629,
+     32
+    ],
+    "5": [
+     -9415,
+     72
+    ],
+    "0": [
+     -9684,
+     2416
+    ],
+    "2": [
+     -10264,
+     121
+    ],
+    "10": [
+     -10656,
+     48
+    ],
+    "13": [
+     -11071,
+     16
+    ],
+    "12": [
+     -11309,
+     48
+    ],
+    "20": [
+     -11897,
+     2
+    ],
+    "14": [
+     -12474,
+     16
+    ],
+    "1": [
+     -12527,
+     55
+    ],
+    "6": [
+     -13132,
+     62
+    ],
+    "4": [
+     -13390,
+     138
+    ],
+    "11": [
+     -13907,
+     40
+    ],
+    "15": [
+     -14047,
+     6
+    ],
+    "17": [
+     -14133,
+     3
+    ],
+    "9": [
+     -14381,
+     14
+    ],
+    "3": [
+     -14849,
+     26
+    ],
+    "35": [
+     -17198,
+     2
+    ],
+    "8": [
+     -17202,
+     9
+    ],
+    "28": [
+     -18108,
+     3
+    ],
+    "40": [
+     -18510,
+     4
+    ],
+    "23": [
+     -19111,
+     2
+    ],
+    "22": [
+     -19282,
+     4
+    ],
+    "33": [
+     -22166,
+     2
+    ]
+   }
+  },
+  {
    "param": "wheat_tiles",
-   "spread": 17287,
+   "spread": 16415,
    "best": 3,
    "c1": 0,
    "means": {
     "3": [
-     -7420,
-     61
+     -8245,
+     65
     ],
     "0": [
-     -9446,
-     2429
+     -9926,
+     2721
     ],
     "4": [
      -10481,
      22
     ],
     "2": [
-     -11432,
-     97
+     -12083,
+     123
     ],
     "1": [
-     -12227,
-     181
+     -12712,
+     223
     ],
     "5": [
      -19193,
      4
     ],
+    "8": [
+     -23634,
+     3
+    ],
     "6": [
      -24660,
      3
-    ],
-    "8": [
-     -24707,
-     2
     ]
    }
   },
   {
    "param": "wheat_sell_price",
-   "spread": 15983,
+   "spread": 14769,
    "best": 37,
    "c1": 30,
    "means": {
     "37": [
-     -5502,
-     25
+     -6716,
+     29
     ],
     "27": [
-     -6413,
-     202
-    ],
-    "38": [
-     -6637,
-     14
+     -7029,
+     216
     ],
     "28": [
-     -7018,
-     109
-    ],
-    "50": [
-     -7709,
+     -7287,
      111
     ],
-    "47": [
-     -8727,
-     2
+    "38": [
+     -7312,
+     15
+    ],
+    "50": [
+     -8114,
+     116
     ],
     "31": [
-     -8758,
-     50
+     -9275,
+     60
     ],
     "44": [
      -9542,
      9
     ],
-    "25": [
-     -9820,
-     165
-    ],
     "30": [
-     -9842,
-     1812
+     -10312,
+     2062
     ],
-    "35": [
-     -10315,
-     35
+    "25": [
+     -10611,
+     186
+    ],
+    "47": [
+     -10956,
+     3
     ],
     "29": [
-     -10593,
-     70
+     -10968,
+     80
+    ],
+    "35": [
+     -11397,
+     46
     ],
     "32": [
-     -12160,
-     27
+     -12695,
+     29
     ],
     "33": [
-     -14118,
-     25
+     -14279,
+     29
     ],
     "36": [
-     -14406,
-     34
-    ],
-    "26": [
-     -15207,
-     41
+     -14437,
+     37
     ],
     "41": [
-     -15600,
-     4
-    ],
-    "34": [
-     -15683,
-     41
-    ],
-    "43": [
-     -15862,
-     3
-    ],
-    "40": [
-     -16486,
+     -14598,
      5
     ],
-    "45": [
-     -17699,
-     3
+    "26": [
+     -14635,
+     56
+    ],
+    "34": [
+     -15582,
+     44
+    ],
+    "43": [
+     -15960,
+     4
+    ],
+    "40": [
+     -16177,
+     7
+    ],
+    "46": [
+     -17175,
+     2
     ],
     "39": [
-     -18645,
-     9
+     -17780,
+     12
+    ],
+    "45": [
+     -17975,
+     4
     ],
     "48": [
      -21485,
@@ -4953,109 +4949,109 @@
   },
   {
    "param": "load_per_hand",
-   "spread": 14516,
+   "spread": 13700,
    "best": 20,
    "c1": 20,
    "means": {
     "20": [
-     -8301,
-     1612
+     -8677,
+     1729
     ],
     "19": [
-     -8972,
-     213
+     -9759,
+     265
     ],
     "22": [
-     -10342,
-     52
+     -10795,
+     59
     ],
     "18": [
-     -10712,
-     158
+     -11123,
+     188
     ],
     "16": [
-     -11441,
-     332
+     -11845,
+     409
     ],
     "13": [
-     -11706,
-     15
+     -12138,
+     16
     ],
     "15": [
-     -12126,
-     190
+     -12640,
+     236
     ],
     "21": [
-     -12568,
-     81
+     -12942,
+     89
     ],
     "23": [
-     -12935,
-     29
-    ],
-    "14": [
-     -14137,
-     12
+     -13561,
+     33
     ],
     "17": [
-     -14225,
-     51
+     -14091,
+     59
+    ],
+    "14": [
+     -14732,
+     13
     ],
     "24": [
-     -17783,
-     14
+     -17438,
+     16
     ],
     "25": [
-     -18646,
-     6
+     -18583,
+     8
     ],
     "12": [
-     -19432,
-     23
+     -20168,
+     26
     ],
     "26": [
-     -22817,
-     12
+     -22377,
+     19
     ]
    }
   },
   {
    "param": "MAX_HANDS",
-   "spread": 12953,
+   "spread": 12447,
    "best": 13,
    "c1": 13,
    "means": {
     "13": [
-     -8859,
-     1959
+     -9365,
+     2176
     ],
     "11": [
-     -9967,
-     89
+     -10421,
+     96
     ],
     "16": [
-     -10226,
-     45
+     -10686,
+     48
     ],
     "15": [
-     -10684,
-     97
+     -11061,
+     104
     ],
     "12": [
-     -11617,
-     445
+     -12068,
+     553
     ],
     "14": [
-     -12236,
-     117
+     -12736,
+     137
     ],
     "10": [
-     -13682,
-     25
+     -13576,
+     26
     ],
     "9": [
-     -20449,
-     10
+     -20094,
+     12
     ],
     "8": [
      -21813,
@@ -5064,38 +5060,90 @@
    }
   },
   {
+   "param": "wheat_per_animal",
+   "spread": 12084,
+   "best": 0.1,
+   "c1": 0.0,
+   "means": {
+    "0.1": [
+     -7929,
+     461
+    ],
+    "0.0": [
+     -10082,
+     2223
+    ],
+    "0.5": [
+     -10929,
+     46
+    ],
+    "0.2": [
+     -12104,
+     240
+    ],
+    "0.6": [
+     -12491,
+     23
+    ],
+    "0.3": [
+     -14000,
+     112
+    ],
+    "0.8": [
+     -15252,
+     6
+    ],
+    "0.9": [
+     -15646,
+     5
+    ],
+    "0.4": [
+     -16273,
+     38
+    ],
+    "0.7": [
+     -19491,
+     3
+    ],
+    "1.2": [
+     -20014,
+     7
+    ]
+   }
+  },
+  {
    "param": "MELON_MAX_TILES",
-   "spread": 12724,
+   "spread": 11808,
    "best": 41,
    "c1": 40,
    "means": {
     "41": [
-     -7374,
-     628
+     -7944,
+     685
     ],
     "44": [
-     -8852,
-     27
+     -9244,
+     31
     ],
     "40": [
-     -8946,
-     1034
+     -9454,
+     1153
     ],
     "32": [
-     -9614,
-     16
-    ],
-    "50": [
-     -9658,
-     377
+     -9985,
+     20
     ],
     "47": [
-     -9910,
-     50
+     -9989,
+     56
+    ],
+    "50": [
+     -9997,
+     405
     ],
     "31": [
-     -10184,
-     50
+     -10488,
+     55
     ],
     "45": [
      -11149,
@@ -5105,61 +5153,65 @@
      -11379,
      4
     ],
-    "35": [
-     -11676,
-     22
-    ],
-    "37": [
-     -11727,
-     85
-    ],
     "23": [
-     -12094,
-     3
-    ],
-    "46": [
-     -13036,
-     7
-    ],
-    "39": [
-     -13166,
-     25
-    ],
-    "27": [
-     -13251,
+     -11387,
      5
     ],
+    "35": [
+     -12092,
+     24
+    ],
+    "37": [
+     -12139,
+     103
+    ],
+    "39": [
+     -13011,
+     30
+    ],
     "38": [
-     -13289,
-     99
+     -13365,
+     115
     ],
     "34": [
-     -13353,
-     64
-    ],
-    "43": [
-     -13534,
-     167
+     -13583,
+     80
     ],
     "42": [
-     -14030,
-     22
+     -13706,
+     27
     ],
-    "36": [
-     -14140,
-     9
+    "46": [
+     -13874,
+     11
     ],
-    "48": [
-     -14213,
-     8
+    "43": [
+     -13890,
+     224
+    ],
+    "27": [
+     -14402,
+     6
     ],
     "49": [
-     -14432,
-     36
+     -14502,
+     39
+    ],
+    "36": [
+     -14747,
+     12
+    ],
+    "48": [
+     -15032,
+     10
     ],
     "30": [
      -15232,
      7
+    ],
+    "33": [
+     -15239,
+     18
     ],
     "29": [
      -15539,
@@ -5169,229 +5221,185 @@
      -15686,
      7
     ],
-    "33": [
-     -15708,
-     13
-    ],
     "28": [
      -16907,
      7
     ],
     "25": [
-     -18308,
-     3
+     -18483,
+     5
     ],
     "20": [
-     -20098,
-     4
-    ]
-   }
-  },
-  {
-   "param": "wheat_per_animal",
-   "spread": 12065,
-   "best": 0.1,
-   "c1": 0.0,
-   "means": {
-    "0.1": [
-     -7329,
-     421
-    ],
-    "0.0": [
-     -9625,
-     1976
-    ],
-    "0.6": [
-     -9952,
-     14
-    ],
-    "0.5": [
-     -10106,
-     39
-    ],
-    "0.8": [
-     -11525,
-     4
-    ],
-    "0.2": [
-     -11833,
-     212
-    ],
-    "0.3": [
-     -13771,
-     92
-    ],
-    "0.9": [
-     -15433,
-     4
-    ],
-    "0.4": [
-     -16324,
-     31
-    ],
-    "1.2": [
-     -19394,
+     -19752,
      5
-    ]
-   }
-  },
-  {
-   "param": "ROUTE_LEN",
-   "spread": 11437,
-   "best": 3,
-   "c1": 3,
-   "means": {
-    "3": [
-     -9386,
-     2407
-    ],
-    "2": [
-     -10798,
-     230
-    ],
-    "4": [
-     -12334,
-     153
-    ],
-    "5": [
-     -20823,
-     10
     ]
    }
   },
   {
    "param": "max_animals",
-   "spread": 11039,
+   "spread": 11390,
    "best": 20,
    "c1": 20,
    "means": {
     "20": [
-     -9279,
-     1855
+     -9658,
+     2023
     ],
     "17": [
-     -9332,
-     608
+     -10148,
+     730
     ],
     "16": [
-     -10411,
-     60
+     -10773,
+     66
     ],
     "18": [
-     -11212,
-     86
+     -11724,
+     106
     ],
     "19": [
-     -13315,
-     136
-    ],
-    "15": [
-     -14427,
-     31
+     -13397,
+     164
     ],
     "13": [
-     -14606,
-     6
+     -13708,
+     9
+    ],
+    "15": [
+     -14774,
+     40
+    ],
+    "11": [
+     -17496,
+     3
     ],
     "14": [
-     -19126,
-     7
+     -18838,
+     12
     ],
     "12": [
-     -19664,
-     5
+     -20368,
+     6
     ],
     "10": [
-     -20318,
-     5
+     -21048,
+     6
     ]
    }
   },
   {
-   "param": "STRAW_CUTOFF",
-   "spread": 10639,
+   "param": "ROUTE_LEN",
+   "spread": 11115,
+   "best": 3,
+   "c1": 3,
+   "means": {
+    "3": [
+     -9911,
+     2730
+    ],
+    "2": [
+     -11248,
+     254
+    ],
+    "4": [
+     -12896,
+     170
+    ],
+    "5": [
+     -21026,
+     11
+    ]
+   }
+  },
+  {
+   "param": "MAX_SHEEP",
+   "spread": 10884,
    "best": 12,
-   "c1": 17,
+   "c1": 12,
    "means": {
     "12": [
-     -7130,
-     54
+     -8168,
+     843
     ],
-    "17": [
-     -8665,
-     1611
-    ],
-    "16": [
-     -9070,
-     477
-    ],
-    "19": [
-     -9563,
-     59
-    ],
-    "18": [
-     -11392,
-     210
-    ],
-    "15": [
-     -13040,
-     186
+    "11": [
+     -10209,
+     261
     ],
     "14": [
-     -14558,
-     114
+     -10487,
+     1381
     ],
-    "20": [
-     -16166,
-     77
+    "9": [
+     -10728,
+     43
+    ],
+    "4": [
+     -10967,
+     3
     ],
     "13": [
-     -17768,
-     12
+     -12158,
+     494
+    ],
+    "10": [
+     -12158,
+     121
+    ],
+    "6": [
+     -14949,
+     4
+    ],
+    "8": [
+     -16826,
+     6
+    ],
+    "7": [
+     -19052,
+     8
     ]
    }
   },
   {
    "param": "open_melons",
-   "spread": 10028,
-   "best": 5,
+   "spread": 9312,
+   "best": 10,
    "c1": 8,
    "means": {
+    "10": [
+     -9345,
+     203
+    ],
     "5": [
-     -8629,
-     594
+     -9354,
+     689
     ],
     "8": [
-     -8923,
-     1212
-    ],
-    "10": [
-     -9062,
-     191
+     -9410,
+     1350
     ],
     "6": [
-     -10588,
-     269
+     -11178,
+     308
     ],
     "7": [
-     -11061,
-     215
+     -11519,
+     254
     ],
     "12": [
      -11842,
      23
     ],
     "11": [
-     -11909,
-     39
+     -12286,
+     41
     ],
     "9": [
-     -12765,
-     124
+     -13047,
+     144
     ],
     "4": [
-     -14228,
-     119
+     -14454,
+     139
     ],
     "14": [
      -18562,
@@ -5405,89 +5413,89 @@
   },
   {
    "param": "wheat_cap",
-   "spread": 9861,
+   "spread": 9133,
    "best": 15,
    "c1": 18,
    "means": {
     "15": [
-     -7378,
-     432
-    ],
-    "23": [
-     -7996,
-     30
+     -8106,
+     485
     ],
     "18": [
-     -8063,
-     1194
+     -8429,
+     1275
+    ],
+    "23": [
+     -9161,
+     42
     ],
     "14": [
-     -9624,
-     28
+     -9803,
+     33
     ],
     "21": [
-     -9823,
-     91
+     -9933,
+     96
     ],
     "17": [
-     -10198,
-     102
+     -10673,
+     115
     ],
     "20": [
-     -11162,
-     419
-    ],
-    "8": [
-     -11533,
-     7
+     -11657,
+     510
     ],
     "12": [
      -12186,
      29
     ],
     "22": [
-     -12348,
-     27
+     -12403,
+     33
+    ],
+    "8": [
+     -13525,
+     9
     ],
     "24": [
-     -13836,
-     22
+     -13601,
+     23
     ],
     "19": [
-     -14229,
-     86
-    ],
-    "10": [
-     -14422,
-     3
+     -14245,
+     113
     ],
     "13": [
-     -14500,
-     102
-    ],
-    "16": [
-     -14529,
-     93
+     -14538,
+     130
     ],
     "25": [
      -14575,
-     76
+     84
+    ],
+    "16": [
+     -14782,
+     115
     ],
     "11": [
-     -14738,
-     12
-    ],
-    "5": [
-     -16138,
+     -15194,
      14
     ],
-    "7": [
-     -16586,
-     18
+    "10": [
+     -15495,
+     5
+    ],
+    "5": [
+     -16641,
+     17
     ],
     "6": [
      -16821,
      4
+    ],
+    "7": [
+     -17043,
+     22
     ],
     "9": [
      -17239,
@@ -5496,502 +5504,498 @@
    }
   },
   {
-   "param": "MAX_SHEEP",
-   "spread": 9596,
-   "best": 12,
-   "c1": 12,
-   "means": {
-    "12": [
-     -7781,
-     788
-    ],
-    "11": [
-     -9824,
-     236
-    ],
-    "14": [
-     -9867,
-     1191
-    ],
-    "9": [
-     -10427,
-     41
-    ],
-    "4": [
-     -10967,
-     3
-    ],
-    "10": [
-     -11878,
-     94
-    ],
-    "13": [
-     -11898,
-     431
-    ],
-    "6": [
-     -14949,
-     4
-    ],
-    "8": [
-     -15728,
-     5
-    ],
-    "7": [
-     -17376,
-     6
-    ]
-   }
-  },
-  {
    "param": "OPP_GROWTH",
-   "spread": 9333,
+   "spread": 8834,
    "best": 1.3,
    "c1": 1.3,
    "means": {
     "1.3": [
-     -7721,
-     1526
+     -8118,
+     1639
     ],
     "1.6": [
-     -9106,
-     82
+     -9577,
+     91
     ],
     "1.1": [
-     -9319,
-     102
+     -10194,
+     126
     ],
     "1.4": [
-     -10858,
-     383
+     -11264,
+     432
     ],
     "1.5": [
-     -11585,
-     285
+     -11858,
+     320
     ],
     "1.2": [
-     -14411,
-     288
+     -14460,
+     390
     ],
     "1.7": [
-     -14581,
-     60
+     -14483,
+     71
     ],
     "1.0": [
-     -15933,
-     50
+     -15849,
+     71
     ],
     "1.8": [
-     -17053,
-     24
+     -16952,
+     25
     ]
    }
   },
   {
-   "param": "fert_buy",
-   "spread": 8773,
-   "best": 0,
-   "c1": 0,
+   "param": "STRAW_CUTOFF",
+   "spread": 8828,
+   "best": 12,
+   "c1": 17,
    "means": {
-    "0": [
-     -9080,
-     2314
+    "12": [
+     -8286,
+     61
     ],
-    "2": [
-     -11327,
-     113
+    "17": [
+     -9153,
+     1763
     ],
-    "1": [
-     -12961,
-     364
+    "16": [
+     -9464,
+     527
     ],
-    "3": [
-     -17853,
-     9
-    ]
-   }
-  },
-  {
-   "param": "opening",
-   "spread": 8734,
-   "best": "frontier",
-   "c1": "frontier",
-   "means": {
-    "frontier": [
-     -8319,
-     2356
+    "19": [
+     -11027,
+     82
     ],
-    "v312": [
-     -17052,
-     444
-    ]
-   }
-  },
-  {
-   "param": "OPENING_MELONS",
-   "spread": 8693,
-   "best": 6,
-   "c1": 10,
-   "means": {
-    "6": [
-     -4475,
-     30
+    "18": [
+     -11645,
+     236
     ],
-    "10": [
-     -9137,
-     1372
-    ],
-    "11": [
-     -9453,
-     890
-    ],
-    "8": [
-     -9817,
-     72
-    ],
-    "7": [
-     -10225,
-     100
+    "15": [
+     -13514,
+     234
     ],
     "14": [
-     -12568,
-     59
+     -13976,
+     152
     ],
-    "9": [
-     -12910,
-     108
+    "20": [
+     -15901,
+     93
     ],
     "13": [
-     -13079,
-     35
-    ],
-    "12": [
-     -13167,
-     134
+     -17114,
+     17
     ]
    }
   },
   {
    "param": "CROP_SWEEP_LEN",
-   "spread": 8618,
+   "spread": 8776,
    "best": 3,
    "c1": 6,
    "means": {
     "3": [
-     -8434,
-     89
+     -9104,
+     96
     ],
     "6": [
-     -9150,
-     1932
+     -9653,
+     2175
     ],
     "7": [
-     -9623,
-     293
+     -10307,
+     340
     ],
     "5": [
-     -11136,
-     336
+     -11494,
+     383
     ],
     "4": [
-     -12055,
-     67
+     -12241,
+     74
     ],
     "8": [
-     -16326,
-     55
+     -16746,
+     63
     ],
     "9": [
-     -16975,
-     18
+     -17638,
+     22
     ],
     "10": [
-     -17052,
-     10
+     -17880,
+     12
+    ]
+   }
+  },
+  {
+   "param": "opening",
+   "spread": 8524,
+   "best": "frontier",
+   "c1": "frontier",
+   "means": {
+    "frontier": [
+     -8863,
+     2662
+    ],
+    "v312": [
+     -17387,
+     503
+    ]
+   }
+  },
+  {
+   "param": "open_sheep",
+   "spread": 8374,
+   "best": 2,
+   "c1": 2,
+   "means": {
+    "2": [
+     -9655,
+     2883
+    ],
+    "1": [
+     -14947,
+     148
+    ],
+    "3": [
+     -16336,
+     73
+    ],
+    "0": [
+     -18028,
+     61
+    ]
+   }
+  },
+  {
+   "param": "OPENING_MELONS",
+   "spread": 8349,
+   "best": 6,
+   "c1": 10,
+   "means": {
+    "6": [
+     -5178,
+     32
+    ],
+    "10": [
+     -9534,
+     1510
+    ],
+    "8": [
+     -10119,
+     80
+    ],
+    "11": [
+     -10151,
+     1035
+    ],
+    "7": [
+     -10418,
+     104
+    ],
+    "14": [
+     -12636,
+     67
+    ],
+    "13": [
+     -13244,
+     39
+    ],
+    "9": [
+     -13397,
+     126
+    ],
+    "12": [
+     -13526,
+     172
     ]
    }
   }
  ],
  "recent_dead": [
   {
-   "origin": "mutate",
+   "origin": "crossover",
    "note": null,
-   "smoke_margin": -42176.333333333336,
+   "smoke_margin": -33845.833333333336,
    "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 5 (gap -2,287 -> final -36,280); days 3-10 drivers: idle_turns +324, work_turns -148, sales_rev -4,965, reversals +3. Hands 7 vs 8, animals 6 vs 9, plants 20 vs 41."
+   "diagnosis": "cand falls behind C1 from day 19 (gap -3,014 -> final -36,463); days 17-24 drivers: sales_rev -25,281, work_turns -296, idle_turns +178, water_hour +1.54. Hands 8 vs 13, animals 11 vs 10, plants 33 vs 70."
   },
   {
    "origin": "mutate",
    "note": null,
-   "smoke_margin": -42518.333333333336,
+   "smoke_margin": -57044.333333333336,
    "status": "dead_smoke",
-   "diagnosis": "cand pulls ahead of C1 from day 28 (gap +5,132 -> final +7,847); days 26-29 drivers: sales_rev +16,298, weeds_new -6, work_turns +67, missed_water -13. Hands 6 vs 6, animals 20 vs 10, plants 21 vs 26."
+   "diagnosis": "cand falls behind C1 from day 3 (gap -1,630 -> final -16,754); days 1-8 drivers: idle_turns +243, work_turns -168, escapes +4, sales_rev -3,736. Hands 5 vs 8, animals 1 vs 8, plants 20 vs 17."
   },
   {
    "origin": "mutate",
    "note": null,
-   "smoke_margin": -31046.666666666668,
+   "smoke_margin": -34338.833333333336,
    "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 22 (gap -3,784 -> final -26,256); days 20-27 drivers: sales_rev -25,473, idle_turns +398, work_turns -27. Hands 8 vs 10, animals 20 vs 10, plants 8 vs 42."
+   "diagnosis": "cand falls behind C1 from day 22 (gap -8,440 -> final -26,555); days 20-27 drivers: sales_rev -31,083, idle_turns +398, work_turns -177, water_hour +0.76. Hands 7 vs 10, animals 7 vs 10, plants 12 vs 42."
+  },
+  {
+   "origin": "mutate",
+   "note": null,
+   "smoke_margin": -24500.833333333332,
+   "status": "dead_smoke",
+   "diagnosis": "cand pulls ahead of C1 from day 29 (gap +6,396 -> final +6,396); days 27-29 drivers: sales_rev +17,796, work_turns +59, feed_hour -2.6, idle_turns -22. Hands 6 vs 6, animals 11 vs 10, plants 56 vs 26."
+  },
+  {
+   "origin": "mutate",
+   "note": null,
+   "smoke_margin": -49782.333333333336,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 19 (gap -6,595 -> final -17,264); days 17-24 drivers: idle_turns +517, sales_rev -11,661, work_turns -222, water_hour +0.57. Hands 10 vs 13, animals 16 vs 10, plants 32 vs 70."
   },
   {
    "origin": "migrate",
    "note": null,
-   "smoke_margin": -53338.666666666664,
+   "smoke_margin": -26288.0,
    "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 15 (gap -2,067 -> final -37,986); days 13-20 drivers: work_turns -429, sales_rev -16,163, idle_turns +364, missed_feed +4. Hands 6 vs 12, animals 13 vs 10, plants 10 vs 76."
+   "diagnosis": "cand falls behind C1 from day 20 (gap -3,548 -> final -15,359); days 18-25 drivers: sales_rev -26,392, idle_turns +266, work_turns -119, escapes +2. Hands 12 vs 13, animals 13 vs 10, plants 40 vs 64."
   },
   {
    "origin": "mutate",
    "note": null,
-   "smoke_margin": -35625.0,
+   "smoke_margin": -24927.333333333332,
    "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 25 (gap -2,257 -> final -10,424); days 23-29 drivers: sales_rev -16,423, idle_turns +397, water_hour +0.71. Hands 6 vs 6, animals 20 vs 10, plants 4 vs 26."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -28567.333333333332,
-   "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 22 (gap -8,298 -> final -30,053); days 20-27 drivers: sales_rev -39,341, idle_turns +364, work_turns -125, reversals +4. Hands 7 vs 10, animals 14 vs 10, plants 16 vs 42."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -28196.166666666668,
-   "status": "dead_smoke",
-   "diagnosis": "cand vs C1: net worth never diverged by >$1,500 (final +149)."
-  },
-  {
-   "origin": "crossover",
-   "note": null,
-   "smoke_margin": -25278.0,
-   "status": "dead_smoke",
-   "diagnosis": "cand pulls ahead of C1 from day 16 (gap +2,832 -> final +5,557); days 14-21 drivers: missed_water -39, sales_rev +6,063, feed_hour -2.11, travel_per_task -0.18. Hands 9 vs 13, animals 13 vs 10, plants 60 vs 81."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -40208.666666666664,
-   "status": "dead_smoke",
-   "diagnosis": "cand pulls ahead of C1 from day 27 (gap +4,208 -> final +12,039); days 25-29 drivers: sales_rev +14,767, missed_water -34, weeds_new -8, work_turns +63. Hands 6 vs 6, animals 15 vs 10, plants 27 vs 26."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -38439.0,
-   "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 5 (gap -2,287 -> final -19,475); days 3-10 drivers: idle_turns +286, work_turns -132, sales_rev -4,902, reversals +3. Hands 7 vs 8, animals 6 vs 9, plants 23 vs 41."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -30292.5,
-   "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 26 (gap -3,593 -> final -4,451); days 24-29 drivers: sales_rev -6,984, weeds_new +3, water_hour +1.53, idle_turns +15. Hands 6 vs 6, animals 19 vs 10, plants 18 vs 26."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -48130.333333333336,
-   "status": "dead_smoke",
-   "diagnosis": "cand pulls ahead of C1 from day 29 (gap +11,635 -> final +11,635); days 27-29 drivers: sales_rev +8,757, missed_water -34, feed_hour -2.55, water_hour -1.2. Hands 6 vs 6, animals 20 vs 10, plants 5 vs 26."
-  },
-  {
-   "origin": "crossover",
-   "note": null,
-   "smoke_margin": -53261.0,
-   "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 2 (gap -1,798 -> final -3,964); days 0-7 drivers: idle_turns +217, work_turns -142, escapes +5, sales_rev -2,889. Hands 5 vs 5, animals 0 vs 8, plants 18 vs 14."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -76266.5,
-   "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 2 (gap -1,798 -> final -18,288); days 0-7 drivers: work_turns -150, escapes +5, idle_turns +114, sales_rev -2,984. Hands 4 vs 5, animals 0 vs 8, plants 13 vs 14."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -57878.5,
-   "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 22 (gap -9,904 -> final -22,958); days 20-27 drivers: sales_rev -31,731, idle_turns +602, work_turns -163, water_hour +0.82. Hands 12 vs 10, animals 13 vs 10, plants 22 vs 42."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -26341.5,
-   "status": "dead_smoke",
-   "diagnosis": "cand pulls ahead of C1 from day 26 (gap +4,222 -> final +11,841); days 24-29 drivers: sales_rev +15,585, weeds_new -4, work_turns +46, missed_water -8. Hands 6 vs 6, animals 11 vs 10, plants 20 vs 26."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -29002.833333333332,
-   "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 26 (gap -3,838 -> final -932); days 24-29 drivers: sales_rev -3,088, idle_turns +68. Hands 6 vs 6, animals 13 vs 10, plants 30 vs 26."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -26346.333333333332,
-   "status": "dead_smoke",
-   "diagnosis": "cand pulls ahead of C1 from day 22 (gap +1,783 -> final +25,347); days 20-27 drivers: sales_rev +18,139, work_turns +154, weeds_new -10, missed_water -24. Hands 11 vs 10, animals 15 vs 10, plants 52 vs 42."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -30798.0,
-   "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 20 (gap -1,767 -> final -36,746); days 18-25 drivers: sales_rev -30,231, idle_turns +226, work_turns -114, water_hour +1.05. Hands 12 vs 13, animals 7 vs 10, plants 47 vs 64."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -41976.333333333336,
-   "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 21 (gap -4,469 -> final -37,370); days 19-26 drivers: sales_rev -25,994, water_hour +1.0, idle_turns +15, missed_feed +1. Hands 14 vs 9, animals 20 vs 10, plants 47 vs 48."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -24487.5,
-   "status": "dead_smoke",
-   "diagnosis": "cand pulls ahead of C1 from day 28 (gap +2,860 -> final +7,067); days 26-29 drivers: sales_rev +2,915, idle_turns -29, water_hour -1.65, weeds_new -1. Hands 6 vs 6, animals 6 vs 10, plants 31 vs 26."
-  },
-  {
-   "origin": "crossover",
-   "note": null,
-   "smoke_margin": -41075.5,
-   "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 3 (gap -1,735 -> final -33,027); days 1-8 drivers: idle_turns +236, work_turns -135, sales_rev -4,062, escapes +4. Hands 5 vs 8, animals 3 vs 8, plants 20 vs 17."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -30986.166666666668,
-   "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 20 (gap -2,386 -> final -39,378); days 18-25 drivers: sales_rev -32,953, work_turns -223, idle_turns +198, water_hour +2.65. Hands 10 vs 13, animals 9 vs 10, plants 33 vs 64."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -25756.0,
-   "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 20 (gap -2,635 -> final -7,686); days 18-25 drivers: sales_rev -16,990, work_turns -182, idle_turns +155, missed_feed +4. Hands 13 vs 13, animals 9 vs 10, plants 66 vs 64."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -25753.166666666668,
-   "status": "dead_smoke",
-   "diagnosis": "cand pulls ahead of C1 from day 15 (gap +1,929 -> final +5,364); days 13-20 drivers: missed_water -87, sales_rev +2,764, feed_hour -3.86, travel_per_task -0.29. Hands 9 vs 12, animals 14 vs 10, plants 55 vs 76."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -25347.833333333332,
-   "status": "dead_smoke",
-   "diagnosis": "cand vs C1: net worth never diverged by >$1,500 (final +337)."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -25810.0,
-   "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 19 (gap -7,065 -> final -47,204); days 17-24 drivers: sales_rev -29,879, idle_turns +249, work_turns -131, water_hour +0.31. Hands 14 vs 13, animals 6 vs 10, plants 51 vs 70."
+   "diagnosis": "cand falls behind C1 from day 29 (gap -1,539 -> final -1,539); days 27-29 drivers: idle_turns +80, sales_rev -1,923, escapes +1, work_turns -13. Hands 6 vs 6, animals 10 vs 10, plants 30 vs 26."
   },
   {
    "origin": "migrate",
    "note": null,
-   "smoke_margin": -43161.333333333336,
+   "smoke_margin": -26533.333333333332,
    "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 5 (gap -2,287 -> final -30,276); days 3-10 drivers: idle_turns +286, work_turns -132, sales_rev -4,902, reversals +3. Hands 7 vs 8, animals 6 vs 9, plants 23 vs 41."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -29113.666666666668,
-   "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 26 (gap -2,578 -> final -13,316); days 24-29 drivers: sales_rev -19,804, idle_turns +47, water_hour +1.83. Hands 6 vs 6, animals 20 vs 10, plants 30 vs 26."
-  },
-  {
-   "origin": "migrate",
-   "note": null,
-   "smoke_margin": -26686.166666666668,
-   "status": "dead_smoke",
-   "diagnosis": "cand pulls ahead of C1 from day 26 (gap +5,933 -> final +13,309); days 24-29 drivers: sales_rev +20,512, weeds_new -11, missed_water -28, travel_per_task -0.24. Hands 6 vs 6, animals 8 vs 10, plants 26 vs 26."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -24321.166666666668,
-   "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 20 (gap -2,168 -> final -4,708); days 18-25 drivers: idle_turns +383, sales_rev -6,086, work_turns -76, missed_feed +7. Hands 13 vs 13, animals 16 vs 10, plants 58 vs 64."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -28991.666666666668,
-   "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 22 (gap -1,613 -> final -17,169); days 20-27 drivers: sales_rev -30,620, work_turns -112, idle_turns +16, reversals +4. Hands 10 vs 10, animals 13 vs 10, plants 45 vs 42."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -71132.16666666667,
-   "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 2 (gap -1,798 -> final -15,553); days 0-7 drivers: work_turns -151, escapes +5, sales_rev -3,286, idle_turns +69. Hands 3 vs 5, animals 0 vs 8, plants 19 vs 14."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -64495.5,
-   "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 2 (gap -1,798 -> final -14,836); days 0-7 drivers: work_turns -156, idle_turns +130, escapes +5, sales_rev -2,987. Hands 3 vs 5, animals 0 vs 8, plants 18 vs 14."
-  },
-  {
-   "origin": "mutate",
-   "note": null,
-   "smoke_margin": -32476.333333333332,
-   "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 19 (gap -2,049 -> final -37,747); days 17-24 drivers: sales_rev -24,379, idle_turns +124, water_hour +1.75, work_turns -25. Hands 11 vs 13, animals 17 vs 10, plants 55 vs 70."
+   "diagnosis": "cand falls behind C1 from day 19 (gap -2,293 -> final -17,918); days 17-24 drivers: sales_rev -25,543, work_turns -247, idle_turns +56, weeds_new +3. Hands 9 vs 13, animals 9 vs 10, plants 56 vs 70."
   },
   {
    "origin": "crossover",
    "note": null,
-   "smoke_margin": -49717.5,
+   "smoke_margin": -35680.0,
    "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 20 (gap -3,302 -> final -22,421); days 18-25 drivers: sales_rev -29,598, work_turns -499, idle_turns +284, water_hour +3.65. Hands 6 vs 13, animals 11 vs 10, plants 11 vs 64."
+   "diagnosis": "cand falls behind C1 from day 24 (gap -3,579 -> final -11,691); days 22-29 drivers: idle_turns +736, sales_rev -20,315, work_turns -161. Hands 6 vs 6, animals 17 vs 10, plants 0 vs 26."
   },
   {
    "origin": "mutate",
    "note": null,
-   "smoke_margin": -24454.0,
+   "smoke_margin": -24459.0,
    "status": "dead_smoke",
-   "diagnosis": "cand pulls ahead of C1 from day 29 (gap +6,367 -> final +6,367); days 27-29 drivers: sales_rev +9,198, missed_water -20, work_turns +59, weeds_new -3. Hands 6 vs 6, animals 20 vs 10, plants 8 vs 26."
+   "diagnosis": "cand falls behind C1 from day 26 (gap -5,705 -> final -14,611); days 24-29 drivers: sales_rev -18,603, idle_turns +178, work_turns -13. Hands 6 vs 6, animals 9 vs 10, plants 22 vs 26."
+  },
+  {
+   "origin": "mutate",
+   "note": null,
+   "smoke_margin": -82547.16666666667,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 2 (gap -1,798 -> final -27,253); days 0-7 drivers: work_turns -151, escapes +5, sales_rev -3,211, idle_turns +74. Hands 3 vs 5, animals 0 vs 8, plants 19 vs 14."
+  },
+  {
+   "origin": "mutate",
+   "note": null,
+   "smoke_margin": -64272.666666666664,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 2 (gap -1,798 -> final -2,786); days 0-7 drivers: work_turns -156, escapes +5, sales_rev -3,243, idle_turns +53. Hands 3 vs 5, animals 0 vs 8, plants 19 vs 14."
+  },
+  {
+   "origin": "mutate",
+   "note": null,
+   "smoke_margin": -40014.666666666664,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 15 (gap -2,940 -> final -12,666); days 13-20 drivers: sales_rev -10,210, work_turns -153, weeds_new +5, water_hour +1.34. Hands 8 vs 12, animals 13 vs 10, plants 51 vs 76."
+  },
+  {
+   "origin": "mutate",
+   "note": null,
+   "smoke_margin": -38192.5,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 21 (gap -1,836 -> final -29,830); days 19-26 drivers: sales_rev -27,600, idle_turns +327, work_turns -156, missed_feed +1. Hands 6 vs 9, animals 14 vs 10, plants 11 vs 48."
+  },
+  {
+   "origin": "mutate",
+   "note": null,
+   "smoke_margin": -42405.666666666664,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 20 (gap -1,886 -> final -18,912); days 18-25 drivers: sales_rev -28,391, work_turns -540, idle_turns +198, water_hour +1.97. Hands 5 vs 13, animals 10 vs 10, plants 15 vs 64."
+  },
+  {
+   "origin": "mutate",
+   "note": null,
+   "smoke_margin": -26302.0,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 20 (gap -3,653 -> final -27,194); days 18-25 drivers: sales_rev -18,880, work_turns -166, idle_turns +114, escapes +3. Hands 12 vs 13, animals 6 vs 10, plants 63 vs 64."
+  },
+  {
+   "origin": "crossover",
+   "note": null,
+   "smoke_margin": -27901.166666666668,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 24 (gap -8,293 -> final -9,825); days 22-29 drivers: sales_rev -16,000, idle_turns +258, work_turns -43, water_hour +2.03. Hands 6 vs 6, animals 17 vs 10, plants 24 vs 26."
+  },
+  {
+   "origin": "crossover",
+   "note": null,
+   "smoke_margin": -46496.0,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 3 (gap -1,735 -> final -21,388); days 1-8 drivers: work_turns -151, sales_rev -4,032, escapes +4, idle_turns +92. Hands 4 vs 8, animals 3 vs 8, plants 16 vs 17."
+  },
+  {
+   "origin": "mutate",
+   "note": null,
+   "smoke_margin": -37652.5,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 22 (gap -8,073 -> final -19,298); days 20-27 drivers: sales_rev -24,049, idle_turns +56, water_hour +2.67. Hands 13 vs 10, animals 20 vs 10, plants 41 vs 42."
+  },
+  {
+   "origin": "mutate",
+   "note": null,
+   "smoke_margin": -61369.333333333336,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 2 (gap -1,798 -> final -23,610); days 0-7 drivers: work_turns -170, escapes +5, sales_rev -3,226, idle_turns +80. Hands 3 vs 5, animals 0 vs 8, plants 16 vs 14."
   },
   {
    "origin": "migrate",
    "note": null,
-   "smoke_margin": -31529.0,
+   "smoke_margin": -26864.5,
    "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 20 (gap -2,048 -> final -44,950); days 18-25 drivers: sales_rev -31,680, idle_turns +99, water_hour +0.79, reversals +3. Hands 13 vs 13, animals 17 vs 10, plants 50 vs 64."
+   "diagnosis": "cand falls behind C1 from day 19 (gap -3,854 -> final -29,838); days 17-24 drivers: sales_rev -13,257, idle_turns +151, work_turns -59, water_hour +2.4. Hands 13 vs 13, animals 8 vs 10, plants 59 vs 70."
   },
   {
    "origin": "mutate",
    "note": null,
-   "smoke_margin": -42242.666666666664,
+   "smoke_margin": -24612.5,
    "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 18 (gap -2,392 -> final -31,550); days 16-23 drivers: sales_rev -30,729, work_turns -382, idle_turns +155, water_hour +1.5. Hands 8 vs 13, animals 7 vs 10, plants 38 vs 79."
+   "diagnosis": "cand falls behind C1 from day 22 (gap -8,092 -> final -3,587); days 20-27 drivers: sales_rev -13,572, idle_turns +74, water_hour +0.85. Hands 11 vs 10, animals 17 vs 10, plants 48 vs 42."
   },
   {
    "origin": "mutate",
    "note": null,
-   "smoke_margin": -29589.5,
+   "smoke_margin": -59946.666666666664,
    "status": "dead_smoke",
-   "diagnosis": "cand falls behind C1 from day 19 (gap -3,774 -> final -40,201); days 17-24 drivers: sales_rev -28,226, work_turns -215, idle_turns +93, escapes +1. Hands 11 vs 13, animals 8 vs 10, plants 53 vs 70."
+   "diagnosis": "cand falls behind C1 from day 3 (gap -1,627 -> final -41,527); days 1-8 drivers: idle_turns +240, work_turns -153, escapes +5, sales_rev -3,560. Hands 6 vs 8, animals 1 vs 8, plants 18 vs 17."
+  },
+  {
+   "origin": "mutate",
+   "note": null,
+   "smoke_margin": -56932.5,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 5 (gap -2,287 -> final -47,874); days 3-10 drivers: idle_turns +422, work_turns -149, sales_rev -5,144, reversals +2. Hands 7 vs 8, animals 6 vs 9, plants 19 vs 41."
+  },
+  {
+   "origin": "migrate",
+   "note": null,
+   "smoke_margin": -31515.833333333332,
+   "status": "dead_smoke",
+   "diagnosis": "cand pulls ahead of C1 from day 26 (gap +9,278 -> final +19,058); days 24-29 drivers: sales_rev +27,487, weeds_new -11, work_turns +51, missed_water -8. Hands 6 vs 6, animals 8 vs 10, plants 38 vs 26."
+  },
+  {
+   "origin": "mutate",
+   "note": null,
+   "smoke_margin": -25271.5,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 24 (gap -4,572 -> final -5,147); days 22-29 drivers: sales_rev -14,983, escapes +1, missed_feed +3, water_hour +0.16. Hands 6 vs 6, animals 14 vs 10, plants 37 vs 26."
+  },
+  {
+   "origin": "mutate",
+   "note": null,
+   "smoke_margin": -28801.833333333332,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 24 (gap -5,618 -> final -963); days 22-29 drivers: work_turns -147, idle_turns +123, sales_rev -2,974, water_hour +4.68. Hands 6 vs 6, animals 17 vs 10, plants 11 vs 26."
+  },
+  {
+   "origin": "migrate",
+   "note": null,
+   "smoke_margin": -24981.833333333332,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 18 (gap -1,886 -> final -40,219); days 16-23 drivers: sales_rev -12,220, idle_turns +219, work_turns -52, water_hour +1.21. Hands 13 vs 13, animals 9 vs 10, plants 65 vs 79."
+  },
+  {
+   "origin": "mutate",
+   "note": null,
+   "smoke_margin": -28406.0,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 19 (gap -4,113 -> final -32,277); days 17-24 drivers: sales_rev -28,793, idle_turns +562, work_turns -100, water_hour +1.56. Hands 13 vs 13, animals 14 vs 10, plants 49 vs 70."
+  },
+  {
+   "origin": "mutate",
+   "note": null,
+   "smoke_margin": -26131.333333333332,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 23 (gap -2,816 -> final -24,503); days 21-28 drivers: sales_rev -28,023, idle_turns +116, water_hour +1.79, reversals +6. Hands 10 vs 10, animals 14 vs 10, plants 23 vs 42."
+  },
+  {
+   "origin": "mutate",
+   "note": null,
+   "smoke_margin": -29938.666666666668,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 19 (gap -2,969 -> final -32,041); days 17-24 drivers: sales_rev -16,033, idle_turns +115, work_turns -90, water_hour +1.26. Hands 12 vs 13, animals 8 vs 10, plants 65 vs 70."
+  },
+  {
+   "origin": "crossover",
+   "note": null,
+   "smoke_margin": -58107.833333333336,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 2 (gap -1,798 -> final -29,042); days 0-7 drivers: idle_turns +247, work_turns -154, escapes +5, sales_rev -2,960. Hands 5 vs 5, animals 0 vs 8, plants 15 vs 14."
+  },
+  {
+   "origin": "migrate",
+   "note": null,
+   "smoke_margin": -31299.5,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 19 (gap -3,613 -> final -10,843); days 17-24 drivers: idle_turns +168, water_hour +1.45. Hands 16 vs 13, animals 14 vs 10, plants 74 vs 70."
+  },
+  {
+   "origin": "mutate",
+   "note": null,
+   "smoke_margin": -27911.5,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 27 (gap -6,193 -> final -5,622); days 25-29 drivers: idle_turns +296, sales_rev -7,905, escapes +1, water_hour +1.32. Hands 6 vs 6, animals 14 vs 10, plants 13 vs 26."
+  },
+  {
+   "origin": "mutate",
+   "note": null,
+   "smoke_margin": -53249.333333333336,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 18 (gap -1,592 -> final -31,927); days 16-23 drivers: idle_turns +584, work_turns -497, sales_rev -19,144. Hands 8 vs 13, animals 9 vs 10, plants 10 vs 79."
+  },
+  {
+   "origin": "mutate",
+   "note": null,
+   "smoke_margin": -28373.333333333332,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 21 (gap -6,194 -> final -47,068); days 19-26 drivers: sales_rev -33,625, idle_turns +712, work_turns -87, water_hour +1.67. Hands 13 vs 9, animals 12 vs 10, plants 38 vs 48."
+  },
+  {
+   "origin": "mutate",
+   "note": null,
+   "smoke_margin": -63159.5,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 19 (gap -4,815 -> final -29,386); days 17-24 drivers: idle_turns +763, sales_rev -22,775, work_turns -538. Hands 8 vs 13, animals 9 vs 10, plants 13 vs 70."
+  },
+  {
+   "origin": "mutate",
+   "note": null,
+   "smoke_margin": -27374.0,
+   "status": "dead_smoke",
+   "diagnosis": "cand pulls ahead of C1 from day 26 (gap +1,549 -> final +16,148); days 24-29 drivers: sales_rev +21,323, weeds_new -11, missed_water -23, work_turns +37. Hands 6 vs 6, animals 12 vs 10, plants 40 vs 26."
+  },
+  {
+   "origin": "mutate",
+   "note": null,
+   "smoke_margin": -28757.833333333332,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 18 (gap -1,559 -> final -38,059); days 16-23 drivers: sales_rev -10,624, idle_turns +190, work_turns -73, water_hour +1.93. Hands 12 vs 13, animals 8 vs 10, plants 62 vs 79."
+  },
+  {
+   "origin": "mutate",
+   "note": null,
+   "smoke_margin": -27663.833333333332,
+   "status": "dead_smoke",
+   "diagnosis": "cand falls behind C1 from day 25 (gap -3,145 -> final -3,511); days 23-29 drivers: sales_rev -5,023, water_hour +0.55, work_turns -7. Hands 6 vs 6, animals 16 vs 10, plants 22 vs 26."
   }
  ],
  "frontier_gap": {
