@@ -7,7 +7,7 @@ class ReplayError(Exception): pass
 def need(v,n):
  if v is None: raise ReplayError('missing '+n)
  return v
-def paths(root): return sorted(set(root.glob('leaderboard-*.json'))|set(root.glob('leaderboard-*/*.json')))
+def paths(root): return sorted(p for p in root.rglob("*.json") if p.is_file())
 def obs(data):
  if not isinstance(data,dict): raise ReplayError('top level is not an object')
  steps=need(data.get('steps'),'steps')
