@@ -110,7 +110,11 @@ class Loop:
         get_pool(args.jobs)
         self.db = DB(args.db) if args.db else DB()
         self.cfg = {"smoke_floor": args.smoke_floor, "dev_promote": args.dev_promote,
-                    "dev_promote_t": DEFAULTS["dev_promote_t"], "engine": "master", "jobs": args.jobs}
+                    "dev_promote_t": DEFAULTS["dev_promote_t"], "engine": "master", "jobs": args.jobs,
+                    "pattern_death_day": DEFAULTS["pattern_death_day"],
+                    "pattern_death_weeds": DEFAULTS["pattern_death_weeds"],
+                    "pattern_death_cash_days": DEFAULTS["pattern_death_cash_days"],
+                    "pattern_death_enabled": not args.no_pattern_death}
         self.engine_sha = sha(ROOT / "vendor" / "kaggle_environments_engine_master" / "kaggriculture.py")
         snap, self.k_sha = space.freeze_base(args.base) if args.base else space.freeze_base()
         space.set_frontier(args.frontier)   # keys candidates by (params, chassis, frontier) so switching the
@@ -431,6 +435,7 @@ def main():
     ap.add_argument("--seed", type=int, default=None)
     ap.add_argument("--smoke-floor", type=float, default=DEFAULTS["smoke_floor"])
     ap.add_argument("--dev-promote", type=float, default=DEFAULTS["dev_promote"])
+    ap.add_argument("--no-pattern-death", action="store_true", help="disable the stage 0.5 trace screen")
     ap.add_argument("--db", default=None)
     ap.add_argument("--base", default=None, help="chassis file to snapshot (default evolve/chassis.py)")
     args = ap.parse_args()
