@@ -113,6 +113,8 @@ class Loop:
                     "dev_promote_t": DEFAULTS["dev_promote_t"], "engine": "master", "jobs": args.jobs}
         self.engine_sha = sha(ROOT / "vendor" / "kaggle_environments_engine_master" / "kaggriculture.py")
         snap, self.k_sha = space.freeze_base(args.base) if args.base else space.freeze_base()
+        space.set_frontier(args.frontier)   # keys candidates by (params, chassis, frontier) so switching the
+                                             # yardstick can never reuse or mix in a score from the old one
         self.cfg["base"] = str(snap)
         self.chassis_text = snap.read_text()
         self.cfg["reference"] = str(space.render(space.c1_params()))   # diagnosis baseline = C1 on this chassis
@@ -283,7 +285,7 @@ class Loop:
                 pass  # same params can live in one island only; the shared seed is fine
 
     def pools(self):
-        allp = self.db.alive(k_sha=self.k_sha)
+        allp = self.db.alive(k_sha=self.k_sha, frontier=self.args.frontier)
         by = defaultdict(list)
         for r in allp:
             by[r.get("island") or "c1"].append(r)
@@ -358,15 +360,15 @@ class Loop:
             self.log(f"done: {json.dumps(summary)}")
             out = report_mod.write_report(self.db, self.run_id)
             self.log(f"report: {out}")
-            export_archive(self.db, self.run_id, self.k_sha)
+            export_archive(self.db, self.run_id, self.k_sha, self.args.frontier)
             self.log(f"archive: {ARCHIVE}")
             self.logf.close()
 
 
-def export_archive(db, run_id, k_sha):
+def export_archive(db, run_id, k_sha, frontier=None):
     """Machine-readable state for the proposer and the Mac-side task."""
     c1 = space.c1_params()
-    rows = db.alive(k_sha=k_sha)
+    rows = db.alive(k_sha=k_sha, frontier=frontier)
     by = defaultdict(list)
     for r in rows:
         by[r.get("island") or "c1"].append(r)
