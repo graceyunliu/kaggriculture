@@ -2,6 +2,17 @@ def _build_sweep(i, pos, v, day, hour, carry, pools, seeds_left):
     tiers = ["urgent", "wwater", "harvest", "water"]
     if carry.get("FERTILIZER", 0) > 0:
         tiers = ["urgent", "fert", "wwater", "harvest", "water"]
+    # B: days 10-12, put ripe high-yield MELON harvests ahead of watering so they carry
+    # into the day-10 price window instead of sitting a day.
+    if 10 <= day <= 12:
+        big_melon = [tp for tp in pools["harvest"]
+                     if v["tiles"][tp[1]][tp[0]].get("kind") == "PLANT"
+                     and v["tiles"][tp[1]][tp[0]].get("crop") == "MELON"
+                     and v["tiles"][tp[1]][tp[0]].get("yield_units", 0) >= 5]
+        if big_melon:
+            tiers = ["urgent", "harvest", "wwater", "water"]
+            if carry.get("FERTILIZER", 0) > 0:
+                tiers = ["urgent", "fert", "harvest", "wwater", "water"]
     if hour < 22:
         tiers.append("plant")
     tiers.append("weeds")
@@ -42,8 +53,7 @@ def _crop_step(i, pos, v, day, hour, carry, pools, seeds_left):
         sweep = _build_sweep(i, pos, v, day, hour, carry, pools, seeds_left)
         if not sweep:
             S["sweep"].pop(i, None)
-            # idle hand with empty pools: take work from another unit's sweep instead of passing
-            return _steal_task(i, pos, v, day, hour, carry, pools, seeds_left)
+            return None
         S["sweep"][i] = sweep
     while sweep:
         tp, kind = sweep[0]
@@ -69,12 +79,6 @@ def _crop_step(i, pos, v, day, hour, carry, pools, seeds_left):
     S["sweep"].pop(i, None)
     if any(pools[k] for k in pools):
         return _crop_step(i, pos, v, day, hour, carry, pools, seeds_left)
-    return _steal_task(i, pos, v, day, hour, carry, pools, seeds_left)
-
-
-def _steal_task(i, pos, v, day, hour, carry, pools, seeds_left):
-    if S.get("opponent_mode") == "yuan":
-        return None
     remaining = 23 - hour
     best = None
     for j, sw in list(S["sweep"].items()):
@@ -112,4 +116,3 @@ def _steal_task(i, pos, v, day, hour, carry, pools, seeds_left):
         S["sweep"][i] = [task]
         return _crop_step(i, pos, v, day, hour, carry, pools, seeds_left)
     return None
-

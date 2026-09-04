@@ -10,6 +10,8 @@ Metrics per player per day (index = day 0..29):
   cash, networth (cash + shed/carried inventory at market price + animals at cost),
   sales_rev, buys_cost, hands, animals, plants, weeds_new (plants lost to weeds), escapes (animals lost),
   missed_feed (animal-days unfed), missed_water (plant-days unwatered, excl. planting day),
+  chores_enumerated, chores_completed (day-start FEED/CARE/WATER/HARVEST obligations),
+  skipped_feed_not_due (safe-to-delay animals with consecutive_unfed == 0 that were not fed),
   feed_hour (mean hour of first FEED per animal), water_hour (mean hour of first WATER per plant),
   unit_turns, move_turns, idle_turns (PASS), reversals (a unit undoing its previous move),
   work_turns (tile/animal actions), travel_per_task (move_turns / work_turns),
@@ -31,13 +33,14 @@ sys.path.insert(0, str(ROOT))
 import mini_engine as me  # noqa: E402
 
 TRACE_DIR = ROOT / "evolve" / "traces"
-TRACE_VERSION = "v2"   # bump when metrics change so cached traces are recomputed
+TRACE_VERSION = "v4"   # bump when metrics change so cached traces are recomputed
 MOVES = {"NORTH": (0, -1), "SOUTH": (0, 1), "EAST": (1, 0), "WEST": (-1, 0)}
 WORK = {"PLANT", "WATER", "HARVEST", "FERTILIZE", "DIG", "BUILD_COOP", "BUILD_PASTURE", "FEED", "COLLECT_FERTILIZER",
         "CARE", "PLACE", "PICKUP", "DROP"}
 METRICS = ["cash", "networth", "sales_rev", "buys_cost", "hands", "animals", "plants", "weeds_new", "escapes",
            "missed_feed", "missed_water", "feed_hour", "water_hour", "unit_turns", "move_turns", "idle_turns",
-           "reversals", "work_turns", "travel_per_task", "shed_units", "carried_units"]
+           "reversals", "work_turns", "travel_per_task", "shed_units", "carried_units",
+           "chores_enumerated", "chores_completed", "skipped_feed_not_due"]
 
 
 def _sha(path):
@@ -53,6 +56,44 @@ def _tiles(farm):
 
 def _inv_value(inv, prices):
     return sum(q * prices.get(item, 0) for item, q in (inv or {}).items())
+
+
+def _day_start_chores(farm, crops, day):
+    """Return engine-visible obligations present at hour 0, keyed by kind and tile."""
+    chores = set()
+    safe_feed = set()
+    for pos, tile in _tiles(farm):
+        if "animal" in tile:
+            if day < 29 and not tile.get("fed_today", False):
+                chores.add(("FEED", pos))
+                if tile.get("consecutive_unfed", 0) == 0:
+                    safe_feed.add(pos)
+            if day < 28 and not tile.get("cared_today", False):
+                chores.add(("CARE", pos))
+            continue
+        if tile.get("kind") != "PLANT":
+            continue
+        crop = crops.get(tile.get("crop"))
+        if not crop:
+            continue
+        age = day - tile.get("planted_day", day)
+        need_water = tile.get("consecutive_unwatered", 0) >= 1
+        if crop.get("ongoing"):
+            interval = max(1, crop.get("interval", 1))
+            days_since_first = (day + 1) - tile.get("planted_day", day) - crop.get("first_yield_day", 0)
+            produces = days_since_first >= 0 and days_since_first % interval == 0 \
+                and days_since_first // interval + 1 <= crop.get("max_yield", 0)
+            need_water = need_water or (produces and tile.get("fertilized_until_day", -1) >= day)
+        else:
+            window_start = (crop.get("max_yield_day", 0) + 1) // 2
+            need_water = need_water or (window_start <= age <= crop.get("max_yield_day", -1)
+                                         and tile.get("yield_units", 0) < crop.get("max_yield", 0))
+        if need_water and not tile.get("watered_today", False):
+            chores.add(("WATER", pos))
+        if tile.get("yield_units", 0) > 0 and \
+                (crop.get("ongoing") or age >= crop.get("first_yield_day", 0)):
+            chores.add(("HARVEST", pos))
+    return chores, safe_feed
 
 
 def run_traced(agent_a, agent_b, seed, engine="master", config=None):
@@ -79,6 +120,7 @@ def run_traced(agent_a, agent_b, seed, engine="master", config=None):
     day_buys = [0.0, 0.0]
     farms_ref = [None]
     orig_commit = mod._commit_unit
+    orig_apply = mod._apply_unit_action
 
     def logged_commit(op, item, price, farm, private, market, shed_capacity=100):
         ok = orig_commit(op, item, price, farm, private, market, shed_capacity)
@@ -101,6 +143,43 @@ def run_traced(agent_a, agent_b, seed, engine="master", config=None):
     plant_set_prev = [set(), set()]
     animal_set_prev = [set(), set()]
     errors = [0, 0]
+    chore_state = [None, None]   # day-start obligation ids and successful services
+
+    def logged_apply(farm, private, idx, action, board_size, day, turns_per_day, shed_capacity=100):
+        """Record successful service actions, including actions performed at hour 23."""
+        pid = 0 if farm is farms_ref[0][0] else 1
+        units = [tuple(farm["farmer"])] + [tuple(p) for p in farm["hands"]]
+        pos = units[idx] if idx < len(units) else None
+        verb = action[0] if isinstance(action, (list, tuple)) and action else "PASS"
+        before = None
+        if pos is not None and verb in ("FEED", "CARE", "WATER", "HARVEST"):
+            tile = farm["tiles"][pos[1]][pos[0]]
+            if verb == "FEED" and isinstance(tile, dict):
+                before = tile.get("fed_today", False)
+            elif verb == "CARE" and isinstance(tile, dict):
+                before = tile.get("cared_today", False)
+            elif verb == "WATER" and isinstance(tile, dict):
+                before = tile.get("watered_today", False)
+            elif verb == "HARVEST" and isinstance(tile, dict):
+                before = tile.get("yield_units", 0)
+        orig_apply(farm, private, idx, action, board_size, day, turns_per_day, shed_capacity)
+        cs = chore_state[pid]
+        if cs is None or pos is None or (verb, pos) not in cs["enumerated"]:
+            return
+        tile = farm["tiles"][pos[1]][pos[0]]
+        succeeded = False
+        if verb == "FEED":
+            succeeded = not before and isinstance(tile, dict) and tile.get("fed_today", False)
+        elif verb == "CARE":
+            succeeded = not before and isinstance(tile, dict) and tile.get("cared_today", False)
+        elif verb == "WATER":
+            succeeded = not before and isinstance(tile, dict) and tile.get("watered_today", False)
+        elif verb == "HARVEST":
+            succeeded = bool(before and (not isinstance(tile, dict) or tile.get("yield_units", 0) < before))
+        if succeeded:
+            cs["completed"].add((verb, pos))
+
+    mod._apply_unit_action = logged_apply
 
     def new_acc():
         return {"unit_turns": 0, "move_turns": 0, "idle_turns": 0, "reversals": 0, "work_turns": 0, "hands_max": 0}
@@ -133,6 +212,8 @@ def run_traced(agent_a, agent_b, seed, engine="master", config=None):
         t["weeds_new"].append(weeds_new)
         t["shed_units"].append(sum(shed.values()))
         t["carried_units"].append(sum(sum(c.values()) for c in carried))
+        chores, safe_feed = _day_start_chores(farm, mod.CROPS, day)
+        chore_state[i] = {"enumerated": chores, "completed": set(), "safe_feed": safe_feed}
 
     def day_end(i):
         a = acc[i] or new_acc()
@@ -145,6 +226,10 @@ def run_traced(agent_a, agent_b, seed, engine="master", config=None):
         t["buys_cost"].append(round(day_buys[i]))
         t["feed_hour"].append(round(sum(fed_hour[i].values()) / len(fed_hour[i]), 1) if fed_hour[i] else None)
         t["water_hour"].append(round(sum(wat_hour[i].values()) / len(wat_hour[i]), 1) if wat_hour[i] else None)
+        cs = chore_state[i] or {"enumerated": set(), "completed": set(), "safe_feed": set()}
+        t["chores_enumerated"].append(len(cs["enumerated"]))
+        t["chores_completed"].append(len(cs["completed"]))
+        t["skipped_feed_not_due"].append(sum(("FEED", pos) not in cs["completed"] for pos in cs["safe_feed"]))
         day_sales[i] = 0.0
         day_buys[i] = 0.0
         fed_hour[i] = {}
@@ -219,6 +304,7 @@ def run_traced(agent_a, agent_b, seed, engine="master", config=None):
     for i in range(2):
         day_end(i)
     mod._commit_unit = orig_commit
+    mod._apply_unit_action = orig_apply
     obs0 = state[0].observation
     money = [obs0.farms[i]["money"] for i in range(2)]
     return {"seed": seed, "engine": engine, "money": money, "errors": errors, "seconds": round(time.time() - t0, 2),
@@ -325,6 +411,8 @@ def summary_row(t):
     wh = [x for x in t["water_hour"] if x is not None]
     return {"final_networth": t["networth"][-1] if n else None, "sales": tot("sales_rev"), "buys": tot("buys_cost"),
             "missed_feed": tot("missed_feed"), "missed_water": tot("missed_water"), "escapes": tot("escapes"),
+            "chores_enumerated": tot("chores_enumerated"), "chores_completed": tot("chores_completed"),
+            "skipped_feed_not_due": tot("skipped_feed_not_due"),
             "weeds_new": tot("weeds_new"), "unit_turns": tot("unit_turns"), "move_share": round(tot("move_turns") / max(1, tot("unit_turns")), 3),
             "idle_share": round(tot("idle_turns") / max(1, tot("unit_turns")), 3), "travel_per_task": round(tot("move_turns") / max(1, tot("work_turns")), 2),
             "reversals": tot("reversals"), "feed_hour": round(sum(fh) / len(fh), 1) if fh else None,

@@ -18,7 +18,7 @@ Knobs (default = V3.12 behaviour):
 import math
 import sys
 
-KNOBS = {"melon_floor": 200, "harvest_min": 2, "opening": "frontier", "wheat_tiles": 0, "wheat_stock": 0, "min_hands": 3, "load_per_hand": 16, "geese": 0, "open_melons": 10, "open_wheat": 8, "open_cows": 2, "open_sheep": 2, "early_hire_days": 5, "feed_spare_poor": 0, "fert_keep": 0, "fert_buy": 0, "fert_carry": 3, "demand_share": 0.5, "max_animals": 20, "wheat_per_animal": 0.0, "wheat_cap": 18, "wheat_water_tier": 1, "wheat_sell_price": 29, "wheat_hold_days": 0, "sell_hourly": 0, "drop_min": 0, "drop_radius": 0, "capital_hour2": -1, "melon_rush": 0, "straw_delay": 0, "hands_early": 0}
+KNOBS = {"melon_floor": 200, "harvest_min": 2, "opening": "frontier", "wheat_tiles": 0, "wheat_stock": 0, "min_hands": 3, "load_per_hand": 20, "geese": 0, "open_melons": 8, "open_wheat": 7, "open_cows": 2, "open_sheep": 2, "early_hire_days": 3, "feed_spare_poor": 0, "fert_keep": 0, "fert_buy": 0, "fert_carry": 3, "demand_share": 0.5, "max_animals": 20, "wheat_per_animal": 0.0, "wheat_cap": 18, "wheat_water_tier": 0, "wheat_sell_price": 30, "wheat_hold_days": 0, "sell_hourly": 0, "drop_min": 0, "drop_radius": 0, "capital_hour2": -1, "melon_rush": 0, "straw_delay": 0, "hands_early": 0}
 
 BOARD = 10
 SHED_TILES = [(4, 4), (5, 4), (4, 5), (5, 5)]
@@ -36,7 +36,7 @@ LAND_DEADLINE = {2: 14, 3: 17, 4: 18}      # quads-after-purchase -> last day
 MAX_ORDERS = 10
 
 MAX_ANIMALS = 20
-MAX_SHEEP = 12
+MAX_SHEEP = 11
 I0 = 10000
 SHOPS = {"BAKERY": ["EGG", "WHEAT"], "PIZZA_SHOP": ["MILK", "TOMATO", "WHEAT"], "BRUNCH_SPOT": ["EGG", "WHEAT", "STRAWBERRY"],
          "YARN_STORE": ["WOOL"], "ICE_CREAM_SHOP": ["STRAWBERRY", "MILK", "WHEAT"], "PET_CAFE": ["CARROT"],
@@ -45,19 +45,19 @@ PRODUCT_OF = {"COW": "MILK", "SHEEP": "WOOL"}
 RATE = {"COW": 1.5, "SHEEP": 1.33}           # units/day with daily FEED+CARE (engine: bonus accrues per cared day)
 FIRST_YIELD = {"COW": 8, "SHEEP": 6}
 DEMAND_SHARE = 0.5                            # my share of daily town demand (two sellers)
-OPP_GROWTH = 1.1# opponent's visible supply is assumed to grow
+OPP_GROWTH = 1.3# opponent's visible supply is assumed to grow
 CFG = {"center_interval": 24, "shop_interval": 4, "turns_per_day": 24}
 MAX_HANDS = 13
 LOAD_ANIMAL, LOAD_CROP_TASK, LOAD_SETUP = 6, 3, 8
 ROUTE_LEN = 3
-CROP_SWEEP_LEN = 5
+CROP_SWEEP_LEN = 6
 CROP_SWEEP_RADIUS = 4
-STRAW_CUTOFF = 17
+STRAW_CUTOFF = 16
 MELON_WAVE_DAYS = ((1, 10),)
 MELON_MAX_TILES = 50
 MELON_UNITS_PER_TILE = 6.0
 MELON_PRICE_CUSHION = 100
-OPENING_MELONS = 10
+OPENING_MELONS = 7
 CROP_SPECS = {
     "STRAWBERRY": {"seed": 100, "units": 4.5, "first": 10, "cycle": 18, "cutoff": 17, "base": 120, "min_val": 12},
     "MELON":      {"seed": 80,  "units": 6.0, "first": 10, "cycle": 12, "cutoff": 16, "base": 250, "min_val": 12, "cushion": 100},
@@ -66,7 +66,7 @@ CROP_SPECS = {
     "TOMATO":     {"seed": 50,  "units": 5.0, "first": 8,  "cycle": 12, "cutoff": 20, "base": 60,  "min_val": 12},
 }     # units above I0 before MELON drops from $250 toward $150 (sq curve)
 HERD_LAST_DAY = 22
-NEAR_RADIUS = 2
+NEAR_RADIUS = 3
 
 # ---- per-episode state (hands are re-indexed daily; everything below is reset at day change)
 S = {"day": -1, "routes": {}, "crop": {}, "sweep": {}, "setup": {}, "claimed_sites": set(), "animal_claim": set(),
@@ -192,33 +192,29 @@ def perceive(obs):
 
 # ===== EVOLVE-BLOCK: hiring =====
 def _hire_plan(target, have, hires_today, cash):
-    """Return the affordable hires needed to reach the planner's hand target."""
+    """Return number of HIRE orders affordable now toward `target` hands."""
     n = 0
     spent = 0
     while have + n < target:
-        cost = _fib(hires_today + n)
-        if spent + cost > cash:
+        c = _fib(hires_today + n)
+        if spent + c > cash:
             break
-        spent += cost
+        spent += c
         n += 1
     return n, spent
 
 
 def _load_model(v, seeds_planned, n_animals_total, n_setup, day):
-    """Conservative headcount for a complete day route (farmer is included)."""
-    hard = len(v["urgent"]) + len(v.get("wwater", [])) + n_animals_total
-    optional = len(v["water"]) + len(v["harvest"]) + len(v["weeds"]) + seeds_planned
-    # A routed hand normally completes 8-10 chores after travel.  Setup is more
-    # expensive and planting reserves a second action for same-day watering.
-    actions = hard * 2 + optional + seeds_planned + n_setup * 4
-    target = max(int(math.ceil(hard / 8.0)), int(math.ceil(actions / 10.0)))
-    floor = KNOBS["hands_early"] if KNOBS["hands_early"] and day <= 10 else KNOBS["min_hands"]
-    target = max(floor, target)
-    if day <= 2:
-        target = max(3, target)
+    load = LOAD_ANIMAL * n_animals_total
+    load += LOAD_CROP_TASK * (len(v["urgent"]) + len(v["water"]) + len(v.get("wwater", [])) + len(v["harvest"]) + len(v["weeds"]) + seeds_planned)
+    load += LOAD_SETUP * n_setup
+    tgt = int(math.ceil(load / KNOBS["load_per_hand"]))
+    floor = KNOBS["hands_early"] if (KNOBS["hands_early"] and day <= 10) else KNOBS["min_hands"]
+    tgt = max(floor, min(MAX_HANDS, tgt))
     if day >= 29:
-        target = min(target, 6)
-    return min(MAX_HANDS, target)
+        tgt = min(tgt, 6)
+    return tgt
+
 # ===== END-BLOCK: hiring =====
 
 
@@ -573,76 +569,109 @@ def _animal_pending(t, day):
 
 # ===== EVOLVE-BLOCK: animal_routing =====
 def _build_route(i, pos, v, day, shed, carry, unlocked_shed, hour=0):
-    """Compatibility entry point; routes are built jointly by the dispatcher."""
-    plan = S.get("plan")
-    if plan and plan.get("day") == day:
-        return plan.get("routes", {}).get(i)
-    return None
+    claimed = set()
+    for r in S["routes"].values():
+        claimed.update(r["stops"])
+    # feed rotation (frontier behaviour): when wheat is short, animals fed yesterday can skip a day;
+    # an animal only escapes after 2 consecutive unfed days, so those at 1 are fed first.
+    carried_wheat = carry.get("WHEAT", 0)
+    unfed_all = [t for _p, t in v["animals"] if not t.get("fed_today", False)]
+    short = day < 29 and (S["wheat_budget"] + carried_wheat) < len(unfed_all)
+
+    def _pending_rot(t):
+        if day >= 29:
+            return _animal_pending(t, day)
+        need_feed = not t.get("fed_today", False)
+        if need_feed and short and t.get("consecutive_unfed", 0) == 0:
+            need_feed = False                       # can wait until tomorrow; wheat goes to the at-risk ones
+        need_care = (not t.get("cared_today", False)) and day < 28
+        return need_feed or need_care or t.get("fertilizer_available", False) or t.get("yield_units", 0) > 0
+
+    cands = [(p2, t) for p2, t in v["animals"] if p2 not in claimed and _pending_rot(t)]
+    if short:
+        # at-risk animals first: build the route from them, then the rest
+        risk = [(p2, t) for p2, t in cands if not t.get("fed_today", False) and t.get("consecutive_unfed", 0) >= 1]
+        rest = [(p2, t) for p2, t in cands if (p2, t) not in risk]
+        cands = risk + rest
+    if not cands and hour >= 14:
+        best = None
+        for j, r in S["routes"].items():
+            if j == i or len(r["stops"]) < 2:
+                continue
+            tp = r["stops"][-1]
+            t = v["tiles"][tp[1]][tp[0]]
+            needs_wheat = day < 29 and not t.get("fed_today", False) and carry.get("WHEAT", 0) == 0
+            if needs_wheat:
+                continue
+            gain = _dist(v["positions"][j], tp) - _dist(pos, tp)
+            if gain >= 3 and (best is None or gain > best[0]):
+                best = (gain, j)
+        if best is not None:
+            tp = S["routes"][best[1]]["stops"].pop()
+            cands = [(tp, v["tiles"][tp[1]][tp[0]])]
+    if not cands:
+        return None
+    stops = []
+    cur = pos
+    if short:
+        risk_keys = [p2 for p2, t in cands if not t.get("fed_today", False) and t.get("consecutive_unfed", 0) >= 1]
+        pool_r = {p2: t for p2, t in cands if p2 in risk_keys}
+        while pool_r and len(stops) < ROUTE_LEN:
+            nxt = _nearest(cur, list(pool_r.keys()))
+            stops.append(nxt)
+            cur = nxt
+            del pool_r[nxt]
+    pool = {p2: t for p2, t in cands if p2 not in stops}
+    while pool and len(stops) < ROUTE_LEN:
+        nxt = _nearest(cur, list(pool.keys()))
+        stops.append(nxt)
+        cur = nxt
+        del pool[nxt]
+    unfed = sum(1 for s_ in stops if not v["tiles"][s_[1]][s_[0]].get("fed_today", False)) if day < 29 else 0
+    need = max(0, unfed - carry.get("WHEAT", 0))
+    pickup = min(need, S["wheat_budget"]) if unlocked_shed else 0
+    S["wheat_budget"] -= pickup
+    return {"stops": stops, "pickup": pickup}
 
 
 def _route_step(i, pos, v, day, hour, shed, carry, unlocked_shed):
-    """Execute one step of a jointly planned route."""
-    plan = S.get("plan") or {}
-    route = plan.get("routes", {}).get(i)
-    if not route:
-        return None
-    pickup = route.get("pickup", {})
-    for item in sorted(pickup):
-        need = pickup.get(item, 0)
-        have = carry.get(item, 0)
-        if need > have:
-            if pos not in unlocked_shed:
-                return [_step(pos, min(unlocked_shed, key=lambda q: (_dist(pos, q), q)))] if unlocked_shed else None
-            n = min(need - have, shed.get(item, 0))
-            pickup[item] = have
+    r = S["routes"][i]
+    tiles = v["tiles"]
+    if r["pickup"] > 0:
+        if pos in unlocked_shed:
+            n = min(r["pickup"], shed.get("WHEAT", 0))
+            r["pickup"] = 0
             if n > 0:
-                return ["PICKUP", item, int(n)]
-    while route.get("stops"):
-        chore = route["stops"][0]
-        tp = chore["pos"]
-        tile = v["tiles"][tp[1]][tp[0]]
-        kind = chore["kind"]
-        valid = False
-        if kind == "water":
-            valid = isinstance(tile, dict) and tile.get("kind") == "PLANT" and not tile.get("watered_today")
-        elif kind == "harvest_crop":
-            valid = isinstance(tile, dict) and tile.get("kind") == "PLANT" and _harvest_ready(tile, day)
-        elif kind == "fertilize":
-            valid = carry.get("FERTILIZER", 0) > 0 and isinstance(tile, dict) and _fert_eligible(tile, day)
-        elif kind == "plant":
-            valid = tile is None and hour < 22 and _plant_choice(tp, plan.get("seeds_left", {})) is not None
-        elif kind == "dig":
-            valid = isinstance(tile, dict) and tile.get("kind") == "WEED"
-        elif kind in ("feed", "care", "collect", "harvest_animal"):
-            valid = isinstance(tile, dict) and "animal" in tile
-            if kind == "feed": valid = valid and not tile.get("fed_today") and carry.get("WHEAT", 0) > 0
-            if kind == "care": valid = valid and day < 28 and not tile.get("cared_today")
-            if kind == "collect": valid = valid and tile.get("fertilizer_available", False)
-            if kind == "harvest_animal": valid = valid and tile.get("yield_units", 0) > 0
-        if not valid:
-            route["stops"].pop(0)
+                return ["PICKUP", "WHEAT", int(n)]
+            if hour <= 1:
+                r["pickup"] = 1
+                return ["PASS"]
+        else:
+            return [_step(pos, _nearest(pos, unlocked_shed))]
+    while r["stops"]:
+        tgt = r["stops"][0]
+        t = tiles[tgt[1]][tgt[0]]
+        if not (isinstance(t, dict) and "animal" in t):
+            r["stops"].pop(0)
             continue
-        if pos != tp:
-            return [_step(pos, tp)]
-        route["stops"].pop(0)
-        plan.setdefault("chore_done", set()).add(chore["id"])
-        if kind == "water": return ["WATER"]
-        if kind in ("harvest_crop", "harvest_animal"): return ["HARVEST"]
-        if kind == "fertilize": return ["FERTILIZE"]
-        if kind == "dig": return ["DIG"]
-        if kind == "feed": return ["FEED"]
-        if kind == "care": return ["CARE"]
-        if kind == "collect": return ["COLLECT_FERTILIZER"]
-        if kind == "plant":
-            crop = _plant_choice(tp, plan.get("seeds_left", {}))
-            if crop is None:
-                continue
-            plan["seeds_left"][crop] -= 1
-            water = {"id": "water:%d,%d" % tp, "kind": "water", "pos": tp,
-                     "deadline": 23, "value": 1000.0, "needs": None, "hard": True}
-            route["stops"].insert(0, water)
-            return ["PLANT", crop]
+        if pos != tgt:
+            return [_step(pos, tgt)]
+        if day < 29 and not t.get("fed_today", False) and carry.get("WHEAT", 0) > 0:
+            return ["FEED"]
+        if day < 29 and not t.get("fed_today", False) and carry.get("WHEAT", 0) == 0 and S["wheat_budget"] > 0 and hour < 21 and not r.get("refilled"):
+            unfed = sum(1 for s_ in r["stops"] if not tiles[s_[1]][s_[0]].get("fed_today", False))
+            r["pickup"] = min(unfed, S["wheat_budget"]); S["wheat_budget"] -= r["pickup"]; r["refilled"] = True
+            return [_step(pos, _nearest(pos, unlocked_shed))] if pos not in unlocked_shed else ["PICKUP", "WHEAT", int(r["pickup"])]
+        if day < 28 and not t.get("cared_today", False):
+            return ["CARE"]
+        if t.get("fertilizer_available", False):
+            return ["COLLECT_FERTILIZER"]
+        if t.get("yield_units", 0) > 0:
+            return ["HARVEST"]
+        r["stops"].pop(0)
+    del S["routes"][i]
     return None
+
 # ===== END-BLOCK: animal_routing =====
 
 
@@ -746,189 +775,194 @@ def _task_valid(tp, kind, v, day, hour, carry, seeds_left):
 
 # ===== EVOLVE-BLOCK: sweep =====
 def _build_sweep(i, pos, v, day, hour, carry, pools, seeds_left):
-    """Crop work is represented directly in the shared planner routes."""
-    plan = S.get("plan") or {}
-    route = plan.get("routes", {}).get(i)
-    return route.get("stops") if route else None
+    tiers = ["urgent", "wwater", "harvest", "water"]
+    if carry.get("FERTILIZER", 0) > 0:
+        tiers = ["urgent", "fert", "wwater", "harvest", "water"]
+    if hour < 22:
+        tiers.append("plant")
+    tiers.append("weeds")
+    if hour >= 14:
+        tiers.append("slack")
+    first = None
+    for kind in tiers:
+        if pools[kind]:
+            tp = _nearest(pos, pools[kind])
+            first = (tp, kind)
+            pools[kind].remove(tp)
+            break
+    if first is None:
+        return None
+    sweep = [first]
+    cur = first[0]
+    if first[1] == "urgent" and pools["urgent"]:
+        tiers = ["urgent", "harvest"]
+    while len(sweep) < CROP_SWEEP_LEN:
+        best = None
+        for kind in tiers:
+            for tp in pools[kind]:
+                d = _dist(cur, tp)
+                if d <= CROP_SWEEP_RADIUS and (best is None or d < best[0]):
+                    best = (d, tp, kind)
+        if best is None:
+            break
+        _d, tp, kind = best
+        pools[kind].remove(tp)
+        sweep.append((tp, kind))
+        cur = tp
+    return sweep
 
 
 def _crop_step(i, pos, v, day, hour, carry, pools, seeds_left):
-    # Kept as a block-compatible entry point.  Dispatch calls _route_step so crop
-    # and animal actions share one route and one pickup budget.
+    sweep = S["sweep"].get(i)
+    if not sweep:
+        sweep = _build_sweep(i, pos, v, day, hour, carry, pools, seeds_left)
+        if not sweep:
+            S["sweep"].pop(i, None)
+            # idle hand with empty pools: take work from another unit's sweep instead of passing
+            return _steal_task(i, pos, v, day, hour, carry, pools, seeds_left)
+        S["sweep"][i] = sweep
+    while sweep:
+        tp, kind = sweep[0]
+        if not _task_valid(tp, kind, v, day, hour, carry, seeds_left):
+            sweep.pop(0)
+            continue
+        if pos != tp:
+            return [_step(pos, tp)]
+        sweep.pop(0)
+        if kind in ("urgent", "water", "slack", "wwater"):
+            return ["WATER"]
+        if kind == "harvest":
+            return ["HARVEST"]
+        if kind == "fert":
+            return ["FERTILIZE"]
+        if kind == "weeds":
+            return ["DIG"]
+        if kind == "plant":
+            c = _plant_choice(tp, seeds_left)
+            seeds_left[c] -= 1
+            sweep.insert(0, (tp, "urgent"))
+            return ["PLANT", c]
+    S["sweep"].pop(i, None)
+    if any(pools[k] for k in pools):
+        return _crop_step(i, pos, v, day, hour, carry, pools, seeds_left)
+    return _steal_task(i, pos, v, day, hour, carry, pools, seeds_left)
+
+
+def _steal_task(i, pos, v, day, hour, carry, pools, seeds_left):
+    if S.get("opponent_mode") == "yuan":
+        return None
+    remaining = 23 - hour
+    best = None
+    for j, sw in list(S["sweep"].items()):
+        if j == i or not sw:
+            continue
+        eta = 0
+        cur = v["positions"][j]
+        for idx, (tp, kind) in enumerate(sw):
+            eta += _dist(cur, tp) + 1
+            cur = tp
+            if kind == "urgent" and eta > remaining:
+                mine = _dist(pos, tp) + 1
+                if mine <= remaining and (best is None or mine < best[0]):
+                    best = (mine, j, idx)
+    if best is not None:
+        _m, j, idx = best
+        tp, kind = S["sweep"][j].pop(idx)
+        S["sweep"][i] = [(tp, kind)]
+        return _crop_step(i, pos, v, day, hour, carry, pools, seeds_left)
+    best = None
+    for j, sw in S["sweep"].items():
+        if j == i or len(sw) < 2:
+            continue
+        for idx in range(len(sw) - 1, 0, -1):
+            if sw[idx][1] == "urgent" and (best is None or len(sw) > len(S["sweep"][best[0]])):
+                best = (j, idx)
+                break
+    if best is None:
+        for j, sw in S["sweep"].items():
+            if j != i and len(sw) >= 3 and (best is None or len(sw) > len(S["sweep"][best[0]])):
+                best = (j, len(sw) - 1)
+    if best is not None:
+        j, idx = best
+        task = S["sweep"][j].pop(idx)
+        S["sweep"][i] = [task]
+        return _crop_step(i, pos, v, day, hour, carry, pools, seeds_left)
     return None
+
 # ===== END-BLOCK: sweep =====
 
 
 # ===== EVOLVE-BLOCK: dispatch =====
 def _unit_action(i, pos, carry, obs, v, pools, seeds_left, shed, unlocked_shed):
     day, hour = obs["day"], obs["hour"]
-
-    def chore(kind, tp, value, hard=False, needs=None, deadline=23):
-        return {"id": "%s:%d,%d" % (kind, tp[0], tp[1]), "kind": kind, "pos": tp,
-                "deadline": deadline, "value": float(value), "needs": needs, "hard": hard}
-
-    def enumerate_all():
-        out = []
-        prices = obs.get("market", {}).get("prices", {})
-        for tp, tile in v["crops"]:
-            crop = tile.get("crop")
-            spec = CROPS.get(crop, {})
-            age = day - tile.get("planted_day", day)
-            urgent = tile.get("consecutive_unwatered", 0) >= 1
-            in_window = (not spec.get("ongoing") and (spec.get("max_day", 0) + 1) // 2 <= age <= spec.get("max_day", -1)
-                         and tile.get("yield_units", 0) < spec.get("max_yield", 0))
-            fert_water = spec.get("ongoing") and tile.get("fertilized_until_day", -1) >= day
-            if not tile.get("watered_today") and (urgent or in_window or fert_water):
-                hard = urgent or (crop == "MELON" and in_window)
-                val = 1000 if urgent else prices.get(crop, CROP_SPECS.get(crop, {}).get("base", 40))
-                if crop == "MELON" and 6 <= age <= 10:
-                    val *= 1.5
-                out.append(chore("water", tp, val, hard))
-            if _harvest_ready(tile, day):
-                out.append(chore("harvest_crop", tp, tile.get("yield_units", 0) * prices.get(crop, 40)))
-            if _fert_eligible(tile, day):
-                out.append(chore("fertilize", tp, prices.get(crop, 100), False, "FERTILIZER"))
-        for tp, tile in v["animals"]:
-            animal = tile.get("animal")
-            product = PRODUCT_OF.get(animal, "EGG")
-            daily = prices.get(product, 100) / max(1.0, 2.0 if animal == "COW" else 3.0 if animal == "SHEEP" else 1.0)
-            # The addendum permits alternate-day feed, but never skip a second day.
-            if day < 29 and not tile.get("fed_today"):
-                # P2 reliability rule: feed every animal before scheduling growth.
-                # Alternate-day feeding can return only after zero escapes is proven.
-                out.append(chore("feed", tp, daily + prices.get("FERTILIZER", 20), True, "WHEAT"))
-            if day < 28 and not tile.get("cared_today"):
-                out.append(chore("care", tp, daily))
-            if tile.get("fertilizer_available"):
-                out.append(chore("collect", tp, prices.get("FERTILIZER", 20)))
-            if tile.get("yield_units", 0) > 0:
-                out.append(chore("harvest_animal", tp, tile.get("yield_units", 0) * prices.get(product, 100)))
-        for tp in v["weeds"]:
-            out.append(chore("dig", tp, 10))
-        # Late planting has no time to repay its watering burden and was the
-        # source of every observed P2 weed (all appeared from day 21 onward).
-        for tp in (pools.get("plant", []) if day <= 18 else []):
-            crop = _plant_choice(tp, seeds_left)
-            if crop:
-                spec = CROP_SPECS[crop]
-                out.append(chore("plant", tp, spec["base"] * spec["units"] / max(1, spec["cycle"]), False,
-                                 "SEED:" + crop, 21))
-        return out
-
-    def route_eta(start, stops, needs_pickup):
-        cur = start
-        total = hour
-        if needs_pickup and cur not in unlocked_shed:
-            sh = min(unlocked_shed, key=lambda q: (_dist(cur, q), q)) if unlocked_shed else cur
-            total += _dist(cur, sh) + 1
-            cur = sh
-        elif needs_pickup:
-            total += 1
-        for c in stops:
-            total += _dist(cur, c["pos"]) + 1
-            if total > c["deadline"]:
-                return 99
-            cur = c["pos"]
-        return total
-
-    def make_plan():
-        positions = v["positions"]
-        routes = {j: {"unit": j, "stops": [], "pickup": {}, "eta_end": hour} for j in range(len(positions))}
-        all_chores = enumerate_all()
-        previous = S.get("plan") or {}
-        # Chore ids are intentionally position-based, but completion is only a
-        # same-day fact.  Carrying this set across days suppresses all recurring
-        # feed/water work at those positions.
-        done = set(previous.get("chore_done", set())) if previous.get("day") == day else set()
-        all_chores = [c for c in all_chores if c["id"] not in done]
-        ordered = sorted(all_chores, key=lambda c: (not c["hard"], c["deadline"], -c["value"], c["pos"], c["kind"]))
-        unassigned = []
-        inventories = obs["private"].get("inventories") or []
-        wheat_left = shed.get("WHEAT", 0)
-        fert_left = shed.get("FERTILIZER", 0)
-        for c in ordered:
-            if not c["hard"] and any(x["hard"] for x in unassigned):
-                unassigned.append(c)
-                continue
-            best = None
-            # Keep every action at one tile on the same worker.  In particular,
-            # animal feed/care/collect/harvest becomes one visit, not four trips.
-            owners = [j for j in range(len(positions))
-                      if any(x["pos"] == c["pos"] for x in routes[j]["stops"])]
-            candidates = owners if owners else list(range(len(positions)))
-            for j in candidates:
-                inv = inventories[j] if j < len(inventories) else {}
-                already = sum(1 for x in routes[j]["stops"] if x["needs"] == c["needs"])
-                extra = max(0, already + 1 - inv.get(c["needs"], 0)) - max(0, already - inv.get(c["needs"], 0))
-                if c["needs"] == "WHEAT" and extra > wheat_left:
-                    continue
-                if c["needs"] == "FERTILIZER" and extra > fert_left:
-                    continue
-                old = routes[j]["stops"]
-                for at in range(len(old) + 1):
-                    trial = old[:at] + [c] + old[at:]
-                    need_pickup = any(x["needs"] in ("WHEAT", "FERTILIZER") for x in trial)
-                    eta = route_eta(positions[j], trial, need_pickup)
-                    if eta <= c["deadline"] and eta <= 23:
-                        key = (eta - routes[j]["eta_end"], eta, j, at)
-                        if best is None or key < best[0]: best = (key, j, at, eta)
-            if best is None:
-                unassigned.append(c); continue
-            _key, j, at, eta = best
-            routes[j]["stops"].insert(at, c)
-            routes[j]["eta_end"] = eta
-            if c["needs"] == "WHEAT":
-                inv = inventories[j] if j < len(inventories) else {}
-                total = sum(1 for x in routes[j]["stops"] if x["needs"] == "WHEAT")
-                old_pickup = routes[j]["pickup"].get("WHEAT", 0)
-                new_pickup = max(0, total - inv.get("WHEAT", 0))
-                routes[j]["pickup"]["WHEAT"] = new_pickup; wheat_left -= new_pickup - old_pickup
-            elif c["needs"] == "FERTILIZER":
-                inv = inventories[j] if j < len(inventories) else {}
-                total = sum(1 for x in routes[j]["stops"] if x["needs"] == "FERTILIZER")
-                old_pickup = routes[j]["pickup"].get("FERTILIZER", 0)
-                new_pickup = max(0, total - inv.get("FERTILIZER", 0))
-                routes[j]["pickup"]["FERTILIZER"] = new_pickup; fert_left -= new_pickup - old_pickup
-        return {"day": day, "hour": hour, "routes": routes, "unassigned": unassigned,
-                "chore_done": done, "seeds_left": dict(seeds_left),
-                "replans": (previous.get("replans", 0) + 1) if previous.get("day") == day else 1,
-                "replan_hours": set(previous.get("replan_hours", set())) if previous.get("day") == day else set()}
-
+    if day == 0 and hour == 0:
+        S["opponent_mode"] = None
+    if S.get("opponent_mode") is None and day >= 1:
+        other = obs["farms"][1 - obs["player"]]
+        other_animals = sum(1 for row in other["tiles"] for t in row if isinstance(t, dict) and "animal" in t)
+        if day == 1 and (other_animals >= 5 or other.get("money", 0) > 100):
+            S["opponent_mode"] = "other"
+        elif day >= 2:
+            S["opponent_mode"] = "other" if other.get("money", 0) > 95 else "yuan"
     if any(carry.get(a, 0) > 0 for a in ANIMALS):
         op = _setup_step(i, pos, v, carry)
-        if op is not None: return op
+        if op is not None:
+            return op
     prod_carried = sum(carry.get(k, 0) for k in PRODUCTS if k != "WHEAT")
-    if day >= 28 and prod_carried >= (3 if day == 29 else 6):
-        if pos in unlocked_shed: return ["DROP"]
-        if day == 29 or hour >= 18: return [_step(pos, min(unlocked_shed, key=lambda q: (_dist(pos, q), q)))]
-
-    plan = S.get("plan")
-    if not plan or plan.get("day") != day or (hour == 1 and plan.get("hour") != 1):
-        S["plan"] = make_plan()
-    op = _route_step(i, pos, v, day, hour, shed, carry, unlocked_shed)
-    if op is not None: return op
-    plan = S.get("plan") or {}
-    pending = set(c["id"] for r in plan.get("routes", {}).values() for c in r.get("stops", []))
-    missing_hard = [c for c in enumerate_all() if c["hard"] and c["id"] not in pending
-                    and c["id"] not in plan.get("chore_done", set())]
-    if missing_hard and plan.get("replans", 0) < 4 and hour not in plan.get("replan_hours", set()):
-        old_done = set(plan.get("chore_done", set()))
-        old_hours = set(plan.get("replan_hours", set())); old_hours.add(hour)
-        S["plan"] = make_plan()
-        S["plan"]["chore_done"].update(old_done)
-        S["plan"]["replan_hours"] = old_hours
-        op = _route_step(i, pos, v, day, hour, shed, carry, unlocked_shed)
-        if op is not None: return op
-    # Install purchased animals before accepting optional overflow work.
-    shed_animals = sorted((a, n) for a, n in shed.items() if a in ANIMALS and n > 0)
-    if shed_animals and hour >= 1 and day < 27:
+    if day >= 28 and prod_carried >= (3 if day == 29 else 6) and i not in S["routes"]:
         if pos in unlocked_shed:
+            return ["DROP"]
+        if day == 29 and hour >= 20:
+            return [_step(pos, _nearest(pos, unlocked_shed))]
+        if day == 29 or hour >= 18:
+            return [_step(pos, _nearest(pos, unlocked_shed))]
+    # 2a. melon rush: carried melons go straight to the shed to sell into the day-10 price
+    if KNOBS["melon_rush"] and 10 <= day <= 14 and carry.get("MELON", 0) >= 4 and carry.get("WHEAT", 0) == 0 and i not in S["routes"]:
+        if pos in unlocked_shed:
+            return ["DROP"]
+        return [_step(pos, _nearest(pos, unlocked_shed))]
+    # 2b. intraday deposit: carrying products (no feed wheat, no animals) near/at the shed -> DROP
+    if KNOBS["drop_min"] > 0 and prod_carried >= KNOBS["drop_min"] and carry.get("WHEAT", 0) == 0 \
+            and i not in S["routes"] and day < 28 and hour >= 1:
+        shed_room = 100 - sum(n for k, n in shed.items() if n > 0)
+        if shed_room >= prod_carried:
+            if pos in unlocked_shed:
+                return ["DROP"]
+            if KNOBS["drop_radius"] > 0 and _shed_dist(pos) <= KNOBS["drop_radius"]:
+                return [_step(pos, _nearest(pos, unlocked_shed))]
+    if i in S["routes"]:
+        op = _route_step(i, pos, v, day, hour, shed, carry, unlocked_shed)
+        if op is not None:
+            return op
+    shed_animals = [(a, n) for a, n in shed.items() if a in ANIMALS and n > 0]
+    if shed_animals and len(S["animal_claim"]) < 2 and hour >= 1 and day < 27:
+        if pos in unlocked_shed:
+            S["animal_claim"].add(i)
             return ["PICKUP", shed_animals[0][0], 1]
-        return [_step(pos, min(unlocked_shed, key=lambda q: (_dist(pos, q), q)))]
-    if prod_carried >= 4 and carry.get("WHEAT", 0) == 0 and _shed_dist(pos) <= 2:
-        if pos in unlocked_shed: return ["DROP"]
-        return [_step(pos, min(unlocked_shed, key=lambda q: (_dist(pos, q), q)))]
+        if i in S["animal_claim"] or len(S["animal_claim"]) < 1:
+            S["animal_claim"].add(i)
+            return [_step(pos, _nearest(pos, unlocked_shed))]
+    S["animal_claim"].discard(i)
+    # 4b. fertilizer pickup for the crop sweep (hands spawn on shed tiles; hour >= 1 so morning orders landed)
+    if (KNOBS["fert_keep"] > 0 or KNOBS["fert_buy"] > 0) and day <= 26 and hour >= 1 and pos in unlocked_shed \
+            and carry.get("FERTILIZER", 0) == 0 and pools["fert"] and shed.get("FERTILIZER", 0) > 0 \
+            and S.get("fert_taken", 0) < len(v["fert"]):
+        n = min(KNOBS["fert_carry"], shed.get("FERTILIZER", 0), len(v["fert"]) - S.get("fert_taken", 0))
+        if n > 0:
+            S["fert_taken"] = S.get("fert_taken", 0) + n
+            return ["PICKUP", "FERTILIZER", int(n)]
+    r = None if hour == 0 else _build_route(i, pos, v, day, shed, carry, unlocked_shed, hour)
+    if r is not None:
+        S["routes"][i] = r
+        S["sweep"].pop(i, None)
+        op = _route_step(i, pos, v, day, hour, shed, carry, unlocked_shed)
+        if op is not None:
+            return op
+    op = _crop_step(i, pos, v, day, hour, carry, pools, seeds_left)
+    if op is not None:
+        return op
     return ["PASS"]
+
 # ===== END-BLOCK: dispatch =====
 
 

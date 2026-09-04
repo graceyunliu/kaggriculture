@@ -68,3 +68,34 @@ P2 added location bundling, per-worker inventory accounting, and bounded idle-tr
 The second round made every daily feed hard and suppressed optional work while hard work was unassigned. Seeds 1-3 both seats vs V3_12 remained clean (errors `[0, 0]`) but returned **-$58,784/game**. Seed 1 ended with $69,125 cash and $73,044 net worth, travel/work **1.12**, 9 missed feeds, 0 escapes, 468 missed waters, and 22 new weeds. Maximum hands was 13 and maximum animals 14; idle share remained 43.6%.
 
 P2 therefore improved travel and animal reliability but failed the mandatory crop-coverage gate after two rounds. Later ladder stages were not run. The high idle share alongside new weeds suggests urgent-water stops are being lost during validation/replanning rather than capacity being insufficient. A future P3 should first add an independent emergency-water queue with explicit enumerated/completed counters, then reintroduce general route optimization only after that invariant passes.
+
+## P5 challenger (post-review correction)
+
+After the P1/P2 failure, a narrower hybrid was built on the held-out-qualified Daba allocation: wheat-shortage feed rotation plus crop-sweep work sharing. Sweep sharing is disabled after day 2 for the publicly observable low-money/four-animal opening bucket where it regresses. The state key is explicitly reset at day 0/hour 0 so evaluator workers cannot leak classification between games.
+
+P5 is positive versus E1 but does not clear the project's significance bar: +$778/game on seeds 1-10 (t=0.48) and +$1,220/game on held-out seeds 11-30 (t=1.45). It is decisive versus V3.12 on held-out seeds: +$9,848/game, t=8.64, W-L 20-0.
+
+Paired differences in tape margin versus E1, using identical held-out seeds 11-30 and both seats:
+
+| tape | delta/game vs E1 | paired t | delta W-L |
+|---|---:|---:|---:|
+| Yuan | +$6,353 | 1.51 | 12-8 |
+| Shirabe | +$6,193 | 1.75 | 12-8 |
+| Atakan | +$5,210 | 1.41 | 13-7 |
+
+All point estimates clear +$5k, but none reaches `t >= 2`. P5 is therefore a promising challenger and queue candidate, **not a statistically confirmed replacement for E1**.
+
+## P5 expanded held-out confirmation
+
+The initial 20-seed tape estimates above were underpowered. A preregistered-style expansion to the untouched seeds 31-100 (reported jointly as seeds 11-100, 90 seeds total, both seats) produced:
+
+- P5 vs E1: **+$1,255/game**, t=2.66, seed W-L 59-31, agent errors `[0, 0]`.
+- Yuan tape paired delta vs E1: +$675/game, paired t=0.40, delta W-L 47-43.
+- Shirabe tape paired delta vs E1: **+$3,177/game**, paired t=2.15, delta W-L 50-40.
+- Atakan tape paired delta vs E1: **+$3,653/game**, paired t=2.22, delta W-L 55-35.
+
+Thus P5 now clears the project's `t >= 2` bar directly against E1 and on two of three tape opponents. The larger sample disproves the earlier apparent Yuan-specific gain: that matchup is statistically neutral, not a confirmed improvement. P5 can be treated as a confirmed overall challenger/replacement for E1, but must not be described as universally better or as a successful implementation of the original monolithic travel-minimizing planner.
+
+## Frontier correction
+
+P5 is not a ladder promotion candidate. On held-out seeds 11-30, both seats, it scored -$13,300/game versus H10 (t=-6.5, 3-17) and -$12,375/game versus H11 (t=-6.2, 2-18). Its E1 improvement is real but E1 is a weak baseline; H10/H11/H30 are the relevant frontier gates.

@@ -47,6 +47,16 @@ while true; do
     # results live on the 'results' branch so master (code + queue + tapes) never conflicts with the Air's pulls
     "$PY" evolve/gh_push.py -b results evolve/reports/latest.md evolve/archive.json -m "evolve: results $RUN_ID" >> "$LOG" 2>&1 || say "push failed"
     [ -f "evolve/reports/$RUN_ID.md" ] && "$PY" evolve/gh_push.py -b results "evolve/reports/$RUN_ID.md" -m "evolve: report $RUN_ID" >> "$LOG" 2>&1
+    # Publish only reproducible artifacts for candidates that passed held-out in
+    # the current archive.  Never push the full gen/ directory.
+    HELD_FILES=()
+    while IFS= read -r key; do
+      file="evolve/gen/cand_${key}.py"
+      [ -f "$file" ] && HELD_FILES+=("$file")
+    done < <("$PY" -c 'import json; d=json.load(open("evolve/archive.json")); print("\n".join(r["key"] for r in d.get("held_out", []) if r.get("status") == "held_pass"))')
+    if [ "${#HELD_FILES[@]}" -gt 0 ]; then
+      "$PY" evolve/gh_push.py -b results "${HELD_FILES[@]}" -m "evolve: held-out artifacts $RUN_ID" >> "$LOG" 2>&1 || say "held-out artifact push failed"
+    fi
   fi
   # 4b. phone alert if a new candidate beats C1 (needs evolve/notify.conf)
   [ -f evolve/notify.conf ] && bash evolve/notify.sh alerts >> "$LOG" 2>&1

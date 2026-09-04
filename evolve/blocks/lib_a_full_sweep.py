@@ -20,7 +20,11 @@ def _build_sweep(i, pos, v, day, hour, carry, pools, seeds_left):
     cur = first[0]
     if first[1] == "urgent" and pools["urgent"]:
         tiers = ["urgent", "harvest"]
-    while len(sweep) < CROP_SWEEP_LEN:
+    # A: once the urgent tier is drained, chain ALL remaining pending water/urgent-class
+    # tasks by nearest-neighbour in one pass instead of capping at CROP_SWEEP_LEN.
+    urgent_drained = not pools["urgent"]
+    cap = None if urgent_drained else CROP_SWEEP_LEN
+    while cap is None or len(sweep) < cap:
         best = None
         for kind in tiers:
             for tp in pools[kind]:
@@ -33,6 +37,8 @@ def _build_sweep(i, pos, v, day, hour, carry, pools, seeds_left):
         pools[kind].remove(tp)
         sweep.append((tp, kind))
         cur = tp
+        if not pools["urgent"]:
+            urgent_drained = True
     return sweep
 
 
@@ -42,8 +48,7 @@ def _crop_step(i, pos, v, day, hour, carry, pools, seeds_left):
         sweep = _build_sweep(i, pos, v, day, hour, carry, pools, seeds_left)
         if not sweep:
             S["sweep"].pop(i, None)
-            # idle hand with empty pools: take work from another unit's sweep instead of passing
-            return _steal_task(i, pos, v, day, hour, carry, pools, seeds_left)
+            return None
         S["sweep"][i] = sweep
     while sweep:
         tp, kind = sweep[0]
@@ -69,12 +74,6 @@ def _crop_step(i, pos, v, day, hour, carry, pools, seeds_left):
     S["sweep"].pop(i, None)
     if any(pools[k] for k in pools):
         return _crop_step(i, pos, v, day, hour, carry, pools, seeds_left)
-    return _steal_task(i, pos, v, day, hour, carry, pools, seeds_left)
-
-
-def _steal_task(i, pos, v, day, hour, carry, pools, seeds_left):
-    if S.get("opponent_mode") == "yuan":
-        return None
     remaining = 23 - hour
     best = None
     for j, sw in list(S["sweep"].items()):
@@ -112,4 +111,3 @@ def _steal_task(i, pos, v, day, hour, carry, pools, seeds_left):
         S["sweep"][i] = [task]
         return _crop_step(i, pos, v, day, hour, carry, pools, seeds_left)
     return None
-
