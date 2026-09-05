@@ -27,6 +27,13 @@ while true; do
   if [ -d .git ] && [ "${NO_PULL:-0}" != "1" ]; then
     git pull --ff-only -q 2>>"$LOG" || say "git pull failed (continuing on local tree)"
   fi
+  # Refresh committed yardstick values after each pull.
+  [ -f evolve/yardstick.conf ] && . evolve/yardstick.conf
+  if [ -f evolve/PROMOTION_PENDING.txt ]; then
+    say "*** PROMOTION PENDING: $(tr '\n' ' ' < evolve/PROMOTION_PENDING.txt) ***"
+  fi
+  # Local replay scan is cheap (~0.05s with no corpus); failures preserve the existing clone fallback.
+  "$PY" evolve/refresh_frontier.py >> "$LOG" 2>&1 || say "frontier refresh skipped/failed (existing clone selection preserved)"
   # 2. yardstick
   if [ -z "${CLONE:-}" ]; then
     if [ -f Opponents/frontier.txt ] && [ -f "$(cat Opponents/frontier.txt)" ]; then CLONE_NOW="$(cat Opponents/frontier.txt)"; else CLONE_NOW="Opponents/tape_yuan800_104892947.py"; fi
@@ -60,9 +67,20 @@ while true; do
   fi
   # 4b. phone alert if a new candidate beats C1 (needs evolve/notify.conf)
   [ -f evolve/notify.conf ] && bash evolve/notify.sh alerts >> "$LOG" 2>&1
+  # A frontier promotion also requires recalibration, so alert and persist a human-review flag.
+  "$PY" evolve/check_frontier.py --frontier "$FRONTIER" >> "$LOG" 2>&1 || say "frontier promotion check failed"
   # 5. ask the LLM for the next batch (rate-limited inside propose.py)
-  if [ "${NO_PROPOSE:-0}" != "1" ] && command -v claude >/dev/null 2>&1; then
-    "$PY" evolve/propose.py --n "${PROPOSE_N:-6}" --min-interval "${PROPOSE_INTERVAL:-1800}" >> "$LOG" 2>&1 || say "propose failed (see evolve/logs/propose.log)"
+  if [ "${NO_PROPOSE:-0}" != "1" ]; then
+    if command -v claude >/dev/null 2>&1 && "$PY" evolve/propose.py --n "${PROPOSE_N:-6}" --min-interval "${PROPOSE_INTERVAL:-1800}" >> "$LOG" 2>&1; then
+      bash evolve/propose_health.sh success
+    else
+      say "propose failed (see evolve/logs/propose.log)"
+      if command -v claude >/dev/null 2>&1; then
+        bash evolve/propose_health.sh failure >> "$LOG" 2>&1
+      else
+        bash evolve/propose_health.sh failure "claude executable not found" >> "$LOG" 2>&1
+      fi
+    fi
   fi
   # a crash-looping segment should not spin
   [ "$rc" -ne 0 ] && sleep 60
