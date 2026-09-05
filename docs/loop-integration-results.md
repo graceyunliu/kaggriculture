@@ -1,6 +1,7 @@
 # Always-on loop integration results
 
-Date: 2026-09-05  
+Date: 2026-09-05
+
 Branch: `codex/loop-integration`
 
 ## Planner queue integration
