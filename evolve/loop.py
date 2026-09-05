@@ -247,6 +247,7 @@ class Loop:
             if parent and self.db.get(parent):
                 base = json.loads(self.db.get(parent)["params"])
             n = 0
+            complete = True
             if kind == "candidate":
                 params = dict(base)
                 params.update({k: space.clamp(k, v) for k, v in (item.get("params") or {}).items() if k in space.SPACE})
@@ -261,6 +262,7 @@ class Loop:
                 levels = [axes[k] for k in axes] + [bopts[b] for b in bopts]
                 for combo in itertools.product(*levels):
                     if self.out_of_budget():
+                        complete = False
                         break
                     params = dict(base)
                     blocks = {}
@@ -277,7 +279,10 @@ class Loop:
                                   note="factorial " + " ".join(tag))
                     n += 1
             self.log(f"queue {f.name}: {kind}, {n} candidates")
-            shutil.move(str(f), str(self.queue_dir / "done" / f.name))
+            if complete:
+                shutil.move(str(f), str(self.queue_dir / "done" / f.name))
+            else:
+                self.log(f"queue {f.name}: retained for remaining factorial cells")
 
     # ---------------------------------------------------------------- generation
     def seed_islands(self):
