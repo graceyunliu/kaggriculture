@@ -59,10 +59,12 @@ QUEUE_DIR = HERE / "queue"
 ARCHIVE = HERE / "archive.json"
 
 ISLANDS = {
-    "v312": {"seed": "base", "rate": 0.2, "sigma": 0.2},
-    "c1":   {"seed": "c1", "rate": 0.2, "sigma": 0.2},
-    "wide": {"seed": "c1", "rate": 0.35, "sigma": 0.5},
-    "queue": {"seed": None, "rate": 0.2, "sigma": 0.2},
+    "v312": {"seed": "base", "rate": 0.15, "sigma": 0.2},
+    "c1":   {"seed": "c1", "rate": 0.15, "sigma": 0.2},
+    "wide": {"seed": "c1", "rate": 0.20, "sigma": 0.5},
+    "queue": {"seed": None, "rate": 0.15, "sigma": 0.2},
+    "H32":  {"seed": "H32", "rate": 0.20, "sigma": 0.15},
+    "M2":   {"seed": "M2", "rate": 0.15, "sigma": 0.15},
 }
 MIGRATE = 0.1
 CROSSOVER = 0.3
@@ -223,7 +225,40 @@ class Loop:
 
     # ---------------------------------------------------------------- queue
     def base_params_for(self, name):
-        return space.c1_params() if (name or "c1") == "c1" else space.base_params()
+        if (name or "c1") == "c1":
+            return space.c1_params()
+        if (name or "base") == "base":
+            return space.base_params()
+        if name in ("H32", "M2"):
+            return self._params_from_candidate_file(name)
+        # fallback: treat as candidate key
+        return self._params_from_candidate(name)
+
+    def _params_from_candidate_file(self, name):
+        """Read params from a candidate file in candidates/."""
+        cand_path = ROOT / "candidates" / f"{name}.py"
+        if not cand_path.exists():
+            self.log(f"WARNING: candidate file {cand_path!r} not found, falling back to base_params")
+            return space.base_params()
+        import re
+        content = cand_path.read_text()
+        m = re.search(r"KNOBS\s*=\s*(\{.*?\})\n", content, re.S)
+        if not m:
+            self.log(f"WARNING: no KNOBS dict in {cand_path!r}, falling back to base_params")
+            return space.base_params()
+        knobs = eval(m.group(1))
+        params = dict(space.base_params())
+        params.update(knobs)
+        self.log(f"seeding island from {name}.py: opening={params.get('opening')}, {len(params)} params")
+        return params
+
+    def _params_from_candidate(self, key):
+        """Look up params by DB key (SHA). Returns base_params if not found."""
+        row = self.db.get(key)
+        if row:
+            return json.loads(row["params"])
+        self.log(f"WARNING: candidate key {key!r} not in DB, falling back to base_params")
+        return space.base_params()
 
     def consume_queue(self):
         self.queue_dir.mkdir(parents=True, exist_ok=True)
