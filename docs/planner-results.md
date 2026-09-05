@@ -99,3 +99,57 @@ Thus P5 now clears the project's `t >= 2` bar directly against E1 and on two of 
 ## Frontier correction
 
 P5 is not a ladder promotion candidate. On held-out seeds 11-30, both seats, it scored -$13,300/game versus H10 (t=-6.5, 3-17) and -$12,375/game versus H11 (t=-6.2, 2-18). Its E1 improvement is real but E1 is a weak baseline; H10/H11/H30 are the relevant frontier gates.
+
+## P6 — executor refinements
+
+P6 retained P5's economy and allocation policy while refining the crop-sweep executor: hands spread their first stops across the board, fertilizer work is kept local, unreachable late-day work is discarded, harvested or dug tiles can be replanted and watered in place, and idle hands steal reachable work with urgent chores first. The frozen control is `candidates/P6_baseline.py`; the promoted working candidate `candidates/P.py` is byte-for-byte identical to it.
+
+The tape-state bench showed that execution was no longer the primary bottleneck. On H32 seed 1, days 13–27, P6 reached travel/work **1.008**, all-chore coverage **0.963**, and hard-chore coverage **0.999**, with two failed actions and one fewer new weed. Given the tape's state and hands, the executor essentially matched the tape; the remaining gap came from the state reached by allocation, hiring, and market timing.
+
+Full games (both seats, cache disabled):
+
+| matchup | seeds | margin/game | t | W-L |
+|---|---:|---:|---:|---:|
+| P6 vs P5 | 11–30 | about +$2,300 | 3.7 | — |
+| P6 vs E1 | 1–10 | +$2,551 | 1.51 | 8–2 |
+| P6 vs E1 | 11–30 | +$1,963 | 1.88 | 14–6 |
+| P6 vs V3_12 | 11–30 | +$9,573 | 7.48 | 19–1 |
+| P6 vs H10 | 11–30 | −$9,374 | −7.84 | 0–20 |
+
+Verdict: **promote P6 over P5 as the planner control**, while recognizing that it remains behind the relevant H10/tape frontier. The executor improvement is real, but it does not close the larger state-generation gap.
+
+## P7 — coupled allocation + hiring
+
+P7 replaced the reactive chore-count term with a forward daily load estimate over P's own committed crops, seed inventory, animals, pending setup work, mean crop distance from the shed, and urgent backlog. The same `_load_model` was used by hiring and animal/seed/land admission. Admission additionally required projected staffing to remain affordable after each purchase. Crop dispatch refused planting commitments beyond the 13-hand service ceiling.
+
+The region sweep was isolated first. On the H32 ledger it was bench-neutral; the combined P7 also preserved the supplied-state coverage figures. The mandatory full-game sanity stage exposed an upstream allocation regression:
+
+| stage | seeds | result vs E1 | verdict |
+|---|---:|---:|---|
+| P6 baseline | 1–10 | +$2,551/game, t=1.51, 8–2 | baseline reproduced |
+| P7 initial | 1–10 | −$3,327/game, t=−3.06, 2–8 | sanity floor failed |
+| repair 1 | 1–10 | −$17,775/game, t=−3.57, 0–10 | regression worsened |
+| repair 2 | 1–10 | −$21,454/game, t=−5.65, 0–10 | regression persisted; stop |
+
+The initial trace shifted P6's roughly 8 animals and 60–66 crops to 18 animals and about 37 crops. Increasing animal/setup load did not restore the balance. Requiring immediate post-purchase staffing affordability was faithful to the proposed model but more restrictive at the wrong points in the cash cycle. The model conflated recurring steady-state labor with lumpy setup cash and suppressed productive crop expansion.
+
+Verdict: **do not promote P7**. It remains a documented failed experiment in `candidates/P7.py`; `candidates/P.py` remains P6. Per the two-debugging-round rule, later opponent and held-out stages were gated off. Replay verification remained exact with maximum absolute difference $0 and final money $79,889/$84,636.
+
+## P7b — region assignment, isolated retest
+
+P7b is P6 with only the region-preferring crop sweep. Crop-pool positions are serpentine-sorted into contiguous runs for units not already assigned animal/setup work. `_build_sweep` prefers the current unit's run for its first tile, then falls back to the unchanged global pool. It contains none of P7's hiring, admission, or economy changes.
+
+The H32 seed-1 days 13–27 bench exactly reproduced the earlier isolated result: travel **1.008**, all-chore coverage **0.963**, hard-chore coverage **0.999**, two failed actions, and new-weeds delta −1. On the full E1 seed-1 ledger it produced hard coverage **0.998** and all-chore coverage **1.003**, with two failed actions and new-weeds delta 0.
+
+Full games (both seats, cache disabled):
+
+| matchup | seeds | margin/game | t | W-L | P6 comparison |
+|---|---:|---:|---:|---:|---|
+| P7b vs P6 | 1–10 | $0 | inf | 0–0 | exactly neutral |
+| P7b vs P6 | 11–30 | $0 | inf | 0–0 | exactly neutral |
+| P7b vs E1 | 1–10 | +$2,551 | 1.51 | 8–2 | exactly reproduces P6 |
+| P7b vs E1 | 11–30 | +$1,963 | 1.88 | 14–6 | exactly reproduces P6 |
+| P7b vs V3_12 | 11–30 | +$9,573 | 7.48 | 19–1 | exactly reproduces P6 |
+| P7b vs H10 | 11–30 | −$9,374 | −7.84 | 0–20 | exactly reproduces P6 |
+
+Verdict: **documented neutral; not promoted**. Across every requested full-game opponent and seed range, P7b reproduced P6's aggregate and paired results exactly. Because the primary P7b-vs-P6 signal was $0 rather than `t >= 2`, `candidates/P.py` remains P6.
