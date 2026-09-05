@@ -1,117 +1,101 @@
-# Evolution run 20260905-022611
+# Evolution run 20260905-063632
 
-Frontier opponent: `H10.py` · clone: `tape_milanleonard_102563171.py` · engine sha `bc8a54879ef0` · chassis snapshot `K_7bd4980c7158.py` (sha `7bd4980c7158`)
-Elapsed 2.01 h · candidates evaluated this run: 919 · games 30,102 (14,944/h)
+Frontier opponent: `H32.py` · clone: `tape_jessebullard_105739218.py` · engine sha `bc8a54879ef0` · chassis snapshot `K_79463721d15c.py` (sha `79463721d15c`)
+Elapsed 2.11 h · candidates evaluated this run: 1385 · games 30,776 (14,578/h)
 
 ## Cascade counts (this run)
 
 | status | candidates | games |
 |---|---:|---:|
-| noop | 46 | 92 |
-| dead_pattern | 209 | 418 |
-| dead_smoke | 57 | 456 |
-| alive | 607 | 29136 |
+| noop | 81 | 162 |
+| dead_pattern | 323 | 646 |
+| dead_smoke | 428 | 3424 |
+| alive | 553 | 26544 |
 | held_fail | 0 | 0 |
 | held_pass | 0 | 0 |
 | error | 0 | 0 |
 
-Population (all runs, reached dev): 6290 · held-out evaluated: 477 · held-out PASS: 448
+Population (all runs, reached dev): 553 · held-out evaluated: 0 · held-out PASS: 0
 
 ## Reference points
 
 | candidate | dev vs frontier | t | W-L | dev vs clone | held-out | held t | W-L |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| V3_12 (K defaults) | -11,526 | -1.8 | 1-9 | -16,823 | — | — | —-— |
-| C1 | -18,630 | -7.8 | 0-10 | -19,663 | — | — | —-— |
+| V3_12 (K defaults) | — | — | None-None | — | — | — | —-— |
+| C1 | -37,097 | -9.3 | 0-10 | -27,047 | — | — | —-— |
 
 ## Held-out results (the only numbers that count)
 
-| key | island | origin | held vs frontier | t | W-L | held vs clone | dev | changes vs C1 | ablation (loss if reverted) | diagnosis vs C1 |
-|---|---|---|---:|---:|---:|---:|---:|---|---|---|
-| `c956f895839b` | c1 | mutate | **+11,824** | 9.3 | 20-0 | -16,689 | +7,590 | melon_floor 150→200, load_per_hand 20→16, open_melons 8→10, open_wheat 7→8, wheat_water_tier 0→1, wheat_sell_price 30→29, CROP_SWEEP_LEN 6→5, MELON_MAX_TILES 40→50, HERD_LAST_DAY 19→22, NEAR_RADIUS 3→2, OPP_GROWTH 1.3→1.1 · blocks: crop_admission | wheat_sell_price ?, NEAR_RADIUS ?, OPP_GROWTH ? | cand pulls ahead of C1 from day 10 (gap +2,987 -> final +14,339); days 8-15 drivers: missed_water -35, sales_rev +3,738, work_turns +50, feed_hour -0.56. Hands 11 vs 8, animals 10 vs 8, plants 65 vs 6 |
-| `1021e7262bf2` | c1 | ablate:load_per_hand | **+11,382** | 8.7 | 20-0 | -23,063 | +7,069 | melon_floor 150→200, harvest_min 2→1, wheat_stock 0→5, load_per_hand 20→16, open_melons 8→10, open_wheat 7→8, early_hire_days 5→6, fert_carry 3→4, max_animals 20→18, wheat_cap 18→23, wheat_water_tier 0→1, CROP_SWEEP_LEN 6→5, MELON_MAX_TILES 40→50, MELON_PRICE_CUSHION 100→130, HERD_LAST_DAY 19→22, NEAR_RADIUS 3→2, OPP_GROWTH 1.3→1.4, MAX_SHEEP 12→13, OPENING_MELONS 10→6 · blocks: crop_admission |  | cand pulls ahead of C1 from day 10 (gap +2,991 -> final +22,781); days 8-15 drivers: missed_water -35, sales_rev +3,744, work_turns +50, feed_hour -0.56. Hands 11 vs 8, animals 10 vs 8, plants 65 vs 6 |
-| `daba421dc7ec` | wide | ablate:ROUTE_LEN | **+11,274** | 13.0 | 19-1 | -14,917 | +10,939 | melon_floor 150→200, early_hire_days 5→3, STRAW_CUTOFF 17→16, MELON_MAX_TILES 40→50, HERD_LAST_DAY 19→22, MAX_SHEEP 12→11, OPENING_MELONS 10→7 · blocks: crop_admission |  | cand pulls ahead of C1 from day 12 (gap +7,079 -> final +42,744); days 10-17 drivers: missed_water -59, sales_rev +10,680, work_turns +118, feed_hour -0.63. Hands 11 vs 8, animals 15 vs 8, plants 43 v |
-| `e83ac3dafe96` | v312 | ablate:CROP_SWEEP_RADIUS | **+11,099** | 10.3 | 20-0 | -12,184 | +10,740 | melon_floor 150→200, open_melons 8→5, open_wheat 7→9, open_cows 2→3, feed_spare_poor 0→1, max_animals 20→17, wheat_cap 18→20, wheat_water_tier 0→1, CROP_SWEEP_RADIUS 4→3, MELON_MAX_TILES 40→41, NEAR_RADIUS 3→2, MAX_SHEEP 12→13, OPENING_MELONS 10→11 · blocks: crop_admission |  | cand pulls ahead of C1 from day 16 (gap +3,157 -> final +60,413); days 14-21 drivers: sales_rev +28,375, work_turns +302, feed_hour -1.31, travel_per_task -0.23. Hands 13 vs 11, animals 17 vs 8, plant |
-| `a65aa7a26283` | v312 | ablate:open_cows | **+11,091** | 8.2 | 20-0 | -9,982 | +14,798 | melon_floor 150→200, min_hands 3→5, load_per_hand 20→16, open_melons 8→5, open_wheat 7→9, open_cows 2→3, feed_spare_poor 0→1, demand_share 0.5→0.45, max_animals 20→17, wheat_cap 18→20, wheat_water_tier 0→1, CROP_SWEEP_RADIUS 4→3, MELON_MAX_TILES 40→41, NEAR_RADIUS 3→2, MAX_SHEEP 12→14, OPENING_MELONS 10→11 · blocks: crop_admission |  | cand pulls ahead of C1 from day 12 (gap +1,962 -> final +53,812); days 10-17 drivers: missed_water -87, sales_rev +9,772, work_turns +143, feed_hour -1.33. Hands 9 vs 8, animals 14 vs 8, plants 60 vs  |
-| `9d4a5923e4a2` | v312 | crossover | **+11,024** | 7.0 | 20-0 | -11,663 | +10,307 | open_melons 8→5, open_wheat 7→9, open_cows 2→3, early_hire_days 5→8, max_animals 20→17, wheat_per_animal 0.0→0.1, wheat_cap 18→20, wheat_water_tier 0→1, wheat_sell_price 30→27, CROP_SWEEP_RADIUS 4→3, MELON_MAX_TILES 40→41, MELON_PRICE_CUSHION 100→127, NEAR_RADIUS 3→2, MAX_SHEEP 12→14, OPENING_MELONS 10→11 · blocks: crop_admission | melon_floor -25, early_hire_days +919, wheat_cap ?, wheat_sell_price ?, CROP_SWEEP_RADIUS -21, MELON_PRICE_CUSHION ? | cand pulls ahead of C1 from day 9 (gap +1,784 -> final +43,988); days 7-14 drivers: missed_water -44, sales_rev +6,420, work_turns +78, feed_hour -0.93. Hands 9 vs 7, animals 17 vs 8, plants 44 vs 64. |
-| `709c0fe12985` | v312 | crossover | **+10,960** | 8.4 | 20-0 | -11,390 | +9,868 | wheat_stock 0→5, open_melons 8→5, open_wheat 7→9, open_cows 2→3, early_hire_days 5→8, max_animals 20→17, wheat_per_animal 0.0→0.1, wheat_cap 18→15, wheat_water_tier 0→1, MELON_MAX_TILES 40→41, NEAR_RADIUS 3→2, MAX_SHEEP 12→14, OPENING_MELONS 10→11 · blocks: crop_admission | melon_floor +134, wheat_stock ?, early_hire_days -424 | cand pulls ahead of C1 from day 12 (gap +2,081 -> final +38,180); days 10-17 drivers: sales_rev +15,722, missed_water -64, work_turns +168, feed_hour -1.25. Hands 13 vs 8, animals 15 vs 8, plants 58 v |
-| `8e3b811495ea` | v312 | ablate:load_per_hand | **+10,812** | 7.0 | 19-1 | -9,552 | +7,770 | melon_floor 150→200, load_per_hand 20→16, open_melons 8→5, open_wheat 7→9, open_cows 2→3, feed_spare_poor 0→1, max_animals 20→17, wheat_cap 18→20, wheat_water_tier 0→1, MELON_MAX_TILES 40→41, NEAR_RADIUS 3→2, MAX_SHEEP 12→13, OPENING_MELONS 10→11 · blocks: crop_admission |  | cand pulls ahead of C1 from day 9 (gap +2,552 -> final +39,312); days 7-14 drivers: missed_water -34, sales_rev +5,424, work_turns +58, feed_hour -1.46. Hands 12 vs 7, animals 14 vs 8, plants 46 vs 64 |
-| `c2747c8ab595` | queue | llm:llm_20260903-181110_2 | **+10,796** | 12.3 | 20-0 | -15,472 | +10,500 |  · blocks: crop_admission |  |  |
-| `5da0776c3c23` | queue | mutate | **+10,782** | 12.2 | 20-0 | -14,552 | +10,546 | melon_floor 150→100 · blocks: crop_admission |  | cand pulls ahead of C1 from day 12 (gap +7,078 -> final +29,298); days 10-17 drivers: missed_water -62, sales_rev +10,613, work_turns +125, feed_hour -0.65. Hands 11 vs 8, animals 15 vs 8, plants 42 v |
-| `d5f89d5870e0` | v312 | ablate:melon_floor | **+10,760** | 7.7 | 20-0 | -11,699 | +9,734 | melon_floor 150→200, wheat_stock 0→5, open_melons 8→5, open_wheat 7→9, open_cows 2→3, early_hire_days 5→8, max_animals 20→17, wheat_per_animal 0.0→0.1, wheat_cap 18→15, wheat_water_tier 0→1, MELON_MAX_TILES 40→41, NEAR_RADIUS 3→2, MAX_SHEEP 12→14, OPENING_MELONS 10→11 · blocks: crop_admission |  | cand pulls ahead of C1 from day 12 (gap +2,081 -> final +42,751); days 10-17 drivers: sales_rev +15,764, missed_water -64, work_turns +171, feed_hour -1.25. Hands 13 vs 8, animals 15 vs 8, plants 58 v |
-| `616d161b196b` | queue | coupled:coupled_factorial_sep03 | **+10,746** | 10.3 | 20-0 | -15,934 | +8,734 | fert_buy 0→1 · blocks: crop_admission |  | cand pulls ahead of C1 from day 12 (gap +7,078 -> final +18,552); days 10-17 drivers: missed_water -62, sales_rev +10,613, work_turns +123, feed_hour -0.65. Hands 11 vs 8, animals 15 vs 8, plants 42 v |
-| `35f286364d59` | v312 | ablate:melon_floor | **+10,638** | 6.6 | 20-0 | -12,523 | +10,332 | melon_floor 150→200, open_melons 8→5, open_wheat 7→9, open_cows 2→3, early_hire_days 5→8, max_animals 20→17, wheat_per_animal 0.0→0.1, wheat_cap 18→20, wheat_water_tier 0→1, wheat_sell_price 30→27, CROP_SWEEP_RADIUS 4→3, MELON_MAX_TILES 40→41, MELON_PRICE_CUSHION 100→127, NEAR_RADIUS 3→2, MAX_SHEEP 12→14, OPENING_MELONS 10→11 · blocks: crop_admission |  | cand pulls ahead of C1 from day 9 (gap +1,784 -> final +44,147); days 7-14 drivers: missed_water -44, sales_rev +6,420, work_turns +78, feed_hour -0.93. Hands 9 vs 7, animals 17 vs 8, plants 44 vs 64. |
-| `eb81a9bff031` | queue | ablate:MAX_HANDS | **+10,556** | 8.0 | 19-1 | -14,034 | +9,530 | harvest_min 2→1, wheat_stock 0→14, open_wheat 7→8, early_hire_days 5→7, wheat_cap 18→19, HERD_LAST_DAY 19→20, OPP_GROWTH 1.3→1.4 · blocks: crop_admission |  | cand pulls ahead of C1 from day 9 (gap +1,688 -> final +25,223); days 7-14 drivers: missed_water -21, sales_rev +4,179, work_turns +35, feed_hour -1.51. Hands 9 vs 7, animals 10 vs 8, plants 62 vs 64. |
-| `d6b0d379d52a` | c1 | ablate:wheat_tiles | **+10,532** | 7.8 | 20-0 | -21,781 | +8,841 | melon_floor 150→200, wheat_stock 0→5, load_per_hand 20→16, open_melons 8→10, open_wheat 7→8, wheat_water_tier 0→1, CROP_SWEEP_LEN 6→5, MELON_MAX_TILES 40→50, MELON_PRICE_CUSHION 100→129, HERD_LAST_DAY 19→22, NEAR_RADIUS 3→2, OPP_GROWTH 1.3→1.4, MAX_SHEEP 12→13, OPENING_MELONS 10→7 · blocks: crop_admission |  | cand pulls ahead of C1 from day 10 (gap +2,991 -> final +22,616); days 8-15 drivers: missed_water -35, sales_rev +3,744, work_turns +50, feed_hour -0.56. Hands 11 vs 8, animals 10 vs 8, plants 65 vs 6 |
+None reached held-out this run.
 
 ## Top 15 by dev margin (selection score; may be seed-fit — trust held-out)
 
 | key | island | origin | dev | t | W-L | clone | status | changes vs C1 |
 |---|---|---|---:|---:|---:|---:|---|---|
-| `a65aa7a26283` | v312 | ablate:open_cows | +14,798 | 3.4 | 9-1 | -12,652 | held_pass | melon_floor 150→200, min_hands 3→5, load_per_hand 20→16, open_melons 8→5, open_wheat 7→9, open_cows 2→3, feed_spare_poor 0→1, demand_share 0.5→0.45, max_animals 20→17, wheat_cap 18→20, wheat_water_tier 0→1, CROP_SWEEP_RADIUS 4→3, MELON_MAX_TILES 40→41, NEAR_RADIUS 3→2, MAX_SHEEP 12→14, OPENING_MELONS 10→11 · blocks: crop_admission |
-| `8c6f5b00cc43` | c1 | ablate:wheat_stock | +14,567 | 11.4 | 10-0 | -2,495 | held_pass | melon_floor 150→100, open_wheat 7→8, early_hire_days 5→4, CROP_SWEEP_RADIUS 4→2, HERD_LAST_DAY 19→22, OPP_GROWTH 1.3→1.5, MAX_SHEEP 12→13 · blocks: crop_admission |
-| `b779268453ef` | c1 | migrate | +12,886 | 10.7 | 10-0 | -1,568 | held_pass | melon_floor 150→100, open_wheat 7→8, early_hire_days 5→4, feed_spare_poor 0→1, fert_keep 0→1, wheat_sell_price 30→28, CROP_SWEEP_RADIUS 4→2 · blocks: crop_admission |
-| `e4a45816755f` | queue | ablate:NEAR_RADIUS | +12,820 | 11.0 | 10-0 | -3,176 | held_pass | open_wheat 7→8, early_hire_days 5→4, fert_keep 0→1, CROP_SWEEP_RADIUS 4→2 · blocks: crop_admission |
-| `bb56bdea4bf1` | c1 | crossover | +12,631 | 8.7 | 10-0 | -7,383 | held_pass | melon_floor 150→100, wheat_stock 0→2, open_wheat 7→8, early_hire_days 5→4, CROP_SWEEP_RADIUS 4→2, HERD_LAST_DAY 19→22, OPP_GROWTH 1.3→1.5, MAX_SHEEP 12→13 · blocks: crop_admission |
-| `64476e04983d` | v312 | ablate:open_wheat | +11,849 | 6.1 | 10-0 | -16,943 | held_pass | wheat_per_animal 0.0→0.1, wheat_cap 18→20, wheat_water_tier 0→1, wheat_sell_price 30→27, CROP_SWEEP_RADIUS 4→3, MELON_MAX_TILES 40→41, MELON_PRICE_CUSHION 100→127, NEAR_RADIUS 3→2, MAX_SHEEP 12→14 · blocks: crop_admission |
-| `f8be9cdc3861` | v312 | ablate:wheat_tiles | +11,582 | 6.0 | 10-0 | -17,834 | held_pass | melon_floor 150→200, open_melons 8→5, open_wheat 7→9, open_cows 2→3, max_animals 20→17, wheat_per_animal 0.0→0.1, wheat_cap 18→15, wheat_water_tier 0→1, MELON_MAX_TILES 40→41, NEAR_RADIUS 3→2, MAX_SHEEP 12→14, OPENING_MELONS 10→11 · blocks: crop_admission |
-| `974a722e40d2` | queue | ablate:MAX_SHEEP | +11,545 | 5.7 | 10-0 | -14,402 | held_pass | harvest_min 2→1, open_wheat 7→8, early_hire_days 5→7, HERD_LAST_DAY 19→20 · blocks: crop_admission |
-| `948f7f7debac` | c1 | ablate:fert_keep | +11,468 | 7.3 | 10-0 | -7,529 | held_pass | melon_floor 150→100, wheat_stock 0→2, open_wheat 7→8, early_hire_days 5→4, fert_keep 0→1, CROP_SWEEP_RADIUS 4→2, HERD_LAST_DAY 19→22, OPP_GROWTH 1.3→1.5, MAX_SHEEP 12→13 · blocks: crop_admission |
-| `fb47561f2293` | queue | ablate:open_wheat | +11,303 | 7.5 | 10-0 | -3,176 | held_pass | open_wheat 7→8, early_hire_days 5→3, fert_keep 0→1, CROP_SWEEP_RADIUS 4→2, STRAW_CUTOFF 17→18 · blocks: crop_admission |
-| `2ee1ba1b5941` | v312 | ablate:CROP_SWEEP_RADIUS | +11,298 | 5.9 | 10-0 | -17,006 | held_pass | melon_floor 150→200, wheat_per_animal 0.0→0.1, wheat_cap 18→21, wheat_water_tier 0→1, wheat_sell_price 30→27, CROP_SWEEP_RADIUS 4→3, STRAW_CUTOFF 17→16, MELON_MAX_TILES 40→37, MELON_PRICE_CUSHION 100→127, NEAR_RADIUS 3→2, MAX_SHEEP 12→14 · blocks: crop_admission |
-| `2d6808e383d0` | c1 | ablate:min_hands | +11,279 | 7.2 | 10-0 | -1,568 | alive | melon_floor 150→0, open_wheat 7→8, early_hire_days 5→3, fert_keep 0→1, CROP_SWEEP_RADIUS 4→2, STRAW_CUTOFF 17→16 · blocks: crop_admission |
-| `b1b4de2e23d7` | v312 | ablate:ROUTE_LEN | +11,227 | 7.4 | 10-0 | -7,017 | held_pass | load_per_hand 20→18, wheat_cap 18→21, wheat_water_tier 0→1, wheat_sell_price 30→27, CROP_SWEEP_RADIUS 4→3, MELON_MAX_TILES 40→41, MELON_PRICE_CUSHION 100→127, NEAR_RADIUS 3→2, MAX_SHEEP 12→14 · blocks: crop_admission |
-| `2ed37e718be7` | queue | ablate:fert_keep | +11,161 | 5.6 | 10-0 | -13,859 | held_pass | open_wheat 7→8, early_hire_days 5→4 · blocks: crop_admission |
-| `5eeb0745fc2d` | queue | ablate:NEAR_RADIUS | +11,160 | 5.6 | 10-0 | -12,708 | held_pass | melon_floor 150→100, open_wheat 7→8 · blocks: crop_admission |
+| `d661997d96d0` | queue | mutate | -20,685 | -3.7 | 2-8 | -19,557 | alive | melon_floor 150→200, load_per_hand 20→19, open_melons 8→10, early_hire_days 5→4, feed_spare_poor 0→3, demand_share 0.5→0.65, wheat_cap 18→20, wheat_sell_price 30→25, labor_reserve_buffer 50→48, MAX_HANDS 13→12, CROP_SWEEP_RADIUS 4→5, MELON_MAX_TILES 40→43, NEAR_RADIUS 3→4, MAX_SHEEP 12→14, SPREAD_W 1.0→1.5 |
+| `170a01ee902c` | queue | archive_crossover:crossover_g001125_20260905-081159_1 | -21,356 | -5.1 | 2-8 | -18,923 | alive | load_per_hand 20→19, open_melons 8→10, early_hire_days 5→4, feed_spare_poor 0→2, demand_share 0.5→0.65, wheat_cap 18→22, wheat_sell_price 30→25, MAX_HANDS 13→12, CROP_SWEEP_RADIUS 4→5, MELON_MAX_TILES 40→43, NEAR_RADIUS 3→4, MAX_SHEEP 12→14, SPREAD_W 1.0→1.5 |
+| `f69ed515c1c6` | queue | archive_crossover:crossover_g000750_20260905-073920_1 | -21,646 | -4.6 | 0-10 | -23,057 | alive | load_per_hand 20→17, open_melons 8→10, demand_share 0.5→0.55, wheat_per_animal 0.0→0.1, wheat_cap 18→22, wheat_sell_price 30→25, labor_reserve_buffer 50→42, MAX_HANDS 13→12, CROP_SWEEP_RADIUS 4→6, NEAR_RADIUS 3→5, OPP_GROWTH 1.3→1.0, MAX_SHEEP 12→14, FERT_RADIUS 2→3, SPREAD_CAP 5→4 |
+| `df62a383f60d` | v312 | crossover | -21,737 | -4.4 | 1-9 | -21,515 | alive | load_per_hand 20→17, open_melons 8→10, fert_carry 3→2, demand_share 0.5→0.55, max_animals 20→17, wheat_per_animal 0.0→0.1, wheat_cap 18→22, labor_reserve_buffer 50→42, MAX_HANDS 13→12, CROP_SWEEP_RADIUS 4→6, STRAW_CUTOFF 17→16, NEAR_RADIUS 3→5, OPP_GROWTH 1.3→1.0, MAX_SHEEP 12→14, SPREAD_CAP 5→4 |
+| `69eb191aec38` | queue | archive_crossover:crossover_g000900_20260905-075354_0 | -21,820 | -4.5 | 1-9 | -21,398 | alive | load_per_hand 20→19, open_melons 8→10, wheat_per_animal 0.0→0.2, wheat_cap 18→22, wheat_sell_price 30→25, CROP_SWEEP_RADIUS 4→5, STRAW_CUTOFF 17→16, NEAR_RADIUS 3→5, OPP_GROWTH 1.3→1.1, MAX_SHEEP 12→14, FERT_RADIUS 2→3 |
+| `6d3f139e0f72` | queue | mutate | -21,856 | -4.9 | 1-9 | -23,546 | alive | load_per_hand 20→19, open_melons 8→10, early_hire_days 5→4, feed_spare_poor 0→2, fert_carry 3→2, demand_share 0.5→0.65, wheat_cap 18→22, CROP_SWEEP_RADIUS 4→5, MELON_MAX_TILES 40→43, NEAR_RADIUS 3→4, OPP_GROWTH 1.3→1.1, MAX_SHEEP 12→14, SPREAD_W 1.0→1.5 |
+| `52edba67ea74` | queue | archive_crossover:crossover_g000300_20260905-070145_0 | -22,757 | -4.8 | 1-9 | -26,486 | alive | load_per_hand 20→19, open_melons 8→10, early_hire_days 5→4, wheat_cap 18→22, CROP_SWEEP_RADIUS 4→5, NEAR_RADIUS 3→4, OPP_GROWTH 1.3→1.1, MAX_SHEEP 12→14, OPENING_MELONS 10→11, SPREAD_W 1.0→1.25 |
+| `e81e1271b054` | v312 | crossover | -23,056 | -5.3 | 1-9 | -19,349 | alive | load_per_hand 20→17, open_melons 8→10, fert_keep 0→1, fert_buy 0→2, wheat_per_animal 0.0→0.1, wheat_cap 18→22, labor_reserve_buffer 50→42, CROP_SWEEP_RADIUS 4→6, MELON_PRICE_CUSHION 100→112, NEAR_RADIUS 3→5, OPP_GROWTH 1.3→1.0, MAX_SHEEP 12→14, OPENING_MELONS 10→11, SPREAD_W 1.0→1.5, SPREAD_CAP 5→4 |
+| `f695982d396a` | queue | archive_crossover:crossover_g001025_20260905-080425_0 | -23,059 | -4.5 | 1-9 | -20,923 | alive | load_per_hand 20→17, open_melons 8→10, wheat_per_animal 0.0→0.1, wheat_sell_price 30→25, MAX_HANDS 13→12, CROP_SWEEP_RADIUS 4→6, NEAR_RADIUS 3→5, MAX_SHEEP 12→14, FERT_RADIUS 2→3, SPREAD_CAP 5→4 |
+| `e787484ce0b4` | queue | mutate | -23,136 | -4.5 | 1-9 | -20,459 | alive | wheat_stock 0→9, load_per_hand 20→19, open_melons 8→10, demand_share 0.5→0.55, max_animals 20→18, wheat_per_animal 0.0→0.1, wheat_cap 18→22, wheat_sell_price 30→25, labor_reserve_buffer 50→42, MAX_HANDS 13→12, CROP_SWEEP_RADIUS 4→5, STRAW_CUTOFF 17→16, NEAR_RADIUS 3→5, OPP_GROWTH 1.3→1.5, MAX_SHEEP 12→14, FERT_RADIUS 2→3, SPREAD_CAP 5→4 |
+| `1c2073a3bd53` | queue | crossover | -23,224 | -4.4 | 2-8 | -24,035 | alive | load_per_hand 20→19, open_melons 8→10, early_hire_days 5→4, feed_spare_poor 0→2, wheat_cap 18→22, wheat_sell_price 30→25, MAX_HANDS 13→12, CROP_SWEEP_RADIUS 4→5, NEAR_RADIUS 3→4, MAX_SHEEP 12→14, SPREAD_W 1.0→1.25, SPREAD_CAP 5→7 |
+| `66c0d3f05a80` | queue | archive_crossover:crossover_g000100_20260905-064607_0 | -23,351 | -4.5 | 2-8 | -32,221 | alive | wheat_per_animal 0.0→0.2, wheat_cap 18→22, CROP_SWEEP_RADIUS 4→5, NEAR_RADIUS 3→5, OPP_GROWTH 1.3→1.1, MAX_SHEEP 12→14, FERT_RADIUS 2→1 |
+| `eeafe5b568f4` | queue | mutate | -23,507 | -4.6 | 1-9 | -20,648 | alive | harvest_min 2→3, wheat_stock 0→9, load_per_hand 20→19, open_melons 8→10, demand_share 0.5→0.55, max_animals 20→18, wheat_per_animal 0.0→0.1, wheat_cap 18→22, wheat_sell_price 30→25, labor_reserve_buffer 50→28, MAX_HANDS 13→12, CROP_SWEEP_RADIUS 4→5, STRAW_CUTOFF 17→16, NEAR_RADIUS 3→5, OPP_GROWTH 1.3→1.6, MAX_SHEEP 12→13, FERT_RADIUS 2→3, SPREAD_CAP 5→4 |
+| `ae063f3003b1` | queue | archive_crossover:crossover_g000575_20260905-072400_0 | -23,554 | -5.3 | 1-9 | -21,529 | alive | load_per_hand 20→17, open_melons 8→10, wheat_per_animal 0.0→0.1, CROP_SWEEP_RADIUS 4→6, NEAR_RADIUS 3→5, MAX_SHEEP 12→14, SPREAD_CAP 5→4 |
+| `55d23edcab8d` | v312 | crossover | -23,611 | -5.3 | 1-9 | -32,874 | alive | melon_floor 150→0, load_per_hand 20→17, geese 0→1, open_melons 8→10, fert_keep 0→1, wheat_per_animal 0.0→0.1, CROP_SWEEP_RADIUS 4→6, MELON_MAX_TILES 40→36, MELON_PRICE_CUSHION 100→112, NEAR_RADIUS 3→5, MAX_SHEEP 12→14, OPENING_MELONS 10→11 |
 
 ## Islands (best dev margin, population size)
 
-- c1: best +14,567 (`8c6f5b00cc43`), n=1624
-- queue: best +12,820 (`e4a45816755f`), n=1772
-- v312: best +14,798 (`a65aa7a26283`), n=1651
-- wide: best +10,939 (`daba421dc7ec`), n=1243
+- c1: best -25,794 (`9d7f0ca26f3d`), n=137
+- queue: best -20,685 (`d661997d96d0`), n=189
+- v312: best -21,737 (`df62a383f60d`), n=144
+- wide: best -24,044 (`44ffe249de02`), n=83
 
 ## Where the signal is (mean dev margin by parameter value, all runs)
 
 | param | spread | best value | C1 value | means (value: $, n) |
 |---|---:|---|---|---|
-| MELON_PRICE_CUSHION | 16,968 | 145 | 100 | 145: -4,073 (6), 74: -4,209 (35), 114: -6,547 (53), 98: -7,246 (29), 127: -8,579 (158), 130: -8,967 (10), 120: -9,019 (14), 57: -9,192 (2), 56: -10,156 (3), 83: -10,350 (18), 134: -10,507 (8), 131: -10,868 (15), 105: -11,166 (27), 100: -11,226 (3468), 117: -11,672 (14), 141: -11,763 (4), 143: -11,814 (18), 124: -12,061 (14), 129: -12,141 (48), 82: -12,338 (49), 59: -12,362 (6), 88: -12,437 (82), 116: -12,788 (110), 133: -12,805 (203), 67: -12,879 (240), 69: -13,045 (6), 112: -13,168 (12), 97: -13,188 (40), 61: -13,203 (7), 68: -13,230 (24), 92: -13,321 (318), 126: -13,334 (11), 121: -13,430 (44), 103: -13,597 (17), 78: -13,671 (10), 87: -13,707 (12), 77: -13,734 (16), 102: -13,736 (35), 118: -13,773 (17), 101: -13,775 (44), 58: -13,809 (6), 85: -13,814 (57), 93: -13,865 (30), 86: -13,879 (11), 91: -13,961 (20), 94: -13,981 (14), 96: -14,036 (76), 53: -14,137 (2), 140: -14,137 (26), 80: -14,167 (13), 72: -14,201 (10), 128: -14,220 (4), 110: -14,262 (14), 132: -14,289 (12), 75: -14,314 (12), 135: -14,351 (12), 70: -14,394 (4), 64: -14,428 (13), 109: -14,500 (13), 95: -14,614 (33), 54: -14,657 (6), 90: -14,659 (61), 113: -14,676 (9), 62: -14,692 (41), 66: -14,752 (18), 89: -14,799 (26), 50: -14,810 (107), 55: -14,891 (5), 144: -14,954 (5), 150: -14,961 (76), 115: -15,136 (27), 147: -15,286 (4), 51: -15,361 (6), 65: -15,432 (3), 142: -15,492 (5), 119: -15,543 (10), 108: -15,583 (11), 123: -15,592 (20), 106: -15,594 (14), 63: -15,610 (8), 137: -15,793 (7), 76: -15,828 (9), 125: -15,879 (19), 107: -16,025 (19), 104: -16,273 (5), 73: -16,399 (7), 122: -16,456 (8), 84: -16,709 (11), 60: -16,752 (13), 136: -16,899 (5), 71: -16,950 (4), 81: -17,209 (14), 139: -17,379 (7), 138: -17,442 (5), 111: -17,509 (29), 99: -17,523 (10), 79: -17,548 (18), 148: -20,595 (6), 52: -21,042 (2) |
-| demand_share | 15,095 | 0.5 | 0.5 | 0.5: -10,700 (2957), 0.75: -11,029 (38), 0.55: -12,590 (643), 0.45: -12,673 (1709), 0.7: -12,925 (74), 0.4: -13,082 (155), 0.6: -14,569 (334), 0.65: -14,685 (64), 0.35: -15,006 (77), 0.3: -16,609 (194), 0.8: -17,037 (19), 0.95: -19,727 (7), 1.0: -21,501 (9), 0.85: -23,508 (7), 0.9: -25,795 (3) |
-| wheat_stock | 14,236 | 21 | 0 | 21: -8,236 (13), 7: -10,824 (56), 5: -11,293 (109), 2: -11,396 (160), 0: -11,709 (4685), 12: -11,940 (77), 10: -12,228 (140), 1: -12,445 (118), 18: -12,533 (7), 16: -12,587 (19), 17: -13,310 (36), 4: -13,343 (308), 13: -13,538 (37), 32: -13,668 (2), 6: -13,752 (221), 11: -13,821 (89), 20: -13,890 (3), 14: -13,949 (28), 19: -14,422 (7), 8: -15,104 (21), 3: -15,157 (49), 9: -15,231 (30), 24: -16,597 (4), 15: -16,837 (16), 35: -17,198 (2), 27: -17,367 (4), 40: -17,808 (11), 26: -18,262 (2), 33: -18,492 (3), 29: -19,018 (3), 22: -19,282 (4), 38: -19,458 (3), 28: -20,798 (13), 23: -20,979 (3), 30: -22,109 (2), 37: -22,472 (2) |
-| load_per_hand | 11,882 | 20 | 20 | 20: -10,591 (2858), 19: -11,653 (588), 18: -12,314 (447), 22: -12,858 (117), 16: -13,086 (889), 15: -13,613 (765), 21: -13,878 (133), 17: -13,978 (190), 23: -14,113 (59), 13: -14,467 (36), 14: -15,308 (44), 24: -16,822 (29), 25: -18,903 (17), 12: -19,209 (89), 26: -22,473 (29) |
-| wheat_sell_price | 11,799 | 50 | 30 | 50: -9,686 (147), 28: -9,702 (169), 27: -10,148 (468), 44: -10,615 (10), 47: -10,956 (3), 38: -11,380 (27), 37: -11,704 (82), 30: -11,883 (3748), 31: -11,901 (174), 25: -12,681 (401), 29: -12,866 (164), 35: -13,517 (105), 32: -13,528 (63), 26: -13,703 (446), 36: -14,727 (74), 33: -15,407 (64), 34: -15,715 (69), 41: -15,892 (13), 42: -15,904 (3), 43: -16,014 (8), 40: -16,977 (14), 39: -17,410 (22), 45: -18,332 (8), 46: -20,201 (6), 48: -21,485 (2) |
-| MAX_HANDS | 11,569 | 13 | 13 | 13: -11,248 (3709), 11: -12,045 (260), 12: -12,916 (1683), 16: -13,674 (80), 14: -13,712 (262), 15: -13,746 (176), 10: -16,214 (72), 9: -19,862 (26), 8: -22,817 (22) |
-| ROUTE_LEN | 11,056 | 3 | 3 | 3: -11,738 (5485), 2: -13,396 (488), 4: -14,862 (286), 5: -22,794 (31) |
-| MAX_SHEEP | 10,692 | 12 | 12 | 12: -10,445 (1274), 11: -11,811 (397), 14: -12,320 (3204), 9: -12,743 (73), 10: -12,820 (263), 13: -12,851 (1029), 6: -15,818 (7), 8: -16,808 (17), 4: -18,150 (11), 7: -18,448 (11), 5: -21,137 (4) |
-| wheat_tiles | 10,429 | 3 | 0 | 3: -11,667 (122), 0: -11,879 (5479), 2: -13,144 (228), 1: -13,420 (390), 4: -13,586 (41), 5: -17,735 (14), 6: -19,727 (9), 8: -22,096 (6) |
-| wheat_per_animal | 9,920 | 0.1 | 0.0 | 0.1: -10,280 (707), 0.0: -11,838 (4364), 0.2: -13,092 (677), 0.5: -13,446 (135), 0.6: -14,753 (57), 0.3: -14,823 (228), 0.8: -15,073 (8), 0.4: -16,087 (78), 0.9: -16,641 (13), 0.7: -19,848 (10), 1.2: -19,871 (9), 1.0: -20,200 (3) |
-| open_melons | 8,956 | 8 | 8 | 8: -11,418 (2655), 5: -11,494 (1340), 10: -12,098 (331), 7: -12,593 (430), 6: -12,642 (751), 9: -13,299 (377), 11: -13,468 (67), 12: -14,817 (42), 4: -15,417 (267), 14: -19,089 (14), 13: -20,374 (16) |
-| MELON_MAX_TILES | 7,731 | 41 | 40 | 41: -10,258 (1147), 40: -11,300 (1861), 32: -11,362 (31), 44: -11,749 (55), 50: -11,844 (606), 31: -12,171 (94), 47: -12,364 (138), 37: -12,850 (191), 45: -12,857 (122), 23: -13,082 (8), 43: -13,447 (1119), 34: -13,568 (248), 38: -13,607 (187), 46: -13,789 (40), 33: -13,866 (35), 35: -13,920 (48), 49: -13,922 (60), 22: -14,021 (11), 48: -14,043 (23), 42: -14,099 (66), 27: -14,168 (8), 26: -14,238 (8), 39: -14,423 (58), 30: -14,545 (26), 36: -14,590 (46), 29: -14,688 (11), 21: -16,990 (6), 28: -17,259 (16), 20: -17,774 (11), 25: -17,988 (9) |
-| max_animals | 7,710 | 20 | 20 | 20: -11,472 (3402), 17: -12,209 (1834), 16: -12,558 (152), 18: -12,972 (230), 15: -13,615 (207), 19: -13,938 (365), 13: -14,212 (21), 14: -15,924 (38), 10: -17,875 (16), 12: -18,501 (15), 11: -19,182 (10) |
-| opening | 7,529 | frontier | frontier | frontier: -10,796 (5231), v312: -18,325 (1059) |
-| CROP_SWEEP_LEN | 7,458 | 6 | 6 | 6: -11,578 (4302), 3: -12,289 (164), 7: -12,471 (796), 5: -12,578 (676), 4: -13,874 (134), 8: -16,896 (154), 9: -17,841 (45), 10: -19,036 (19) |
-| wheat_cap | 7,035 | 18 | 18 | 18: -10,494 (1972), 15: -10,752 (908), 14: -11,334 (58), 21: -11,831 (140), 17: -12,107 (163), 23: -12,279 (118), 20: -12,629 (1037), 12: -13,116 (68), 24: -13,562 (39), 16: -13,626 (675), 19: -13,653 (293), 13: -13,681 (325), 11: -13,863 (46), 22: -14,460 (124), 25: -14,785 (171), 10: -16,424 (22), 7: -16,472 (30), 8: -16,598 (28), 9: -16,723 (26), 5: -17,148 (39), 6: -17,529 (8) |
-| CROP_SWEEP_RADIUS | 6,994 | 4 | 4 | 4: -8,461 (1373), 5: -11,164 (179), 3: -12,754 (2072), 2: -13,408 (2622), 6: -15,455 (44) |
-| open_sheep | 6,959 | 2 | 2 | 2: -11,595 (5726), 1: -15,836 (313), 3: -17,591 (136), 0: -18,554 (115) |
-| OPP_GROWTH | 4,922 | 1.3 | 1.3 | 1.3: -10,204 (2477), 1.6: -11,234 (147), 1.4: -12,174 (664), 1.1: -12,658 (469), 1.5: -12,745 (591), 1.7: -13,884 (197), 1.2: -13,939 (1377), 1.8: -14,153 (98), 1.0: -15,125 (270) |
-| open_wheat | 4,721 | 7 | 7 | 7: -10,216 (842), 3: -10,680 (55), 9: -11,803 (2189), 8: -12,055 (2200), 4: -12,211 (58), 5: -14,037 (263), 10: -14,461 (570), 6: -14,938 (113) |
+| labor_reserve_buffer | 15,404 | 33 | 50 | 33: -27,624 (3), 28: -28,776 (2), 129: -31,269 (3), 4: -31,777 (19), 93: -32,204 (3), 0: -32,278 (6), 42: -32,369 (58), 82: -32,391 (2), 36: -32,506 (2), 84: -32,988 (2), 50: -33,339 (216), 100: -33,398 (6), 99: -33,529 (21), 69: -33,925 (5), 46: -34,352 (7), 40: -34,858 (7), 73: -35,102 (2), 13: -35,114 (2), 81: -35,636 (11), 77: -35,742 (69), 83: -35,813 (7), 145: -36,108 (2), 94: -37,023 (2), 16: -37,111 (2), 47: -37,194 (6), 101: -37,913 (6), 55: -37,941 (43), 32: -37,968 (2), 87: -38,060 (2), 65: -38,221 (5), 11: -38,509 (4), 150: -40,154 (4), 66: -43,029 (2) |
+| MELON_PRICE_CUSHION | 14,261 | 66 | 100 | 66: -27,337 (2), 111: -27,467 (2), 112: -31,419 (18), 129: -32,180 (4), 102: -32,381 (5), 91: -33,036 (5), 88: -33,268 (18), 89: -33,275 (31), 100: -33,619 (281), 71: -34,064 (2), 110: -34,437 (2), 109: -34,974 (2), 75: -35,033 (11), 96: -35,115 (5), 97: -35,221 (5), 124: -35,278 (5), 115: -35,488 (3), 83: -35,666 (3), 77: -35,742 (2), 104: -35,825 (78), 95: -35,835 (7), 135: -36,345 (21), 54: -37,506 (2), 106: -37,579 (4), 50: -37,876 (2), 150: -38,507 (4), 98: -39,730 (2), 72: -39,898 (3), 108: -41,598 (3) |
+| wheat_stock | 11,959 | 9 | 0 | 9: -29,552 (14), 6: -30,600 (2), 10: -32,940 (4), 13: -33,943 (2), 7: -34,148 (5), 0: -34,222 (483), 1: -34,645 (15), 3: -35,153 (5), 5: -35,455 (6), 23: -36,136 (2), 2: -36,991 (6), 20: -41,511 (2) |
+| MELON_MAX_TILES | 11,878 | 32 | 40 | 32: -31,033 (2), 43: -32,028 (13), 46: -32,763 (3), 39: -32,941 (7), 24: -33,198 (5), 47: -33,272 (11), 41: -33,347 (4), 40: -34,095 (438), 36: -34,119 (7), 35: -34,510 (19), 33: -35,846 (3), 50: -35,909 (11), 44: -36,471 (5), 45: -37,078 (12), 34: -37,147 (4), 42: -41,083 (3), 48: -42,911 (2) |
+| early_hire_days | 11,512 | 4 | 5 | 4: -32,915 (111), 7: -33,218 (14), 5: -33,752 (284), 2: -34,453 (6), 3: -35,397 (33), 6: -35,620 (29), 8: -36,498 (65), 0: -41,044 (9), 1: -44,427 (2) |
+| demand_share | 10,593 | 0.55 | 0.5 | 0.55: -32,405 (71), 0.75: -33,525 (2), 0.5: -33,816 (381), 0.65: -34,879 (19), 0.6: -35,087 (13), 0.45: -36,823 (24), 0.35: -38,478 (31), 0.7: -39,880 (4), 0.3: -42,998 (6) |
+| max_animals | 10,544 | 13 | 20 | 13: -29,698 (2), 18: -32,328 (25), 20: -34,150 (432), 17: -35,067 (67), 19: -35,374 (10), 16: -35,723 (11), 14: -36,080 (2), 12: -40,242 (2) |
+| wheat_cap | 10,082 | 9 | 18 | 9: -29,829 (2), 22: -32,945 (254), 18: -33,664 (97), 16: -33,866 (7), 20: -35,371 (22), 24: -35,570 (22), 21: -35,698 (4), 17: -35,838 (10), 10: -36,086 (9), 23: -36,152 (11), 25: -36,350 (82), 15: -36,537 (3), 5: -37,059 (2), 19: -37,757 (11), 11: -37,918 (15), 13: -39,911 (2) |
+| fert_carry | 9,689 | 3 | 3 | 3: -33,990 (476), 2: -34,707 (43), 4: -35,969 (17), 1: -37,755 (14), 5: -43,679 (3) |
+| load_per_hand | 9,369 | 19 | 20 | 19: -32,891 (170), 18: -33,071 (10), 17: -33,220 (73), 21: -33,706 (28), 20: -34,952 (230), 15: -36,734 (5), 14: -37,204 (3), 16: -37,494 (2), 22: -37,631 (10), 25: -37,987 (4), 23: -38,253 (8), 26: -40,255 (6), 13: -42,260 (2) |
+| open_melons | 9,310 | 10 | 8 | 10: -32,489 (183), 9: -34,516 (54), 8: -34,888 (279), 7: -36,840 (19), 6: -37,245 (8), 11: -37,895 (4), 12: -41,799 (4) |
+| wheat_per_animal | 9,156 | 0.1 | 0.0 | 0.1: -31,495 (83), 0.2: -33,686 (118), 0.0: -34,761 (319), 0.7: -36,344 (2), 0.5: -36,859 (2), 1.0: -37,741 (9), 0.4: -38,932 (5), 0.3: -38,943 (12), 1.2: -40,651 (2) |
+| wheat_sell_price | 9,068 | 26 | 30 | 26: -33,094 (3), 30: -33,328 (201), 38: -33,351 (5), 25: -33,366 (126), 35: -34,288 (61), 37: -34,383 (5), 32: -34,846 (7), 31: -35,500 (11), 28: -36,260 (107), 33: -36,990 (17), 29: -37,069 (4), 36: -42,162 (3) |
+| MAX_HANDS | 9,022 | 12 | 13 | 12: -32,923 (44), 13: -33,998 (447), 10: -34,597 (7), 14: -36,207 (8), 15: -36,259 (14), 11: -37,140 (18), 16: -38,804 (11), 9: -41,945 (3) |
+| open_wheat | 7,738 | 7 | 7 | 7: -33,926 (482), 10: -34,474 (6), 5: -34,487 (5), 6: -36,188 (41), 8: -36,468 (11), 4: -39,287 (3), 9: -41,664 (5) |
+| wheat_tiles | 7,684 | 1 | 0 | 1: -33,618 (41), 0: -34,097 (476), 2: -35,840 (16), 3: -37,253 (16), 4: -41,301 (3) |
+| HERD_LAST_DAY | 6,478 | 18 | 19 | 18: -33,028 (28), 19: -33,481 (366), 22: -34,444 (20), 21: -34,885 (12), 20: -35,264 (19), 17: -36,149 (15), 16: -36,241 (64), 14: -38,696 (26), 15: -39,506 (3) |
+| CROP_SWEEP_LEN | 6,419 | 6 | 6 | 6: -33,703 (425), 5: -35,015 (14), 7: -35,558 (76), 4: -36,643 (15), 3: -37,458 (15), 8: -38,913 (5), 9: -40,122 (3) |
+| open_sheep | 6,182 | 2 | 2 | 2: -33,986 (507), 1: -36,633 (34), 3: -38,434 (9), 0: -40,168 (3) |
+| opening | 6,028 | frontier | frontier | frontier: -33,884 (519), v312: -39,912 (34) |
 
 ## Behavioural cells (animals@d15, land, max hands) → best dev margin, n
 
-- (14, 3, 6): +14,798 (n=235)
-- (13, 3, 6): +14,567 (n=372)
-- (7, 3, 5): +11,849 (n=58)
-- (15, 3, 6): +11,582 (n=185)
-- (10, 3, 6): +11,227 (n=578)
-- (8, 3, 6): +11,158 (n=778)
-- (17, 3, 6): +10,971 (n=158)
-- (11, 3, 6): +10,963 (n=337)
-- (17, 4, 6): +10,740 (n=9)
-- (9, 4, 6): +10,652 (n=231)
-- (16, 3, 6): +10,603 (n=69)
-- (7, 4, 6): +10,358 (n=36)
-- (8, 3, 4): +10,272 (n=106)
-- (12, 4, 6): +10,123 (n=153)
-- (9, 3, 6): +9,773 (n=759)
+- (10, 3, 6): -20,685 (n=64)
+- (10, 4, 6): -21,646 (n=44)
+- (12, 4, 6): -21,820 (n=56)
+- (11, 4, 6): -21,856 (n=9)
+- (8, 3, 5): -22,757 (n=25)
+- (9, 3, 6): -23,351 (n=63)
+- (8, 4, 6): -24,378 (n=26)
+- (9, 4, 6): -25,794 (n=77)
+- (8, 3, 6): -27,109 (n=52)
+- (9, 4, 5): -27,783 (n=2)
+- (13, 3, 6): -27,920 (n=20)
+- (13, 4, 6): -28,108 (n=9)
+- (14, 4, 6): -28,498 (n=7)
+- (12, 3, 6): -28,500 (n=23)
+- (11, 3, 6): -28,572 (n=6)
 
-_Generated 2026-09-05 04:27. Candidate files in `evolve/gen/`, DB `evolve/evolve.db`._
+_Generated 2026-09-05 08:43. Candidate files in `evolve/gen/`, DB `evolve/evolve.db`._
