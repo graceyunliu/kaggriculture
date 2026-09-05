@@ -87,7 +87,7 @@ while true; do
   "$PY" evolve/check_frontier.py --frontier "$FRONTIER" >> "$LOG" 2>&1 || say "frontier promotion check failed"
   # 5. ask the LLM for the next batch (rate-limited inside propose.py)
   if [ "${NO_PROPOSE:-0}" != "1" ]; then
-    if command -v claude >/dev/null 2>&1 && "$PY" evolve/propose.py --n "${PROPOSE_N:-6}" --min-interval "${PROPOSE_INTERVAL:-1800}" >> "$LOG" 2>&1; then
+    if command -v claude >/dev/null 2>&1 && "$PY" evolve/propose.py --n "${PROPOSE_N:-6}" --min-interval "${PROPOSE_INTERVAL:-1800}" --model claude-sonnet-5 >> "$LOG" 2>&1; then
       bash evolve/propose_health.sh success
     else
       say "propose failed (see evolve/logs/propose.log)"
