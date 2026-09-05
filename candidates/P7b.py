@@ -1,3 +1,5 @@
+# evolve/chassis.py -- frozen copy of candidates/K.py with typed mutation blocks.
+# source sha256 c38b582a1380. Rebuild: python3 evolve/blocks.py build
 """K — knob-parameterized V3.12 chassis for discovery search (Sep 2026).
 
 Identical to candidates/V3_12.py except every mutation surface is a KNOBS entry, so
@@ -16,20 +18,7 @@ Knobs (default = V3.12 behaviour):
 import math
 import sys
 
-KNOBS = {"melon_floor": 150, "harvest_min": 2, "opening": "v312", "wheat_tiles": 0, "wheat_stock": 0,
-         "min_hands": 3, "load_per_hand": 20, "geese": 0,
-         "open_melons": 12, "open_wheat": 7, "open_cows": 2, "open_sheep": 2,
-         "early_hire_days": 0, "feed_spare_poor": 3,
-         "fert_keep": 0, "fert_buy": 0, "fert_carry": 3, "demand_share": 0.5, "max_animals": 20,
-         "wheat_per_animal": 0.0, "wheat_cap": 18, "wheat_water_tier": 0, "wheat_sell_price": 30, "wheat_hold_days": 0,
-         "sell_hourly": 0, "drop_min": 0, "drop_radius": 0, "capital_hour2": -1, "melon_rush": 0, "straw_delay": 0, "hands_early": 0,
-         "spec_units_STRAWBERRY": None, "spec_cycle_STRAWBERRY": None, "spec_cutoff_STRAWBERRY": None, "spec_minval_STRAWBERRY": None,
-         "spec_units_MELON": None, "spec_cycle_MELON": None, "spec_cutoff_MELON": None, "spec_minval_MELON": None,
-         "spec_units_WHEAT": None, "spec_cycle_WHEAT": None, "spec_cutoff_WHEAT": None, "spec_minval_WHEAT": None,
-         "spec_units_CARROT": None, "spec_cycle_CARROT": None, "spec_cutoff_CARROT": None, "spec_minval_CARROT": None,
-         "spec_units_TOMATO": None, "spec_cycle_TOMATO": None, "spec_cutoff_TOMATO": None, "spec_minval_TOMATO": None,
-         "seed_orders_cap": 4, "land_deadline_shift": 0, "sell_order": "default", "herd_species_bias": 0.0,
-         "open_roundtrip": None}
+KNOBS = {"melon_floor": 200, "harvest_min": 2, "opening": "frontier", "wheat_tiles": 0, "wheat_stock": 0, "min_hands": 3, "load_per_hand": 20, "geese": 0, "open_melons": 8, "open_wheat": 7, "open_cows": 2, "open_sheep": 2, "early_hire_days": 3, "feed_spare_poor": 0, "fert_keep": 0, "fert_buy": 0, "fert_carry": 3, "demand_share": 0.5, "max_animals": 20, "wheat_per_animal": 0.0, "wheat_cap": 18, "wheat_water_tier": 0, "wheat_sell_price": 30, "wheat_hold_days": 0, "sell_hourly": 0, "drop_min": 0, "drop_radius": 0, "capital_hour2": -1, "melon_rush": 0, "straw_delay": 0, "hands_early": 0}
 
 BOARD = 10
 SHED_TILES = [(4, 4), (5, 4), (4, 5), (5, 5)]
@@ -47,7 +36,7 @@ LAND_DEADLINE = {2: 14, 3: 17, 4: 18}      # quads-after-purchase -> last day
 MAX_ORDERS = 10
 
 MAX_ANIMALS = 20
-MAX_SHEEP = 12
+MAX_SHEEP = 11
 I0 = 10000
 SHOPS = {"BAKERY": ["EGG", "WHEAT"], "PIZZA_SHOP": ["MILK", "TOMATO", "WHEAT"], "BRUNCH_SPOT": ["EGG", "WHEAT", "STRAWBERRY"],
          "YARN_STORE": ["WOOL"], "ICE_CREAM_SHOP": ["STRAWBERRY", "MILK", "WHEAT"], "PET_CAFE": ["CARROT"],
@@ -56,19 +45,19 @@ PRODUCT_OF = {"COW": "MILK", "SHEEP": "WOOL"}
 RATE = {"COW": 1.5, "SHEEP": 1.33}           # units/day with daily FEED+CARE (engine: bonus accrues per cared day)
 FIRST_YIELD = {"COW": 8, "SHEEP": 6}
 DEMAND_SHARE = 0.5                            # my share of daily town demand (two sellers)
-OPP_GROWTH = 1.3                              # opponent's visible supply is assumed to grow
+OPP_GROWTH = 1.3# opponent's visible supply is assumed to grow
 CFG = {"center_interval": 24, "shop_interval": 4, "turns_per_day": 24}
 MAX_HANDS = 13
 LOAD_ANIMAL, LOAD_CROP_TASK, LOAD_SETUP = 6, 3, 8
 ROUTE_LEN = 3
 CROP_SWEEP_LEN = 6
 CROP_SWEEP_RADIUS = 4
-STRAW_CUTOFF = 17
+STRAW_CUTOFF = 16
 MELON_WAVE_DAYS = ((1, 10),)
-MELON_MAX_TILES = 40
+MELON_MAX_TILES = 50
 MELON_UNITS_PER_TILE = 6.0
 MELON_PRICE_CUSHION = 100
-OPENING_MELONS = 10
+OPENING_MELONS = 7
 CROP_SPECS = {
     "STRAWBERRY": {"seed": 100, "units": 4.5, "first": 10, "cycle": 18, "cutoff": 17, "base": 120, "min_val": 12},
     "MELON":      {"seed": 80,  "units": 6.0, "first": 10, "cycle": 12, "cutoff": 16, "base": 250, "min_val": 12, "cushion": 100},
@@ -76,21 +65,8 @@ CROP_SPECS = {
     "CARROT":     {"seed": 20,  "units": 4.0, "first": 2,  "cycle": 4,  "cutoff": 25, "base": 35,  "min_val": 12},
     "TOMATO":     {"seed": 50,  "units": 5.0, "first": 8,  "cycle": 12, "cutoff": 20, "base": 60,  "min_val": 12},
 }     # units above I0 before MELON drops from $250 toward $150 (sq curve)
-HERD_LAST_DAY = 19
+HERD_LAST_DAY = 22
 NEAR_RADIUS = 3
-
-SELL_ORDERS = {
-    "default":           ("MILK", "WOOL", "STRAWBERRY", "FERTILIZER", "TOMATO", "CARROT", "EGG"),
-    "perishables_first": ("STRAWBERRY", "MILK", "WOOL", "TOMATO", "CARROT", "FERTILIZER", "EGG"),
-    "fert_first":        ("FERTILIZER", "MILK", "WOOL", "STRAWBERRY", "TOMATO", "CARROT", "EGG"),
-}
-
-
-def _spec(c, field):
-    """Per-crop override lookup: KNOBS["spec_<field>_<crop>"] if set, else CROP_SPECS[c][field]."""
-    k = "spec_%s_%s" % (field, c)
-    ov = KNOBS.get(k)
-    return CROP_SPECS[c][field] if ov is None else ov
 
 # ---- per-episode state (hands are re-indexed daily; everything below is reset at day change)
 S = {"day": -1, "routes": {}, "crop": {}, "sweep": {}, "setup": {}, "claimed_sites": set(), "animal_claim": set(),
@@ -214,6 +190,7 @@ def perceive(obs):
 # ECONOMY
 # ======================================================================
 
+# ===== EVOLVE-BLOCK: hiring =====
 def _hire_plan(target, have, hires_today, cash):
     """Return number of HIRE orders affordable now toward `target` hands."""
     n = 0
@@ -238,11 +215,14 @@ def _load_model(v, seeds_planned, n_animals_total, n_setup, day):
         tgt = min(tgt, 6)
     return tgt
 
+# ===== END-BLOCK: hiring =====
+
 
 MAX_SHOP_INSTANCES = 8
 UNLOCK_INTERVAL = 3
 
 
+# ===== EVOLVE-BLOCK: demand =====
 def _instances(obs, item):
     """Unlocked shop instances buying `item` (duplicates count; single-product shops draw double)."""
     n = 0.0
@@ -279,11 +259,13 @@ def _demand_room(obs, v, species, day, my_count, opp_count):
     sustainable_rate = KNOBS["demand_share"] * _daily_demand(obs, item, day, day + FIRST_YIELD[species]) + reservoir / T
     n_max = int(sustainable_rate // RATE[species])
     return max(0, n_max - my_count)
+# ===== END-BLOCK: demand =====
 
 
 STRAW_UNITS_PER_TILE = 4.0
 
 
+# ===== EVOLVE-BLOCK: economy =====
 def economy(obs, v):
     p = obs["player"]
     me = obs["farms"][p]
@@ -308,7 +290,7 @@ def economy(obs, v):
     if day <= 26 and (KNOBS["fert_keep"] > 0 or KNOBS["fert_buy"] > 0):
         fert_want = min(KNOBS["fert_keep"] + KNOBS["fert_buy"], len(v["fert"]))
     if hour == 0 or day >= 28 or KNOBS["sell_hourly"]:
-        for item in SELL_ORDERS.get(KNOBS["sell_order"], SELL_ORDERS["default"]):
+        for item in ("MILK", "WOOL", "STRAWBERRY", "FERTILIZER", "TOMATO", "CARROT", "EGG"):
             n = shed.get(item, 0)
             if item == "FERTILIZER" and day <= 26:
                 n = max(0, n - min(KNOBS["fert_keep"], fert_want))
@@ -359,12 +341,6 @@ def economy(obs, v):
             if need > 0:
                 n, _ = _hire_plan(S["hires_target"], n_hands, me["hires_today"], max(0.0, cash - 50))
                 orders += [["HIRE"]] * min(n, MAX_ORDERS - len(orders))
-            if KNOBS["open_roundtrip"] and day == 0 and hour == 1:
-                rt_n, rt_big, rt_mid, rt_other = KNOBS["open_roundtrip"]
-                mine = S.get("rt_open_n", rt_n)
-                opp_n = 10000 - int(obs["market"]["inventory"].get("WHEAT", 10000)) - int(mine) - 1
-                m_class = rt_big if opp_n >= 48 else (rt_mid if opp_n >= 38 else rt_other)
-                orders.append(["SELL", "WHEAT", int(m_class)])
         return orders[:MAX_ORDERS]
 
     # ---- frontier opening: the whole $3,000 at hour 0 of day 0 (exactly 10 orders)
@@ -433,11 +409,6 @@ def economy(obs, v):
             if day > HERD_LAST_DAY and sp == "COW":
                 continue
             room = _demand_room(obs, v, sp, day, my_counts[sp], opp_counts[sp])
-            if KNOBS["herd_species_bias"]:
-                if sp == "SHEEP":
-                    room = max(0, room + KNOBS["herd_species_bias"])
-                elif sp == "COW":
-                    room = max(0, room - KNOBS["herd_species_bias"])
             if sp == "SHEEP":
                 yarn = _instances(obs, "WOOL")
                 if yarn == 0:
@@ -475,11 +446,11 @@ def economy(obs, v):
         for _pos, t in v["crops"]:
             c = t.get("crop")
             if c in committed:
-                committed[c] += _spec(c, "units")
+                committed[c] += CROP_SPECS[c]["units"]
             if c == "WHEAT":
                 wheat_tiles_now += 1
         for c in committed:
-            committed[c] += seeds.get(c, 0) * _spec(c, "units")
+            committed[c] += seeds.get(c, 0) * CROP_SPECS[c]["units"]
         space = empty_count - pending_place - sum(seeds.get(c, 0) for c in CROP_SPECS)
         seed_orders = {}
         n_seed_orders = 0
@@ -495,40 +466,35 @@ def economy(obs, v):
                 free -= 10 * k
                 seeds_on_hand += k
                 space -= k
-                committed["WHEAT"] += k * _spec("WHEAT", "units")
+                committed["WHEAT"] += k * CROP_SPECS["WHEAT"]["units"]
                 n_seed_orders += 1
                 excluded.add("WHEAT")
-        while space > 0 and n_seed_orders < KNOBS["seed_orders_cap"]:
+        while space > 0 and n_seed_orders < 4:
             best = None
-            for c, sp_base in CROP_SPECS.items():
-                sp_units = _spec(c, "units")
-                sp_cycle = _spec(c, "cycle")
-                sp_cutoff = _spec(c, "cutoff")
-                sp_minval = _spec(c, "min_val")
-                if c in excluded or day > sp_cutoff or day < sp_base.get("start", 0):
+            for c, sp_ in CROP_SPECS.items():
+                if c in excluded or day > sp_["cutoff"] or day < sp_.get("start", 0):
                     continue
                 if c == "STRAWBERRY" and day < KNOBS["straw_delay"]:
                     continue
-                T_sell = max(0, 29 - day - sp_base["first"])
+                T_sell = max(0, 29 - day - sp_["first"])
                 if T_sell <= 0:
                     continue
                 inv_c = obs["market"]["inventory"].get(c, I0)
-                cushion_left = max(0.0, sp_base.get("cushion", 0) - max(0.0, inv_c - I0))
-                pool = DEMAND_SHARE * (max(0.0, I0 - inv_c) + cushion_left + _daily_demand(obs, c, day, day + sp_base["first"]) * (29 - day))
-                room_units = pool - committed[c] - seed_orders.get(c, 0) * sp_units
-                if room_units < sp_units * 0.5:
+                cushion_left = max(0.0, sp_.get("cushion", 0) - max(0.0, inv_c - I0))
+                pool = DEMAND_SHARE * (max(0.0, I0 - inv_c) + cushion_left + _daily_demand(obs, c, day, day + sp_["first"]) * (29 - day))
+                room_units = pool - committed[c] - seed_orders.get(c, 0) * sp_["units"]
+                if room_units < sp_["units"] * 0.5:
                     continue
-                price = min(prices.get(c, sp_base["base"]), sp_base["base"] * 2.0)
-                val = min(sp_units, room_units) * price / sp_cycle
-                if val < sp_minval:
+                price = min(prices.get(c, sp_["base"]), sp_["base"] * 2.0)
+                val = min(sp_["units"], room_units) * price / sp_["cycle"]
+                if val < sp_["min_val"]:
                     continue
                 if best is None or val > best[0]:
                     best = (val, c, room_units)
             if best is None:
                 break
             _val, c, room_units = best
-            sp_units = _spec(c, "units")
-            k = min(space, int(room_units // sp_units), int(free // CROP_SPECS[c]["seed"]), 20)
+            k = min(space, int(room_units // CROP_SPECS[c]["units"]), int(free // CROP_SPECS[c]["seed"]), 20)
             while k > 0 and _load_model(v, seeds_on_hand + k, n_total, pending_place, day) >= MAX_HANDS:
                 k -= 1
             if k <= 0:
@@ -540,13 +506,13 @@ def economy(obs, v):
             seeds_on_hand += k
             space -= k
             n_seed_orders += 1
-            if c == "STRAWBERRY" and room_units // sp_units > k + 4:
-                land_wanted = int(room_units // sp_units) - k
+            if c == "STRAWBERRY" and room_units // CROP_SPECS[c]["units"] > k + 4:
+                land_wanted = int(room_units // CROP_SPECS[c]["units"]) - k
         for c, k in seed_orders.items():
             orders.append(["BUY_SEED", c, int(k)])
 
     # ---- land
-    if quads < 4 and 1 <= day <= LAND_DEADLINE[quads + 1] + KNOBS["land_deadline_shift"] and empty_count - pending_place < 8 and (land_wanted > 0 or pending_place > empty_count - 2):
+    if quads < 4 and 1 <= day <= LAND_DEADLINE[quads + 1] and empty_count - pending_place < 8 and (land_wanted > 0 or pending_place > empty_count - 2):
         price = LAND_PRICES[quads - 1]
         if quads == 3 and not (day <= 14 and land_wanted >= 12):
             price = float("inf")
@@ -570,12 +536,6 @@ def economy(obs, v):
             orders.append(["BUY_PRODUCT", "FERTILIZER", int(k)])
             free -= fp * k
 
-    # ---- open_roundtrip: turn-0 wheat buy, sold back turn-1 based on opponent's class (see M2/H32)
-    if KNOBS["open_roundtrip"] and day == 0 and hour == 0:
-        rt_n = KNOBS["open_roundtrip"][0]
-        orders.append(["BUY_PRODUCT", "WHEAT", int(rt_n)])
-        S["rt_open_n"] = sum(int(o[2]) for o in orders if o[0] == "BUY_PRODUCT" and o[1] == "WHEAT")
-
     # ---- hires
     target = _load_model(v, seeds_on_hand, n_total, pending_place, day)
     S["hires_target"] = target
@@ -583,6 +543,7 @@ def economy(obs, v):
     slots = MAX_ORDERS - len(orders)
     orders += [["HIRE"]] * max(0, min(n, slots))
     return orders[:MAX_ORDERS]
+# ===== END-BLOCK: economy =====
 
 
 # ======================================================================
@@ -606,11 +567,32 @@ def _animal_pending(t, day):
     return need_feed or need_care or t.get("fertilizer_available", False) or t.get("yield_units", 0) > 0
 
 
+# ===== EVOLVE-BLOCK: animal_routing =====
 def _build_route(i, pos, v, day, shed, carry, unlocked_shed, hour=0):
     claimed = set()
     for r in S["routes"].values():
         claimed.update(r["stops"])
-    cands = [(p2, t) for p2, t in v["animals"] if p2 not in claimed and _animal_pending(t, day)]
+    # feed rotation (frontier behaviour): when wheat is short, animals fed yesterday can skip a day;
+    # an animal only escapes after 2 consecutive unfed days, so those at 1 are fed first.
+    carried_wheat = carry.get("WHEAT", 0)
+    unfed_all = [t for _p, t in v["animals"] if not t.get("fed_today", False)]
+    short = day < 29 and (S["wheat_budget"] + carried_wheat) < len(unfed_all)
+
+    def _pending_rot(t):
+        if day >= 29:
+            return _animal_pending(t, day)
+        need_feed = not t.get("fed_today", False)
+        if need_feed and short and t.get("consecutive_unfed", 0) == 0:
+            need_feed = False                       # can wait until tomorrow; wheat goes to the at-risk ones
+        need_care = (not t.get("cared_today", False)) and day < 28
+        return need_feed or need_care or t.get("fertilizer_available", False) or t.get("yield_units", 0) > 0
+
+    cands = [(p2, t) for p2, t in v["animals"] if p2 not in claimed and _pending_rot(t)]
+    if short:
+        # at-risk animals first: build the route from them, then the rest
+        risk = [(p2, t) for p2, t in cands if not t.get("fed_today", False) and t.get("consecutive_unfed", 0) >= 1]
+        rest = [(p2, t) for p2, t in cands if (p2, t) not in risk]
+        cands = risk + rest
     if not cands and hour >= 14:
         best = None
         for j, r in S["routes"].items():
@@ -631,7 +613,15 @@ def _build_route(i, pos, v, day, shed, carry, unlocked_shed, hour=0):
         return None
     stops = []
     cur = pos
-    pool = dict(cands)
+    if short:
+        risk_keys = [p2 for p2, t in cands if not t.get("fed_today", False) and t.get("consecutive_unfed", 0) >= 1]
+        pool_r = {p2: t for p2, t in cands if p2 in risk_keys}
+        while pool_r and len(stops) < ROUTE_LEN:
+            nxt = _nearest(cur, list(pool_r.keys()))
+            stops.append(nxt)
+            cur = nxt
+            del pool_r[nxt]
+    pool = {p2: t for p2, t in cands if p2 not in stops}
     while pool and len(stops) < ROUTE_LEN:
         nxt = _nearest(cur, list(pool.keys()))
         stops.append(nxt)
@@ -682,7 +672,10 @@ def _route_step(i, pos, v, day, hour, shed, carry, unlocked_shed):
     del S["routes"][i]
     return None
 
+# ===== END-BLOCK: animal_routing =====
 
+
+# ===== EVOLVE-BLOCK: siting =====
 def _pick_site(v, species=None):
     if v["empty_pastures"]:
         c = [s_ for s_ in v["empty_pastures"] if s_ not in S["claimed_sites"]]
@@ -724,18 +717,40 @@ def _setup_step(i, pos, v, carry):
     if t is None:
         return ["BUILD_COOP"] if sp == "GOOSE" else ["BUILD_PASTURE"]
     return ["PLACE", sp]
+# ===== END-BLOCK: siting =====
 
 
+# ===== EVOLVE-BLOCK: crop_admission =====
 def _crop_pools(v, seeds_left, day):
-    n_seeds = sum(seeds_left.get(c, 0) for c in CROP_SPECS)
-    plant = [q for q in sorted(v["empty"], key=lambda q: (_shed_dist(q), q)) if q not in S["claimed_sites"]][:n_seeds]
+    free = [q for q in sorted(v["empty"], key=lambda q: (_shed_dist(q), q)) if q not in S["claimed_sites"]]
+    n_rec = seeds_left.get("STRAWBERRY", 0) + seeds_left.get("TOMATO", 0)
+    n_one = sum(seeds_left.get(c, 0) for c in CROP_SPECS) - n_rec
+    if n_one < 0:
+        n_one = 0
+    near = [q for q in free if _shed_dist(q) <= NEAR_RADIUS]
+    far_left = [q for q in free if _shed_dist(q) > NEAR_RADIUS]
+    rec_sites = near[:n_rec]
+    near_left = near[n_rec:]
+    if len(rec_sites) < n_rec:
+        take = n_rec - len(rec_sites)
+        rec_sites = rec_sites + far_left[:take]
+        far_left = far_left[take:]
+    one_sites = far_left[:n_one]
+    if len(one_sites) < n_one:
+        one_sites = one_sites + near_left[:n_one - len(one_sites)]
+    plant = rec_sites + one_sites
     return {"urgent": list(v["urgent"]), "wwater": list(v["wwater"]), "harvest": list(v["harvest"]), "water": list(v["water"]),
             "fert": list(v["fert"]), "plant": plant, "weeds": list(v["weeds"]), "slack": list(v["slack"])}
 
 
 def _plant_choice(pos, seeds_left):
-    near = _shed_dist(pos) <= NEAR_RADIUS
-    order = ["STRAWBERRY", "TOMATO", "MELON", "CARROT", "WHEAT"] if near else ["MELON", "WHEAT", "CARROT", "STRAWBERRY", "TOMATO"]
+    d = _shed_dist(pos)
+    if d <= NEAR_RADIUS:
+        order = ["STRAWBERRY", "TOMATO", "MELON", "CARROT", "WHEAT"]
+    elif d <= NEAR_RADIUS + 3:
+        order = ["MELON", "CARROT", "WHEAT", "STRAWBERRY", "TOMATO"]
+    else:
+        order = ["WHEAT", "MELON", "CARROT", "TOMATO", "STRAWBERRY"]
     for c in order:
         if seeds_left.get(c, 0) > 0:
             return c
@@ -755,9 +770,57 @@ def _task_valid(tp, kind, v, day, hour, carry, seeds_left):
     if kind == "weeds":
         return isinstance(t, dict) and t.get("kind") == "WEED"
     return False
+# ===== END-BLOCK: crop_admission =====
+
+
+# ===== EVOLVE-BLOCK: sweep =====
+FERT_RADIUS = 2
+SPREAD_W = 1.0
+SPREAD_CAP = 5
+REGION_FIRST_PICK = True
+
+
+def _ensure_regions(v, day):
+    """Assign crop work to stable serpentine runs for the rest of the day."""
+    if not REGION_FIRST_PICK:
+        return
+    if S.get("region_day") == day and S.get("region"):
+        return
+    units = len(v.get("positions", []))
+    animal_units = set(S.get("routes", {})) | set(S.get("setup", {}))
+    workers = [i for i in range(units) if i not in animal_units]
+    tiles = sorted({q for key in ("urgent", "wwater", "harvest", "water", "fert", "empty", "weeds", "slack")
+                    for q in v.get(key, [])}, key=lambda q: (q[1], q[0] if q[1] % 2 == 0 else -q[0]))
+    if not workers or not tiles:
+        return
+    S["region"] = {}
+    S["region_day"] = day
+    for rank, i in enumerate(workers):
+        lo = len(tiles) * rank // len(workers)
+        hi = len(tiles) * (rank + 1) // len(workers)
+        S["region"][i] = set(tiles[lo:hi])
+
+
+def _spread_pick(i, pos, cands):
+    """First stop of a sweep: nearest tile, discounted by how far it is from where the other
+    units are already working, so hands fan out into separate regions (expert pattern) instead
+    of crowding the tiles nearest the shed and then criss-crossing."""
+    others = []
+    for j, sw in S.get("sweep", {}).items():
+        if j != i and sw:
+            others.append(sw[0][0])
+    best, bs = None, None
+    for c in cands:
+        d = _dist(pos, c)
+        sep = min([_dist(c, o) for o in others] + [SPREAD_CAP]) if others else SPREAD_CAP
+        score = (d - SPREAD_W * sep, d, c)
+        if bs is None or score < bs:
+            best, bs = c, score
+    return best
 
 
 def _build_sweep(i, pos, v, day, hour, carry, pools, seeds_left):
+    _ensure_regions(v, day)
     tiers = ["urgent", "wwater", "harvest", "water"]
     if carry.get("FERTILIZER", 0) > 0:
         tiers = ["urgent", "fert", "wwater", "harvest", "water"]
@@ -769,7 +832,11 @@ def _build_sweep(i, pos, v, day, hour, carry, pools, seeds_left):
     first = None
     for kind in tiers:
         if pools[kind]:
-            tp = _nearest(pos, pools[kind])
+            regional = [q for q in pools[kind] if q in S.get("region", {}).get(i, set())]
+            choices = regional or pools[kind]
+            tp = _spread_pick(i, pos, choices) if kind != "fert" else _nearest(pos, choices)
+            if kind == "fert" and _dist(pos, tp) > FERT_RADIUS:
+                continue  # never walk across the map just to fertilize; sell it instead
             first = (tp, kind)
             pools[kind].remove(tp)
             break
@@ -784,7 +851,8 @@ def _build_sweep(i, pos, v, day, hour, carry, pools, seeds_left):
         for kind in tiers:
             for tp in pools[kind]:
                 d = _dist(cur, tp)
-                if d <= CROP_SWEEP_RADIUS and (best is None or d < best[0]):
+                lim = FERT_RADIUS if kind == "fert" else CROP_SWEEP_RADIUS
+                if d <= lim and (best is None or d < best[0]):
                     best = (d, tp, kind)
         if best is None:
             break
@@ -801,7 +869,8 @@ def _crop_step(i, pos, v, day, hour, carry, pools, seeds_left):
         sweep = _build_sweep(i, pos, v, day, hour, carry, pools, seeds_left)
         if not sweep:
             S["sweep"].pop(i, None)
-            return None
+            # idle hand with empty pools: take work from another unit's sweep instead of passing
+            return _steal_task(i, pos, v, day, hour, carry, pools, seeds_left)
         S["sweep"][i] = sweep
     while sweep:
         tp, kind = sweep[0]
@@ -809,15 +878,24 @@ def _crop_step(i, pos, v, day, hour, carry, pools, seeds_left):
             sweep.pop(0)
             continue
         if pos != tp:
+            if _dist(pos, tp) + 1 > 24 - hour:
+                sweep.pop(0)  # unreachable before end of day: don't march toward it
+                continue
             return [_step(pos, tp)]
         sweep.pop(0)
         if kind in ("urgent", "water", "slack", "wwater"):
             return ["WATER"]
         if kind == "harvest":
+            # replant-on-harvest (expert pattern H->P->W): if the tile empties, plant and water it
+            # before walking on. _task_valid drops the entry if the crop is ongoing and still standing.
+            if hour < 22 and _plant_choice(tp, seeds_left) is not None:
+                sweep.insert(0, (tp, "plant"))
             return ["HARVEST"]
         if kind == "fert":
             return ["FERTILIZE"]
         if kind == "weeds":
+            if hour < 22 and _plant_choice(tp, seeds_left) is not None:
+                sweep.insert(0, (tp, "plant"))  # expert pattern D->P->W
             return ["DIG"]
         if kind == "plant":
             c = _plant_choice(tp, seeds_left)
@@ -827,6 +905,12 @@ def _crop_step(i, pos, v, day, hour, carry, pools, seeds_left):
     S["sweep"].pop(i, None)
     if any(pools[k] for k in pools):
         return _crop_step(i, pos, v, day, hour, carry, pools, seeds_left)
+    return _steal_task(i, pos, v, day, hour, carry, pools, seeds_left)
+
+
+def _steal_task(i, pos, v, day, hour, carry, pools, seeds_left):
+    if S.get("opponent_mode") == "yuan":
+        return None
     remaining = 23 - hour
     best = None
     for j, sw in list(S["sweep"].items()):
@@ -851,23 +935,34 @@ def _crop_step(i, pos, v, day, hour, carry, pools, seeds_left):
         if j == i or len(sw) < 2:
             continue
         for idx in range(len(sw) - 1, 0, -1):
-            if sw[idx][1] == "urgent" and (best is None or len(sw) > len(S["sweep"][best[0]])):
-                best = (j, idx)
-                break
-    if best is None:
-        for j, sw in S["sweep"].items():
-            if j != i and len(sw) >= 3 and (best is None or len(sw) > len(S["sweep"][best[0]])):
-                best = (j, len(sw) - 1)
+            tp, kind = sw[idx]
+            mine = _dist(pos, tp) + 1
+            if mine > remaining:
+                continue
+            key = (0 if kind == "urgent" else 1, mine, -len(sw))
+            if best is None or key < best[0]:
+                best = (key, j, idx)
     if best is not None:
-        j, idx = best
+        _k, j, idx = best
         task = S["sweep"][j].pop(idx)
         S["sweep"][i] = [task]
         return _crop_step(i, pos, v, day, hour, carry, pools, seeds_left)
     return None
+# ===== END-BLOCK: sweep =====
 
 
+# ===== EVOLVE-BLOCK: dispatch =====
 def _unit_action(i, pos, carry, obs, v, pools, seeds_left, shed, unlocked_shed):
     day, hour = obs["day"], obs["hour"]
+    if day == 0 and hour == 0:
+        S["opponent_mode"] = None
+    if S.get("opponent_mode") is None and day >= 1:
+        other = obs["farms"][1 - obs["player"]]
+        other_animals = sum(1 for row in other["tiles"] for t in row if isinstance(t, dict) and "animal" in t)
+        if day == 1 and (other_animals >= 5 or other.get("money", 0) > 100):
+            S["opponent_mode"] = "other"
+        elif day >= 2:
+            S["opponent_mode"] = "other" if other.get("money", 0) > 95 else "yuan"
     if any(carry.get(a, 0) > 0 for a in ANIMALS):
         op = _setup_step(i, pos, v, carry)
         if op is not None:
@@ -926,6 +1021,8 @@ def _unit_action(i, pos, carry, obs, v, pools, seeds_left, shed, unlocked_shed):
     if op is not None:
         return op
     return ["PASS"]
+
+# ===== END-BLOCK: dispatch =====
 
 
 def _agent(obs):
