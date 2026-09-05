@@ -15,6 +15,8 @@ JOBS="${JOBS:-$(( CORES > 1 ? CORES - 1 : 1 ))}"
 FRONTIER="${FRONTIER:-candidates/V3_12.py}"
 SMOKE_FLOOR="${SMOKE_FLOOR:--6000}"
 DEV_PROMOTE="${DEV_PROMOTE:-1500}"
+PAIRED_RATE="${PAIRED_RATE:-0.5}"
+BLOCK_PAIR_RATE="${BLOCK_PAIR_RATE:-0.4}"
 mkdir -p evolve/logs evolve/reports evolve/queue
 LOG=evolve/logs/supervisor.log
 say() { echo "[$(date '+%F %T')] $*" | tee -a "$LOG"; }
@@ -58,9 +60,9 @@ while true; do
   say "segment $RUN_ID: frontier=$FRONTIER clone=$CLONE_NOW queue=$(ls evolve/queue/*.json 2>/dev/null | wc -l | tr -d ' ')"
   # 3. run one segment (caffeinate keeps the Mac awake; no-op elsewhere)
   if command -v caffeinate >/dev/null 2>&1; then
-    caffeinate -i "$PY" evolve/loop.py --hours "$SEGMENT_HOURS" --jobs "$JOBS" --frontier "$FRONTIER" --clone "$CLONE_NOW" --smoke-floor "$SMOKE_FLOOR" --dev-promote "$DEV_PROMOTE" --run-id "$RUN_ID" >> evolve/logs/loop.out 2>&1
+    caffeinate -i "$PY" evolve/loop.py --hours "$SEGMENT_HOURS" --jobs "$JOBS" --frontier "$FRONTIER" --clone "$CLONE_NOW" --smoke-floor "$SMOKE_FLOOR" --dev-promote "$DEV_PROMOTE" --run-id "$RUN_ID" --paired-rate "$PAIRED_RATE" --block-pair-rate "$BLOCK_PAIR_RATE" >> evolve/logs/loop.out 2>&1
   else
-    "$PY" evolve/loop.py --hours "$SEGMENT_HOURS" --jobs "$JOBS" --frontier "$FRONTIER" --clone "$CLONE_NOW" --smoke-floor "$SMOKE_FLOOR" --dev-promote "$DEV_PROMOTE" --run-id "$RUN_ID" >> evolve/logs/loop.out 2>&1
+    "$PY" evolve/loop.py --hours "$SEGMENT_HOURS" --jobs "$JOBS" --frontier "$FRONTIER" --clone "$CLONE_NOW" --smoke-floor "$SMOKE_FLOOR" --dev-promote "$DEV_PROMOTE" --run-id "$RUN_ID" --paired-rate "$PAIRED_RATE" --block-pair-rate "$BLOCK_PAIR_RATE" >> evolve/logs/loop.out 2>&1
   fi
   rc=$?
   say "segment $RUN_ID finished rc=$rc"
