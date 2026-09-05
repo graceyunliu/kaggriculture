@@ -9,7 +9,7 @@ export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
 PY="${PYTHON:-python3}"
 SEGMENT_HOURS="${SEGMENT_HOURS:-2}"
 if [ -x /usr/sbin/sysctl ]; then CORES=$(/usr/sbin/sysctl -n hw.ncpu); else CORES=$(nproc 2>/dev/null || echo 4); fi
-JOBS="${JOBS:-$(( CORES > 1 ? CORES - 1 : 1 ))}"
+JOBS="${JOBS:-$(( CORES > 3 ? CORES - 3 : 1 ))}"
 # yardstick.conf (committed) sets FRONTIER / SMOKE_FLOOR / DEV_PROMOTE so the yardstick can be changed with a git push
 [ -f evolve/yardstick.conf ] && . evolve/yardstick.conf
 FRONTIER="${FRONTIER:-candidates/V3_12.py}"
