@@ -96,15 +96,19 @@ def build_prompt(block_names, n, archive, chassis_text, rejected_mechanisms=None
 
 def call_claude(prompt, model=None, timeout=900):
     exe = shutil.which("claude") or str(Path.home() / ".local" / "bin" / "claude")
-    cmd = [exe, "-p", "--output-format", "json", "--max-turns", "5",
+    cmd = [exe, "-p", "--output-format", "json", "--max-turns", "20",
            "--allowedTools", "Bash", "--permission-mode", "bypassPermissions"]
     if model:
         cmd += ["--model", model]
     r = subprocess.run(cmd, input=prompt, capture_output=True, text=True, timeout=timeout, cwd=str(ROOT))
     if r.returncode != 0:
-        raise RuntimeError(f"claude exit {r.returncode}: {r.stderr[:500]}")
+        raise RuntimeError(f"claude exit {r.returncode}: stderr={r.stderr!r} stdout={r.stdout[:200]!r}")
     try:
         out = json.loads(r.stdout)
+        if isinstance(out, dict) and out.get("is_error"):
+            reason = out.get("terminal_reason", "?")
+            msg = out.get("error", {}).get("message", out.get("result", "unknown error"))
+            raise RuntimeError(f"claude API error (is_error={reason!r}): {msg[:300]}")
         text = out.get("result") if isinstance(out, dict) else r.stdout
     except json.JSONDecodeError:
         text = r.stdout
