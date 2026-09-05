@@ -43,9 +43,29 @@ CREATE TABLE IF NOT EXISTS runs (
     engine_sha TEXT, k_sha TEXT, frontier TEXT, clone TEXT,
     config TEXT, summary TEXT
 );
+CREATE TABLE IF NOT EXISTS rejected_mechanisms (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    mechanism_tag TEXT NOT NULL UNIQUE,
+    verdict TEXT NOT NULL CHECK (verdict IN ('rejected','exhausted','no_general_fix')),
+    one_line_cause TEXT NOT NULL,
+    doc_ref TEXT NOT NULL,
+    date TEXT NOT NULL
+);
 CREATE INDEX IF NOT EXISTS idx_status ON candidates(status);
 CREATE INDEX IF NOT EXISTS idx_dev ON candidates(dev_margin);
 """
+
+REJECTED_MECHANISMS = (
+    ("opponent_fingerprint_sizing", "rejected",
+     "M2's opponent-purchase fingerprint and sell table are a fitted exploit, not a general sizing rule.",
+     "docs/M3-general-sizing-results.md", "2026-09-05"),
+    ("shared_market_inventory_threshold_fix", "no_general_fix",
+     "The M3/V3_12 gap is shared-market chaos; an inventory-threshold branch would be opponent-specific overfitting.",
+     "docs/M3-v3_12-regression-diagnosis.md", "2026-09-05"),
+    ("blended_capital_labor_constraint", "rejected",
+     "One constraint conflates lumpy setup capital with recurring labor capacity on different cash horizons.",
+     "docs/planner-allocation-hiring-results.md", "2026-09-05"),
+)
 
 
 def _journal_ok(directory):
@@ -78,6 +98,9 @@ class DB:
             # An in-memory journal works there; on a real disk (the Air) the default is kept.
             self.conn.execute("PRAGMA journal_mode=MEMORY")
         self.conn.executescript(SCHEMA)
+        self.conn.executemany(
+            "INSERT OR IGNORE INTO rejected_mechanisms(mechanism_tag, verdict, one_line_cause, doc_ref, date) "
+            "VALUES(?,?,?,?,?)", REJECTED_MECHANISMS)
         cols = {r["name"] for r in self.conn.execute("PRAGMA table_info(candidates)")}
         for col, decl in (("island", "TEXT DEFAULT 'c1'"), ("blocks", "TEXT"), ("ablation", "TEXT"), ("diagnosis", "TEXT"), ("exec_summary", "TEXT")):
             if col not in cols:
@@ -143,6 +166,11 @@ class DB:
         if run_id:
             return [dict(r) for r in self.conn.execute("SELECT * FROM candidates WHERE run_id=?", (run_id,))]
         return [dict(r) for r in self.conn.execute("SELECT * FROM candidates")]
+
+    def rejected_mechanisms(self):
+        return [dict(r) for r in self.conn.execute(
+            "SELECT id, mechanism_tag, verdict, one_line_cause, doc_ref, date "
+            "FROM rejected_mechanisms ORDER BY date, id")]
 
     # -- runs
     def start_run(self, run_id, engine_sha, k_sha, frontier, clone, config):

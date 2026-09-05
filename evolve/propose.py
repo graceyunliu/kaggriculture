@@ -28,6 +28,7 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(ROOT))
 import blocks as blocks_mod  # noqa: E402
 import space  # noqa: E402
+from db import DB  # noqa: E402
 
 ARCHIVE = HERE / "archive.json"
 RULES = HERE / "RULES.md"
@@ -57,7 +58,7 @@ def log(msg):
         f.write(line + "\n")
 
 
-def build_prompt(block_names, n, archive, chassis_text):
+def build_prompt(block_names, n, archive, chassis_text, rejected_mechanisms=None):
     blk = blocks_mod.extract(chassis_text)
     parts = []
     parts.append("You are the candidate generator inside an AlphaEvolve-style loop for a Kaggle farming-simulation agent. "
@@ -77,6 +78,8 @@ def build_prompt(block_names, n, archive, chassis_text):
         "param_importance_top10": archive.get("param_importance", [])[:10],
         "recent_dead": archive.get("recent_dead", [])[:12],
     }, indent=0, default=str))
+    parts.append("# CLOSED MECHANISMS (do not re-propose)\n" + json.dumps(
+        rejected_mechanisms or [], indent=0, default=str))
     parts.append("# SEARCH SPACE (params you may set)\n" + json.dumps(
         {k: (v[1] if v[0] == "cat" else [v[1], v[2]]) for k, v in space.SPACE.items()}))
     parts.append("# BLOCKS YOU MAY REPLACE (current source)\n")
@@ -170,7 +173,7 @@ def main():
     pool = ["sweep", "dispatch", "animal_routing", "crop_admission", "siting", "hiring", "demand"]
     block_names = args.blocks or rng.sample(pool[:4], 1) + rng.sample(pool, 1)
     block_names = list(dict.fromkeys(block_names))
-    prompt = build_prompt(block_names, args.n, archive, chassis_text)
+    prompt = build_prompt(block_names, args.n, archive, chassis_text, DB().rejected_mechanisms())
     if args.dry_run:
         print(prompt)
         return 0
