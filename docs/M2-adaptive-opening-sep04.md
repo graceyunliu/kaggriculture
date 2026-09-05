@@ -42,3 +42,24 @@ M2 is byte-for-byte H32 against every opponent outside the two classes, and turn
 - Exploits a cash-starvation cascade in fixed tapes; any opponent that adapts its opening (or runs a different round-trip quantity) falls into "other" and gets H32 behaviour. Classes were fit on five tapes; new cluster variants may need their own (n, m) row — the grid takes ~2 min per pair.
 - Symmetric risk: an opponent could do this to us. H32/M2's own day-1 feed buys already run at negative slack; the guard (75% money) would hand over to C1 if starved.
 - Next: extend the same runtime decision to days 1–9 (choose our feed-buy/sell steps to keep our slack positive and theirs negative), and re-run the grid against any new top-30 tapes after the next ladder pull.
+
+## Sep 5 ladder pull — the 13/8 lineage explains the slump
+
+M2 2043.7 (clean 39-38, recent 7-9), H32 2020.1 (recent 5-15). In the last ~45 M2 games, ~14 opponents open `BUY 13 / SELL 8` with the same frontier opening otherwise (Furina #2, Hamachi, XW, Sergey Kutepov, Akshay, Hiro Nomo, ibr mo sal, SCLim, guruguru000, Toru59er, Aikyatan Sinha, nadhir hasan, ShaoCharles, Ignat) and M2 lost 12 of them by $1–10k. Tapes built: `Opponents/tape_furina_105708344.py`, `tape_hamachi_105670479.py`, `tape_xw_105683882.py`.
+
+What it is: an improved twin of our own tape — only 245/719 steps differ (yuan800 differs on 698); same economy, one more cow, +18 strawberry, +21 milk (`decompose`: −$3.9k for us, 1-5 on seeds 1–6 both seats, identical for M2 and H32 since it classifies as "other").
+
+What doesn't work against it (seeds 1–6, both seats, vs furina/hamachi):
+
+| our opening | margin |
+|---|---|
+| 30/25 (M2, H32) | −$3.9k / −$4.3k |
+| 30/29, 30/27 | −$42k / −$37k (starves us) |
+| 30/23 … 30/17 | −$4.7k … −$5.6k |
+| 30/15 | −$8.2k |
+| 40/34, 40/30 | −$4.7k…−$7.9k / −$2.0k…−$5.6k |
+| 20/15 | −$3.9k / −$4.2k |
+| 13/8 (mirror them), 5/none | −$1.1k / −$1.2k |
+| M2 + sell-shift k=1,2 | −$48k (breaks our own opening) |
+
+No (n, m) pair starves it — this lineage has positive day-1 slack — so M2's "other" branch is already the best available; the residual −$1…−$4k is the twin's better mid-game, decided per seed. To beat it we need a better tape body or a better own economy, not a different opening.
