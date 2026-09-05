@@ -24,7 +24,8 @@ KNOBS = {"melon_floor": 150, "harvest_min": 2, "opening": "v312", "wheat_tiles":
          "early_hire_days": 0, "feed_spare_poor": 3,
          "fert_keep": 0, "fert_buy": 0, "fert_carry": 3, "demand_share": 0.5, "max_animals": 20,
          "wheat_per_animal": 0.0, "wheat_cap": 18, "wheat_water_tier": 0, "wheat_sell_price": 30, "wheat_hold_days": 0,
-         "sell_hourly": 0, "drop_min": 0, "drop_radius": 0, "capital_hour2": -1, "melon_rush": 0, "straw_delay": 0, "hands_early": 0}
+         "sell_hourly": 0, "drop_min": 0, "drop_radius": 0, "capital_hour2": -1, "melon_rush": 0, "straw_delay": 0, "hands_early": 0,
+         "setup_capital_share": 0.25, "labor_reserve_buffer": 50}
 
 BOARD = 10
 SHED_TILES = [(4, 4), (5, 4), (4, 5), (5, 5)]
@@ -58,6 +59,9 @@ LOAD_ANIMAL, LOAD_CROP_TASK, LOAD_SETUP = 6, 3, 8
 ROUTE_LEN = 3
 CROP_SWEEP_LEN = 6
 CROP_SWEEP_RADIUS = 4
+FERT_RADIUS = 2
+SPREAD_W = 1.0
+SPREAD_CAP = 5
 STRAW_CUTOFF = 17
 MELON_WAVE_DAYS = ((1, 10),)
 MELON_MAX_TILES = 40

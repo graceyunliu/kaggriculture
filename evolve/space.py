@@ -105,6 +105,8 @@ KNOB_SPACE = {
     "land_deadline_shift": ("int", -4, 4, 1),
     "sell_order":         ("cat", ["default", "perishables_first", "fert_first"]),
     "herd_species_bias":  ("float", -2.0, 2.0, 0.5),
+    "setup_capital_share": ("float", 0.0, 0.5, 0.05),
+    "labor_reserve_buffer": ("int", 0, 150, 25),
 }
 
 CONST_SPACE = {
@@ -120,6 +122,9 @@ CONST_SPACE = {
     "OPP_GROWTH":           ("float", 1.0, 1.8, 0.1),
     "MAX_SHEEP":            ("int", 4, 14, 1),
     "OPENING_MELONS":       ("int", 6, 14, 1),
+    "FERT_RADIUS":          ("int", 1, 4, 1),
+    "SPREAD_W":             ("float", 0.5, 1.5, 0.25),
+    "SPREAD_CAP":           ("int", 3, 7, 1),
 }
 
 SPACE = {**KNOB_SPACE, **CONST_SPACE}

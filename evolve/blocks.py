@@ -119,6 +119,25 @@ def blocks_key(blocks):
     return hashlib.sha256("".join(f"{k}\n{blocks[k]}" for k in sorted(blocks)).encode()).hexdigest()[:12]
 
 
+def resolve_source(value, root=ROOT):
+    """Resolve inline source or a repository-relative queue reference."""
+    if value is None or isinstance(value, str):
+        return value
+    if isinstance(value, dict) and set(value) == {"path"}:
+        root = Path(root).resolve()
+        path = (root / value["path"]).resolve()
+        if root not in path.parents:
+            raise ValueError(f"block path escapes repository: {value['path']}")
+        return path.read_text()
+    raise ValueError(f"invalid block source reference: {value!r}")
+
+
+def resolve_sources(blocks, root=ROOT):
+    if not blocks:
+        return None
+    return {name: resolve_source(value, root) for name, value in blocks.items()}
+
+
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "list"
     if cmd == "build":
