@@ -32,6 +32,22 @@ while true; do
   if [ -f evolve/PROMOTION_PENDING.txt ]; then
     say "*** PROMOTION PENDING: $(tr '\n' ' ' < evolve/PROMOTION_PENDING.txt) ***"
   fi
+  # Leaderboard replay sync + retention, rate-limited to once/24h (needs the
+  # `kaggle` CLI authenticated on this machine; harmlessly skipped otherwise).
+  SYNC_GATE=evolve/logs/replay_sync_last_run
+  now_ts=$(date +%s)
+  last_ts=0
+  [ -f "$SYNC_GATE" ] && last_ts=$(cat "$SYNC_GATE" 2>/dev/null || echo 0)
+  if [ $(( now_ts - last_ts )) -ge 86400 ]; then
+    if command -v kaggle >/dev/null 2>&1; then
+      "$PY" sync_replays.py leaderboard 5 --max-episodes 10 >> "$LOG" 2>&1 || say "leaderboard replay sync failed (continuing)"
+    else
+      say "leaderboard replay sync skipped: kaggle CLI not found on PATH"
+    fi
+    "$PY" evolve/prune_replays.py --max-age-days 10 >> "$LOG" 2>&1 || say "replay pruning failed (continuing)"
+    du -sh Replays/Auto/leaderboard-* >> "$LOG" 2>&1 || true
+    echo "$now_ts" > "$SYNC_GATE"
+  fi
   # Local replay scan is cheap (~0.05s with no corpus); failures preserve the existing clone fallback.
   "$PY" evolve/refresh_frontier.py >> "$LOG" 2>&1 || say "frontier refresh skipped/failed (existing clone selection preserved)"
   # 2. yardstick
