@@ -85,6 +85,8 @@ The acceptance ladder in `docs/PROMPT-codex-planner-blocks.md` §"Acceptance lad
 
 `candidates/M2.py::_m2_class` reads `obs["market"]["inventory"]["WHEAT"]` at step 1 and infers the opponent's turn-0 wheat purchase. Add to K.py `economy()` a knob `open_roundtrip=(n, m_big, m_mid, m_other)` (default None = off): at step 0 `BUY_PRODUCT WHEAT n`; at step 1 `SELL WHEAT m_class` placed *before* the opening's animal/seed buys and *after* HIRE orders (engine processes HIRE first anyway). Then grid n ∈ {20,30,40}, m ∈ n−{4,6,8,10,12} vs the three cluster tapes on seeds 1–6 both seats (`docs/opening-grid-sep04.txt` is the H32-chassis result to compare against; the interaction depends on our own day-1 cash, which differs on C1/E1). Keep it only if some row is ≥ +$20k on a cluster tape with no row < −$2k elsewhere. This is independent of §2–§5 and can run first.
 
+Result (Sep 4, agent run): does not transfer to the K/E1 chassis — all 45 grid cells −$28k…−$42k vs the tapes (E1 baseline −$21k…−$34k); E1's opening fills all 10 order slots at hour 0 and the round-trip only misallocates day-0 cash. Dropped; knob left in K.py as a no-op default. See `docs/opening-grid-kchassis-sep04.md`.
+
 ## 7. Rules
 
 Same as the planner brief: work on branch `codex/planner-tape`, don't touch `vendor/`, `candidates/K.py` except for §6, `evolve/chassis.py`, `evolve/space.py`, `RULES.md`. Bench before games. Two debugging rounds per regression, then write it up and stop.

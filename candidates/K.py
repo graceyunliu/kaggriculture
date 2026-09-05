@@ -28,7 +28,8 @@ KNOBS = {"melon_floor": 150, "harvest_min": 2, "opening": "v312", "wheat_tiles":
          "spec_units_WHEAT": None, "spec_cycle_WHEAT": None, "spec_cutoff_WHEAT": None, "spec_minval_WHEAT": None,
          "spec_units_CARROT": None, "spec_cycle_CARROT": None, "spec_cutoff_CARROT": None, "spec_minval_CARROT": None,
          "spec_units_TOMATO": None, "spec_cycle_TOMATO": None, "spec_cutoff_TOMATO": None, "spec_minval_TOMATO": None,
-         "seed_orders_cap": 4, "land_deadline_shift": 0, "sell_order": "default", "herd_species_bias": 0.0}
+         "seed_orders_cap": 4, "land_deadline_shift": 0, "sell_order": "default", "herd_species_bias": 0.0,
+         "open_roundtrip": None}
 
 BOARD = 10
 SHED_TILES = [(4, 4), (5, 4), (4, 5), (5, 5)]
@@ -358,6 +359,12 @@ def economy(obs, v):
             if need > 0:
                 n, _ = _hire_plan(S["hires_target"], n_hands, me["hires_today"], max(0.0, cash - 50))
                 orders += [["HIRE"]] * min(n, MAX_ORDERS - len(orders))
+            if KNOBS["open_roundtrip"] and day == 0 and hour == 1:
+                rt_n, rt_big, rt_mid, rt_other = KNOBS["open_roundtrip"]
+                mine = S.get("rt_open_n", rt_n)
+                opp_n = 10000 - int(obs["market"]["inventory"].get("WHEAT", 10000)) - int(mine) - 1
+                m_class = rt_big if opp_n >= 48 else (rt_mid if opp_n >= 38 else rt_other)
+                orders.append(["SELL", "WHEAT", int(m_class)])
         return orders[:MAX_ORDERS]
 
     # ---- frontier opening: the whole $3,000 at hour 0 of day 0 (exactly 10 orders)
@@ -562,6 +569,12 @@ def economy(obs, v):
         if k > 0 and fp <= 0.6 * prices.get("STRAWBERRY", 120):
             orders.append(["BUY_PRODUCT", "FERTILIZER", int(k)])
             free -= fp * k
+
+    # ---- open_roundtrip: turn-0 wheat buy, sold back turn-1 based on opponent's class (see M2/H32)
+    if KNOBS["open_roundtrip"] and day == 0 and hour == 0:
+        rt_n = KNOBS["open_roundtrip"][0]
+        orders.append(["BUY_PRODUCT", "WHEAT", int(rt_n)])
+        S["rt_open_n"] = sum(int(o[2]) for o in orders if o[0] == "BUY_PRODUCT" and o[1] == "WHEAT")
 
     # ---- hires
     target = _load_model(v, seeds_on_hand, n_total, pending_place, day)
