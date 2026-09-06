@@ -96,7 +96,7 @@ def build_prompt(block_names, n, archive, chassis_text, rejected_mechanisms=None
 
 def call_claude(prompt, model=None, timeout=900):
     exe = shutil.which("claude") or str(Path.home() / ".local" / "bin" / "claude")
-    cmd = [exe, "-p", "--output-format", "json", "--max-turns", "20",
+    cmd = [exe, "-p", "--output-format", "json", "--max-turns", "80",
            "--allowedTools", "Bash", "--permission-mode", "bypassPermissions"]
     if model:
         cmd += ["--model", model]
