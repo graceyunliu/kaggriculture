@@ -28,6 +28,8 @@ FP_SEEDS = [1, 2]
 SMOKE_SEEDS = [1, 2, 3]
 DEV_SEEDS = list(range(1, 11))
 HELD_SEEDS = list(range(11, 31))
+TRAJ_SEEDS = [1, 2, 3, 4, 5]   # AGE-331: subset of DEV_SEEDS, seat 0 vs frontier only, seed 1 reuses the
+                                # smoke-stage diagnosis cache so this is ~4 extra games per alive candidate.
 
 DEFAULTS = {
     "smoke_floor": -6000.0,   # $/game paired margin below which a candidate dies at smoke
@@ -160,6 +162,14 @@ def diagnose_candidate(db, key, cand_path, frontier, reference, engine="master",
         return None, None
 
 
+def collect_trajectory_summary(cand_path, frontier, seeds, engine):
+    """Traced games (seat 0 vs frontier) for an alive candidate, folded to a compact per-day summary
+    (AGE-331). Seed 1 is normally already cached from the smoke-stage diagnosis, so this is ~len(seeds)-1
+    new traced games. Does not touch the ranking score."""
+    runs = [trace_mod.traced(str(cand_path), str(frontier), s, engine) for s in seeds]
+    return trace_mod.fold_trace_to_summary([r["trace"][0] for r in runs], seeds=seeds)
+
+
 def run_cascade(db, key, cand_path, frontier, clone, cfg, jobs=None, log=print):
     """Push one candidate through the cascade, updating the DB as it goes. Returns final status."""
     engine = cfg.get("engine", "master")
@@ -209,6 +219,14 @@ def run_cascade(db, key, cand_path, frontier, clone, cfg, jobs=None, log=print):
               clone_margin=rc["mean_margin_per_game"], clone_t=rc["t"])
     log(f"    dev {r['mean_margin_per_game']:+,.0f} (t={r['t']:.1f}, {r['wins']}-{r['losses']})  "
         f"clone {rc['mean_margin_per_game']:+,.0f}")
+
+    # ---- trajectory summary (AGE-331): cheap, post-alive, never affects ranking/status.
+    try:
+        summary = collect_trajectory_summary(cand_path, frontier, TRAJ_SEEDS, engine)
+        db.update(key, trajectory_summary=json.dumps(summary))
+    except Exception as e:  # noqa: BLE001
+        log(f"    trajectory failed: {e!r}"[:200])
+
     if not (r["mean_margin_per_game"] >= cfg["dev_promote"] and r["t"] >= cfg["dev_promote_t"]):
         return "alive"
 
