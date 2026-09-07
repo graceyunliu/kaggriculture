@@ -24,13 +24,32 @@ def _fmt(v, money=True):
     return f"{v:+,.0f}" if money else f"{v:.1f}"
 
 
+def _params_dict(row):
+    """Parse a candidate's stored params, tolerating legacy rows where params ended up
+    double-JSON-encoded (e.g. a stray pre-existing row from an older loop.py build -- seen on
+    m2_9e2d396b9d6e). Repairs the common one-extra-encoding case; returns None (never raises) for
+    anything that still isn't a dict, so one bad row can't crash the whole report."""
+    try:
+        p = json.loads(row["params"])
+    except (TypeError, ValueError):
+        return None
+    if isinstance(p, str):
+        try:
+            p = json.loads(p)
+        except (TypeError, ValueError):
+            return None
+    return p if isinstance(p, dict) else None
+
+
 def knob_importance(rows, ref):
     """Mean dev margin by parameter value, for params that varied. Crude but tells you where the signal is."""
     by = defaultdict(lambda: defaultdict(list))
     for r in rows:
         if r.get("dev_margin") is None:
             continue
-        p = json.loads(r["params"])
+        p = _params_dict(r)
+        if p is None:
+            continue
         for k in space.SPACE:
             if k not in p:          # candidates rendered before the chassis gained this key
                 continue
@@ -110,8 +129,9 @@ def write_report(db, run_id):
         L.append("| key | island | origin | held vs frontier | t | W-L | held vs clone | dev | changes vs C1 | ablation (loss if reverted) | diagnosis vs C1 |")
         L.append("|---|---|---|---:|---:|---:|---:|---:|---|---|---|")
         for r in held[:15]:
-            d = space.diff(json.loads(r["params"]), c1)
-            ds = ", ".join(f"{k} {a}→{b}" for k, (a, b) in d.items())
+            p = _params_dict(r)
+            d = space.diff(p, c1) if p is not None else {}
+            ds = ", ".join(f"{k} {a}→{b}" for k, (a, b) in d.items()) if p is not None else "(malformed params row)"
             if r.get("blocks"):
                 ds += " · blocks: " + ",".join(sorted(json.loads(r["blocks"])))
             ab = ""
@@ -128,8 +148,9 @@ def write_report(db, run_id):
     L.append("| key | island | origin | dev | t | W-L | clone | status | changes vs C1 |")
     L.append("|---|---|---|---:|---:|---:|---:|---|---|")
     for r in alive[:15]:
-        d = space.diff(json.loads(r["params"]), c1)
-        ds = ", ".join(f"{k} {a}→{b}" for k, (a, b) in d.items())
+        p = _params_dict(r)
+        d = space.diff(p, c1) if p is not None else {}
+        ds = ", ".join(f"{k} {a}→{b}" for k, (a, b) in d.items()) if p is not None else "(malformed params row)"
         if r.get("blocks"):
             ds += " · blocks: " + ",".join(sorted(json.loads(r["blocks"])))
         L.append(f"| `{r['key']}` | {r.get('island','')} | {r['origin']} | {_fmt(r['dev_margin'])} | {_fmt(r['dev_t'], False)} | "
