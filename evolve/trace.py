@@ -33,14 +33,19 @@ sys.path.insert(0, str(ROOT))
 import mini_engine as me  # noqa: E402
 
 TRACE_DIR = ROOT / "evolve" / "traces"
-TRACE_VERSION = "v4"   # bump when metrics change so cached traces are recomputed
+TRACE_VERSION = "v5"   # bump when metrics change so cached traces are recomputed
 MOVES = {"NORTH": (0, -1), "SOUTH": (0, 1), "EAST": (1, 0), "WEST": (-1, 0)}
 WORK = {"PLANT", "WATER", "HARVEST", "FERTILIZE", "DIG", "BUILD_COOP", "BUILD_PASTURE", "FEED", "COLLECT_FERTILIZER",
         "CARE", "PLACE", "PICKUP", "DROP"}
-METRICS = ["cash", "networth", "sales_rev", "buys_cost", "hands", "animals", "plants", "weeds_new", "escapes",
+METRICS = ["cash", "networth", "sales_rev", "buys_cost", "hands", "animals", "plants", "land", "weeds_new", "escapes",
            "missed_feed", "missed_water", "feed_hour", "water_hour", "unit_turns", "move_turns", "idle_turns",
            "reversals", "work_turns", "travel_per_task", "shed_units", "carried_units",
            "chores_enumerated", "chores_completed", "skipped_feed_not_due"]
+# Fields folded into the compact per-candidate trajectory summary (AGE-331). A subset of METRICS
+# chosen to map to failure classes (CAPITAL/TIMING/EXECUTION/LABOR/LAND) while keeping DB rows small.
+SUMMARY_FIELDS = ["cash", "sales_rev", "buys_cost", "missed_feed", "missed_water", "escapes", "hands",
+                   "work_turns", "travel_per_task", "idle_turns", "chores_enumerated", "chores_completed",
+                   "animals", "plants", "land"]
 
 
 def _sha(path):
@@ -118,6 +123,7 @@ def run_traced(agent_a, agent_b, seed, engine="master", config=None):
     # sales/buys via the engine's commit hook (same trick as mini_engine)
     day_sales = [0.0, 0.0]
     day_buys = [0.0, 0.0]
+    day_sales_by_item = [{}, {}]   # item -> revenue, this day (mirrors mini_engine.run_game)
     farms_ref = [None]
     orig_commit = mod._commit_unit
     orig_apply = mod._apply_unit_action
@@ -128,6 +134,7 @@ def run_traced(agent_a, agent_b, seed, engine="master", config=None):
             pid = 0 if farm is farms_ref[0][0] else 1
             if op == "SELL":
                 day_sales[pid] += price
+                day_sales_by_item[pid][item] = day_sales_by_item[pid].get(item, 0.0) + price
             elif op in ("BUY_PRODUCT", "BUY_SEED", "BUY_ANIMAL"):
                 day_buys[pid] += price
         return ok
@@ -135,6 +142,8 @@ def run_traced(agent_a, agent_b, seed, engine="master", config=None):
     mod._commit_unit = logged_commit
 
     T = [{m: [] for m in METRICS} for _ in range(2)]
+    for tt in T:
+        tt["sales_by_product"] = []
     acc = [None, None]           # per-day accumulators
     prev_pos = [None, None]      # positions last turn
     prev_move = [None, None]     # last move op per unit
@@ -206,6 +215,7 @@ def run_traced(agent_a, agent_b, seed, engine="master", config=None):
         t["networth"].append(round(nw))
         t["animals"].append(len(animals))
         t["plants"].append(len(plants))
+        t["land"].append(len(farm.get("unlocked_quadrants", [])))
         t["missed_feed"].append(missed_feed)
         t["missed_water"].append(missed_water)
         t["escapes"].append(escapes)
@@ -224,6 +234,8 @@ def run_traced(agent_a, agent_b, seed, engine="master", config=None):
         t["travel_per_task"].append(round(a["move_turns"] / max(1, a["work_turns"]), 2))
         t["sales_rev"].append(round(day_sales[i]))
         t["buys_cost"].append(round(day_buys[i]))
+        t["sales_by_product"].append({k: round(v) for k, v in day_sales_by_item[i].items()})
+        day_sales_by_item[i] = {}
         t["feed_hour"].append(round(sum(fed_hour[i].values()) / len(fed_hour[i]), 1) if fed_hour[i] else None)
         t["water_hour"].append(round(sum(wat_hour[i].values()) / len(wat_hour[i]), 1) if wat_hour[i] else None)
         cs = chore_state[i] or {"enumerated": set(), "completed": set(), "safe_feed": set()}
@@ -418,6 +430,27 @@ def summary_row(t):
             "reversals": tot("reversals"), "feed_hour": round(sum(fh) / len(fh), 1) if fh else None,
             "water_hour": round(sum(wh) / len(wh), 1) if wh else None, "max_hands": max(t["hands"]) if n else 0,
             "max_animals": max(t["animals"]) if n else 0}
+
+
+def fold_trace_to_summary(traces, seeds=None, fields=None):
+    """Fold N per-seed traces (same candidate, seat 0 vs frontier) into one compact per-day summary,
+    averaging each field day-by-day. Used to populate `candidates.trajectory_summary` (AGE-331).
+
+    traces: list of per-player trace dicts (each shaped like run_traced(...)["trace"][0]).
+    Returns a JSON-able dict: {"seeds": [...], "n_days": int, <field>: [day0, day1, ...], ...}.
+    """
+    fields = fields or SUMMARY_FIELDS
+    if not traces:
+        return {"seeds": seeds or [], "n_days": 0, **{f: [] for f in fields}}
+    n_days = min(len(t["cash"]) for t in traces)
+    out = {"seeds": seeds or list(range(1, len(traces) + 1)), "n_days": n_days}
+    for f in fields:
+        col = []
+        for d in range(n_days):
+            vals = [t[f][d] for t in traces if t.get(f) and t[f][d] is not None]
+            col.append(round(sum(vals) / len(vals), 2) if vals else None)
+        out[f] = col
+    return out
 
 
 def main():
