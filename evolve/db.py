@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS candidates (
     ablation TEXT,
     diagnosis TEXT,
     exec_summary TEXT,
+    trajectory_summary TEXT,
     games INTEGER DEFAULT 0,
     seconds REAL DEFAULT 0,
     note TEXT
@@ -102,7 +103,7 @@ class DB:
             "INSERT OR IGNORE INTO rejected_mechanisms(mechanism_tag, verdict, one_line_cause, doc_ref, date) "
             "VALUES(?,?,?,?,?)", REJECTED_MECHANISMS)
         cols = {r["name"] for r in self.conn.execute("PRAGMA table_info(candidates)")}
-        for col, decl in (("island", "TEXT DEFAULT 'c1'"), ("blocks", "TEXT"), ("ablation", "TEXT"), ("diagnosis", "TEXT"), ("exec_summary", "TEXT")):
+        for col, decl in (("island", "TEXT DEFAULT 'c1'"), ("blocks", "TEXT"), ("ablation", "TEXT"), ("diagnosis", "TEXT"), ("exec_summary", "TEXT"), ("trajectory_summary", "TEXT")):
             if col not in cols:
                 self.conn.execute(f"ALTER TABLE candidates ADD COLUMN {col} {decl}")
         self.conn.commit()
