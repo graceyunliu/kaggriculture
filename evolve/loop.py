@@ -510,7 +510,7 @@ def main():
                           "block via operators.block_pair_mutate instead of pure param pairing")
     args = ap.parse_args()
     if args.paired_rate:
-        for name in ("c1", "wide"):
+        for name in ("c1", "wide", "H32", "M2"):
             ISLANDS[name]["paired"] = args.paired_rate
             if args.block_pair_rate:
                 ISLANDS[name]["block_pair"] = args.block_pair_rate
