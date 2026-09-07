@@ -23,6 +23,7 @@ sys.path.insert(0, str(ROOT))
 import mini_engine as me  # noqa: E402
 sys.path.insert(0, str(ROOT / "evolve"))
 import trace as trace_mod  # noqa: E402
+import classify as classify_mod  # noqa: E402
 
 FP_SEEDS = [1, 2]
 SMOKE_SEEDS = [1, 2, 3]
@@ -154,7 +155,8 @@ def diagnose_candidate(db, key, cand_path, frontier, reference, engine="master",
         rr = get_pool().apply(trace_mod.traced, (str(reference), str(frontier), 1, engine))
         d = trace_mod.diagnose(rc["trace"][0], rr["trace"][0], "cand", "C1")
         summ = trace_mod.summary_row(rc["trace"][0])
-        db.update(key, diagnosis=d["text"], exec_summary=json.dumps(summ))
+        profile = classify_mod.classify_from_exec_summary(summ, d["text"])
+        db.update(key, diagnosis=d["text"], exec_summary=json.dumps(summ), failure_profile=json.dumps(profile))
         log(f"    diag: {d['text'][:220]}")
         return d, summ
     except Exception as e:  # noqa: BLE001
@@ -193,7 +195,8 @@ def run_cascade(db, key, cand_path, frontier, clone, cfg, jobs=None, log=print):
     if cfg.get("pattern_death_enabled", True):
         reason = pattern_death_reason(fingerprint_trace, cfg)
         if reason:
-            db.update(key, status="dead_pattern", stage=0, note=reason)
+            profile = classify_mod.classify_from_pattern(reason)
+            db.update(key, status="dead_pattern", stage=0, note=reason, failure_profile=json.dumps(profile))
             return "dead_pattern"
 
     # ---- stage 1: smoke
@@ -220,12 +223,15 @@ def run_cascade(db, key, cand_path, frontier, clone, cfg, jobs=None, log=print):
     log(f"    dev {r['mean_margin_per_game']:+,.0f} (t={r['t']:.1f}, {r['wins']}-{r['losses']})  "
         f"clone {rc['mean_margin_per_game']:+,.0f}")
 
-    # ---- trajectory summary (AGE-331): cheap, post-alive, never affects ranking/status.
+    # ---- trajectory summary + failure classification (AGE-331/AGE-332): cheap, post-alive,
+    # never affects ranking/status.
     try:
         summary = collect_trajectory_summary(cand_path, frontier, TRAJ_SEEDS, engine)
         db.update(key, trajectory_summary=json.dumps(summary))
+        profile = classify_mod.classify_trajectory(summary, dev_margin=r["mean_margin_per_game"])
+        db.update(key, failure_profile=json.dumps(profile))
     except Exception as e:  # noqa: BLE001
-        log(f"    trajectory failed: {e!r}"[:200])
+        log(f"    trajectory/classify failed: {e!r}"[:200])
 
     if not (r["mean_margin_per_game"] >= cfg["dev_promote"] and r["t"] >= cfg["dev_promote_t"]):
         return "alive"
