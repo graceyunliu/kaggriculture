@@ -51,6 +51,54 @@ RULES = {
     "LAND_FAILURE": {"land_final_min": 3, "animals_d15_low": 8, "plants_final_low": 30},
 }
 
+# Population reference stats for confidence scoring, calibrated 2026-09-07 (evolve/calibrate_rules.py
+# --frontier candidates/H32.py, n=59 alive/held candidates with a trajectory_summary).
+#
+# WHY THIS EXISTS: before this, each rule's confidence was a fixed constant hand-picked when the rule
+# was written (e.g. EXECUTION_FAILURE's missed_water/missed_feed hits capped at 0.85, CAPACITY_FAILURE
+# and LABOR_FAILURE capped at 0.5). Since primary_class = whichever class has the highest confidence,
+# EXECUTION_FAILURE structurally won almost every comparison it was even a candidate in, regardless of
+# which class actually explained more of that specific candidate's loss -- confirmed on the live H32
+# population: 100% of 130 classified candidates had EXECUTION_FAILURE as primary_class, even though
+# CAPACITY_FAILURE fired as a *secondary* class on 58 of them and could plausibly have been primary for
+# some. Confidence is now scored as a z-score against these population stats (how many stdevs from the
+# mean, in the "worse" direction) so severity is expressed in the same units across every class.
+#
+# CAVEAT (report honestly, don't hide): against H32 specifically, every one of these correlations with
+# dev_margin is WEAK (|r| < 0.3, several are +0.13 to +0.28 in the "wrong" direction on n=59) -- see
+# evolve/calibrate_rules.py's raw output. That's because H32 beats every candidate in this population
+# decisively and fairly uniformly (dev_margin -27k to -46k), so there is little true variance left to
+# correlate against; none of these 8 metrics currently explains "why did THIS candidate lose more than
+# THAT one" against H32. This calibration fixes the *comparability* bug (item 1); it does not manufacture
+# a real per-candidate discriminating signal where the population itself is too homogeneous to have one
+# yet. Re-run calibrate_rules.py once dev_margin has real spread again (e.g. against a weaker/mixed
+# opponent, or once some candidates start closing the gap) and update these stats.
+POPULATION_STATS = {
+    # metric: (mean, stdev, higher_is_worse)
+    "missed_water_total": (375.3, 27.1, True),
+    "missed_feed_total": (3.9, 1.7, True),
+    "animals_d15": (11.2, 1.2, False),
+    "plants_final": (20.7, 4.8, False),
+    "work_turns_per_day_8_15": (80.7, 3.6, False),
+    "idle_turns_per_day_8_15": (12.0, 4.3, True),
+    "shed_units_final": (40.7, 6.8, True),
+}
+
+
+def _z_confidence(value, metric, floor=0.3, ceiling=0.9, per_sigma=0.25):
+    """Confidence in [floor, ceiling], scaled by how many population stdevs `value` is from the mean
+    in the "worse" direction (0 stdev -> floor, 2+ stdevs -> near ceiling). Comparable across every
+    rule that uses it, unlike a hand-picked constant. Falls back to `floor` if the metric has no
+    calibration or zero variance."""
+    stats = POPULATION_STATS.get(metric)
+    if not stats or value is None:
+        return floor
+    mean, sd, higher_is_worse = stats
+    if sd <= 0:
+        return floor
+    z = (value - mean) / sd if higher_is_worse else (mean - value) / sd
+    return max(floor, min(ceiling, floor + max(0.0, z) * per_sigma))
+
 
 def _sum(series):
     return sum(v for v in (series or []) if v is not None)
@@ -76,16 +124,17 @@ def _rule_execution(s, rules):
     escapes = _sum(s.get("escapes"))
     evidence, conf = [], 0.0
     if mw > r["missed_water_total"]:
-        conf = max(conf, 0.85)
+        conf = max(conf, _z_confidence(mw, "missed_water_total"))
         evidence.append({"metric": "missed_water_total", "value": mw})
     if mf > r["missed_feed_total"]:
-        conf = max(conf, 0.85)
+        conf = max(conf, _z_confidence(mf, "missed_feed_total"))
         evidence.append({"metric": "missed_feed_total", "value": mf})
     if ratio < r["chore_completion_ratio"]:
-        conf = max(conf, 0.6)
+        # no reliable population stats for this metric yet (near-zero observed spread) -- fixed floor
+        conf = max(conf, 0.3)
         evidence.append({"metric": "chore_completion_ratio", "value": round(ratio, 3)})
     if escapes > r["escapes_any"]:
-        conf = max(conf, 0.4)
+        conf = max(conf, 0.3)
         evidence.append({"metric": "escapes_total", "value": escapes})
     return ("EXECUTION_FAILURE", conf, evidence) if conf > 0 else None
 
@@ -106,13 +155,17 @@ def _rule_labor(s, rules):
     lo, hi = r["window"]
     hands, work, idle = s.get("hands") or [], s.get("work_turns") or [], s.get("idle_turns") or []
     n = min(len(hands), len(work), len(idle), hi + 1)
+    window_work = [work[d] for d in range(lo, n) if work[d] is not None]
+    window_idle = [idle[d] for d in range(lo, n) if idle[d] is not None]
+    mean_work = sum(window_work) / len(window_work) if window_work else None
+    mean_idle = sum(window_idle) / len(window_idle) if window_idle else None
     evidence, conf = [], 0.0
     for d in range(lo, n):
         if (hands[d] or 0) >= r["hands_min"] and (work[d] or 0) < r["work_turns_per_day_max"]:
-            conf = max(conf, 0.75)
+            conf = max(conf, _z_confidence(mean_work, "work_turns_per_day_8_15"))
             evidence.append({"day": d, "metric": "work_turns", "value": work[d], "hands": hands[d]})
         if (idle[d] or 0) > r["idle_turns_per_day"]:
-            conf = max(conf, 0.5)
+            conf = max(conf, _z_confidence(mean_idle, "idle_turns_per_day_8_15"))
             evidence.append({"day": d, "metric": "idle_turns", "value": idle[d]})
     return ("LABOR_FAILURE", conf, evidence) if conf > 0 else None
 
@@ -121,8 +174,9 @@ def _rule_market(s, rules):
     r = rules["MARKET_FAILURE"]
     shed = _finite(s.get("shed_units"))
     if shed and shed[-1] > r["shed_units_final_high"]:
-        return ("MARKET_FAILURE", 0.6, [{"day": s.get("n_days", len(shed)) - 1,
-                                          "metric": "shed_units_final", "value": shed[-1]}])
+        conf = _z_confidence(shed[-1], "shed_units_final")
+        return ("MARKET_FAILURE", conf, [{"day": s.get("n_days", len(shed)) - 1,
+                                           "metric": "shed_units_final", "value": shed[-1]}])
     return None
 
 
@@ -163,10 +217,10 @@ def _rule_capacity(s, rules, dev_margin):
     plants_final = _finite(s.get("plants"))
     evidence, conf = [], 0.0
     if animals_d15 is not None and animals_d15 < r["animals_d15_low"]:
-        conf = max(conf, 0.5)
+        conf = max(conf, _z_confidence(animals_d15, "animals_d15"))
         evidence.append({"day": 15, "metric": "animals", "value": animals_d15})
     if plants_final and plants_final[-1] < r["plants_final_low"]:
-        conf = max(conf, 0.5)
+        conf = max(conf, _z_confidence(plants_final[-1], "plants_final"))
         evidence.append({"metric": "plants_final", "value": plants_final[-1]})
     return ("CAPACITY_FAILURE", conf, evidence) if conf > 0 else None
 
@@ -180,10 +234,26 @@ def _rule_land(s, rules):
         return None
     if (animals_d15 is not None and animals_d15 < r["animals_d15_low"]) and \
        (plants_final and plants_final[-1] < r["plants_final_low"]):
-        return ("LAND_FAILURE", 0.5, [{"metric": "land_final", "value": land_final[-1]},
-                                       {"day": 15, "metric": "animals", "value": animals_d15},
-                                       {"metric": "plants_final", "value": plants_final[-1]}])
+        conf = max(_z_confidence(animals_d15, "animals_d15"), _z_confidence(plants_final[-1], "plants_final"))
+        return ("LAND_FAILURE", conf, [{"metric": "land_final", "value": land_final[-1]},
+                                        {"day": 15, "metric": "animals", "value": animals_d15},
+                                        {"metric": "plants_final", "value": plants_final[-1]}])
     return None
+
+
+def _merge_and_rank(hits):
+    """Merge (class, confidence, evidence) tuples that share a class into one entry (max confidence,
+    combined evidence), then sort by confidence descending. Fixes classify_from_exec_summary's
+    previous behavior of emitting two separate EXECUTION_FAILURE entries when both its sub-checks fired."""
+    by_class = {}
+    for cls, conf, evidence in hits:
+        if cls not in by_class or conf > by_class[cls][0]:
+            by_class[cls] = (conf, by_class.get(cls, (0.0, []))[1] + evidence)
+        else:
+            by_class[cls] = (by_class[cls][0], by_class[cls][1] + evidence)
+    merged = [(cls, conf, ev) for cls, (conf, ev) in by_class.items()]
+    merged.sort(key=lambda h: h[1], reverse=True)
+    return [{"class": c, "confidence": round(conf, 2), "evidence": ev} for c, conf, ev in merged]
 
 
 _TRAJECTORY_RULES = (_rule_execution, _rule_capital, _rule_labor, _rule_market, _rule_timing)
@@ -203,8 +273,7 @@ def classify_trajectory(summary, dev_margin=None, rules=RULES):
     r = _rule_land(summary, rules)
     if r:
         hits.append(r)
-    hits.sort(key=lambda h: h[1], reverse=True)
-    classes = [{"class": c, "confidence": round(conf, 2), "evidence": ev} for c, conf, ev in hits]
+    classes = _merge_and_rank(hits)
     return {
         "primary_class": classes[0]["class"] if classes else None,
         "classes": classes,
@@ -242,19 +311,24 @@ def classify_from_exec_summary(exec_summary, diagnosis_text=""):
         return {"primary_class": None, "classes": [], "notes": "no exec_summary available", "source": "exec_summary"}
     s = exec_summary
     hits = []
-    if (s.get("missed_water") or 0) > RULES["EXECUTION_FAILURE"]["missed_water_total"] or \
-       (s.get("missed_feed") or 0) > RULES["EXECUTION_FAILURE"]["missed_feed_total"]:
-        hits.append(("EXECUTION_FAILURE", 0.6, [{"metric": "missed_water", "value": s.get("missed_water")},
-                                                  {"metric": "missed_feed", "value": s.get("missed_feed")}]))
+    mw, mf = s.get("missed_water") or 0, s.get("missed_feed") or 0
+    if mw > RULES["EXECUTION_FAILURE"]["missed_water_total"] or mf > RULES["EXECUTION_FAILURE"]["missed_feed_total"]:
+        # same population stats as classify_trajectory (missed_water/missed_feed are whole-game sums
+        # in both places, so the z-score is on the same scale) -- capped a touch lower (0.8 ceiling)
+        # since this is one seed, not the 5-seed average classify_trajectory uses.
+        conf = max(_z_confidence(mw, "missed_water_total", ceiling=0.8),
+                   _z_confidence(mf, "missed_feed_total", ceiling=0.8))
+        hits.append(("EXECUTION_FAILURE", conf, [{"metric": "missed_water", "value": s.get("missed_water")},
+                                                    {"metric": "missed_feed", "value": s.get("missed_feed")}]))
     enum, comp = s.get("chores_enumerated") or 0, s.get("chores_completed") or 0
     if enum and comp / enum < RULES["EXECUTION_FAILURE"]["chore_completion_ratio"]:
-        hits.append(("EXECUTION_FAILURE", 0.5, [{"metric": "chore_completion_ratio", "value": round(comp / enum, 3)}]))
+        hits.append(("EXECUTION_FAILURE", 0.3, [{"metric": "chore_completion_ratio", "value": round(comp / enum, 3)}]))
     if s.get("idle_share", 0) > 0.25:
         hits.append(("LABOR_FAILURE", 0.4, [{"metric": "idle_share", "value": s.get("idle_share")}]))
     if s.get("max_animals", 99) < RULES["CAPACITY_FAILURE"]["animals_d15_low"]:
-        hits.append(("CAPACITY_FAILURE", 0.35, [{"metric": "max_animals", "value": s.get("max_animals")}]))
-    hits.sort(key=lambda h: h[1], reverse=True)
-    classes = [{"class": c, "confidence": round(conf, 2), "evidence": ev} for c, conf, ev in hits]
+        hits.append(("CAPACITY_FAILURE", _z_confidence(s.get("max_animals"), "animals_d15", ceiling=0.8),
+                     [{"metric": "max_animals", "value": s.get("max_animals")}]))
+    classes = _merge_and_rank(hits)
     return {
         "primary_class": classes[0]["class"] if classes else None,
         "classes": classes,
