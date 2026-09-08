@@ -256,4 +256,10 @@ def render(params, blocks=None, out_dir=GEN_DIR):
 
 
 def diff(params, ref):
+    """Params that differ from `ref`. Defensive against legacy rows whose stored params ended up
+    double-JSON-encoded (a str instead of a dict survives json.loads once) -- returns {} rather than
+    raising TypeError on `params[k]`/`ref[k]`, since a malformed one-off row shouldn't crash every
+    caller (report.py, loop.py's export_archive) that diffs a whole population."""
+    if not isinstance(params, dict) or not isinstance(ref, dict):
+        return {}
     return {k: (ref[k], params[k]) for k in SPACE if k in params and k in ref and params[k] != ref[k]}
