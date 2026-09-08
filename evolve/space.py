@@ -234,20 +234,37 @@ def params_key(params, blocks=None):
 
 
 def render(params, blocks=None, out_dir=GEN_DIR):
-    """Write a concrete agent file for these params (+ optional block overrides); returns its path."""
+    """Write a concrete agent file for these params (+ optional block overrides); returns its path.
+
+    Contract: every SPACE key present in `params` is realized in the written file, or ValueError.
+    A param that cannot be substituted (knob missing from the frozen chassis's KNOBS, or a constant
+    whose `^NAME = ...` line isn't there) would otherwise render a byte-identical clone of the parent
+    under a fresh key, and the caller would score a no-op as a real candidate."""
     text, knobs, consts = _read_base()
     if blocks:
         text = _blocks.substitute(text, blocks)
     knobs = dict(knobs)
     for k in KNOB_SPACE:
-        if k in knobs and k in params:
-            knobs[k] = params[k]
+        if k not in params:
+            continue
+        if k not in knobs:
+            raise ValueError(
+                f"render: knob {k!r}={params[k]!r} cannot be realized -- it is in KNOB_SPACE but not in "
+                f"the frozen chassis ({K_SRC.name}), so rendering it would silently produce a no-op clone "
+                f"of the parent. Rebuild the chassis (`python3 evolve/blocks.py build`) to activate it. "
+                f"Live KNOBS: {sorted(knobs)}")
+        knobs[k] = params[k]
     m = re.search(r"^KNOBS = \{.*?\}\n", text, re.S | re.M)
     text = text[:m.start()] + "KNOBS = " + repr(knobs) + "\n" + text[m.end():]
     for name in CONST_SPACE:
         if name not in params:
             continue
         text, n = re.subn(rf"^{name}\s*=\s*[^#\n]+", f"{name} = {params[name]!r}", text, count=1, flags=re.M)
+        if n == 0:
+            raise ValueError(
+                f"render: constant {name!r}={params[name]!r} cannot be realized -- no `^{name} = ...` line "
+                f"in the frozen chassis ({K_SRC.name}){' after block substitution' if blocks else ''}, so "
+                f"rendering it would silently produce a no-op clone of the parent.")
     out_dir.mkdir(parents=True, exist_ok=True)
     path = out_dir / f"cand_{params_key(params, blocks)}.py"
     if not path.exists():
