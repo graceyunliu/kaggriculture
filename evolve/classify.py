@@ -28,8 +28,20 @@ CLASSES = ("EXECUTION_FAILURE", "CAPITAL_FAILURE", "LABOR_FAILURE", "MARKET_FAIL
            "TIMING_FAILURE", "CAPACITY_FAILURE", "LAND_FAILURE")
 
 RULES = {
-    "EXECUTION_FAILURE": {"missed_water_total": 300, "missed_feed_total": 100,
-                           "chore_completion_ratio": 0.7, "escapes_any": 0},
+    # Calibrated 2026-09-07 (evolve/calibrate_rules.py) against the first 23 candidates with a
+    # trajectory_summary. The original missed_water_total/missed_feed_total/chore_completion_ratio
+    # thresholds came from RULES.md's cross-codebase comparison (our dispatcher vs. the frontier
+    # opponent tapes) and turned out to be non-discriminating *within* our own population (everyone
+    # shares the same chassis): missed_water_total fired on 100% of candidates, missed_feed_total on
+    # 0%. Reset to near the population mean so each rule actually separates candidates; re-run
+    # calibrate_rules.py periodically as the population grows and adjust again.
+    #   missed_water_total: corr(dev_margin, metric) = -0.37, direction confirmed correct.
+    #   missed_feed_total:  corr = -0.77, the strongest signal available -- was completely inert before.
+    #   chore_completion_ratio: corr = +0.63 (backwards from the assumed direction) but population
+    #     spread was only 0.83-0.89 (n=23) -- too little variance/data to trust reversing the rule,
+    #     so it's effectively disabled (threshold above the observed range) rather than flipped.
+    "EXECUTION_FAILURE": {"missed_water_total": 400, "missed_feed_total": 7,
+                           "chore_completion_ratio": 0.95, "escapes_any": 0},
     "CAPITAL_FAILURE": {"cash_floor": 50, "cash_floor_days": 3, "cash_floor_window": (1, 8)},
     "LABOR_FAILURE": {"hands_min": 6, "work_turns_per_day_max": 40, "window": (8, 15),
                        "idle_turns_per_day": 40},
