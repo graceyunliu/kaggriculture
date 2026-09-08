@@ -1,0 +1,88 @@
+[
+  {
+    "state_signature": "day=26 cash=C5_40k+ land_tier=3 labor=L1_5-8 decision_type=hire_opportunity",
+    "agents_or_cohorts": {
+      "cohort_a": "mine (graceyunliu)",
+      "cohort_b": "pooled opponent field"
+    },
+    "action_a": "OBSERVED_ABSTENTION (freq 0.78)",
+    "action_b": "OBSERVED_ACTION (freq 1.0)",
+    "support_games": {
+      "cohort_a_games": 6,
+      "cohort_b_games": 8,
+      "cohort_a_observations": 27,
+      "cohort_b_observations": 8
+    },
+    "distinct_seeds": {
+      "cohort_a": 6,
+      "cohort_b": 8
+    },
+    "distinct_opponent_identities": [
+      "Anton Shaniuk",
+      "Gaiar Baimuratov",
+      "Odyssey",
+      "Tatsuhito Yoshikawa",
+      "The Wolf of Wheat Street",
+      "Touhidul Alam Seyam",
+      "ZJUwlm",
+      "graceyunliu"
+    ],
+    "state_match_type": "opportunity-conditioned (Level A state signature, sampled at hourly steps where the reconstructed eligibility gate confirms an opportunity existed)",
+    "opportunity_state": "OBSERVED_ACTION_vs_OBSERVED_ABSTENTION_divergence",
+    "rng_classification": "RNG_INDEPENDENT",
+    "observed": "OBSERVED: opportunity-conditioned state->action comparison for decision_type=hire_opportunity, using the exact HIRE/MELON eligibility gates recovered from vendor/kaggle_environments_engine/kaggriculture.py (_do_hire, _commit_unit). Not outcome-derived.",
+    "associated_outcomes": "Not evaluated; no outcome/causal claim attached, per hard constraints.",
+    "hypothesis": "None promoted beyond descriptive frequency comparison.",
+    "confidence": "DIRECTLY_OBSERVED for existence of the opportunity-conditioned action-frequency divergence; no causal or performance claim."
+  },
+  {
+    "state_signature": "ALL STATES, HIRE opportunity (global aggregate, decision_type=hire_opportunity)",
+    "action_a": "OBSERVED_ACTION 603 / OBSERVED_ABSTENTION 9870 (action rate 5.76%)",
+    "action_b": "OBSERVED_ACTION 732 / OBSERVED_ABSTENTION 9772 (action rate 6.97%)",
+    "support_games": {
+      "cohort_a_observations": 10473,
+      "cohort_b_observations": 10504
+    },
+    "opportunity_state": "OBSERVED_ACTION_and_OBSERVED_ABSTENTION_both_present_zero_unreconstructable",
+    "rng_classification": "RNG_INDEPENDENT",
+    "observed": "OBSERVED: global opportunity-conditioned hire action-rate gap is small (5.76% vs 6.97%). Eligibility fully reconstructed from _hire_cost/_do_hire (kaggriculture.py:674-683): opportunity = money >= farmHandCostMult * fib(hires_today).",
+    "confidence": "DIRECTLY_OBSERVED negative-leaning finding: no large global divergence.",
+    "agents_or_cohorts": {
+      "cohort_a": "mine (graceyunliu)",
+      "cohort_b": "pooled opponent field"
+    },
+    "distinct_seeds": {
+      "cohort_a": "see phase3_mined_events.jsonl",
+      "cohort_b": "see phase3_mined_events.jsonl"
+    },
+    "distinct_opponent_identities": "84 distinct team names in the 175-file sample (same pool as phases 1-2)",
+    "state_match_type": "opportunity-conditioned global aggregate (not state-bucketed; insufficient per-bucket support)",
+    "associated_outcomes": "Not evaluated; no outcome/causal claim attached.",
+    "hypothesis": "None promoted."
+  },
+  {
+    "state_signature": "ALL STATES, MELON opportunity (global aggregate, decision_type=melon_opportunity)",
+    "action_a": "OBSERVED_ACTION 7 / OBSERVED_ABSTENTION 1103 (action rate 0.63%)",
+    "action_b": "OBSERVED_ACTION 17 / OBSERVED_ABSTENTION 449 (action rate 3.65%)",
+    "support_games": {
+      "cohort_a_observations": 1110,
+      "cohort_b_observations": 466
+    },
+    "opportunity_state": "OBSERVED_ACTION_and_OBSERVED_ABSTENTION_both_present_zero_unreconstructable",
+    "rng_classification": "RNG_INDEPENDENT",
+    "observed": "OBSERVED: global opportunity-conditioned melon-sale action-rate gap is large (~5.8x, 0.63% vs 3.65%), and is now opportunity-normalized (unlike Phase 2's raw hold/sell counts, which were confounded by unequal opportunity counts: mine had 1110 opportunities vs opp's 466). Eligibility fully reconstructed from _commit_unit SELL branch (kaggriculture.py:626-635): opportunity = shed.MELON > 0.",
+    "confidence": "PLAUSIBLE_BUT_UNPROVEN: directionally clear and RNG_INDEPENDENT, but only 24 total action events across the sample and no significance test run; not promoted to STRONGLY_SUPPORTED.",
+    "agents_or_cohorts": {
+      "cohort_a": "mine (graceyunliu)",
+      "cohort_b": "pooled opponent field"
+    },
+    "distinct_seeds": {
+      "cohort_a": "see phase3_mined_events.jsonl",
+      "cohort_b": "see phase3_mined_events.jsonl"
+    },
+    "distinct_opponent_identities": "84 distinct team names in the 175-file sample (same pool as phases 1-2)",
+    "state_match_type": "opportunity-conditioned global aggregate (not state-bucketed; insufficient per-bucket support)",
+    "associated_outcomes": "Not evaluated; no outcome/causal claim attached.",
+    "hypothesis": "None promoted."
+  }
+]

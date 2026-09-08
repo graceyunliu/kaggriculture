@@ -1,0 +1,80 @@
+[
+  {
+    "state_signature": "ALL STATES, MELON opportunity (pooled, decision_type=melon_opportunity, Phase 4A scaled sample)",
+    "agents_or_cohorts": {
+      "cohort_a": "mine (graceyunliu)",
+      "cohort_b": "pooled opponent field (306 distinct identities)"
+    },
+    "action_a": "OBSERVED_ACTION 894 / OBSERVED_ABSTENTION 23139 (rate 0.0372, Wilson 95% CI [0.03487918231850475, 0.039666451830034956])",
+    "action_b": "OBSERVED_ACTION 1344 / OBSERVED_ABSTENTION 10200 (rate 0.1164, Wilson 95% CI [0.11070042001521548, 0.12240301985185027])",
+    "support_games": {
+      "cohort_a_games": 358,
+      "cohort_b_games": 358,
+      "cohort_a_observations": 24033,
+      "cohort_b_observations": 11544
+    },
+    "distinct_seeds": {
+      "cohort_a": 358,
+      "cohort_b": 358
+    },
+    "distinct_opponent_identities": 306,
+    "state_match_type": "opportunity-conditioned pooled aggregate (shed.MELON>0 gate, unchanged from Phase 3), scaled replay population",
+    "opportunity_state": "OBSERVED_ACTION_and_OBSERVED_ABSTENTION_both_present_zero_unreconstructable",
+    "rng_classification": "RNG_INDEPENDENT",
+    "test": "Fisher's exact test, two-sided, exact hypergeometric (log-space)",
+    "p_value": 7.117121962339914e-169,
+    "rate_ratio_opp_over_mine": 3.1297771700456263,
+    "rate_ratio_ci95_delta_method": [
+      2.884454609823979,
+      3.3959643881297095
+    ],
+    "odds_ratio_mine_vs_opp": 0.293220166324017,
+    "odds_ratio_ci95": [
+      0.2685897364014184,
+      0.32010927554799207
+    ],
+    "cluster_bootstrap_by_replay": {
+      "B": 2000,
+      "median_rate_ratio": 3.155308888425779,
+      "ci95": [
+        2.088620279448818,
+        4.769830632850269
+      ]
+    },
+    "per_opponent_identity_summary": {
+      "n_opponents_with_ge30_observations": 61,
+      "n_above_mine_rate": 35,
+      "n_at_or_below_mine_rate": 26,
+      "note": "Pooled rate is inflated by a subset of near-always-sell opponents; median opponent rate (~4.4%) is much closer to mine (3.7%) than the pooled mean (11.6%). See REPORT_PHASE4A.md."
+    },
+    "observed": "OBSERVED: melon-opportunity action-rate divergence, opportunity-conditioned (shed.MELON>0), statistically confirmed at scale. Not outcome-derived.",
+    "associated_outcomes": "Not evaluated; explicitly out of scope for Phase 4A. No performance or causal claim made.",
+    "hypothesis": "None promoted beyond the existence/robustness of the behavioral divergence. Explanatory mechanism (why the divergence exists) remains PLAUSIBLE_BUT_UNPROVEN.",
+    "confidence": "STRONGLY_SUPPORTED for existence/robustness of the divergence (promoted from Phase 3's PLAUSIBLE_BUT_UNPROVEN); no causal or performance claim."
+  },
+  {
+    "state_signature": "Methodological finding: opponent-leaderboard directories (Replays/Auto/leaderboard-*, Leader Replays) contain zero graceyunliu games",
+    "agents_or_cohorts": {
+      "cohort_a": "N/A",
+      "cohort_b": "N/A"
+    },
+    "action_a": "304 files scanned, 0 with graceyunliu in TeamNames",
+    "action_b": "N/A",
+    "support_games": {
+      "cohort_a_games": 304,
+      "cohort_b_games": null
+    },
+    "distinct_seeds": {
+      "cohort_a": null,
+      "cohort_b": null
+    },
+    "distinct_opponent_identities": [],
+    "state_match_type": "N/A",
+    "opportunity_state": "N/A",
+    "rng_classification": "N/A",
+    "observed": "OBSERVED: these directories contributed zero rows to any Phase 1-3 mine-vs-opp comparison; all 'opp' data in every phase came from the non-Grace seat within Replays/Auto/mine/ games. Does not invalidate prior findings; clarifies their sourcing.",
+    "associated_outcomes": "N/A",
+    "hypothesis": "N/A",
+    "confidence": "DIRECTLY_OBSERVED methodological/negative finding."
+  }
+]

@@ -1,0 +1,95 @@
+[
+  {
+    "agents_or_cohorts": {
+      "cohort_a": "variant (melon_floor knob changed)",
+      "cohort_b": "baseline (candidates/C1.py, unmodified copy)"
+    },
+    "state_match_type": "isolated policy-variant causal intervention test (matched + fresh seeds, both-seats seat-bias-controlled evaluation via mini_engine.py)",
+    "opportunity_state": "OBSERVED_ACTION_and_OBSERVED_ABSTENTION_both_present_zero_unreconstructable",
+    "state_signature": "Variant 1 (melon_floor=0) vs baseline, matched seeds 1-20, both seats (40 games)",
+    "action_a": "sell rate ~100.6% (168/167 opportunity-days, approximate daily-trace proxy), revenue $555,219, units 2607",
+    "action_b": "sell rate ~97.1% (168/173), revenue $555,160, units 2607",
+    "support_games": {
+      "cohort_a_games": 40,
+      "cohort_b_games": 40
+    },
+    "distinct_seeds": {
+      "cohort_a": 20,
+      "cohort_b": 20
+    },
+    "distinct_opponent_identities": [
+      "N/A - self-comparison against isolated baseline copy, not opponent field"
+    ],
+    "rng_classification": "RNG_INDEPENDENT (melon gate itself); RNG_EXPOSED (downstream, same-player weed-sequence divergence detected in 2/20 seeds)",
+    "prediction_1_sell_rate_changes": "WEAK PASS",
+    "prediction_2_revenue_changes_expected_direction": "FAIL (+0.01%, not meaningful)",
+    "prediction_3_downstream_cash_consequence": "FAIL (not significant): mean margin -$117/game, stderr $76, t=-1.53",
+    "prediction_4_score_diff_survives_fresh_seeds": "N/A (prediction 3 failed); fresh-seed check run anyway: mean margin -$88/game, stderr $70, t=-1.26, consistent null",
+    "observed": "OBSERVED: near-zero, non-significant score effect; near-zero revenue effect; identical units sold; small same-player downstream RNG divergence in 2/20 seeds coinciding with the only nonzero-margin seeds.",
+    "associated_outcomes": "Money-margin effect (small, non-significant) is ASSOCIATED with the intervention but not established as causally attributable to melon revenue specifically vs. the detected downstream RNG-pathway shift - both are plausible small contributors.",
+    "hypothesis": "HYPOTHESIZED (unproven, n=2): the 2 divergent seeds' downstream effect may involve literal shop-unlock RNG-chaining (RNG_COUPLED), since both divergence days are unlock-adjacent (day%3==2) - too small a sample to assert.",
+    "confidence": "DIRECTLY_OBSERVED for the null/near-null score and revenue effect; PLAUSIBLE_BUT_UNPROVEN for the RNG_COUPLED sub-hypothesis. No causal conclusion about Grace's actual melon-hold behavior (see baseline-mismatch limitation in REPORT_PHASE4B.md)."
+  },
+  {
+    "agents_or_cohorts": {
+      "cohort_a": "variant (melon_floor knob changed)",
+      "cohort_b": "baseline (candidates/C1.py, unmodified copy)"
+    },
+    "state_match_type": "isolated policy-variant causal intervention test (matched + fresh seeds, both-seats seat-bias-controlled evaluation via mini_engine.py)",
+    "opportunity_state": "OBSERVED_ACTION_and_OBSERVED_ABSTENTION_both_present_zero_unreconstructable",
+    "state_signature": "Variant 1 (melon_floor=0) vs baseline, FRESH seeds 501-510, both seats (20 games)",
+    "action_a": "sell rate 100% (87/87), revenue $275,116, units 1286",
+    "action_b": "sell rate ~96.7% (87/90), revenue $275,152, units 1286",
+    "support_games": {
+      "cohort_a_games": 20,
+      "cohort_b_games": 20
+    },
+    "distinct_seeds": {
+      "cohort_a": 10,
+      "cohort_b": 10
+    },
+    "distinct_opponent_identities": [
+      "N/A - self-comparison against isolated baseline copy"
+    ],
+    "rng_classification": "RNG_INDEPENDENT (melon gate); not separately re-audited for RNG_EXPOSED on this fresh-seed set (audit was run on the matched-seed set only, see Limitations)",
+    "prediction_1_sell_rate_changes": "WEAK PASS (consistent direction with matched-seed result)",
+    "prediction_2_revenue_changes_expected_direction": "FAIL (-0.01%, negligible)",
+    "prediction_3_downstream_cash_consequence": "FAIL (not significant): mean margin -$88/game, stderr $70, t=-1.26",
+    "prediction_4_score_diff_survives_fresh_seeds": "FAIL - no significant effect to validate; fresh-seed result is consistent (small, negative, non-significant) with matched-seed result, not a confirmed positive effect surviving validation",
+    "observed": "OBSERVED: fresh-seed replication of the matched-seed null/near-null result.",
+    "associated_outcomes": "N/A",
+    "hypothesis": "N/A",
+    "confidence": "DIRECTLY_OBSERVED null/near-null result, consistent across matched and fresh seeds."
+  },
+  {
+    "agents_or_cohorts": {
+      "cohort_a": "variant (melon_floor knob changed)",
+      "cohort_b": "baseline (candidates/C1.py, unmodified copy)"
+    },
+    "state_match_type": "isolated policy-variant causal intervention test (matched + fresh seeds, both-seats seat-bias-controlled evaluation via mini_engine.py)",
+    "opportunity_state": "OBSERVED_ACTION_and_OBSERVED_ABSTENTION_both_present_zero_unreconstructable",
+    "state_signature": "Variant 2 (melon_floor=50) vs baseline, matched seeds 1-20, both seats (40 games)",
+    "action_a": "identical to Variant 1 on every measured metric (see REPORT_PHASE4B.md)",
+    "action_b": "sell rate ~97.1%, revenue $555,160, units 2607",
+    "support_games": {
+      "cohort_a_games": 40,
+      "cohort_b_games": 40
+    },
+    "distinct_seeds": {
+      "cohort_a": 20,
+      "cohort_b": 20
+    },
+    "distinct_opponent_identities": [
+      "N/A"
+    ],
+    "rng_classification": "RNG_INDEPENDENT (melon gate); not separately re-audited (identical result to Variant 1, same seeds)",
+    "prediction_1_sell_rate_changes": "WEAK PASS (identical to Variant 1)",
+    "prediction_2_revenue_changes_expected_direction": "FAIL (identical to Variant 1)",
+    "prediction_3_downstream_cash_consequence": "FAIL (identical to Variant 1: t=-1.53)",
+    "prediction_4_score_diff_survives_fresh_seeds": "N/A (not separately re-run for Variant 2; prediction 3 already failed)",
+    "observed": "OBSERVED: melon_floor=50 and melon_floor=0 produce numerically identical realized decisions on this seed set, suggesting melon price rarely sits in the 50-149 range at opportunity moments in these games.",
+    "associated_outcomes": "N/A",
+    "hypothesis": "N/A",
+    "confidence": "DIRECTLY_OBSERVED - genuine result, not a script artifact (verified variant files differ; cache keys on file content)."
+  }
+]
