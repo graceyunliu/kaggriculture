@@ -16,6 +16,13 @@ import re
 import sys
 from pathlib import Path
 
+import os
+
+try:
+    import yaml  # noqa: E402 - optional; deprioritization degrades to a no-op without it
+except ImportError:  # pragma: no cover - environment without PyYAML
+    yaml = None
+
 ROOT = Path(__file__).resolve().parent.parent
 K_LIVE = ROOT / "evolve" / "chassis.py"      # frozen chassis with typed mutation blocks (see blocks.py)
 BASE_DIR = ROOT / "evolve" / "base"          # per-run snapshots of it, one per sha
@@ -199,10 +206,75 @@ def _active_names(params):
     return [n for n in SPACE if n in params]
 
 
-def mutate(params, rate=0.2, sigma_frac=0.2, rng=random):
-    """Gaussian/flip mutation. Each param mutated with prob `rate`; at least one."""
+DEPRIORITIZED_PARAMS_FILE = ROOT / "evolve" / "deprioritized_params.yaml"
+
+
+def _deprioritization_default():
+    """Default state of the mutate() deprioritization flag.
+
+    Reads EVOLVE_RESPECT_DEPRIORITIZED ("0"/"false" disables; anything else,
+    including unset, enables). Defaults ON: the two entries currently seeded in
+    deprioritized_params.yaml (fertilizer's fert_keep/fert_buy/fert_carry) are
+    independently-confirmed genuine parity findings from a replay audit
+    (artifacts/replay_state_policy_audit/REPORT_PHASE2.md) -- not speculative or
+    single-observation signals -- so excluding them from the mutation pool by
+    default is judged safe. This is still gated behind an explicit, one-line-
+    overridable flag: any future attempt to bias mutation using observational
+    signals from the archive must be introduced behind an explicit flag and
+    tested against uniform mutation with a controlled ablation measuring both
+    held-out performance and diversity/novelty metrics (fingerprints,
+    trajectory diversity, no-op rate, cascade survival, population
+    concentration) -- see docs/replay-audit-search-deprioritization-proposal.md.
+    The exclusion list itself is 100% human-maintained (see
+    deprioritized_params.yaml's header) -- no code here reads FINDINGS.json or
+    any other archive/observational signal automatically.
+    """
+    v = os.environ.get("EVOLVE_RESPECT_DEPRIORITIZED")
+    if v is None:
+        return True
+    return v.strip().lower() not in ("0", "false", "no", "off", "")
+
+
+def _load_deprioritized_params():
+    """Names in deprioritized_params.yaml's `params:` section, or an empty set if
+    the file is missing, unparseable, or PyYAML isn't installed -- deprioritization
+    fails open to "no exclusions" rather than raising, so a missing/broken file
+    never breaks mutation, it only silently loses the exclusion.
+    """
+    if yaml is None or not DEPRIORITIZED_PARAMS_FILE.exists():
+        return set()
+    try:
+        data = yaml.safe_load(DEPRIORITIZED_PARAMS_FILE.read_text()) or {}
+    except Exception:
+        return set()
+    params = data.get("params") or {}
+    if not isinstance(params, dict):
+        return set()
+    return set(params.keys())
+
+
+def mutate(params, rate=0.2, sigma_frac=0.2, rng=random, respect_deprioritized=None):
+    """Gaussian/flip mutation. Each param mutated with prob `rate`; at least one.
+
+    respect_deprioritized: if true (default: EVOLVE_RESPECT_DEPRIORITIZED env var,
+    see _deprioritization_default()), parameter names listed in
+    evolve/deprioritized_params.yaml's `params:` section are removed from the
+    mutation pool before selection -- a human-maintained, citation-required
+    exclusion list (Option A of docs/replay-audit-search-deprioritization-proposal.md),
+    not an automated weighting scheme. Pass False to force plain uniform mutation
+    over the full pool regardless of the env var (e.g. for a controlled ablation
+    run). This mechanism has been smoke-tested (does it exclude the right names)
+    but NOT ablation-tested (does excluding them change search outcomes) -- see
+    the proposal doc.
+    """
+    if respect_deprioritized is None:
+        respect_deprioritized = _deprioritization_default()
     p = dict(params)
     names = _active_names(params)
+    if respect_deprioritized:
+        excluded = _load_deprioritized_params()
+        if excluded:
+            names = [n for n in names if n not in excluded]
     chosen = [n for n in names if rng.random() < rate] or ([rng.choice(names)] if names else [])
     for n in chosen:
         spec = SPACE[n]

@@ -1,0 +1,51 @@
+# Human-maintained exclusion list for evolve/space.py::mutate().
+#
+# Entries here are excluded from the uniform-random mutation pool whenever
+# mutate()'s deprioritization flag is on (default ON — see
+# evolve/space.py, EVOLVE_RESPECT_DEPRIORITIZED / mutate(respect_deprioritized=...)).
+#
+# This file implements Option A ("human-maintained exclusion/low-weight
+# list") from docs/replay-audit-search-deprioritization-proposal.md.
+# A human edits this file by hand after reading a replay-audit report;
+# nothing writes to it automatically. Each entry MUST cite the specific
+# finding that justifies it — no entry should exist without a citation.
+#
+# `params:` — SPACE parameter names (evolve/space.py KNOB_SPACE/CONST_SPACE)
+# excluded from evolve/space.py::mutate()'s pool. Wired and enforced today.
+#
+# `blocks:` — execution-block names (operators.py EXEC_BLOCK_NAMES) that a
+# human has flagged the same way, for when block_pair_mutate is ever wired
+# to respect this file too. NOT YET ENFORCED: operators.py was intentionally
+# left untouched this pass (space.py::mutate() only). Documented here now so
+# the citation exists and isn't lost; wiring operators.py to read this
+# section is listed as future work.
+
+params:
+  fert_keep:
+    reason: >
+      Phase 2 fertilizer apply/hold parity finding — no behavioral
+      divergence between my play and the pooled opponent field at
+      decision resolution (~92% hold, both cohorts). See
+      artifacts/replay_state_policy_audit/REPORT_PHASE2.md, "FERTILIZE"
+      section.
+  fert_buy:
+    reason: >
+      Same finding as fert_keep — Phase 2 fertilizer apply/hold parity.
+      REPORT_PHASE2.md.
+  fert_carry:
+    reason: >
+      Same finding as fert_keep — Phase 2 fertilizer apply/hold parity.
+      REPORT_PHASE2.md.
+
+blocks:
+  dispatch:
+    reason: >
+      Phase 2 chore idle/assigned parity finding — both cohorts kept
+      hands ~100% assigned at hourly resolution, no divergence found. See
+      artifacts/replay_state_policy_audit/REPORT_PHASE2.md, "CHORE"
+      section. Chore-priority logic has no dedicated SPACE parameter; the
+      "dispatch" execution block (operators.py EXEC_BLOCK_NAMES) is the
+      actual mutation hook for chore/labor-routing behavior — see
+      docs/replay-audit-search-deprioritization-proposal.md section 1.
+      NOT YET ENFORCED (see file header) — operators.py was not modified
+      this pass.
