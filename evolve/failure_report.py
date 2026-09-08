@@ -6,7 +6,13 @@ most dev_margin loss this run/island, weighted by classification confidence (cla
 and classify_from_exec_summary are weaker signal than classify_trajectory -- see evolve/classify.py
 -- so a raw count would overstate their share).
 
-    python3 evolve/failure_report.py [--run RUN_ID] [--island c1]
+IMPORTANT: dev_margin is only comparable *within* one yardstick (same frontier) -- see db.py's own
+comment on db.alive(). Without --frontier, this mixes candidates scored against different frontiers
+(e.g. an old V3_12 run and a current H32 run) into one "total dev_margin loss" number, which is
+meaningless -- always pass --frontier once more than one yardstick's worth of candidates exist in
+the DB (list them with `SELECT DISTINCT frontier FROM runs`).
+
+    python3 evolve/failure_report.py --frontier candidates/H32.py [--run RUN_ID] [--island c1]
 """
 from __future__ import annotations
 
@@ -21,17 +27,24 @@ sys.path.insert(0, str(ROOT / "evolve"))
 import db as db_mod  # noqa: E402
 
 
-def collect(db, run_id=None, island=None):
+def collect(db, run_id=None, island=None, frontier=None):
     """Return list of (key, primary_class, confidence, dev_margin, island, source) for every
-    candidate with a failure_profile."""
-    q = "SELECT key, failure_profile, dev_margin, island FROM candidates WHERE failure_profile IS NOT NULL"
+    candidate with a failure_profile. Pass `frontier` to restrict to one yardstick -- dev_margin
+    is not comparable across different frontiers (see module docstring)."""
+    q = "SELECT c.key, c.failure_profile, c.dev_margin, c.island FROM candidates c"
     args = []
+    where = ["c.failure_profile IS NOT NULL"]
+    if frontier:
+        q += " JOIN runs r ON r.run_id = c.run_id"
+        where.append("r.frontier=?")
+        args.append(frontier)
     if run_id:
-        q += " AND run_id=?"
+        where.append("c.run_id=?")
         args.append(run_id)
     if island:
-        q += " AND island=?"
+        where.append("c.island=?")
         args.append(island)
+    q += " WHERE " + " AND ".join(where)
     out = []
     for row in db.conn.execute(q, args):
         try:
@@ -95,10 +108,17 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--run", dest="run_id", default=None)
     ap.add_argument("--island", default=None)
+    ap.add_argument("--frontier", default=None,
+                     help="restrict to one yardstick (dev_margin isn't comparable across frontiers)")
     ap.add_argument("--json", action="store_true")
     args = ap.parse_args()
     db = db_mod.DB()
-    rows = collect(db, run_id=args.run_id, island=args.island)
+    if not args.frontier:
+        frontiers = [r["frontier"] for r in db.conn.execute("SELECT DISTINCT frontier FROM runs")]
+        if len(frontiers) > 1:
+            print(f"WARNING: {len(frontiers)} different frontiers in the DB ({', '.join(Path(f).name for f in frontiers if f)}) "
+                  f"-- mixing their dev_margin into one total is meaningless. Pass --frontier to pick one.\n", file=sys.stderr)
+    rows = collect(db, run_id=args.run_id, island=args.island, frontier=args.frontier)
     if args.json:
         agg, total_loss = aggregate(rows)
         print(json.dumps({"total_loss": total_loss, "n": len(rows),
