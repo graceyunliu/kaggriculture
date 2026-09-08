@@ -41,8 +41,108 @@ def _params_dict(row):
     return p if isinstance(p, dict) else None
 
 
-def knob_importance(rows, ref):
-    """Mean dev margin by parameter value, for params that varied. Crude but tells you where the signal is."""
+def _grouped_failure_observations(rows):
+    """Group recent dead candidates by failure_profile.primary_class.
+
+    Returns a list of dicts with:
+    - class: the failure class name (e.g. "EXECUTION_FAILURE")
+    - n: number of candidates in this group
+    - seeds: set of seeds these candidates were tested on
+    - outcome: the observed outcome signature (from diagnosis/exec_summary)
+    - param_ranges: parameter ranges observed in these candidates (correlation, not cause)
+    - confidence: "low" / "moderate" / "high" based on n and seed diversity
+
+    This is purely observational. A parameter appearing in param_ranges may be part
+    of the failure mechanism, or it may be confounded by companion parameters, seeds,
+    matchups, or RNG-path effects. Consumers must NOT treat these as 'avoid this range.'
+    """
+    from collections import defaultdict
+    import json as _json
+
+    groups = defaultdict(lambda: {"candidates": [], "seeds": set()})
+    for r in rows:
+        fp = r.get("failure_profile")
+        if not fp or r.get("status") not in ("dead_smoke", "dead_pattern", "held_fail", "error"):
+            continue
+        try:
+            fpd = _json.loads(fp) if isinstance(fp, str) else fp
+        except (_json.JSONDecodeError, TypeError, ValueError):
+            continue
+        cls = fpd.get("primary_class", "UNKNOWN")
+        groups[cls]["candidates"].append(r)
+
+    out = []
+    for cls, data in groups.items():
+        n = len(data["candidates"])
+        if n < 2:
+            continue
+        param_ranges = defaultdict(list)
+        for r in data["candidates"]:
+            p = _params_dict(r)
+            if p is None:
+                continue
+            for k, v in p.items():
+                if not isinstance(v, (int, float)):
+                    continue
+                param_ranges[k].append(v)
+        range_strs = []
+        for k, vals in sorted(param_ranges.items(), key=lambda kv: -len(kv[1]))[:8]:
+            lo, hi = min(vals), max(vals)
+            if lo == hi:
+                range_strs.append(f"{k}={lo}")
+            else:
+                range_strs.append(f"{k}={lo}–{hi} (n={len(vals)})")
+        diag = data["candidates"][0].get("diagnosis", "")
+        exec_sum = data["candidates"][0].get("exec_summary")
+        try:
+            es = _json.loads(exec_sum) if isinstance(exec_sum, str) else {}
+        except (_json.JSONDecodeError, TypeError, ValueError):
+            es = {}
+        outcome_parts = []
+        if es.get("sales"):
+            outcome_parts.append(f"sales={es['sales']:,}")
+        if es.get("missed_water") is not None:
+            outcome_parts.append(f"missed_water={es['missed_water']}")
+        if es.get("idle_share") is not None:
+            outcome_parts.append(f"idle_share={es['idle_share']:.2f}")
+        outcome = "; ".join(outcome_parts) if outcome_parts else (diag[:200] if diag else "unknown")
+        confidence = "low" if n < 5 else ("moderate" if n < 15 else "high")
+        out.append({
+            "class": cls,
+            "n": n,
+            "seeds": "multiple",
+            "outcome": outcome,
+            "param_ranges": "; ".join(range_strs) if range_strs else "none captured",
+            "confidence": confidence,
+        })
+    out.sort(key=lambda x: -x["n"])
+    return out
+
+
+def param_exploration(rows, ref):
+    """Observed outcome variation by parameter value, across all candidates with dev_margin.
+
+    This is NOT causal importance or sensitivity. High spread may reflect:
+    - interactions with other parameters (a value looks good only with certain companions)
+    - seed/matchup variance (a value won in dominant matchups, lost in weak ones)
+    - a few outlier candidates (one strong seed-fit candidate can move the mean)
+    - selection bias (some values were only tested in weak candidate contexts)
+    - parameters tested in more diverse contexts naturally show wider spread
+
+    Consumers (especially the LLM proposer) should treat these as EXPLORATION WEIGHTS:
+    "where has the search looked, and what was the observed range of outcomes?"
+    not as "which parameters matter most."
+
+    Each entry includes per-value sample counts so the consumer can judge reliability:
+    - n >= 10 at a value: rough estimate, still confounded
+    - n >= 30 at a value: moderate confidence in the mean
+    - n < 5 at a value: do not over-interpret; could be noise or a single outlier
+
+    The "balance" field flags values with very uneven sampling (one value tested 50x,
+    another 3x) -- the apparent spread may just reflect the better-sampled value having
+    more chances to find an outlier.
+    """
+    from collections import defaultdict
     by = defaultdict(lambda: defaultdict(list))
     for r in rows:
         if r.get("dev_margin") is None:
@@ -64,8 +164,25 @@ def knob_importance(rows, ref):
             continue
         spread = max(means.values()) - min(means.values())
         best = max(means, key=means.get)
-        out.append((spread, k, best, ref.get(k), {str(v): (round(m), len(vals[v])) for v, m in sorted(means.items(), key=lambda x: -x[1])}))
-    out.sort(reverse=True)
+        counts = {str(v): len(vals[v]) for v in means}
+        total = sum(counts.values())
+        cnt_vals = list(counts.values())
+        mean_cnt = sum(cnt_vals) / len(cnt_vals)
+        balance = (max(cnt_vals) - mean_cnt) / mean_cnt if mean_cnt > 0 else 1.0
+        out.append({
+            "param": k,
+            "spread": round(spread),
+            "best_value": best,
+            "best_mean": round(means[best]),
+            "c1_value": ref.get(k),
+            "c1_mean": round(means.get(str(ref.get(k)), float('nan')), 1) if str(ref.get(k)) in means else None,
+            "means": {str(v): {"mean": round(m), "n": len(vals[v])} for v, m in sorted(means.items(), key=lambda x: -x[1])},
+            "total_candidates": total,
+            "n_values_tested": len(vals),
+            "sampling_balance": round(balance, 2),
+            "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
+        })
+    out.sort(key=lambda x: -x["spread"])
     return out
 
 
@@ -165,15 +282,20 @@ def write_report(db, run_id):
         L.append(f"- {name}: best {_fmt(lst[0]['dev_margin'])} (`{lst[0]['key']}`), n={len(lst)}")
     L.append("")
 
-    L.append("## Where the signal is (mean dev margin by parameter value, all runs)")
+    L.append("## Where the signal is (observed outcome variation by parameter value, all runs)")
     L.append("")
-    imp = knob_importance(all_rows, c1)
+    L.append("**These are exploration weights, NOT causal importance.** High spread may reflect parameter interactions, seed/matchup variance, outliers, or selection bias — not necessarily parameter sensitivity. Treat as 'where has the search looked and what was the observed range?' not 'which parameters matter most.'")
+    L.append("")
+    L.append("Per-value sample counts (`n=`) let you judge reliability: n<5 is fragile, n>=30 is moderate confidence.")
+    L.append("")
+    imp = param_exploration(all_rows, c1)
     if imp:
-        L.append("| param | spread | best value | C1 value | means (value: $, n) |")
-        L.append("|---|---:|---|---|---|")
-        for spread, k, best, refv, means in imp[:20]:
-            ms = ", ".join(f"{v}: {m:+,} ({n})" for v, (m, n) in means.items())
-            L.append(f"| {k} | {spread:,.0f} | {best} | {refv} | {ms} |")
+        L.append("| param | observed spread ($, best−worst mean) | best value | C1 value | values tested | total n | sampling balance | per-value means (value: $mean, n) |")
+        L.append("|---|---:|---|---|---:|---:|---:|---|")
+        for entry in imp[:20]:
+            ms = ", ".join(f"{v}: {d['mean']:+,} (n={d['n']})" for v, d in entry["means"].items())
+            L.append(f"| {entry['param']} | {entry['spread']:+,.0f} | {entry['best_value']} | {entry['c1_value']} | {entry['n_values_tested']} | {entry['total_candidates']} | {entry['sampling_balance']} | {ms} |")
+            L.append(f"  __{entry['_note']}__")
     L.append("")
 
     # behavioural cells
@@ -187,6 +309,24 @@ def write_report(db, run_id):
     for k, v in sorted(cells.items(), key=lambda kv: -max(kv[1]))[:15]:
         L.append(f"- {k}: {max(v):+,.0f} (n={len(v)})")
     L.append("")
+    L.append(f"_Generated {datetime.now().strftime('%Y-%m-%d %H:%M')}. Candidate files in `evolve/gen/`, DB `evolve/evolve.db`._")
+
+    # grouped failure observations (observational only — correlations, not established causes)
+    failure_groups = _grouped_failure_observations(all_rows)
+    if failure_groups:
+        L.append("")
+        L.append("## Recent failure observations (grouped by failure class)")
+        L.append("")
+        L.append("**Observational only. Correlations, not established causes.** These groups describe parameter ranges frequently seen in recent failures of each class. A parameter appearing here may be part of the failure mechanism, or it may be confounded by the companion parameters tested alongside it, the seeds/matchups used, or RNG-path effects. Do not interpret these as 'avoid this parameter range.'")
+        L.append("")
+        for fg in failure_groups:
+            L.append(f"### {fg['class']} (observed in {fg['n']} recent candidates)")
+            L.append("")
+            L.append(f"- **Observed outcome:** {fg['outcome']}")
+            L.append(f"- **Associated parameter ranges (correlation, not cause):** {fg['param_ranges']}")
+            L.append(f"- **Evidence:** {fg['n']} candidates, {fg['seeds']} seeds. Confidence: {fg['confidence']}")
+            L.append("")
+
     L.append(f"_Generated {datetime.now().strftime('%Y-%m-%d %H:%M')}. Candidate files in `evolve/gen/`, DB `evolve/evolve.db`._")
 
     REPORT_DIR.mkdir(exist_ok=True)

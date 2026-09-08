@@ -75,9 +75,30 @@ def build_prompt(block_names, n, archive, chassis_text, rejected_mechanisms=None
         "counts_all_runs": archive.get("counts_all_runs"),
         "held_out_top": archive.get("held_out", [])[:8],
         "islands_top3": {k: v[:3] for k, v in archive.get("islands", {}).items()},
-        "param_importance_top10": archive.get("param_importance", [])[:10],
+        "param_exploration_top10": archive.get("param_exploration", [])[:10],
         "recent_dead": archive.get("recent_dead", [])[:12],
+        "failure_observations": archive.get("failure_observations", [])[:5],
     }, indent=0, default=str))
+    parts.append("# EPISTEMIC FRAMING (read this before interpreting the archive)\n"
+                 "\"param_exploration\" is OBSERVED OUTCOME VARIATION, not causal importance or parameter sensitivity.\n"
+                 "A parameter with high spread may appear important because of interactions with companion parameters,\n"
+                 "seed/matchup variance, a few outlier candidates, selection bias, or because it was tested in more\n"
+                 "diverse contexts. The per-value sample counts (n=) tell you how much data supports each mean.\n"
+                 "n<5 is fragile; n>=30 is moderate confidence. Uneven sampling (high balance value) means the\n"
+                 "apparent spread may just reflect the better-sampled value having more chances to find an outlier.\n"
+                 "\n"
+                 "\"failure_observations\" groups recent dead candidates by failure class and lists parameter ranges\n"
+                 "frequently seen in those failures. These are CORRELATIONS, not established causes. A parameter\n"
+                 "appearing in a failure group may be part of the failure mechanism, or it may be confounded by the\n"
+                 "companion parameters tested alongside it, the seeds/matchups used, or RNG-path effects. Do not\n"
+                 "interpret these as 'avoid this parameter range.'\n"
+                 "\n"
+                 "\"recent_dead\" is the last 12 dead candidates at the individual level — the most granular signal.\n"
+                 "Each entry has its own status, diagnosis, and smoke_margin. Use these to understand specific failure\n"
+                 "modes, not to derive global parameter penalties.\n"
+                 "\n"
+                 "None of these signals should be used to automatically down-weight or avoid parameter values.\n"
+                 "They are observational context for the proposer, not search-policy inputs.")
     parts.append("# CLOSED MECHANISMS (do not re-propose)\n" + json.dumps(
         rejected_mechanisms or [], indent=0, default=str))
     parts.append("# SEARCH SPACE (params you may set)\n" + json.dumps(

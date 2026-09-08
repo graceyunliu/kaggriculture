@@ -183,12 +183,27 @@ class Loop:
         self.stats[status] += 1
         if status == "held_pass":
             self.ablate(key, params, blocks, parents, island)
+        self._update_archive_incremental()
         return status, key
 
     def ablate(self, key, params, blocks, parents, island):
-        """Revert each single change vs the parent and score it at the dev stage."""
+        """Revert each single change vs the parent and score it at the dev stage.
+
+        Throttled to the top-20 dev-margin candidates per run so the overhead stays
+        bounded (~20 candidates * ~4 changes * 20 dev games = ~1600 games/segment).
+        Only called from the held_pass gate (line ~185) -- candidates must have passed
+        held-out before ablation runs. Tracked in self._ablate_count; reset at segment start.
+        """
         if not parents:
             return
+        if not hasattr(self, "_ablate_count"):
+            self._ablate_count = 0
+        if self._ablate_count >= 20:
+            return
+        row = self.db.get(key)
+        if not row or not row.get("dev_margin"):
+            return
+        self._ablate_count += 1
         parent = self.db.get(parents[0])
         if not parent:
             return
@@ -384,6 +399,7 @@ class Loop:
     # ---------------------------------------------------------------- main
     def run(self):
         main_pid = os.getpid()
+        self._ablate_count = 0  # reset throttle for this segment
 
         def _stop(signum, _frame):
             if os.getpid() != main_pid:
@@ -427,6 +443,28 @@ class Loop:
             self.log(f"archive: {ARCHIVE}")
             self.logf.close()
 
+    def _update_archive_incremental(self):
+        """Lightweight archive write every 10th completed candidate.
+
+        Calls export_archive() which reads from the DB — only candidates with
+        fully completed evaluations (smoke/dev/held as applicable) are included.
+        Never exposes partial evaluations to the proposer.
+        """
+        if not hasattr(self, "_archive_write_count"):
+            self._archive_write_count = 0
+        self._archive_write_count += 1
+        if self._archive_write_count % 10 != 0:
+            return
+        try:
+            self.db.finish_run(self.run_id, {
+                "elapsed_s": int(time.time() - self.t_start),
+                "evaluated": self.stats.get("evaluated", 0),
+                "counts": {k: (v[0], v[1]) for k, v in self.db.counts(self.run_id).items()},
+            })
+            export_archive(self.db, self.run_id, self.k_sha, self.args.frontier)
+        except Exception as e:  # noqa: BLE001
+            self.log(f"    incremental archive update failed: {e!r}"[:200])
+
 
 def export_archive(db, run_id, k_sha, frontier=None):
     """Machine-readable state for the proposer and the Mac-side task."""
@@ -451,9 +489,11 @@ def export_archive(db, run_id, k_sha, frontier=None):
 
     counts_all = db.counts()
     held = sorted([r for r in rows if r["status"] in ("held_pass", "held_fail")], key=lambda r: -(r["held_margin"] or -1e9))
-    imp = report_mod.knob_importance(db.all(), c1)
+    imp = report_mod.param_exploration(db.all(), c1)
     dead = [dict(r) for r in db.conn.execute(
-        "SELECT origin, note, smoke_margin, status, diagnosis FROM candidates WHERE status IN ('dead_smoke','error') ORDER BY created DESC LIMIT 40")]
+        "SELECT origin, note, smoke_margin, status, diagnosis, failure_profile, exec_summary, params FROM candidates WHERE status IN ('dead_smoke','dead_pattern','held_fail','error') ORDER BY created DESC LIMIT 40")]
+    # grouped failure observations (observational only — present in archive for LLM context)
+    failure_groups = report_mod._grouped_failure_observations(db.all())
     # execution gap between C1 and the frontier tape (clone) on seed 1 -- the standing diagnosis for the LLM
     run = db.run(run_id) or {}
     frontier_gap = None
@@ -473,8 +513,9 @@ def export_archive(db, run_id, k_sha, frontier=None):
         "counts_all_runs": {k: v[0] for k, v in counts_all.items()},
         "islands": {name: [slim(r) for r in lst[:10]] for name, lst in by.items()},
         "held_out": [slim(r) for r in held[:20]],
-        "param_importance": [{"param": k, "spread": round(s), "best": b, "c1": c, "means": m} for s, k, b, c, m in imp[:20]],
+        "param_exploration": imp[:20],
         "recent_dead": dead,
+        "failure_observations": failure_groups,
         "frontier_gap": frontier_gap,
         "reference": {"c1": slim(db.get(space.params_key(c1))) if db.get(space.params_key(c1)) else None},
     }
