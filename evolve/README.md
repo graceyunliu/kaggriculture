@@ -143,6 +143,49 @@ python3 evolve/trace.py cand.py candidates/V3_12.py --seed 1 --ref candidates/C1
 python3 evolve/trace.py candidates/C1.py Opponents/tape_yuan800_104892947.py --seed 1 --vs-opponent
 ```
 
+## Adversarial diagnostic scenarios (AGE-333)
+
+`evolve/scenarios/` is a **separate diagnostic pass**, not a cascade stage: five targeted economic
+worlds, each arranged so one failure mode decides the outcome, run on candidates that have already
+reached dev. Nothing it produces feeds ranking, promotion or parent selection.
+
+| scenario | asks |
+|---|---|
+| `unsupported_livestock` | does it expand livestock when there is no buyer capacity? |
+| `idle_labor` | does it hire hands that will sit idle? |
+| `late_expansion` | does it commit capital that cannot pay back in the days remaining? |
+| `land_pressure` | does it recognise genuine capacity pressure and expand to meet it? |
+| `execution_overload` | does expansion outrun watering/feeding/harvesting? |
+
+Verdicts are heuristics on trajectory metrics -- no LLM -- and each one names the metric and
+threshold that decided it. Definitions, thresholds and calibration: `evolve/scenarios/README.md`;
+population results: `docs/AGE-333-scenario-suite-results.md`.
+
+```bash
+python3 evolve/run_scenarios.py --list
+python3 evolve/run_scenarios.py --agent candidates/C1.py
+python3 evolve/run_scenarios.py --from-db --frontier candidates/H32.py --md evolve/reports/scenarios.md
+```
+
+## Complexity gate (AGE-335)
+
+Five questions a new champion feature has to answer before it earns its keep -- capability, failure
+evidence, independent test, mechanism, ablation -- stated in `evolve/RULES.md` and checked (never
+enforced) by `propose.complexity_check`. It is a dictionary lookup over the proposal's own JSON: no
+game, no render, no LLM, ~0.1 ms. `propose.main()` logs the flags and queues the candidate anyway.
+
+```bash
+python3 evolve/propose.py --gate evolve/queue/llm_20260906-043705_3.json
+python3 evolve/propose.py --gate            # the whole queue
+```
+
+It flags proposals with no `failure_class` (evolve/classify.py) or no `scenario`
+(evolve/scenarios/), notes that state an outcome instead of a mechanism, params no block reads,
+params the chassis cannot realize (`render()` would raise) or reads nowhere (a silent no-op under a
+fresh key), and changes the loop's ablation will skip. The retroactive audit of the eight existing
+blocks against the same five questions, and the dead weight it found, is in
+`docs/AGE-335-block-audit.md`.
+
 ## Reading the report
 
 Only the **held-out** table counts. Dev margins are the selection score and will be seed-fit for the

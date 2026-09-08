@@ -186,6 +186,12 @@ def main(argv=None):
 
     import store as store_mod
     import report as report_mod
+    from registry import names as scenario_names
+
+    if args.only:
+        unknown = [n for n in args.only if n not in scenario_names()]
+        if unknown:
+            ap.error(f"unknown scenario(s) {unknown}; have {scenario_names()}")
 
     if args.list:
         for sc in select(args.only):

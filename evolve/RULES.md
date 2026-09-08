@@ -63,3 +63,61 @@ Read before proposing. Everything here was measured on the ladder engine, both s
 - A block replacement must define exactly the same top-level functions, use only names already in the chassis, and be valid Python 3.9 (no match statements, no `X | Y` type unions).
 - Never touch the crash guard, the engine constants, or `perceive`.
 - Make proposals materially different from each other and from what is already in the archive.
+
+## Complexity gate (AGE-335) — five questions before a new feature earns its keep
+Every block replacement or knob change adds complexity to a chassis that is already 41k of Python.
+Answer these five before proposing; the answers go in the candidate JSON and are checked (not
+enforced) by `propose.complexity_check`. A missing answer is a flag on the proposal, not a veto —
+the evaluator still tests it.
+
+1. **What capability does it add?** Not what code changes: what can the agent *do* on the board that
+   it could not do before. Field: `"capability"`.
+2. **What evidence shows that capability is missing?** Name the `evolve/classify.py` failure class
+   whose metrics the change moves — one of EXECUTION, CAPITAL, LABOR, MARKET, TIMING, CAPACITY,
+   LAND_FAILURE — and, ideally, the number behind it ("missed_feed 37 on the tape vs our 13").
+   Field: `"failure_class"`.
+3. **Can we test the capability independently?** Name the `evolve/scenarios/` diagnostic whose
+   verdict should move: `unsupported_livestock`, `idle_labor`, `late_expansion`, `land_pressure`,
+   `execution_overload`. Field: `"scenario"`. Note that `idle_labor` and `late_expansion` currently
+   pass 30/30 of the real population, so naming one of them is weak evidence.
+4. **Can we explain the mechanism?** "Score improved" is not an answer. State the causal chain: what
+   the hands do differently, and which per-day trace number that shows up in. Field: `"note"`.
+5. **Does it survive ablation?** Not answerable at proposal time — `loop.ablate()` measures it after
+   held-out, and only for candidates carrying 2–8 changes. Know before proposing whether your
+   candidate will even get an ablation row.
+
+Expected evidence format (all three new fields optional; a proposal without them is still evaluated):
+
+```json
+{"note": "batch non-urgent watering into one late sweep, so hands stop crossing the board per tile",
+ "capability": "the agent can defer a tile's water to a later fuller sweep instead of servicing it in passing",
+ "failure_class": "EXECUTION_FAILURE", "scenario": "execution_overload",
+ "blocks": {"sweep": "..."}}
+```
+
+Check any candidate file, or the whole queue, without running a game:
+
+    python3 evolve/propose.py --gate evolve/queue/llm_20260906-043705_3.json
+    python3 evolve/propose.py --gate
+
+### Retroactive audit of the 8 existing blocks
+Full evidence and sources: `docs/AGE-335-block-audit.md`. Two facts from it that change how you
+should read the archive: **no block has ever been ablated as a block** (the loop only reverts single
+changes relative to a parent, and every block is inherited from the chassis), and the frontier gap is
+*not* in animal routing.
+
+| block | failure evidence | independent test | ablation evidence | flag |
+|---|---|---|---|---|
+| hiring | LABOR/CAPITAL; labour per obligation 2× the winners' | only `idle_labor`, which no real candidate fails | none; 3 replacements lost (P7, arch_search floor_v1/v2) | Q5 open |
+| demand | CAPACITY/MARKET; demand-coupled sizing was +$50k | `unsupported_livestock`, splits 3/27 | none; never even replaced | Q5 open |
+| economy | all five non-execution classes; the whole gap decomposition | 3 discriminating scenarios | not removable; knobs exhausted | Q5 ill-posed |
+| animal_routing | EXECUTION; travel 1.5–1.6 vs 0.97–1.05 | `execution_overload` | **ceiling ≈ $0** (routing oracle); `lib_C` −$3.4k | **low value as a lever** |
+| siting | **none specific** — no metric, no class | **none** — no scenario touches it | **none** — never replaced, reads no knob | **dead weight** |
+| crop_admission | EXECUTION/CAPACITY; movement-aware siting was the v10 win | weak — nothing tests crop mix | none; `lib_E` exact no-op (−$8) | Q3 weak |
+| sweep | EXECUTION; tapes batch water, we scatter it | `execution_overload` | **cap defended: removing it −$19.1k, t=−10.78** | best evidenced |
+| dispatch | EXECUTION; LABOR half **contradicted** (our idle 8% < tapes' 13%) | `idle_labor` + `execution_overload` | none; `lib_D` no-op (+$449, t=0.50) | Q2 half false |
+
+Two dead-weight findings that affect proposals directly: 24 of the 65 SPACE params are **inert** (in
+`KNOB_SPACE`, absent from the chassis `KNOBS` — `render()` raises, so setting one wastes a round),
+and `setup_capital_share` / `labor_reserve_buffer` are **live but read by nothing**, so varying them
+renders a behaviourally identical agent under a fresh key. The gate flags both before any game runs.
