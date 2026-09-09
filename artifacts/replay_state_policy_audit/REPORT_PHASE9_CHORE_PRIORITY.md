@@ -71,3 +71,49 @@ copies under `experiments/`. No champion, submission,
 `evolve/cascade.py`, or parent-selection files touched. No adoption
 recommendation -- this is diagnostic evidence, not a promotion, even
 though the direction is encouraging.
+
+---
+
+## Addendum: scaled statistical confirmation (Phase 9b) -- FAILS to confirm
+
+Per the coordinator's request to scale this lead to the proper Phase-4A
+statistical bar, a much larger, more standard test was run: **direct
+head-to-head evaluation** (`mini_engine.evaluate()`, the same harness
+`evolve/cascade.py` uses for real candidate scoring) of the variant
+against the baseline itself, rather than each measured separately against
+external opponents. This is a more statistically powerful and more
+standard design (both-seats, seed-matched, direct competitive margin) than
+the 4-test external-opponent comparison Phase 9's original result was
+based on.
+
+| sample | seeds | n (both seats) | mean margin/game (variant-baseline) | t | wins-losses |
+|---|---|---|---|---|---|
+| batch 1 | 1-50 | 100 | -$389.86 | -2.34 | 19-31 |
+| batch 2 | 51-100 | 100 | -$10.79 | -0.05 | 22-28 |
+| **combined** | 1-100 | **200** | **-$200.33** | **-1.53** | **41-59** |
+
+**Result: the effect does not replicate.** At 200 games (25x the original
+n=160 across a different, more direct design), the direction reverses
+(negative, not positive) and the earlier marginal positive signal
+(t=1.97) does not hold up. The first 100-game batch alone was actually
+significantly *negative* (t=-2.34); the full 200-game sample lands at
+t=-1.53, not significant but clearly not supporting a positive effect
+either.
+
+**Reading this honestly:** the original Phase 9 result (positive-signed
+across 4 external-opponent tests, pooled t=1.97) was based on absolute
+money against third-party opponents, which conflates "did both agents do
+better against a given opponent" with "does this change actually make the
+variant competitively stronger than the baseline." The direct
+head-to-head test is the correct question for "is this a real
+improvement," and it does not confirm one -- if anything it leans the
+opposite direction. This is exactly the kind of premature-positive trap
+the audit's promotion-criteria doc warns against, caught here by scaling
+to a proper confirmatory design rather than stopping at the smaller,
+indirect signal.
+
+**Revised verdict: FAILS statistical confirmation. NOT CONFIRMED, and not
+worth further causal-intervention testing** (a causal intervention step
+would be testing a manipulation that already failed to show a positive
+effect at a much larger, more direct sample). Lead 4 is closed as a
+negative/inconclusive-leaning-negative finding, on par with Lead 1.
