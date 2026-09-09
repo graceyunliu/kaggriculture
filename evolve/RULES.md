@@ -96,7 +96,20 @@ Read before proposing. Everything here was measured on the ladder engine, both s
   Pillar 3 — TEMPORAL CONVERSION (C x D, intraday sell + mid-route release)
     interaction-driven, +$2,864-3,304/game over either half alone
   ```
-  Pillars 2 and 3 are confirmed additive with each other (B×CD interaction ≈ 0, see above); Pillar 1's relationship to Pillars 2/3 has NOT yet been factorial-tested (no B×coordination or CD×coordination interaction term has been measured) — treat that as the next open edge in the mechanism graph if it's worth closing, rather than assuming additivity by default.
+  Pillars 2 and 3 are confirmed additive with each other (B×CD interaction ≈ 0, see above).
+
+- **Follow-up (Sep 9): Coordination × B / Coordination × CD tested — CD is additive with coordination, B shows a suggestive but not fully confirmed positive interaction.** `evolve/coordination_interaction.py` built the missing no-siteclaim variants of B, CD, and BCD (same strip-patch as `O2_no_siteclaim.py`, applied to `O2_lifecycle.py`/`O2_capital_release.py`/`O2_plus_bundle.py` — all three contain the siting block unmodified, confirmed before patching) and measured, per seed, coordination's own effect (with-coordination minus without) inside each context, then took interaction = coord_effect(X) − coord_effect(O2):
+  ```
+              coord effect within context (mean $/game, t)          Coord x X interaction (t)
+              DEV (n=10)         HELD (n=20)                        DEV        HELD
+  O2 alone    +2,956  (t=2.30)   +3,310  (t=2.11)                     —          —
+  B           +5,790  (t=7.72)   +7,532  (t=5.19)                  +2,835 (1.89) +4,223 (1.55)
+  CD          +1,240  (t=1.39)   +2,329  (t=2.33)                  -1,716 (-1.16) -981 (-0.50)
+  BCD         +4,244  (t=3.32)   +5,059  (t=2.97)                  +1,289 (0.73) +1,750 (0.59)
+  ```
+  **Coordination × CD looks genuinely additive** — the interaction term is small and flips sign between dev and held-out (both not remotely significant), consistent with noise around zero, matching the B×CD result.
+  **Coordination × B is a real open question, not yet resolved either way.** Coordination's own effect is roughly 2x larger inside the B context than inside plain O2, in BOTH independently-sampled seed sets (dev +5,790 vs +2,956; held +7,532 vs +3,310), and the interaction term is positive with consistent direction and similar order of magnitude in both (dev +2,835, held +4,223) — but neither individual seed set clears the project's own t≥2 significance bar (t=1.89 dev, t=1.55 held) that every other claim in this file has been held to. I attempted to pool both seed sets into one combined test for a firmer answer; the direct re-run timed out, and reconstructing a pooled t-statistic from the two summary means/t-values alone (rather than the raw per-seed numbers) would manufacture false precision, so I'm reporting the two results as they stand rather than inventing a combined number. **Status: suggestive of a real Coordination×B interaction, not confirmed at the bar this file otherwise requires — needs a direct larger-n paired re-run (e.g. DEV_SEEDS ∪ HELD_SEEDS run as one `cascade._eval` call, not reconstructed from two separate ones) before being promoted to a confirmed finding.**
+  Practical takeaway: **Model A (independent, additive pillars) holds cleanly for Coordination×CD and for B×CD; Coordination×B is the one edge in the graph that might not be purely additive** — if closing this fully matters for O5 search, that's the specific follow-up experiment, not a fresh look at the whole mechanism map.
 
 ## Where the gap is
 - Frontier tapes bank $130–175k where we bank $85–100k. Decomposition: wheat sales (−$15k; tapes plant ~5 wheat tiles/day continuously and sell ~400 units late), melon timing (tapes sell 72 melons on day 10 at $242; we sell later at $166), fertilizer volume, strawberry price ($78 vs $93).
