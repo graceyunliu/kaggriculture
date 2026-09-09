@@ -1,0 +1,22 @@
+{
+  "phase": 6,
+  "title": "Causal test of the land-allocation hypothesis (follow-up on Phase 5)",
+  "verdict": "NO_ROBUST_SIGNAL",
+  "verdict_explanation": "No intervention variant was built or evaluated. The mandatory baseline-representativeness check (this phase's methodology step 1, an explicit fix for Phase 4B's documented mistake) failed for both plausible current-champion candidates before any variant was constructed.",
+  "baseline_representativeness_check": {
+    "phase5_measured_real_replay_reach_rate": {"reach": 89, "total": 150, "rate": 0.5933, "source": "artifacts/replay_state_policy_audit/FINDINGS_PHASE5_EXPANSION_GATE.json"},
+    "candidates_tested": [
+      {"candidate": "candidates/V3_12.py", "note": "TDAS's confirmed champion-under-test", "opponents": 8, "seeds": [1,2,3], "both_seats": true, "games": 48, "reach": 48, "rate": 1.0},
+      {"candidate": "candidates/V3_15.py", "note": "latest submitted candidate (Sep 8), supersedes V3_12 per commit 86b4735", "opponents": 8, "seeds": [1,2,3], "both_seats": true, "games": 40, "reach": 40, "rate": 1.0}
+    ],
+    "result": "FAILED -- both candidates reach land tier 2+ in 100% of tested games (0 misses across 88 total games), 40 points off Phase 5's measured 59.3%. Not sampling noise.",
+    "explanation_evidenced": "Replays/Auto/mine spans episode IDs 89,895,943-106,840,046 (median 103,520,461); Kaggle episode IDs increase monotonically over time, so roughly half of Phase 5's 150-game sample predates the current chassis substantially. Spot-checked 3 games where the champion's seat never expanded (episodes 90705157, 97456908, 90568571) -- all in the lower/older half of that range. Phase 5's 59.3% figure is a mixture statistic across Grace's whole play history, not a property of the current champion specifically."
+  },
+  "intervention_variants_built": [],
+  "pre_registered_predictions": null,
+  "pre_registered_predictions_note": "Not applicable -- no variant was built, so no predictions were tested. Per methodology step 1, proceeding to build a variant against a non-representative baseline was explicitly avoided.",
+  "relationship_to_phase5": "Does not weaken Phase 5's PARTIAL_EVIDENCE verdict (the real-replay reach-rate gap and the RNG_INDEPENDENT engine-gate finding both stand). Adds a scope correction: Phase 5's finding describes Grace's play history as a whole, not a live behavioral property of the current champion that a present-day intervention could move (current candidates already reach 100% reach rate; there is no gap left to explain in the current policy).",
+  "champion_submission_evolve_cascade_touched": false,
+  "destructive_git_operations": false,
+  "recommendation": "None -- diagnostic only. If land-allocation timing remains of interest, a forward-looking replay-mining pass restricted to games played specifically by the current champion (once enough exist) would be the valid next step, not a causal intervention against this mixture-history baseline."
+}
