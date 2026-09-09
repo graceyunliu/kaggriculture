@@ -1,0 +1,27 @@
+{
+  "phase": 8,
+  "title": "Lead 1: labor headcount vs score (opponent-vs-opponent natural experiment + causal test)",
+  "verdict": "FALSIFIED_AS_CAUSAL",
+  "natural_experiment": {
+    "source": "Replays/Auto/leaderboard-* (200 files, 400 seat-rows), verified zero graceyunliu participants",
+    "max_hands_vs_final_money": {"r": 0.187, "t": 3.79, "n": 400},
+    "max_land_vs_final_money": {"r": 0.105, "t": 2.10, "n": 400},
+    "melon_rate_vs_final_money": {"r": 0.016, "t": 0.206, "n": 167, "note": "no correlation -- corroborates Phase 4B/7 causal nulls"}
+  },
+  "causal_test": {
+    "baseline": "experiments/REPLAY_STATE_POLICY_AUDIT_PHASE8/baseline_V3_15.py",
+    "variant": "experiments/REPLAY_STATE_POLICY_AUDIT_PHASE8/variant_labor_boost.py",
+    "change": "_load_model() hire-target forced +3 above the policy's own computed target, funded from the same cash trajectory (not free hands). Single-line change.",
+    "design_rationale": "Explicitly addresses the cash-confound the coordinator raised: if hands have independent causal value, spending more of the SAME budget on them should help; if the correlation just reflects richer play affording both, forcing extra hands should be neutral or negative.",
+    "results": [
+      {"seeds": "matched 1-20", "opponent": "tape_mtn", "t": 0.012, "mean_diff": 47.3},
+      {"seeds": "fresh 101-120", "opponent": "tape_mtn", "t": 1.012, "mean_diff": 4395.05},
+      {"seeds": "fresh 101-120", "opponent": "tape_kwa", "t": -0.994, "mean_diff": -5525.15},
+      {"seeds": "fresh 101-120", "opponent": "tape_furina", "t": 0.525, "mean_diff": 2670.575}
+    ],
+    "conclusion": "No significant score effect in any test. The confound is not ruled out in headcount's favor -- forcing extra hands from the same budget does not reliably improve score, consistent with headcount being a side effect of successful play rather than a cause of it."
+  },
+  "champion_submission_evolve_cascade_touched": false,
+  "destructive_git_operations": false,
+  "recommendation": "None. Not confirmed as a causal lead."
+}
