@@ -1,0 +1,23 @@
+{
+  "phase": 9,
+  "title": "Lead 4: chore-type priority ordering (weeds vs harvest tier order in _build_sweep)",
+  "verdict": "PARTIAL_EVIDENCE",
+  "verdict_explanation": "Consistently positive-signed effect across 4 independent seed/opponent tests; pooled t=1.97 (n=160) is right at conventional significance but does not meet this audit's own much higher established bar (e.g. Phase 4A's p=7.1e-169) for CONFIRMED. Reported as promising but not settled.",
+  "decision_point": "candidates/V3_15.py:724 _build_sweep(), tier order constant, currently ['urgent','harvest','weeds','water'] (or with fert: ['urgent','fert','harvest','weeds','water'])",
+  "variant": {
+    "path": "experiments/REPLAY_STATE_POLICY_AUDIT_PHASE9/variant_weeds_first.py",
+    "baseline_path": "experiments/REPLAY_STATE_POLICY_AUDIT_PHASE9/baseline_V3_15.py",
+    "change": "weeds moved immediately after urgent/fert, ahead of harvest. Two-line change, otherwise byte-identical to candidates/V3_15.py."
+  },
+  "results": [
+    {"seeds": "matched 1-20", "opponent": "tape_mtn", "n": 40, "mean_diff": 208.925, "t": 0.274},
+    {"seeds": "fresh 101-120", "opponent": "tape_mtn", "n": 40, "mean_diff": 719.4, "t": 1.126},
+    {"seeds": "fresh 101-120", "opponent": "tape_kwa", "n": 40, "mean_diff": 671.3, "t": 1.051},
+    {"seeds": "fresh 101-120", "opponent": "tape_furina", "n": 40, "mean_diff": 1201.2, "t": 1.486},
+    {"pooled_meta_analysis": true, "n": 160, "mean_diff": 700.2, "t": 1.968}
+  ],
+  "rng_side_effect_audit": "Tier-order change only affects same-day task sequencing within _build_sweep; does not touch _spawn_weeds or shop-unlock RNG streams by code inspection. Full trace-level audit not run this round.",
+  "champion_submission_evolve_cascade_touched": false,
+  "destructive_git_operations": false,
+  "recommendation": "None -- diagnostic only. Promising direction (all 4 tests positive-signed, pooled t at ~p=0.05) but not CONFIRMED at this sample size; a larger, Phase-4A-scale confirmation pass would be the honest next step before treating this as settled."
+}
