@@ -56,11 +56,48 @@ EG = {"same_turn_sell": 3,   # 2 = day 29 only (default), 1 = all game (tested: 
       "hold_cap": 80,        # stop holding (sell normally) when shed load exceeds this
       "hold_frac": 2.0,      # hold only while price < hold_frac * base (2.0 = always)
       "dump_hour": 16,       # day 29: release held stock from this hour on
+      "hold_mode": "meter",  # "meter": each hour sell only as many units as keep price >= meter_floor*base; "all": hold everything
+      "meter_floor": 0.7,    # price floor as a fraction of base for metered selling
+      "meter_items": ("MILK", "WOOL", "STRAWBERRY"),
       "all_shed_tiles": 0,   # 1 = route shed trips to any of the 4 access tiles, not just unlocked ones
       "last_hour": 22}       # last hour whose actions the engine processes (episodeSteps 720 -> DONE at step 718)
 
 BOARD = 10
 HOLD_BASE = {"WHEAT": 25, "CARROT": 35, "TOMATO": 60, "STRAWBERRY": 120, "MELON": 250, "EGG": 50, "MILK": 160, "WOOL": 200, "FERTILIZER": 100}
+# Engine market curve (vendor master kaggriculture.py MARKET_PARAMS), replicated so we can size a batch before selling it.
+MKT = {"WHEAT": (25, 400, "sqrt", 0.80, "log", 0.20), "CARROT": (35, 450, "hinge", 1.00, "sqrt", 0.70),
+       "TOMATO": (60, 200, "hinge", 0.40, "sqrt", 0.60), "STRAWBERRY": (120, 100, "sqrt", 0.70, "linear", 1.60),
+       "MELON": (250, 300, "log", 0.20, "sq", 3.60), "EGG": (50, 332, "hinge", 0.40, "log", 0.20),
+       "MILK": (160, 122, "sqrt", 0.60, "linear", 1.60), "WOOL": (200, 105, "log", 0.20, "sq", 3.20),
+       "FERTILIZER": (100, 200, "linear", 0.40, "linear", 0.40)}
+
+
+def _mshape(f, x, T):
+    x = max(0.0, x)
+    if f == "linear": return x
+    if f == "sq": return x * x
+    if f == "sqrt": return math.sqrt(x)
+    if f == "log": return math.log(1.0 + x)
+    if f == "hinge":
+        u = x / T
+        return u + 8.0 * max(0.0, u - 1.0) ** 2
+    return x
+
+
+def _mprice(item, inventory):
+    base, T, bf, bt, af, at = MKT[item]
+    if inventory < I0:
+        return max(1, int(round(base + bt * base / _mshape(bf, T, T) * _mshape(bf, I0 - inventory, T))))
+    return max(1, int(round(base - at * base / _mshape(af, T, T) * _mshape(af, inventory - I0, T))))
+
+
+def _meter_units(item, inventory, n, floor_frac):
+    """How many of n units can be sold now before the quoted price drops below floor_frac*base."""
+    floor = floor_frac * MKT[item][0]
+    k = 0
+    while k < n and _mprice(item, inventory + k) >= floor:
+        k += 1
+    return k
 SHED_TILES = [(4, 4), (5, 4), (4, 5), (5, 5)]
 CROPS = {
     "WHEAT":      {"seed": 10,  "first": 2,  "max_day": 4,  "interval": 0, "max_yield": 6, "ongoing": False},
@@ -374,10 +411,15 @@ def economy(obs, v, pending_drop=None):
             n = shed.get(item, 0)
             if item == "FERTILIZER" and day <= 26:
                 n = max(0, n - min(KNOBS["fert_keep"], fert_want))
-            if item in EG["hold_items"] and day >= EG["hold_day"] and shed_load <= EG["hold_cap"] \
+            if EG["hold_mode"] == "all" and item in EG["hold_items"] and day >= EG["hold_day"] and shed_load <= EG["hold_cap"] \
                     and prices.get(item, 0) < EG["hold_frac"] * HOLD_BASE.get(item, 0) \
                     and (day < 29 or hour < EG["dump_hour"]):
                 n = 0   # O11: hold -- a unit sold later faces a market drained by more consumption
+            if EG["hold_mode"] == "meter" and item in EG["meter_items"] and n > 0 and day >= EG["hold_day"] \
+                    and shed_load <= EG["hold_cap"] and (day < 29 or hour < EG["dump_hour"]):
+                # O13 meter: sell only what the market takes above the floor this hour; the rest waits in the shed
+                # for consumption to drain the inventory (or for the day-29 clear-out).
+                n = _meter_units(item, obs["market"]["inventory"].get(item, I0), int(n), EG["meter_floor"])
             if item == "MELON":
                 if not (n > 0 and (prices.get("MELON", 0) >= KNOBS["melon_floor"] or day >= 27 or shed_load > 75)):
                     n = 0
