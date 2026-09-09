@@ -12,7 +12,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT); sys.path.insert(0, os.path.join(ROOT, "evolve"))
 import cascade
 
-O8 = "candidates/O8_PURE_ANIMAL_THROTTLE.py"
+O8 = os.environ.get("BASE", "candidates/O8_PURE_ANIMAL_THROTTLE.py")
 PANEL = {
     "peter":  "Opponents/tape_peterparker_106816877.py",
     "alaylm": "Opponents/tape_alaylm_106813359.py",
@@ -20,7 +20,7 @@ PANEL = {
     "yangk":  "Opponents/tape_yangkuang2_106819729.py",
     "clone":  "Opponents/opp_scenario_v14.py",
 }
-CACHE = os.path.join(ROOT, "evolve", "_o8_panel_cache.json")
+CACHE = os.path.join(ROOT, "evolve", "_panel_cache_" + os.path.basename(O8).replace(".py","") + ".json")
 
 def tstat(vals):
     n = len(vals); m = sum(vals)/n
