@@ -20,7 +20,7 @@ PANEL = {
     "yangk":  "Opponents/tape_yangkuang2_106819729.py",
     "clone":  "Opponents/opp_scenario_v14.py",
 }
-CACHE = os.path.join(ROOT, "evolve", "_panel_cache_" + os.path.basename(O8).replace(".py","") + ".json")
+CACHE = os.path.join(ROOT, "evolve", "_panel_cache_" + os.path.basename(O8).replace(".py","") + ("_margin" if os.environ.get("PANEL_METRIC", "margin") == "margin" else "") + ".json")
 
 def tstat(vals):
     n = len(vals); m = sum(vals)/n
@@ -28,8 +28,13 @@ def tstat(vals):
     se = math.sqrt(var/n) if var > 0 else 0.0
     return m, (m/se if se > 0 else 0.0)
 
+MARGIN = os.environ.get("PANEL_METRIC", "margin") == "margin"
 def own_money(cand, opp, seeds):
+    """Per-seed panel metric: paired margin (cand - opp) by default (the ladder scores margins and both players share
+    the game's shop draw), or own money if PANEL_METRIC=own."""
     r, _ = cascade._eval(cand, opp, seeds, "master", jobs=5)
+    if MARGIN:
+        return {str(s): (r["per_seed"][s]["a"] - r["per_seed"][s]["b"])/2.0 for s in seeds}, r["agent_errors"]
     return {str(s): r["per_seed"][s]["a"]/2.0 for s in seeds}, r["agent_errors"]
 
 def o8_panel(seeds):
