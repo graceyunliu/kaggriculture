@@ -9,5 +9,5 @@ def run(a, b, seeds, label):
 if __name__ == "__main__":
     which = sys.argv[1]
     seeds = {"dev": range(1, 11), "held": range(11, 31), "fresh": range(31, 51)}[sys.argv[2]]
-    cand = {"b4": "candidates/B4_01_MELON_LATEFERT.py", "o10": "candidates/O10_O9_MELON_LATEFERT.py"}[which]
+    cand = {"b4": "candidates/B4_01_MELON_LATEFERT.py", "o10": "candidates/O9_MELON_LATEFERT.py"}[which]
     run(cand, O9, list(seeds), sys.argv[2])
