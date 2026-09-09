@@ -1,0 +1,45 @@
+{
+  "phase": 5,
+  "title": "EXPANSION (BUY_LAND) opportunity reconstruction",
+  "motivating_context": "TDAS (arch_search/) falsified H1: pulling labor-scale timing earlier (early_labor/floor_v2) achieved steps 1-2 of its predicted chain but EXPANSION still fired later than target (day 15 vs day 13), breaking at step 3. TDAS's own EXPANSION_READY state definition is flagged by TDAS itself as circular/lookahead-based. This phase applies the audit's own opportunity-reconstruction method directly to BUY_LAND instead of trusting that state definition.",
+  "eligibility_gate": {
+    "source": "vendor/kaggle_environments_engine/kaggriculture.py:688-700 (_do_buy_land)",
+    "condition": "n_unlocked_extra < 3 (i.e. not all of NE/SW/SE bought) AND farm['money'] >= LAND_PRICES[n_unlocked_extra] ($1000/$2000/$4000 in order)",
+    "rng_classification": "RNG_INDEPENDENT",
+    "notes": "No capacity, tile-state, or other prerequisite found in _do_buy_land beyond cash and remaining-quadrant count."
+  },
+  "data": {
+    "source_dir": "Replays/Auto/mine",
+    "provenance_note": "Per Phase 4A: this is the only directory with paired mine-vs-opp games; 'opp' = the non-Grace seat actually played against, not an independent ladder sample.",
+    "n_games_mined": 150,
+    "sampling": "seeded shuffle (seed 42), same convention as Phase 3/4A"
+  },
+  "primary_finding": {
+    "statistic": "fraction of games in which the champion's seat ('mine') ever reaches land tier >= 2 (buys at least the first extra quadrant, NE) vs the paired opponent seat, in the SAME 150 games",
+    "mine": {"k": 89, "n": 150, "p": 0.5933, "wilson95": [0.5133, 0.6687]},
+    "opp": {"k": 135, "n": 150, "p": 0.9, "wilson95": [0.8416, 0.9385]},
+    "two_proportion_z": 6.107,
+    "interpretation": "Large, statistically robust, non-overlapping-CI difference: the champion's seat expands land at all in only ~59% of games vs ~90% for the paired opponent seat in the same games. This is a real distributional finding on the EXPANSION dimension, independent of TDAS's circular EXPANSION_READY state definition and independent of the timing-reconstruction complication below.",
+    "epistemic_tier": "STRONGLY_SUPPORTED (large sample, large effect, non-overlapping CIs, robust to the day-boundary timing ambiguity since it only requires the final land count, not the exact triggering day)"
+  },
+  "secondary_finding_flagged_unreliable": {
+    "statistic": "day-boundary tier-1 opportunity-conditioned action rate and first-opportunity/first-action day timing",
+    "mine": {"k": 7, "n": 507},
+    "opp": {"k": 56, "n": 525},
+    "reliability_caveat": "BUY_LAND is committed as an atomic order in the same engine tick as incremental SELL/BUY_PRODUCT orders (kaggriculture.py's per-day commit loop). A same-tick 'sell crop then buy land with proceeds' pattern is common and NOT captured by either a first-step-of-day or prior-step-boundary cash snapshot -- both were tried. This means the day-level timing/action-rate numbers understate true opportunity and should NOT be treated as a reliable measure of decision-timing quality; they are reported for transparency only, not relied upon for the conclusion.",
+    "epistemic_tier": "OPPORTUNITY_UNRECONSTRUCTABLE for the fine-grained day-level timing question specifically -- the reconstruction method available from this replay format cannot resolve intra-tick sell-financed purchases without re-simulating the engine's order-commit sequence."
+  },
+  "causal_diagnostic_split": {
+    "question": "Does the champion's EXPANSION opportunity arrive later than the panel's (an upstream gate), or arrive comparably but get deferred/never taken (a decision-policy allocation issue)?",
+    "answer": "Neither cleanly, on the engine's own terms: there is no RNG-coupled or externally-timed gate on BUY_LAND beyond cash-in-hand and remaining-quadrant count (RNG_INDEPENDENT, confirmed from source). The observed gap (59% vs 90% ever-expand rate) is therefore most consistent with a within-policy cash-ALLOCATION difference -- the champion's policy appears to route earned cash toward other purchases (fertilizer, animals, seeds) rather than accumulating/committing the $1000+ needed for land, in a materially larger share of games than the paired opponents do -- rather than a hidden external eligibility gate. This is an ASSOCIATED, not yet causally isolated, explanation.",
+    "epistemic_tier": "PLAUSIBLE_BUT_UNPROVEN -- explicitly NOT promoted to causal. No isolated intervention (Phase-4B-style single-knob variant with pre-registered predictions and matched/fresh seeds) was run in this phase to test whether deliberately prioritizing cash toward BUY_LAND changes the reach-rate and, if so, whether that improves or degrades final score (money spent on land vs. other goods is a real tradeoff, not a free lunch)."
+  },
+  "relationship_to_prior_findings": {
+    "tdas_h1": "Compatible, not contradictory. TDAS found pulling labor timing forward did NOT propagate to earlier EXPANSION (step 3 falsified). This phase's finding -- that EXPANSION itself is gated by a cash-allocation choice unrelated to hiring speed -- explains WHY: headcount timing was never the bottleneck for land purchases, so accelerating it had no reason to move EXPANSION earlier.",
+    "phase3_hire_parity": "Also compatible. Phase 3 found ~parity in hire-opportunity-conditioned action rate (5.76% vs 6.97%), meaning the champion doesn't hesitate on hiring opportunities that exist. This phase's finding is about a DIFFERENT resource-allocation decision (land, not labor) and does not reopen the hiring-hesitation question; it identifies a separate, previously untested allocation dimension."
+  },
+  "verdict": "PARTIAL_EVIDENCE",
+  "verdict_explanation": "A statistically robust, large-effect distributional finding was confirmed (STRONGLY_SUPPORTED): the champion expands land far less often than paired opponents in the same games. The underlying mechanism (cash-allocation prioritization, not an external opportunity gate) is well-supported by the engine source (no RNG/hidden gate exists) but was not causally isolated in this phase -- no Phase-4B-style intervention was run. Per the audit's standing discipline, this ASSOCIATED-tier causal explanation is NOT promoted to CONFIRMED. Diagnostic only; no adoption recommendation made. A follow-on Phase 5B causal-intervention test (single-knob cash-priority variant, pre-registered predictions, matched+fresh seeds, baseline-representativeness check per Phase 4B's own lesson) would be the natural next step but is out of scope for this round.",
+  "champion_submission_evolve_cascade_touched": false,
+  "destructive_git_operations": false
+}
