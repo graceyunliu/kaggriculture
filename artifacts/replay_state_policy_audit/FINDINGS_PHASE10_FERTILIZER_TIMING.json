@@ -1,0 +1,35 @@
+{
+  "phase": 10,
+  "title": "Lead 5: fertilizer target-tile eligibility timing",
+  "verdict": "CONFIRMED",
+  "decision_point": "candidates/V3_15.py:157 _fert_eligible() -- age >= c['first'] - 1 gate",
+  "variant": {
+    "path": "experiments/REPLAY_STATE_POLICY_AUDIT_PHASE10/variant_fert_earlier.py",
+    "baseline_path": "experiments/REPLAY_STATE_POLICY_AUDIT_PHASE10/baseline_V3_15.py",
+    "change": "age >= c['first'] - 1  ->  age >= c['first'] - 3 (fertilizer eligibility opens 2 days earlier per tile). Single-line change."
+  },
+  "primary_test_method": "mini_engine.evaluate() direct head-to-head (same harness evolve/cascade.py uses), seed-matched, both seats -- used as PRIMARY test from the start per the lesson from Lead 4's false positive.",
+  "results": [
+    {"seeds": "1-100", "n": 200, "mean_margin": 478.415, "t": 2.449},
+    {"seeds": "201-300 (fresh)", "n": 200, "mean_margin": 623.165, "t": 2.967},
+    {"pooled": true, "n": 400, "mean_margin": 550.8, "t": 3.844}
+  ],
+  "cross_design_corroboration": {
+    "opponent": "Opponents/tape_kwa_105860490.py", "seeds": "1-25", "n": 50,
+    "variant_mean": 95989.38, "baseline_mean": 93743.16, "diff": 2246.22,
+    "note": "Consistent direction with head-to-head result, unlike Lead 4 where the two designs disagreed."
+  },
+  "pre_registered_predictions": [
+    {"id": 1, "prediction": "Fertilizer-application timing/rate changes", "result": "CONFIRMED_BY_CONSTRUCTION", "detail": "Mechanical, deterministic consequence of the eligibility-window change; not separately re-measured via trace mining."},
+    {"id": 2, "prediction": "Realized production/fertilizer application increases in expected direction", "result": "NOT SEPARATELY ISOLATED", "detail": "Folded into the score outcome (prediction 4)."},
+    {"id": 3, "prediction": "Downstream cash/inventory consequence measurable", "result": "NOT SEPARATELY DECOMPOSED"},
+    {"id": 4, "prediction": "Score effect survives fresh seeds", "result": "CONFIRMED", "detail": "Batch 2 (fresh seeds 201-300) replicates batch 1 with consistent sign, larger magnitude and significance."}
+  ],
+  "rng_side_effect_audit": {
+    "gate_rng_classification": "RNG_INDEPENDENT",
+    "detail": "_fert_eligible() is a pure function of crop age/growth constants/fertilized_until_day; no RNG call in it or its only caller (_build_sweep's fert tier). FERTILIZE is a deterministic engine action."
+  },
+  "champion_submission_evolve_cascade_touched": false,
+  "destructive_git_operations": false,
+  "recommendation": "None -- CONFIRMED per this investigation's own bar, but explicitly diagnostic evidence only. NOT promoted, merged, or wired into the evolution pipeline in any way, per standing constraints."
+}
