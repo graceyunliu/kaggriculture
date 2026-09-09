@@ -1,0 +1,31 @@
+{
+  "phase": 7,
+  "title": "Melon-sell-threshold candidate (retest of Phase 4B's melon-hold hypothesis with a verified baseline)",
+  "verdict": "NO_ROBUST_SIGNAL",
+  "verdict_explanation": "The manipulation worked exactly as intended (melon-sell rate went from ~43% to 100% of opportunities), but the resulting score effect was inconsistent in sign and magnitude across fresh seeds and opponent cohorts, and not statistically robust in any single test. No consistent causal effect on score survives fresh-seed/cross-opponent scrutiny.",
+  "baseline_verification": {
+    "phase4a_historical_figure": 0.0063,
+    "current_champion_measured_rate": {"candidate": "candidates/V3_15.py", "opponent": "Opponents/tape_mtn_105853290.py", "seeds": [1,2,3,4,5], "opportunity_days": 54, "action_days": 23, "rate": 0.4259, "note": "Reproduced with different opponent samples in the 0.43-0.54 range; consistently far from Phase 4A's 0.0063."},
+    "conclusion": "Same historical-mixture-vs-current-chassis gap Phase 6 found for land-expansion. Per the coordinator's adjusted instruction, Phase 4A's 0.0063 figure was NOT used as the reference; the current champion's own measured ~43-54% opportunity-conditioned sell rate was used instead as the real baseline for this test."
+  },
+  "variant": {
+    "path": "experiments/REPLAY_STATE_POLICY_AUDIT_PHASE7/variant_melon_aggressive.py",
+    "baseline_path": "experiments/REPLAY_STATE_POLICY_AUDIT_PHASE7/baseline_V3_15.py",
+    "change": "MELON_SELL_PRICE: 150 -> 1 (near-unconditional melon sell). Single-line change, otherwise byte-identical to candidates/V3_15.py.",
+    "decision_point_cited": "candidates/V3_15.py:332 / candidates/V3_12.py:305 -- shed.get('MELON',0) > 0 and (prices.get('MELON',0) >= MELON_SELL_PRICE or day >= 27 or shed_load > 75)"
+  },
+  "pre_registered_predictions": [
+    {"id": 1, "prediction": "Variant's melon-sell rate conditional on opportunity increases substantially vs baseline", "result": "CONFIRMED", "detail": "baseline 23/54=42.6% (5-seed sample) vs variant 23/23=100.0% (same 5 seeds) -- manipulation fully effective."},
+    {"id": 2, "prediction": "Variant's realized melon revenue changes in the expected (increased) direction", "result": "NOT SEPARATELY ISOLATED", "detail": "Not measured as a standalone revenue decomposition this round; folded into the final-money score comparison below, which is the more decision-relevant metric and was pre-registered as prediction 4."},
+    {"id": 3, "prediction": "Downstream cash/inventory consequence is measurable and consistent with earlier melon sales freeing shed capacity/cash sooner", "result": "PARTIALLY OBSERVED", "detail": "Opportunity-day counts differ between baseline and variant (54 vs 23 in the 5-seed melon-rate sample) precisely because selling immediately clears the shed and prevents multi-day holding -- mechanically consistent with the intended effect, but not further decomposed into a cash-timing metric this round."},
+    {"id": 4, "prediction": "Any final-money score effect survives fresh seeds", "result": "FAILED", "detail": "Matched seeds 1-20 (both seats) vs tape_mtn: mean diff -1132.7/game, t=-1.51 (not significant, negative direction). Fresh seeds 101-120 vs 3 different opponents: tape_mtn t=-0.96 (negative), tape_kwa t=0.20 (~zero), tape_furina t=2.42 (positive, only marginally significant). No consistent sign or robust significance across the fresh-seed/cross-opponent check."}
+  ],
+  "rng_side_effect_audit": {
+    "gate_rng_classification": "RNG_INDEPENDENT (unchanged from Phase 3/4A -- shed.MELON>0 is the only real gate, price/day/shed_load conditions are all deterministic)",
+    "downstream_check": "SELL at price>1 increments market inventory (kaggriculture.py _commit_unit), which is deterministic and does not touch the day's RNG stream (_spawn_weeds / shop-unlock choice, per the established RNG taxonomy from Phases 1-4B). No RNG-path contamination identified from this single-line change."
+  },
+  "relationship_to_phase4b": "Corrects Phase 4B's baseline-representativeness gap (C1 was used there without verifying it matched real melon-hold behavior). With a verified baseline (current champion's own measured ~43-54% sell rate, not C1's near-unconditional selling), the melon-sell-threshold intervention still returns NO_ROBUST_SIGNAL on score -- this strengthens, rather than reopens, Phase 4B's original conclusion: it was not an artifact of the wrong baseline after all.",
+  "champion_submission_evolve_cascade_touched": false,
+  "destructive_git_operations": false,
+  "recommendation": "None -- diagnostic only. No adoption recommendation. The melon-sell-threshold dimension, across two independent baseline choices (C1 in Phase 4B, and the verified current champion here), does not show a robust score effect."
+}
