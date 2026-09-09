@@ -39,7 +39,7 @@ Knobs (default = V3.12 behaviour):
 import math
 import sys
 
-KNOBS = {'melon_floor': 0, 'harvest_min': 1, 'opening': 'frontier', 'wheat_tiles': 0, 'wheat_stock': 0, 'min_hands': 3, 'load_per_hand': 20, 'geese': 0, 'open_melons': 10, 'open_wheat': 7, 'open_cows': 2, 'open_sheep': 2, 'early_hire_days': 3, 'feed_spare_poor': 0, 'fert_keep': 0, 'fert_buy': 3, 'fert_carry': 2, 'demand_share': 0.55, 'max_animals': 17, 'wheat_per_animal': 0.0, 'wheat_cap': 22, 'wheat_water_tier': 0, 'wheat_sell_price': 30, 'wheat_hold_days': 0, 'sell_hourly': 0, 'drop_min': 0, 'drop_radius': 0, 'capital_hour2': -1, 'melon_rush': 0, 'straw_delay': 0, 'hands_early': 0, 'setup_capital_share': 0.25, 'labor_reserve_buffer': 92}
+KNOBS = {'melon_floor': 0, 'harvest_min': 1, 'opening': 'frontier', 'wheat_tiles': 0, 'wheat_stock': 0, 'min_hands': 3, 'load_per_hand': 20, 'geese': 0, 'open_melons': 10, 'open_wheat': 7, 'open_cows': 2, 'open_sheep': 2, 'early_hire_days': 3, 'feed_spare_poor': 0, 'fert_keep': 0, 'fert_buy': 3, 'fert_carry': 2, 'demand_share': 0.55, 'max_animals': 17, 'wheat_per_animal': 0.0, 'wheat_cap': 22, 'wheat_water_tier': 0, 'wheat_sell_price': 30, 'wheat_hold_days': 0, 'sell_hourly': 0, 'drop_min': 0, 'drop_radius': 0, 'capital_hour2': -1, 'melon_rush': 0, 'straw_delay': 0, 'hands_early': 0, 'setup_capital_share': 0.25, 'labor_reserve_buffer': 92, 'animal_claim_pickup_gate': 4, 'animal_claim_move_gate': 2}
 # ---- O5 end-of-game knobs
 EG = {"same_turn_sell": 2,   # 2 = day 29 only (default), 1 = all game (tested: wash, see header), 0 = off (O4 behaviour)
       "deadline_return": 1,  # day-29 go-home-by-h22 rule for any carried product
@@ -1040,11 +1040,11 @@ def _unit_action(i, pos, carry, obs, v, pools, seeds_left, shed, unlocked_shed):
         if pos in unlocked_shed: return ["DROP"]
         return [_step(pos,_nearest(pos,unlocked_shed))]
     shed_animals = [(a, n) for a, n in shed.items() if a in ANIMALS and n > 0]
-    if shed_animals and (i in S["animal_claim"] or len(S["animal_claim"]) < 4) and hour >= 1 and day < 27:
+    if shed_animals and (i in S["animal_claim"] or len(S["animal_claim"]) < KNOBS["animal_claim_pickup_gate"]) and hour >= 1 and day < 27:
         if pos in unlocked_shed:
             S["animal_claim"].add(i)
             return ["PICKUP", shed_animals[0][0], 1]
-        if i in S["animal_claim"] or len(S["animal_claim"]) < 2:
+        if i in S["animal_claim"] or len(S["animal_claim"]) < KNOBS["animal_claim_move_gate"]:
             S["animal_claim"].add(i)
             return [_step(pos, _nearest(pos, unlocked_shed))]
     S["animal_claim"].discard(i)
