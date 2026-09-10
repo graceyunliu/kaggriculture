@@ -4,7 +4,7 @@ The chassis (evolve/chassis.py) is a frozen copy of candidates/K.py with marker 
 groups of functions. A candidate may replace the source of any block. Everything outside the
 blocks (engine constants, perception, the crash guard) is fixed.
 
-    python3 evolve/blocks.py build            # (re)build evolve/chassis.py from K_LIVE (O15_SALE_PRIORITY.py since Sep 9)
+    python3 evolve/blocks.py build            # (re)build evolve/chassis.py from K_LIVE (O16K_ORCH_KNOBBED.py since Sep 10)
     python3 evolve/blocks.py list             # show blocks and line counts
 """
 from __future__ import annotations
@@ -16,7 +16,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-K_LIVE = ROOT / "candidates" / "O15_SALE_PRIORITY.py"   # Sep 9 night: chassis re-based from K.py onto the O15 frontier
+K_LIVE = ROOT / "candidates" / "O16K_ORCH_KNOBBED.py"   # Sep 10: O15 + switchable orchestrator (ORCH_ON=0 is exactly O15); was O15_SALE_PRIORITY.py
 CHASSIS = ROOT / "evolve" / "chassis.py"
 
 # block name -> top-level function names (must be contiguous in the file, in this order)
@@ -27,6 +27,7 @@ BLOCKS = {
     "animal_routing": ["_build_route", "_route_step"],
     "siting":         ["_pick_site", "_setup_step"],
     "crop_admission": ["_crop_pools", "_plant_choice", "_task_valid"],
+    "orchestrator":   ["_orch_prio", "_orchestrate"],
     "sweep":          ["_build_sweep", "_steal_task", "_crop_step"],
     "dispatch":       ["_unit_action"],
 }
@@ -38,6 +39,7 @@ BLOCK_DOC = {
     "animal_routing": "per-hand routes for animal feed/care/collect trips and pickups from the shed",
     "siting":         "where new animals are placed and how a hand sets one up",
     "crop_admission": "which tiles are eligible for which crop task; what crop to plant where",
+    "orchestrator":   "per-turn global assignment of crop tasks to free units (cost = distance + priority - commitment); ORCH_ON gates it",
     "sweep":          "per-hand crop sweeps: tier order (urgent water, harvest, water, plant, weeds) and step choice",
     "dispatch":       "top-level per-unit action choice: animal route vs crop sweep vs idle",
 }
