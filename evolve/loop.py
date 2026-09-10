@@ -66,9 +66,16 @@ ISLANDS = {
     "o15":   {"seed": {"base": "base", "params": {"ORCH_ON": 0}}, "rate": 0.15, "sigma": 0.2},   # exactly O15 at the seed
     "orch":  {"seed": "base", "rate": 0.15, "sigma": 0.2},                                       # exactly O16 at the seed
     "wide":  {"seed": "base", "rate": 0.20, "sigma": 0.5},                                       # exploration, orchestrator on
+    # O16_CAPITAL_CHECKPOINT (other session, Sep 10): O15 with a cumulative cash anchor for the capital event; changes
+    # only the `economy` block. Fixed-shops tape panel vs O15: +711 (t=2.4, seeds 11-30) and +1,091 (t=2.4, seeds 31-45),
+    # positive on every tape -> passes the island gate. Seeded with the orchestrator OFF: stacked on O16 (O18_CAPITAL_ORCH)
+    # the gain vanishes on the tapes (-177, t=-1.0, negative on all 4 real tapes, seeds 11-40) despite +1.5k h2h vs O16.
+    "capital": {"seed": {"base": "base", "params": {"ORCH_ON": 0},
+                         "blocks": {"economy": {"candidate": "candidates/O16_CAPITAL_CHECKPOINT.py", "block": "economy"}}},
+                "rate": 0.15, "sigma": 0.2},
     "queue": {"seed": None, "rate": 0.15, "sigma": 0.2},
 }
-MUTABLE_ISLANDS = ("o15", "orch", "wide")
+MUTABLE_ISLANDS = ("o15", "orch", "wide", "capital")
 MIGRATE = 0.1
 CROSSOVER = 0.3
 
@@ -360,11 +367,12 @@ class Loop:
             if not cfg["seed"]:
                 continue
             p = self.base_params_for(cfg["seed"])
-            key = space.params_key(p)
+            sb = blocks_mod.resolve_sources(cfg["seed"].get("blocks"), ROOT) if isinstance(cfg["seed"], dict) else None
+            key = space.params_key(p, sb)
             row = self.db.get(key)
             if row is None:
                 self.log(f"seeding island {name} from {cfg['seed']}")
-                self.evaluate(p, None, [], f"seed:{name}", name)
+                self.evaluate(p, sb, [], f"seed:{name}", name)
             elif row.get("island") != name:
                 pass  # same params can live in one island only; the shared seed is fine
 
