@@ -1,5 +1,8 @@
-# evolve/chassis.py -- frozen copy of O15_SALE_PRIORITY.py with typed mutation blocks.
-# source sha256 073a0dd481c7. Rebuild: python3 evolve/blocks.py build
+# evolve/chassis.py -- frozen copy of O16K_ORCH_KNOBBED.py with typed mutation blocks.
+# source sha256 61e3a9c879a6. Rebuild: python3 evolve/blocks.py build
+# O16K_ORCH_KNOBBED: O16_ORCH_ON_O15 with ORCH_ON gate (0 = O15 behaviour, 1 = O16) and the orchestrator's
+# priorities/commit bonus/slack hour as top-level constants so the evolve loop can mutate them. Chassis source since Sep 10.
+# O16_ORCH_ON_O15: O15_SALE_PRIORITY.py + X1 global crop orchestrator (per-turn cost matrix over free units x open crop tasks, flat priorities, commitment bonus 0.75).
 # O15_SALE_PRIORITY: O12 plus state-based scheduling of existing SELL orders.
 # Sale priority = approximate local price sensitivity * batch quantity squared.
 # No recorded opponent turns or opponent identity rules.
@@ -847,6 +850,67 @@ def _task_valid(tp, kind, v, day, hour, carry, seeds_left):
 
 
 
+# ===== ORCHESTRATOR (global assignment of crop tasks) =====
+ORCH_ON = 1             # 0 = no orchestration (exactly O15), 1 = global crop-task assignment (exactly O16)
+ORCH_P_HARVEST = 0.5    # priority offsets added to walking distance; lower = taken first
+ORCH_P_WWATER = 0.5
+ORCH_P_FERT = 0.5
+ORCH_P_PLANT = 1.0
+ORCH_P_WATER = 1.0
+ORCH_P_WEEDS = 1.5
+ORCH_P_SLACK = 6.0
+ORCH_COMMIT = 0.75      # bonus for keeping the task a unit is already heading to (prevents swap oscillation)
+ORCH_SLACK_HOUR = 14
+
+
+# ===== EVOLVE-BLOCK: orchestrator =====
+def _orch_prio():
+    return {"urgent": 0.0, "harvest": ORCH_P_HARVEST, "wwater": ORCH_P_WWATER, "fert": ORCH_P_FERT,
+            "plant": ORCH_P_PLANT, "water": ORCH_P_WATER, "weeds": ORCH_P_WEEDS, "slack": ORCH_P_SLACK}
+
+
+def _orchestrate(v, pools, positions, day, hour, inv, seeds_left, busy):
+    """Assign at most one crop task per free unit by global min-cost matching. Returns {unit: (tp, kind)}."""
+    prev = S.get("assign", {})
+    prio = _orch_prio()
+    tasks = []
+    for kind, lst in pools.items():
+        if kind == "slack" and hour < ORCH_SLACK_HOUR:
+            continue
+        for tp in lst:
+            tasks.append((tp, kind))
+    free = [j for j in range(len(positions)) if j not in busy]
+    if not free or not tasks:
+        return {}
+    # units already standing on a tile with an open task keep it (chain in progress)
+    pairs = []
+    for j in free:
+        pj = positions[j]
+        carry = inv[j] if j < len(inv) else {}
+        for ti, (tp, kind) in enumerate(tasks):
+            if kind == "fert" and carry.get("FERTILIZER", 0) <= 0:
+                continue
+            if kind == "plant" and not any(seeds_left.get(c, 0) > 0 for c in CROP_SPECS):
+                continue
+            d = _dist(pj, tp)
+            if d + 1 > 24 - hour:
+                continue
+            cost = d + prio[kind]
+            if prev.get(j, (None, None))[0] == tp:
+                cost -= ORCH_COMMIT
+            pairs.append((cost, j, ti))
+    pairs.sort()
+    assigned = {}; used_t = set()
+    for cost, j, ti in pairs:
+        if j in assigned or ti in used_t:
+            continue
+        assigned[j] = tasks[ti]; used_t.add(ti)
+        if len(assigned) == len(free):
+            break
+    return assigned
+# ===== END-BLOCK: orchestrator =====
+
+
 # ===== EVOLVE-BLOCK: sweep =====
 def _build_sweep(i, pos, v, day, hour, carry, pools, seeds_left):
     tiers = ["urgent", "wwater", "harvest", "water"]
@@ -928,6 +992,7 @@ def _steal_task(i, pos, v, day, hour, carry, pools, seeds_left):
         S["sweep"][i] = [task]
         return _crop_step(i, pos, v, day, hour, carry, pools, seeds_left)
     return None
+
 
 
 def _crop_step(i, pos, v, day, hour, carry, pools, seeds_left):
@@ -1151,6 +1216,20 @@ def _agent(obs):
             d.pop(j, None)
     positions = [tuple(me["farmer"])] + [tuple(h) for h in me["hands"]]
     v["positions"] = positions
+    if ORCH_ON:
+        busy = set(S["routes"].keys())
+        for j, bag in enumerate(inv):
+            if any(bag.get(sp, 0) > 0 for sp in ANIMALS):
+                busy.add(j)
+        # rebuild the pools fresh (the sweep-based removal above is no longer the source of truth)
+        pools = _crop_pools(v, seeds_left, day)
+        S["assign"] = _orchestrate(v, pools, positions, day, hour, inv, seeds_left, busy)
+        for j, (tp, kind) in S["assign"].items():
+            sw = S["sweep"].get(j)
+            if not sw or sw[0][0] != tp:
+                S["sweep"][j] = [(tp, kind)]
+            for pool in pools.values():
+                if tp in pool: pool.remove(tp)
     ops = []
     for i, pos in enumerate(positions):
         carry = inv[i] if i < len(inv) else {}
