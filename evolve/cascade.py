@@ -147,6 +147,30 @@ def _eval(cand, opp, seeds, engine, jobs):
     return r, time.time() - t0
 
 
+def panel_list(clone):
+    """`clone` may be one path or a comma-separated / list panel of fixed opponents (Sep 9: the 4 real
+    ladder tapes). Returns a list of path strings."""
+    if isinstance(clone, (list, tuple)):
+        return [str(c) for c in clone]
+    return [c.strip() for c in str(clone).split(",") if c.strip()]
+
+
+def eval_panel(cand, clone, seeds, engine, jobs):
+    """Paired margin of `cand` against every opponent in the panel; mean margin is the reported number.
+    Per-opponent deltas at n=10-20 swing +-$15k on this game (shop-unlock lottery), so only the panel
+    mean is used for any decision."""
+    per = {}
+    dt = 0.0
+    errs = [0, 0]
+    for opp in panel_list(clone):
+        r, d = _eval(cand, opp, seeds, engine, jobs)
+        per[Path(opp).stem] = r["mean_margin_per_game"]
+        dt += d
+        errs[0] += r["agent_errors"][0]
+    mean = sum(per.values()) / max(1, len(per))
+    return {"mean_margin_per_game": mean, "per_opp": per, "t": 0.0, "agent_errors": errs}, dt
+
+
 def diagnose_candidate(db, key, cand_path, frontier, reference, engine="master", log=print):
     """Process-trace diagnosis of the candidate vs the reference agent (both seat 0 vs frontier, seed 1).
     One traced game for the candidate; the reference trace is cached. Stores text + execution summary."""
@@ -215,13 +239,18 @@ def run_cascade(db, key, cand_path, frontier, clone, cfg, jobs=None, log=print):
     # ---- stage 2: dev (ranking score)
     r, dt = _eval(cand_path, frontier, DEV_SEEDS, engine, jobs)
     db.add_games(key, 2 * len(DEV_SEEDS), dt)
-    rc, dtc = _eval(cand_path, clone, DEV_SEEDS, engine, jobs)
-    db.add_games(key, 2 * len(DEV_SEEDS), dtc)
+    rc, dtc = eval_panel(cand_path, clone, DEV_SEEDS, engine, jobs)
+    db.add_games(key, 2 * len(DEV_SEEDS) * len(panel_list(clone)), dtc)
+    # panel delta = candidate's mean panel margin minus the frontier's own (cfg["frontier_panel_dev"],
+    # computed once per run). This is the ladder-relevant number; self-play vs the frontier is not.
+    fp_dev = cfg.get("frontier_panel_dev")
+    panel_delta_dev = rc["mean_margin_per_game"] - fp_dev if fp_dev is not None else None
     db.update(key, stage=2, status="alive",
               dev_margin=r["mean_margin_per_game"], dev_t=r["t"], dev_wins=r["wins"], dev_losses=r["losses"],
-              clone_margin=rc["mean_margin_per_game"], clone_t=rc["t"])
+              clone_margin=rc["mean_margin_per_game"], clone_t=rc["t"],
+              note=f"panel_dev={rc['per_opp']} panel_delta_dev={panel_delta_dev}")
     log(f"    dev {r['mean_margin_per_game']:+,.0f} (t={r['t']:.1f}, {r['wins']}-{r['losses']})  "
-        f"clone {rc['mean_margin_per_game']:+,.0f}")
+        f"panel {rc['mean_margin_per_game']:+,.0f}" + (f" (delta vs frontier {panel_delta_dev:+,.0f})" if panel_delta_dev is not None else ""))
 
     # ---- trajectory summary + failure classification (AGE-331/AGE-332): cheap, post-alive,
     # never affects ranking/status.
@@ -239,12 +268,18 @@ def run_cascade(db, key, cand_path, frontier, clone, cfg, jobs=None, log=print):
     # ---- stage 3: held-out
     r, dt = _eval(cand_path, frontier, HELD_SEEDS, engine, jobs)
     db.add_games(key, 2 * len(HELD_SEEDS), dt)
-    rc, dtc = _eval(cand_path, clone, HELD_SEEDS, engine, jobs)
-    db.add_games(key, 2 * len(HELD_SEEDS), dtc)
-    passed = r["mean_margin_per_game"] > 0 and r["t"] >= 2.0
+    rc, dtc = eval_panel(cand_path, clone, HELD_SEEDS, engine, jobs)
+    db.add_games(key, 2 * len(HELD_SEEDS) * len(panel_list(clone)), dtc)
+    fp_held = cfg.get("frontier_panel_held")
+    panel_delta_held = rc["mean_margin_per_game"] - fp_held if fp_held is not None else None
+    # Promotion needs BOTH: beats the frontier head-to-head (t>=2) AND does not lose ground on the real
+    # tape panel (Sep 9 lesson: O-vs-O gains such as melon late-fert were null-to-negative on the tapes).
+    passed = r["mean_margin_per_game"] > 0 and r["t"] >= 2.0 and (panel_delta_held is None or panel_delta_held >= cfg.get("panel_floor", 0.0))
     db.update(key, stage=3, status="held_pass" if passed else "held_fail",
               held_margin=r["mean_margin_per_game"], held_t=r["t"], held_wins=r["wins"], held_losses=r["losses"],
-              held_clone_margin=rc["mean_margin_per_game"])
+              held_clone_margin=rc["mean_margin_per_game"],
+              note=f"panel_held={rc['per_opp']} panel_delta_held={panel_delta_held}")
     log(f"    HELD-OUT {r['mean_margin_per_game']:+,.0f} (t={r['t']:.1f}, {r['wins']}-{r['losses']})  "
-        f"clone {rc['mean_margin_per_game']:+,.0f}  -> {'PASS' if passed else 'fail'}")
+        f"panel {rc['mean_margin_per_game']:+,.0f}" + (f" (delta vs frontier {panel_delta_held:+,.0f})" if panel_delta_held is not None else "")
+        + f"  -> {'PASS' if passed else 'fail'}")
     return "held_pass" if passed else "held_fail"
