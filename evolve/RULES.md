@@ -267,3 +267,27 @@ Tested against this attribution (all on O9_MELON_LATEFERT, paired self-play; non
 Two caveats on that programme, recorded before anyone starts building it:
 - The -$578 loss may already be explained by the O12/O13 collision described in the closed list above. Before building anything, check whether the timing policy's losses concentrate in the turns where it deferred a sale that O12 would have made. That is a cheap query against data already collected and could close the question outright.
 - "Incremental final farm value caused by this decision" is a counterfactual, not an accounting column. It requires replaying from the decision point with the other choice. Budget for the rollout harness, not just tracking columns — otherwise the result is correlational and will not survive the promotion gate.
+
+## Sep 10 (evening) — the promotion pipeline. AGE-359's action table is a hypothesis generator, not a policy source.
+
+The action timing table (evolve/action_table.py, report section "Action timing patterns") is now measuring. Read this before using anything in it.
+
+**The discipline, in one line: observation tables discover patterns; experiments establish mechanisms; only validated mechanisms become policy.**
+
+**Do not encode action-table correlations as chassis.py rules.** Signals like "FEED_MISSED mid +$1,045" or "BUY_ANIMAL mid +$924" are observational correlations across candidate history, not marginal causal estimates. The candidates that missed feed in mid-game differ from those that did not in every other way too. This project has already paid for that confusion in five separate places — spatial travel, worker routing, market timing, single-seed anecdotes, and raw vs opportunity-normalized melon behaviour. AGE-359's scope note argues runtime encoding is safe because reversion is cheap (candidate swap, 5 submissions/day); cheap reversion makes a bad *submission* recoverable, it does not make a confounded correlation safe to encode, and the ladder is the slowest and least attributable signal available for finding out.
+
+**The pipeline every action-table signal must travel:**
+action-table signal → proposer hypothesis → isolated intervention → paired test → held-out validation → chassis rule. No step skipped, and the promotion gate is unchanged.
+
+**Rank hypotheses, not rules.** The archive should carry a status per observation, e.g.:
+- FEED_MISSED mid correlates positively — hypothesis
+- BUY_ANIMAL mid correlates positively — hypothesis
+- SELL timing affects investment timing — causally supported in a specific study (O12/the wool study)
+- worker matching saves ~26 tiles — deprioritized
+This lets the loop accumulate institutional knowledge without a correlation quietly becoming a policy.
+
+**Sample-quality metadata before interpretation.** Any signal shown in the report needs candidate count, seed coverage, number of independent candidates, context frequency, and whether the observation is averaged. Without those, an n=2 signal reads like a discovery. Note that SELL/BUY item quantities are averaged across the 5 trajectory seeds, not raw per-game events — the caveat is on the totals line; keep it there.
+
+**Why this layer is worth building anyway.** Every mechanism so far was hand-discovered: O2 coordination, O4 lifecycle waste plus coupled product flow and selling, O12 endgame conversion, O15 sale ordering, and the market study's finding that a sale's value is not its price but the investment its cash unlocks. The action table is the first reusable empirical memory of decisions of that kind, and the right next layer above it is decision counterfactuals — at this state, do it now vs delay vs skip, measured on immediate cash, downstream inventory, investment timing, capacity, and final outcome. The table can point at where to run those; it cannot substitute for running them.
+
+**Measurement contract.** tests/test_action_table.py pins extraction: BUY_LAND event day and cumulative cost off the price ladder, SELL product extraction, revenue sourced from sales_rev rather than summed quantities, missed-water/feed day and count, postponement known-input/known-output, and JSON round-trip. Change the extraction rules and update that file in the same commit.
