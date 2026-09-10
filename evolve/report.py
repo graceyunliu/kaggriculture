@@ -14,7 +14,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import space  # noqa: E402
 from db import DB  # noqa: E402
-import action_table as at  # noqa: E402  # AGE-359/AGE-360: action timing matrix
+import action_table as at_mod  # noqa: E402  # AGE-359/AGE-360: action timing matrix
 
 REPORT_DIR = HERE / "reports"
 
@@ -113,18 +113,10 @@ def action_table_summary(all_rows):
                 # Postponement curve: bin by postponement_days (computed from day + action_type)
                 day = ev.get("day", 0)
                 if action_type == "SELL":
-                    items = ev.get("items", {})
-                    optimal = 10 if "MELON" in str(items) else 5
-                elif action_type == "BUY_ANIMAL":
-                    optimal = 2
-                elif action_type == "BUY_SEED":
-                    optimal = 2
-                elif action_type == "BUY_LAND":
-                    optimal = 6
-                elif action_type in ("WATER_MISSED", "FEED_MISSED"):
-                    optimal = 0
+                    optimal = at_mod.optimal_day_for_sell(ev.get("items", {}))
                 else:
-                    optimal = day
+                    optimal = 2 if action_type in ("BUY_ANIMAL", "BUY_SEED") else (
+                        6 if action_type == "BUY_LAND" else (0 if action_type in ("WATER_MISSED", "FEED_MISSED") else day))
                 postponement = max(0, day - optimal)
                 pb = max(0, min(5, int(postponement)))  # 0,1,2,3,4,5+
                 postponement_buckets[action_type][pb].append(dev)
@@ -457,7 +449,8 @@ def write_report(db, run_id):
     else:
         totals = timing_summary.get("totals", {})
         L.append(f"**{totals.get('total_candidates_with_at', 0)} candidates** with action_table data, "
-                 f"**{totals.get('total_events', 0)} total action events** extracted.")
+                 f"**{totals.get('total_events', 0)} total action events** extracted "
+                 f"(SELL/BUY item counts are averaged across the 5 trajectory seeds — see trace.py SUMMARY_FIELDS).")
         L.append("")
         L.append("Action timing vs outcome correlation. For each action type, the table shows mean dev_margin "
                  "of candidates that performed that action in each horizon bucket. Higher dev_margin = better outcome. "

@@ -285,91 +285,30 @@ def _whole_game_context(trace: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def action_table_to_matrix_rows(
-    action_table: dict[str, list[dict[str, Any]]],
-    context: dict[str, Any],
-) -> list[dict[str, Any]]:
-    """Convert action_table + context into matrix rows for aggregation.
+def compute_postponement(action_type: str, day: int) -> int:
+    """Approximate postponement: how many days later than 'optimal' this action was taken.
 
-    Each row is one action event with its timing and context, ready for
-    grouping by action_type × horizon_bucket × context_bucket.
-
-    Args:
-        action_table: from action_table_from_trace()
-        context: from action_table_from_trace()
-
-    Returns:
-        list of row dicts, each with:
-          - action_type
-          - day (when action was done, or day missed)
-          - postponement_days: how many days later than "optimal" (approx)
-          - horizon_bucket: early/mid/late based on days_remaining
-          - context_bucket: {animals_bucket, hands_bucket, cash_bucket, crop_readiness}
-          - cost: the cost/revenue of the action
-          - outcome_delta: placeholder — filled by aggregation against outcome
+    Optimal days are rough heuristics per action type. Same logic used by both
+    action_table_summary (aggregation) and action_table_to_matrix_rows (row-level).
     """
-    rows: list[dict[str, Any]] = []
+    if action_type == "SELL":
+        return 0  # SELL postponement computed from items, not here
+    if action_type == "BUY_ANIMAL":
+        return max(0, day - 2)
+    if action_type == "BUY_SEED":
+        return max(0, day - 2)
+    if action_type == "BUY_LAND":
+        return max(0, day - 6)
+    if action_type in ("WATER_MISSED", "FEED_MISSED"):
+        return day  # optimal = 0 (never miss)
+    return 0  # unknown: no postponement penalty
 
-    def _bucket(val, thresholds):
-        """Bucket a numeric value by thresholds."""
-        for i, t in enumerate(thresholds):
-            if val < t:
-                return i
-        return len(thresholds)
 
-    animals_buckets = [8, 12]       # <8, 8-12, >12
-    hands_buckets = [6, 10]         # <6, 6-10, >10
-    cash_buckets = [500, 2000]      # <500, 500-2000, >2000
-
-    for action_type, events in action_table.items():
-        for ev in events:
-            day = ev.get("day", 0)
-            days_remaining = max(0, 29 - day)
-            if days_remaining <= 7:
-                horizon_bucket = "late"
-            elif days_remaining <= 14:
-                horizon_bucket = "mid"
-            else:
-                horizon_bucket = "early"
-
-            # Approximate postponement: how late is this relative to optimal?
-            # Optimal day varies by action type and context — approximate with day buckets
-            if action_type == "SELL":
-                # Melons optimal ~day 10-12, wheat optimal varies
-                optimal = 10 if "MELON" in str(ev.get("items", {})) else 5
-            elif action_type == "BUY_ANIMAL":
-                optimal = 2  # early game animal buying
-            elif action_type == "BUY_SEED":
-                optimal = 2  # early planting
-            elif action_type == "BUY_LAND":
-                optimal = 6  # first land ~day 6
-            elif action_type in ("WATER_MISSED", "FEED_MISSED"):
-                optimal = 0  # never miss = optimal; postponement = days since last care
-                day = ev.get("day", 0)
-            else:
-                optimal = day  # unknown optimal
-
-            postponement_days = max(0, day - optimal)
-
-            row = {
-                "action_type": action_type,
-                "day": day,
-                "postponement_days": postponement_days,
-                "horizon_bucket": horizon_bucket,
-                "context_bucket": {
-                    "animals_bucket": _bucket(ev.get("context", {}).get("animals", 0), animals_buckets),
-                    "hands_bucket": _bucket(ev.get("context", {}).get("hands", 0), hands_buckets),
-                    "cash_bucket": _bucket(ev.get("context", {}).get("cash", 0), cash_buckets),
-                    "crop_readiness": _bucket(ev.get("context", {}).get("plants", 0), [5, 15]),
-                },
-                "cost": ev.get("cost", 0),
-                "revenue": ev.get("revenue", 0),
-                "count": ev.get("count", 1),
-                "outcome_delta": None,  # filled by aggregation
-            }
-            rows.append(row)
-
-    return rows
+def optimal_day_for_sell(items: dict[str, Any]) -> int:
+    """Optimal day for a SELL event, based on what's being sold."""
+    if "MELON" in str(items):
+        return 10
+    return 5
 
 
 if __name__ == "__main__":
