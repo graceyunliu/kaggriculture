@@ -52,10 +52,28 @@ while true; do
   fi
   # Local replay scan is cheap (~0.05s with no corpus); failures preserve the existing clone fallback.
   "$PY" evolve/refresh_frontier.py >> "$LOG" 2>&1 || say "frontier refresh skipped/failed (existing clone selection preserved)"
+  # Publish any newly built tapes + the registry + frontier.txt to main, so the ladder picture on GitHub
+  # follows the daily refresh instead of waiting for a manual push (Sep 10).
+  if [ "${NO_PUSH:-0}" != "1" ] && [ -f .github/token ] && [ -d .git ]; then
+    NEW_TAPES=$(git status --porcelain -- Opponents 2>/dev/null | awk '{print $2}' | grep -E '^Opponents/(tape_.*\.py|tapes\.json|frontier\.txt)$' || true)
+    if [ -n "$NEW_TAPES" ]; then
+      # shellcheck disable=SC2086
+      "$PY" evolve/gh_push.py -b main $NEW_TAPES -m "frontier refresh: new opponent tapes ($(date +%F))" >> "$LOG" 2>&1 \
+        && say "pushed refreshed tapes to main: $(echo $NEW_TAPES | tr '\n' ' ')" || say "tape push failed"
+    fi
+  fi
   # 2. yardstick
   if [ -z "${CLONE:-}" ]; then
     if [ -f Opponents/frontier.txt ] && [ -f "$(cat Opponents/frontier.txt)" ]; then CLONE_NOW="$(cat Opponents/frontier.txt)"; else CLONE_NOW="Opponents/tape_yuan800_104892947.py"; fi
-  else CLONE_NOW="$CLONE"; fi
+  else
+    # Panel = the fixed tapes from yardstick.conf (comparable across runs) + today's dominant ladder
+    # cluster from frontier.txt (tracks the ladder), unless it is already in the panel.
+    CLONE_NOW="$CLONE"
+    if [ -f Opponents/frontier.txt ] && [ -f "$(cat Opponents/frontier.txt)" ]; then
+      FT="$(cat Opponents/frontier.txt)"
+      case ",$CLONE_NOW," in *",$FT,"*) ;; *) CLONE_NOW="$CLONE_NOW,$FT" ;; esac
+    fi
+  fi
   RUN_ID="$(date +%Y%m%d-%H%M%S)"
   say "segment $RUN_ID: frontier=$FRONTIER clone=$CLONE_NOW queue=$(ls evolve/queue/*.json 2>/dev/null | wc -l | tr -d ' ')"
   # 3. run one segment (caffeinate keeps the Mac awake; no-op elsewhere)
