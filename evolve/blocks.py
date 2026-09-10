@@ -127,10 +127,31 @@ def blocks_key(blocks):
     return hashlib.sha256("".join(f"{k}\n{blocks[k]}" for k in sorted(blocks)).encode()).hexdigest()[:12]
 
 
+def from_candidate(path, name, root=ROOT):
+    """Source of block `name` (its functions, contiguous, in BLOCKS order) lifted from a plain candidate file,
+    so a hand-written O-family candidate that changed only one block can seed an island or a queue item."""
+    src = Path(root, path).read_text()
+    src = _MARKER_RE.sub("", src)
+    ranges = _func_ranges(src)
+    funcs = BLOCKS[name]
+    missing = [f for f in funcs if f not in ranges]
+    if missing:
+        raise ValueError(f"block {name}: functions not found in {path}: {missing}")
+    first = ranges[funcs[0]][0]; last = ranges[funcs[-1]][1]
+    inner = {f for f, (a, b) in ranges.items() if first <= a and b <= last}
+    if inner != set(funcs):
+        raise ValueError(f"block {name}: range in {path} contains other functions {inner - set(funcs)}")
+    lines = src.splitlines(keepends=True)
+    return "".join(lines[first - 1:last])
+
+
 def resolve_source(value, root=ROOT):
-    """Resolve inline source or a repository-relative queue reference."""
+    """Resolve inline source, a repository-relative queue reference {"path": ...}, or
+    {"candidate": <file>, "block": <name>} (lift the block's functions out of a plain candidate file)."""
     if value is None or isinstance(value, str):
         return value
+    if isinstance(value, dict) and set(value) == {"candidate", "block"}:
+        return from_candidate(value["candidate"], value["block"], root)
     if isinstance(value, dict) and set(value) == {"path"}:
         root = Path(root).resolve()
         path = (root / value["path"]).resolve()
