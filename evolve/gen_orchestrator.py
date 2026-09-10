@@ -3,7 +3,8 @@
 cost = distance + priority weight - commitment bonus, and assign by global minimum cost (greedy matching over the
 whole matrix) instead of each unit self-selecting the nearest task of its top tier. Execution at the tile is unchanged
 (_crop_step's per-tile chains: harvest -> replant -> water, fert -> water). Animal routes/setup untouched."""
-BASE = "candidates/O12_EVENING_DEPOSIT.py"
+import os
+BASE = os.environ.get("ORCH_BASE", "candidates/O12_EVENING_DEPOSIT.py")
 src = open(BASE).read()
 def rep(c, old, new, count=1):
     assert old in c, f"NOT FOUND:\n{old}"
@@ -82,6 +83,12 @@ def orchestrator(c):
     ops = []''')
     return c
 
-write("X1_ORCH", orchestrator(src))
-write("X1_ORCH_COMMIT0", orchestrator(src).replace("ORCH_COMMIT = 0.75", "ORCH_COMMIT = 0.0"))
-write("X1_ORCH_FLATPRIO", orchestrator(src).replace('"harvest": 1.0, "wwater": 1.0, "fert": 1.0, "plant": 2.0, "water": 2.0, "weeds": 3.0', '"harvest": 0.5, "wwater": 0.5, "fert": 0.5, "plant": 1.0, "water": 1.0, "weeds": 1.5'))
+OUT = os.environ.get("ORCH_OUT", "X1_ORCH")
+flat = orchestrator(src).replace('"harvest": 1.0, "wwater": 1.0, "fert": 1.0, "plant": 2.0, "water": 2.0, "weeds": 3.0', '"harvest": 0.5, "wwater": 0.5, "fert": 0.5, "plant": 1.0, "water": 1.0, "weeds": 1.5')
+if OUT == "X1_ORCH":
+    write("X1_ORCH", orchestrator(src))
+    write("X1_ORCH_COMMIT0", orchestrator(src).replace("ORCH_COMMIT = 0.75", "ORCH_COMMIT = 0.0"))
+    write("X1_ORCH_FLATPRIO", flat)
+else:
+    hdr = "# " + OUT + ": " + os.path.basename(BASE) + " + X1 global crop orchestrator (per-turn cost matrix over free units x open crop tasks, flat priorities, commitment bonus 0.75).\n"
+    write(OUT, hdr + flat)
