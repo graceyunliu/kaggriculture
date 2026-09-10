@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 from collections import defaultdict
 from datetime import datetime
@@ -340,15 +341,36 @@ def write_report(db, run_id):
     # seeds as reference
     L.append("## Reference points")
     L.append("")
+    L.append("Chassis seed rows are the evolve chassis rendered with a parameter set, NOT the historical files of the "
+             "same name; a seed identical to the chassis is a no-op and shows 0-0. The file rows below are the real "
+             "`candidates/*.py` agents played against the current frontier on DEV_SEEDS (cached games).")
+    L.append("")
     L.append("| candidate | dev vs frontier | t | W-L | dev vs clone | held-out | held t | W-L |")
     L.append("|---|---:|---:|---:|---:|---:|---:|---:|")
-    for name, p in (("V3_12 (K defaults)", ref), ("C1", c1)):
+    for name, p in (("chassis defaults (seed row)", ref), ("chassis + C1 params (seed row)", c1)):
         r = db.get(space.params_key(p))
         if r:
-            L.append(f"| {name} | {_fmt(r['dev_margin'])} | {_fmt(r['dev_t'], False)} | {r['dev_wins']}-{r['dev_losses']} | "
+            wl = f"{r['dev_wins']}-{r['dev_losses']}" if (r['dev_wins'] or r['dev_losses']) else "not evaluated (no-op)"
+            L.append(f"| {name} | {_fmt(r['dev_margin'])} | {_fmt(r['dev_t'], False)} | {wl} | "
                      f"{_fmt(r['clone_margin'])} | {_fmt(r['held_margin'])} | {_fmt(r['held_t'], False)} | "
                      f"{r['held_wins'] or '—'}-{r['held_losses'] or '—'} |")
+    try:
+        import cascade as _casc
+        fr = run.get("frontier")
+        for name, f in (("C1.py (file)", "candidates/C1.py"), ("V3_12.py (file)", "candidates/V3_12.py")):
+            if fr and Path(f).exists() and Path(fr).exists():
+                rr, _dt = _casc._eval(f, fr, _casc.DEV_SEEDS, "master", None)
+                L.append(f"| {name} vs {Path(fr).name} | {_fmt(rr['mean_margin_per_game'])} | {_fmt(rr['t'], False)} | "
+                         f"{rr['wins']}-{rr['losses']} | — | — | — | — |")
+        fp = cfg.get("frontier_panel_dev")
+        if fp is not None:
+            L.append(f"| {Path(fr).name} own panel (dev / held) | — | — | — | {_fmt(fp)} / {_fmt(cfg.get('frontier_panel_held'))} | — | — | — |")
+    except Exception as e:  # noqa: BLE001
+        L.append(f"| (file reference rows unavailable: {e!r}) | | | | | | | |")
     L.append("")
+    if os.environ.get("KAGG_FIXED_SHOPS") == "1":
+        L.append("Measurement mode: `KAGG_FIXED_SHOPS=1` (shop unlocks policy-independent; panel margins comparable at ±$3k/opponent).")
+        L.append("")
 
     L.append("## Held-out results (the only numbers that count)")
     L.append("")
