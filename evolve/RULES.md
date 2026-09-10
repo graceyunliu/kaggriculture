@@ -294,3 +294,21 @@ This lets the loop accumulate institutional knowledge without a correlation quie
 **Why this layer is worth building anyway.** Every mechanism so far was hand-discovered: O2 coordination, O4 lifecycle waste plus coupled product flow and selling, O12 endgame conversion, O15 sale ordering, and the market study's finding that a sale's value is not its price but the investment its cash unlocks. The action table is the first reusable empirical memory of decisions of that kind, and the right next layer above it is decision counterfactuals — at this state, do it now vs delay vs skip, measured on immediate cash, downstream inventory, investment timing, capacity, and final outcome. The table can point at where to run those; it cannot substitute for running them.
 
 **Measurement contract.** tests/test_action_table.py pins extraction: BUY_LAND event day and cumulative cost off the price ladder, SELL product extraction, revenue sourced from sales_rev rather than summed quantities, missed-water/feed day and count, postponement known-input/known-output, and JSON round-trip. Change the extraction rules and update that file in the same commit.
+
+
+## Sep 10 (late): islands re-seeded on the O16K chassis
+
+- `candidates/O16K_ORCH_KNOBBED.py` (gen: `evolve/gen_orch_knobbed.py`) = O16_ORCH_ON_O15 with `ORCH_ON` gate and the
+  orchestrator priorities / commit bonus / slack hour as top-level constants (in `space.CONST_SPACE`). Verified
+  byte-behaviour: ORCH_ON=0 == O15 and ORCH_ON=1 == O16 on 6 seeds each (`evolve/orch_knobbed_check.py`).
+  It is the chassis source (`blocks.K_LIVE`); new typed block `orchestrator` = `_orch_prio`, `_orchestrate`.
+- Islands now: `o15` (chassis, ORCH_ON=0 -- exactly the frontier), `orch` (chassis defaults -- exactly O16),
+  `wide` (sigma 0.5), `queue`. Dropped `v312`, `c1`, `H32`, `M2`: all four were V3/C1-era knob values overlaid on
+  the O15 chassis (H32/M2's mechanisms lived in K.py code that never ported; M2 is fingerprinting and excluded;
+  `c1_params()` re-applied C1's opening knobs on top of O15). 159 H32/M2 + 107 v312 candidates, 0 held passes.
+- `space.o15_params()` is the archive/report diff reference (was `c1_params`). Report's action-context table crash
+  (dict.items() unpacked as 3-tuples) fixed.
+- Chassis sha changed, so the loop's archive filter (`k_sha`) starts a fresh population; first segment re-seeds.
+  Smoke run: seed:orch passed held-out on the loop (+4,376 t=7.2, panel delta vs frontier +3,148), as expected.
+- Pending islands, gated on a fixed-shops panel read: melon late-fert on O15 (`crop_admission`), the other
+  session's O16_CAPITAL_CHECKPOINT (`economy`).
