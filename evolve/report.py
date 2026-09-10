@@ -308,7 +308,7 @@ def write_report(db, run_id):
     all_rows = [r for r in db.all() if r["run_id"] in same]
     counts = db.counts(run_id)
     ref = space.base_params()
-    c1 = space.c1_params()
+    c1 = space.o15_params()   # 'changes' column diffs against O15 (the yardstick frontier), Sep 10
 
     alive = [r for r in all_rows if r.get("dev_margin") is not None]
     alive.sort(key=lambda r: r["dev_margin"], reverse=True)
@@ -535,8 +535,8 @@ def write_report(db, run_id):
         L.append("")
         ctx_data = timing_summary.get("by_action_context", {})
         ctx_rows = []
-        for atype, ctx_key_str, info in ctx_data.items():
-            if info.get("n", 0) >= 3:
+        for atype, ctx_key_str, info in ((at, ck, inf) for at, bctx in ctx_data.items() for ck, inf in bctx.items()):
+            if info.get("n", 0) >= 3 and info.get("mean_dev") is not None:
                 # ctx_key_str is str((animals, hands, cash, crops)) from JSON round-trip
                 try:
                     import ast
