@@ -20,7 +20,7 @@ PANEL = {
     "yangk":  "Opponents/tape_yangkuang2_106819729.py",
     "clone":  "Opponents/opp_scenario_v14.py",
 }
-CACHE = os.path.join(ROOT, "evolve", "_panel_cache_" + os.path.basename(O8).replace(".py","") + ("_margin" if os.environ.get("PANEL_METRIC", "margin") == "margin" else "") + ".json")
+CACHE = os.path.join(ROOT, "evolve", "_panel_cache_" + os.path.basename(O8).replace(".py","") + ("_margin" if os.environ.get("PANEL_METRIC", "margin") == "margin" else "") + ("_fixedshops" if os.environ.get("KAGG_FIXED_SHOPS") == "1" else "") + ".json")
 
 def tstat(vals):
     n = len(vals); m = sum(vals)/n
