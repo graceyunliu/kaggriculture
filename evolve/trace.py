@@ -448,7 +448,17 @@ def fold_trace_to_summary(traces, seeds=None, fields=None):
         col = []
         for d in range(n_days):
             vals = [t[f][d] for t in traces if t.get(f) and t[f][d] is not None]
-            col.append(round(sum(vals) / len(vals), 2) if vals else None)
+            if vals and isinstance(vals[0], dict):
+                # Dict-valued field (AGE-359 sales_by_product): average per key across seeds,
+                # treating a key absent on a seed as 0. Summing these numerically raises
+                # TypeError: int + dict, which silently killed trajectory/classify for every
+                # candidate between 9237323 and this commit.
+                keys = set()
+                for v in vals:
+                    keys |= set(v.keys())
+                col.append({k: round(sum(v.get(k, 0) for v in vals) / len(vals), 2) for k in sorted(keys)})
+            else:
+                col.append(round(sum(vals) / len(vals), 2) if vals else None)
         out[f] = col
     return out
 
