@@ -127,6 +127,18 @@ class Loop:
         self.cfg["base"] = str(snap)
         self.chassis_text = snap.read_text()
         self.cfg["reference"] = str(space.render(space.c1_params()))   # diagnosis baseline = C1 on this chassis
+        self.cfg["panel_floor"] = args.panel_floor
+        # The frontier's own panel numbers (dev + held seeds), so every candidate's panel result can be read as
+        # a delta against the ladder submission. mini_engine caches games by sha, so this costs once per run.
+        try:
+            from cascade import eval_panel, DEV_SEEDS as _DEV, HELD_SEEDS as _HELD
+            fd, _ = eval_panel(args.frontier, args.clone, _DEV, "master", args.jobs)
+            fh, _ = eval_panel(args.frontier, args.clone, _HELD, "master", args.jobs)
+            self.cfg["frontier_panel_dev"], self.cfg["frontier_panel_held"] = fd["mean_margin_per_game"], fh["mean_margin_per_game"]
+            self.cfg["frontier_panel_per_opp_held"] = fh["per_opp"]
+        except Exception as e:  # noqa: BLE001 - a missing tape must not stop the loop; the gate then degrades to head-to-head only
+            self.cfg["frontier_panel_dev"] = self.cfg["frontier_panel_held"] = None
+            print(f"frontier panel baseline failed: {e!r}", file=sys.stderr)
         self.db.start_run(self.run_id, self.engine_sha, self.k_sha, args.frontier, args.clone, self.cfg)
         self.stats = defaultdict(int)
         self.gen = 0
@@ -134,7 +146,8 @@ class Loop:
         self.t_start = time.time()
         self.budget = args.hours * 3600 + args.minutes * 60
         self.log(f"run {self.run_id}: engine={self.engine_sha} chassis={snap.name} frontier={Path(args.frontier).name} "
-                 f"clone={Path(args.clone).name} budget={self.budget/3600:.2f}h jobs={args.jobs}")
+                 f"panel={[Path(c).stem for c in args.clone.split(',')]} frontier_panel_held={self.cfg.get('frontier_panel_held')} "
+                 f"budget={self.budget/3600:.2f}h jobs={args.jobs}")
 
     def log(self, msg):
         line = f"[{datetime.now().strftime('%H:%M:%S')}] {msg}"
@@ -501,8 +514,9 @@ def export_archive(db, run_id, k_sha, frontier=None):
         import trace as trace_mod
         c1_path = space.render(c1)
         if run.get("clone"):
-            g = trace_mod.traced(str(c1_path), str(run["clone"]), 1)
-            dg = trace_mod.diagnose(g["trace"][0], g["trace"][1], "C1", Path(run["clone"]).stem)
+            tape0 = str(run["clone"]).split(",")[0].strip()   # first opponent of the panel
+            g = trace_mod.traced(str(c1_path), tape0, 1)
+            dg = trace_mod.diagnose(g["trace"][0], g["trace"][1], "C1", Path(tape0).stem)
             frontier_gap = {"text": dg["text"], "c1": trace_mod.summary_row(g["trace"][0]), "tape": trace_mod.summary_row(g["trace"][1])}
     except Exception as e:  # noqa: BLE001
         frontier_gap = {"error": repr(e)[:200]}
@@ -529,8 +543,15 @@ def main():
     ap.add_argument("--minutes", type=float, default=0.0)
     ap.add_argument("--max-candidates", type=int, default=0)
     ap.add_argument("--jobs", type=int, default=None)
-    ap.add_argument("--frontier", default=str(ROOT / "candidates" / "V3_12.py"))
-    ap.add_argument("--clone", default=str(ROOT / "Opponents" / "opp_scenario_v14.py"))
+    ap.add_argument("--frontier", default=str(ROOT / "candidates" / "O15_SALE_PRIORITY.py"),
+                    help="head-to-head yardstick (selection score). Sep 9: O15, the ladder submission")
+    ap.add_argument("--clone", default=",".join(str(ROOT / "Opponents" / t) for t in (
+                        "tape_peterparker_106816877.py", "tape_alaylm_106813359.py",
+                        "tape_bahaenes_106828159.py", "tape_yangkuang2_106819729.py")),
+                    help="comma-separated fixed-opponent panel (default: the 4 real ladder-loss tapes; the old clone "
+                         "opp_scenario_v14 is not a ladder proxy). Mean panel margin is reported; held-out promotion "
+                         "requires the candidate's panel mean >= the frontier's (--panel-floor).")
+    ap.add_argument("--panel-floor", type=float, default=0.0, help="min (candidate - frontier) mean panel margin for held_pass")
     ap.add_argument("--run-id", default=None)
     ap.add_argument("--seed", type=int, default=None)
     ap.add_argument("--smoke-floor", type=float, default=DEFAULTS["smoke_floor"])
