@@ -137,6 +137,19 @@ CONST_SPACE = {
     "FERT_RADIUS":          ("int", 1, 4, 1),
     "SPREAD_W":             ("float", 0.5, 1.5, 0.25),
     "SPREAD_CAP":           ("int", 3, 7, 1),
+    # Sep 10: the O16 crop orchestrator (chassis = O16K_ORCH_KNOBBED). ORCH_ON=0 is exactly O15.
+    # Priorities are offsets added to walking distance in the assignment cost; the delay-counterfactual
+    # table (tools/delay_counterfactual.py) is the intended source of better values.
+    "ORCH_ON":              ("cat", [0, 1]),
+    "ORCH_P_HARVEST":       ("float", 0.0, 3.0, 0.25),
+    "ORCH_P_WWATER":        ("float", 0.0, 3.0, 0.25),
+    "ORCH_P_FERT":          ("float", 0.0, 3.0, 0.25),
+    "ORCH_P_PLANT":         ("float", 0.0, 4.0, 0.25),
+    "ORCH_P_WATER":         ("float", 0.0, 4.0, 0.25),
+    "ORCH_P_WEEDS":         ("float", 0.0, 5.0, 0.25),
+    "ORCH_P_SLACK":         ("float", 2.0, 10.0, 0.5),
+    "ORCH_COMMIT":          ("float", 0.0, 2.0, 0.25),
+    "ORCH_SLACK_HOUR":      ("int", 8, 22, 1),
 }
 
 SPACE = {**KNOB_SPACE, **CONST_SPACE}
@@ -191,6 +204,15 @@ def c1_params():
     """C1 = K.py with the frontier-opening knobs (docs/candidates-C1-H10-sep03.md)."""
     p = base_params()
     p.update({"opening": "frontier", "early_hire_days": 5, "feed_spare_poor": 0, "open_melons": 8})
+    return p
+
+
+def o15_params():
+    """O15_SALE_PRIORITY exactly: the O16K chassis with the orchestrator switched off (verified byte-behaviour
+    identical, evolve/orch_knobbed_check.py). The evolve yardstick frontier."""
+    p = base_params()
+    if "ORCH_ON" in p:
+        p["ORCH_ON"] = 0
     return p
 
 
