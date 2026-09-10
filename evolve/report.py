@@ -14,6 +14,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import space  # noqa: E402
 from db import DB  # noqa: E402
+import action_table as at  # noqa: E402  # AGE-359/AGE-360: action timing matrix
 
 REPORT_DIR = HERE / "reports"
 
@@ -22,6 +23,13 @@ def _fmt(v, money=True):
     if v is None:
         return "—"
     return f"{v:+,.0f}" if money else f"{v:.1f}"
+
+def _fmt_mean(d):
+    """Format a mean_dev from a summary dict {mean_dev, n}. Returns '—' if None."""
+    v = d.get("mean_dev") if isinstance(d, dict) else d
+    if v is None:
+        return "—"
+    return f"{v:+,.0f}"
 
 
 def _params_dict(row):
@@ -39,6 +47,116 @@ def _params_dict(row):
         except (TypeError, ValueError):
             return None
     return p if isinstance(p, dict) else None
+
+
+def action_table_summary(all_rows):
+    """Aggregate action_table across all alive candidates in a run.
+
+    Returns a dict with:
+      - by_action_horizon: {action_type: {horizon: {mean_dev, n}}}
+      - by_action_context: {action_type: {context_key: {mean_dev, n}}}
+      - postponement_curves: {action_type: {postponement_bin: {mean_dev, n}}}
+      - top_signals: list of [action_type, context, horizon, mean_dev, n, signal_noise] sorted by |mean_dev|
+      - action_type_counts: {action_type: total_events}
+      - totals: {total_candidates_with_at, total_events}
+    """
+    from collections import defaultdict
+    import json as _json
+
+    rows_with_at = [r for r in all_rows if r.get("action_table")]
+    if not rows_with_at:
+        return {}
+
+    by_action_horizon = defaultdict(lambda: defaultdict(list))
+    by_action_context = defaultdict(lambda: defaultdict(list))
+    postponement_buckets = defaultdict(lambda: defaultdict(list))
+    action_counts = defaultdict(int)
+    totals = {"total_candidates_with_at": len(rows_with_at), "total_events": 0}
+
+    for r in rows_with_at:
+        dev = r.get("dev_margin")
+        if dev is None:
+            continue
+        try:
+            at_data = _json.loads(r["action_table"])
+        except Exception:
+            continue
+        at = at_data.get("action_table", {})
+        for action_type, events in at.items():
+            action_counts[action_type] += len(events)
+            totals["total_events"] += len(events)
+            for ev in events:
+                day = ev.get("day", 0)
+                days_remaining = max(0, 29 - day)
+                if days_remaining <= 7:
+                    horizon = "late"
+                elif days_remaining <= 14:
+                    horizon = "mid"
+                else:
+                    horizon = "early"
+                by_action_horizon[action_type][horizon].append(dev)
+
+                # Context key
+                ctx = ev.get("context", {})
+                animals = ctx.get("animals", 0)
+                hands = ctx.get("hands", 0)
+                cash = ctx.get("cash", 0)
+                plants = ctx.get("plants", 0)
+                ctx_key = (
+                    "low" if animals < 8 else "mid" if animals < 12 else "high",
+                    "low" if hands < 6 else "mid" if hands < 10 else "high",
+                    "low" if cash < 500 else "mid" if cash < 2000 else "high",
+                    "low" if plants < 5 else "mid" if plants < 15 else "high",
+                )
+                by_action_context[action_type][ctx_key].append(dev)
+
+                # Postponement curve: bin by postponement_days (computed from day + action_type)
+                day = ev.get("day", 0)
+                if action_type == "SELL":
+                    items = ev.get("items", {})
+                    optimal = 10 if "MELON" in str(items) else 5
+                elif action_type == "BUY_ANIMAL":
+                    optimal = 2
+                elif action_type == "BUY_SEED":
+                    optimal = 2
+                elif action_type == "BUY_LAND":
+                    optimal = 6
+                elif action_type in ("WATER_MISSED", "FEED_MISSED"):
+                    optimal = 0
+                else:
+                    optimal = day
+                postponement = max(0, day - optimal)
+                pb = max(0, min(5, int(postponement)))  # 0,1,2,3,4,5+
+                postponement_buckets[action_type][pb].append(dev)
+
+    def summarize(buckets):
+        return {
+            h: {"mean_dev": round(sum(v) / len(v)) if v else None, "n": len(v), "total_events": sum(len(v) for v in buckets.values())}
+            for h, v in buckets.items()
+        }
+
+    result = {
+        "by_action_horizon": {at: summarize(bh) for at, bh in by_action_horizon.items()},
+        "by_action_context": {at: {str(ctx): {"mean_dev": round(sum(v) / len(v)) if v else None, "n": len(v)} for ctx, v in bctx.items()} for at, bctx in by_action_context.items()},
+        "postponement_curves": {at: {str(pb): {"mean_dev": round(sum(v) / len(v)) if v else None, "n": len(v)} for pb, v in pbuckets.items()} for at, pbuckets in postponement_buckets.items()},
+        "action_type_counts": dict(action_counts),
+        "totals": totals,
+    }
+
+    # Top matrix signals: strongest |mean_dev| per action_type × horizon
+    signals = []
+    for at, bh in by_action_horizon.items():
+        for horizon, vals in bh.items():
+            if len(vals) < 3:
+                continue
+            mean = sum(vals) / len(vals)
+            variance = max(0, sum(v**2 for v in vals) / len(vals) - mean**2)
+            sn = round(mean / max(1, variance**0.5), 2) if len(vals) >= 5 else None
+            signals.append([at, "—", horizon, round(mean), len(vals), sn])
+    signals.sort(key=lambda x: -abs(x[3]))
+    result["top_signals"] = signals[:20]
+
+    return result
 
 
 def _grouped_failure_observations(rows):
@@ -326,6 +444,95 @@ def write_report(db, run_id):
             L.append(f"- **Associated parameter ranges (correlation, not cause):** {fg['param_ranges']}")
             L.append(f"- **Evidence:** {fg['n']} candidates, {fg['seeds']} seeds. Confidence: {fg['confidence']}")
             L.append("")
+
+    L.append("## Action timing patterns (AGE-359: observational — correlations, not causes)")
+    L.append("")
+    timing_summary = action_table_summary(all_rows)
+    if not timing_summary:
+        L.append("No action_table data yet. Action timing extraction is wired into the cascade (cascade.py "
+                 "calls action_table_from_trace after trajectory summary) but the current run's candidates "
+                 "haven't completed a cascade pass with the new code. The next dev-stage completion for each "
+                 "alive candidate will populate action_table.")
+        L.append("")
+    else:
+        totals = timing_summary.get("totals", {})
+        L.append(f"**{totals.get('total_candidates_with_at', 0)} candidates** with action_table data, "
+                 f"**{totals.get('total_events', 0)} total action events** extracted.")
+        L.append("")
+        L.append("Action timing vs outcome correlation. For each action type, the table shows mean dev_margin "
+                 "of candidates that performed that action in each horizon bucket. Higher dev_margin = better outcome. "
+                 "This is NOT causal — a candidate that sells early may also have other good properties. "
+                 "Use as a guide for what to test, not as a proven mechanism.")
+        L.append("")
+        L.append("| action_type | early (days 1-14) | mid (days 15-21) | late (days 22-29) | total events |")
+        L.append("|---|---|---:|---|---|---:|")
+
+        action_order = ["SELL", "BUY_ANIMAL", "BUY_SEED", "BUY_LAND", "BUY_PRODUCT", "HIRE",
+                        "WATER_MISSED", "FEED_MISSED"]
+        for atype in action_order:
+            bh = timing_summary.get("by_action_horizon", {}).get(atype, {})
+            early = bh.get("early", {})
+            mid = bh.get("mid", {})
+            late = bh.get("late", {})
+            total = timing_summary.get("action_type_counts", {}).get(atype, 0)
+            L.append(f"| {atype} | "
+                     f"{_fmt_mean(early):>14} (n={early.get('n',0)}) | "
+                     f"{_fmt_mean(mid):>14} (n={mid.get('n',0)}) | "
+                     f"{_fmt_mean(late):>14} (n={late.get('n',0)}) | {total} |")
+            if atype == "WATER_MISSED":
+                L.append(f"  _Water missed = postponement signal. Negative = candidates that missed water had lower dev_margin._")
+            if atype == "FEED_MISSED":
+                L.append(f"  _Feed missed = postponement signal. Negative = candidates that missed feed had lower dev_margin._")
+        L.append("")
+
+        # Postponement curves
+        L.append("## Postponement cost curves (mean dev_margin by days postponed)")
+        L.append("")
+        L.append("For each action type, how does outcome vary with how late the action was taken? "
+                 "Postponement days = action_day − optimal_day (approx). 0 = on time, 5+ = very late.")
+        L.append("")
+        L.append("| action_type | on-time (0d) | 1d late | 2d late | 3d late | 4d late | 5+d late |")
+        L.append("|---|---|---:|---:|---:|---:|---:|---:|")
+        for atype in action_order:
+            pc = timing_summary.get("postponement_curves", {}).get(atype, {})
+            vals = [_fmt_mean(pc.get(str(i), {})) for i in range(6)]
+            L.append(f"| {atype} | " + " | ".join(f"{v:>11}" for v in vals) + " |")
+        L.append("")
+
+        # Top context signals
+        L.append("## Action contexts with strongest outcome signal (top 10)")
+        L.append("")
+        L.append("Action × horizon combinations sorted by |mean_dev|. These are the patterns most "
+                 "associated with outcome variation — candidates for matrix-informed runtime rules.")
+        L.append("")
+        L.append("| rank | action_type | horizon | mean_dev | n | signal/noise |")
+        L.append("|---|---|---:|---:|---:|---:|")
+        for i, sig in enumerate(timing_summary.get("top_signals", [])[:10], 1):
+            atype, ctx, horizon, mean, n, sn = sig
+            L.append(f"| {i} | {atype} | {horizon} | {mean:+,.0f} | {n} | {sn or '—'} |")
+        L.append("")
+
+        # Context buckets table
+        L.append("## Action × context bucket (mean dev_margin, n≥3)")
+        L.append("")
+        L.append("**Context key:** (animals: low<8/mid8-12/high>12, hands: low<6/mid6-10/high>10, "
+                 "cash: low<500/mid500-2000/high>2000, crops: low<5/mid5-15/high>15)")
+        L.append("")
+        ctx_data = timing_summary.get("by_action_context", {})
+        ctx_rows = []
+        for atype, ctx_key_str, info in ctx_data.items():
+            if info.get("n", 0) >= 3:
+                # ctx_key_str is str((animals, hands, cash, crops)) from JSON round-trip
+                try:
+                    import ast
+                    ctx_key = ast.literal_eval(ctx_key_str)
+                except Exception:
+                    ctx_key = ctx_key_str
+                ctx_rows.append((atype, ctx_key, info["mean_dev"], info["n"]))
+        ctx_rows.sort(key=lambda x: -abs(x[2]))
+        for atype, ctx_key, mean, n in ctx_rows[:15]:
+            L.append(f"- **{atype}** in {ctx_key}: {mean:+,.0f} (n={n})")
+        L.append("")
 
     L.append(f"_Generated {datetime.now().strftime('%Y-%m-%d %H:%M')}. Candidate files in `evolve/gen/`, DB `evolve/evolve.db`._")
 

@@ -45,7 +45,7 @@ METRICS = ["cash", "networth", "sales_rev", "buys_cost", "hands", "animals", "pl
 # chosen to map to failure classes (CAPITAL/TIMING/EXECUTION/LABOR/LAND) while keeping DB rows small.
 SUMMARY_FIELDS = ["cash", "sales_rev", "buys_cost", "missed_feed", "missed_water", "escapes", "hands",
                    "work_turns", "travel_per_task", "idle_turns", "chores_enumerated", "chores_completed",
-                   "animals", "plants", "land", "shed_units"]  # shed_units: AGE-332 MARKET_FAILURE signal
+                   "animals", "plants", "land", "shed_units", "sales_by_product"]  # shed_units: AGE-332 MARKET_FAILURE signal; sales_by_product: AGE-359 SELL events
 
 
 def _sha(path):

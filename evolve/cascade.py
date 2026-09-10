@@ -24,6 +24,7 @@ import mini_engine as me  # noqa: E402
 sys.path.insert(0, str(ROOT / "evolve"))
 import trace as trace_mod  # noqa: E402
 import classify as classify_mod  # noqa: E402
+import action_table as at  # noqa: E402  # AGE-359/AGE-360: action timing table extraction
 
 FP_SEEDS = [1, 2]
 SMOKE_SEEDS = [1, 2, 3]
@@ -253,12 +254,18 @@ def run_cascade(db, key, cand_path, frontier, clone, cfg, jobs=None, log=print):
         f"panel {rc['mean_margin_per_game']:+,.0f}" + (f" (delta vs frontier {panel_delta_dev:+,.0f})" if panel_delta_dev is not None else ""))
 
     # ---- trajectory summary + failure classification (AGE-331/AGE-332): cheap, post-alive,
-    # never affects ranking/status.
+    # never affects ranking/status. Also extract action timing table (AGE-359/AGE-360).
     try:
         summary = collect_trajectory_summary(cand_path, frontier, TRAJ_SEEDS, engine)
         db.update(key, trajectory_summary=json.dumps(summary))
         profile = classify_mod.classify_trajectory(summary, dev_margin=r["mean_margin_per_game"])
         db.update(key, failure_profile=json.dumps(profile))
+        # Extract action timing table from the same traces (AGE-359/AGE-360)
+        try:
+            at_result = at.action_table_from_trace(summary)
+            db.update(key, action_table=json.dumps(at_result))
+        except Exception as e:  # noqa: BLE001
+            log(f"    action_table failed: {e!r}"[:200])
     except Exception as e:  # noqa: BLE001
         log(f"    trajectory/classify failed: {e!r}"[:200])
 
