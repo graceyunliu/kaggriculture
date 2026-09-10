@@ -46,6 +46,7 @@ remaining-horizon ROI analysis (AGE-360).
 
 from __future__ import annotations
 
+import json
 from collections import defaultdict
 from typing import Any
 
@@ -101,20 +102,10 @@ def action_table_from_trace(trace: dict[str, Any]) -> dict[str, Any]:
         sbp = SBP[day] if day < len(SBP) and SBP[day] else {}
         if not sbp:
             continue
-        items = {}
-        revenue = 0
-        for item, qty in sbp.items():
-            items[item] = qty
-            # Price inference: use CROPS/PRODUCT prices from chassis
-            if item in ("MILK", "WOOL", "EGG"):
-                # Animal products — price not directly known, infer from revenue/qty
-                pass
-            elif item == "MELON":
-                items[item] = qty
-            elif item in chassis.CROPS:
-                seed_cost = chassis.CROPS[item]["seed"]
-                items[item] = qty
-            revenue += sum(sbp.values())
+        # Quantities only. Per-item revenue is not recoverable from the trace (sales_rev
+        # is a daily total), so the event carries day-total revenue and item quantities
+        # side by side — do not multiply or compare them, they are different units.
+        items = {item: qty for item, qty in sbp.items()}
         actions["SELL"].append({
             "day": day,
             "items": items,
@@ -288,8 +279,9 @@ def _whole_game_context(trace: dict[str, Any]) -> dict[str, Any]:
 def compute_postponement(action_type: str, day: int) -> int:
     """Approximate postponement: how many days later than 'optimal' this action was taken.
 
-    Optimal days are rough heuristics per action type. Same logic used by both
-    action_table_summary (aggregation) and action_table_to_matrix_rows (row-level).
+    Optimal days are rough heuristics per action type, not measured optima. This is
+    the single source of truth: report.py's action_table_summary calls it rather than
+    re-deriving the mapping inline.
     """
     if action_type == "SELL":
         return 0  # SELL postponement computed from items, not here
