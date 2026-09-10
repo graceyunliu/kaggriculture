@@ -7,10 +7,10 @@
 Candidates are (params, blocks): 36 numeric/categorical parameters of the frozen chassis
 (evolve/chassis.py) plus optional replacement source for any typed mutation block (evolve/blocks.py).
 
-Islands (separate parent pools, occasional migration):
-    v312   seeded from the V3.12 defaults, sigma 0.2
-    c1     seeded from C1 (frontier opening), sigma 0.2
-    wide   seeded from C1, sigma 0.5 / rate 0.35 -- the exploration island
+Islands (separate parent pools, occasional migration; chassis = O16K_ORCH_KNOBBED since Sep 10):
+    o15    seeded from the chassis with ORCH_ON=0 (exactly O15_SALE_PRIORITY), sigma 0.2
+    orch   seeded from the chassis defaults (exactly O16_ORCH_ON_O15), sigma 0.2
+    wide   same seed, sigma 0.5 / rate 0.20 -- the exploration island
     queue  every externally supplied candidate (factorial designs, LLM proposals, hand-written files)
 Parent choice inside an island: tournament from its top (65%), a random behavioural cell (25%),
 uniform (10%); with prob MIGRATE the parent is drawn from the global top-10 instead.
@@ -58,14 +58,17 @@ LOG_DIR = HERE / "logs"
 QUEUE_DIR = HERE / "queue"
 ARCHIVE = HERE / "archive.json"
 
+# Sep 10: islands re-seeded on the O16K chassis. "base" = the chassis's own KNOBS/constants (O16 with the
+# orchestrator on); a dict seed is base + overrides. v312/c1/H32/M2 dropped: their seeds were V3-era knob
+# values overlaid on the O15 chassis (H32/M2's real mechanisms lived in K.py code and never ported; M2 is
+# excluded anyway as opponent fingerprinting), and c1_params() itself re-applied C1's 2020-era opening knobs.
 ISLANDS = {
-    "v312": {"seed": "base", "rate": 0.15, "sigma": 0.2},
-    "c1":   {"seed": "c1", "rate": 0.15, "sigma": 0.2},
-    "wide": {"seed": "c1", "rate": 0.20, "sigma": 0.5},
+    "o15":   {"seed": {"base": "base", "params": {"ORCH_ON": 0}}, "rate": 0.15, "sigma": 0.2},   # exactly O15 at the seed
+    "orch":  {"seed": "base", "rate": 0.15, "sigma": 0.2},                                       # exactly O16 at the seed
+    "wide":  {"seed": "base", "rate": 0.20, "sigma": 0.5},                                       # exploration, orchestrator on
     "queue": {"seed": None, "rate": 0.15, "sigma": 0.2},
-    "H32":  {"seed": "H32", "rate": 0.20, "sigma": 0.15},
-    "M2":   {"seed": "M2", "rate": 0.15, "sigma": 0.15},
 }
+MUTABLE_ISLANDS = ("o15", "orch", "wide")
 MIGRATE = 0.1
 CROSSOVER = 0.3
 
@@ -126,7 +129,7 @@ class Loop:
                                              # yardstick can never reuse or mix in a score from the old one
         self.cfg["base"] = str(snap)
         self.chassis_text = snap.read_text()
-        self.cfg["reference"] = str(space.render(space.c1_params()))   # diagnosis baseline = C1 on this chassis
+        self.cfg["reference"] = str(space.render(space.o15_params()))   # diagnosis baseline = O15 (chassis, ORCH_ON=0)
         self.cfg["panel_floor"] = args.panel_floor
         # The frontier's own panel numbers (dev + held seeds), so every candidate's panel result can be read as
         # a delta against the ladder submission. mini_engine caches games by sha, so this costs once per run.
@@ -253,6 +256,10 @@ class Loop:
 
     # ---------------------------------------------------------------- queue
     def base_params_for(self, name):
+        if isinstance(name, dict):
+            p = dict(self.base_params_for(name.get("base", "base")))
+            p.update({k: space.clamp(k, v) for k, v in (name.get("params") or {}).items() if k in space.SPACE})
+            return p
         if (name or "c1") == "c1":
             return space.c1_params()
         if (name or "base") == "base":
@@ -357,8 +364,8 @@ class Loop:
             row = self.db.get(key)
             if row is None:
                 self.log(f"seeding island {name} from {cfg['seed']}")
-                self.evaluate(p, None, [], f"seed:{cfg['seed']}", name)
-            elif row.get("island") != name and name in ("v312", "c1"):
+                self.evaluate(p, None, [], f"seed:{name}", name)
+            elif row.get("island") != name:
                 pass  # same params can live in one island only; the shared seed is fine
 
     def pools(self):
@@ -375,7 +382,7 @@ class Loop:
         if not pool and island == "queue":
             return False
         if not pool:
-            pool = by.get("c1") or allp
+            pool = by.get("orch") or allp
         if not pool:
             return False
         if self.rng.random() < MIGRATE and allp:
@@ -439,7 +446,7 @@ class Loop:
                         self.log(f"queued {len(paths)} archive crossovers at generation {self.gen}")
                 island = order[self.gen % len(order)] if self.gen % 4 else "queue"
                 if not self.generate_one(island):
-                    self.generate_one("c1")
+                    self.generate_one("orch")
         finally:
             close_pool()
             elapsed = time.time() - self.t_start
@@ -481,7 +488,7 @@ class Loop:
 
 def export_archive(db, run_id, k_sha, frontier=None):
     """Machine-readable state for the proposer and the Mac-side task."""
-    c1 = space.c1_params()
+    c1 = space.o15_params()   # diff reference for the archive = O15 (the yardstick frontier)
     rows = db.alive(k_sha=k_sha, frontier=frontier)
     by = defaultdict(list)
     for r in rows:
@@ -575,7 +582,7 @@ def main():
                           "block via operators.block_pair_mutate instead of pure param pairing")
     args = ap.parse_args()
     if args.paired_rate:
-        for name in ("c1", "wide", "H32", "M2"):
+        for name in MUTABLE_ISLANDS:
             ISLANDS[name]["paired"] = args.paired_rate
             if args.block_pair_rate:
                 ISLANDS[name]["block_pair"] = args.block_pair_rate
