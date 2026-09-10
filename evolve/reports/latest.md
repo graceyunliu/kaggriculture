@@ -1,21 +1,21 @@
-# Evolution run 20260910-110022
+# Evolution run 20260910-103628
 
-Frontier opponent: `O15_SALE_PRIORITY.py` · clone: `tape_himanshukumar_107290180.py` · engine sha `bc8a54879ef0` · chassis snapshot `K_0df71adce97c.py` (sha `0df71adce97c`)
-Elapsed 0.26 h · candidates evaluated this run: 17 · games 2,524 (9,591/h)
+Frontier opponent: `O15_SALE_PRIORITY.py` · clone: `tape_yangkuang2_106819729.py` · engine sha `bc8a54879ef0` · chassis snapshot `K_0df71adce97c.py` (sha `0df71adce97c`)
+Elapsed 1.00 h · candidates evaluated this run: 81 · games 9,234 (9,202/h)
 
 ## Cascade counts (this run)
 
 | status | candidates | games |
 |---|---:|---:|
-| noop | 0 | 0 |
-| dead_pattern | 2 | 4 |
-| dead_smoke | 3 | 24 |
-| alive | 8 | 1024 |
-| held_fail | 4 | 1472 |
-| held_pass | 0 | 0 |
+| noop | 8 | 16 |
+| dead_pattern | 11 | 22 |
+| dead_smoke | 5 | 40 |
+| alive | 42 | 4536 |
+| held_fail | 14 | 4312 |
+| held_pass | 1 | 308 |
 | error | 0 | 0 |
 
-Population (all runs, reached dev): 413 · held-out evaluated: 35 · held-out PASS: 1
+Population (all runs, reached dev): 449 · held-out evaluated: 42 · held-out PASS: 1
 
 ## Reference points
 
@@ -40,9 +40,9 @@ Population (all runs, reached dev): 413 · held-out evaluated: 35 · held-out PA
 | `bcf4dbd52f8d` | queue | mutate | **+3,075** | 2.0 | 12-8 | -23,822 | +5,330 | load_per_hand 20→19, open_wheat 7→4, early_hire_days 5→6, feed_spare_poor 0→1, demand_share 0.55→0.7, wheat_cap 22→13, wheat_water_tier 0→1, ROUTE_LEN 3→2, MELON_MAX_TILES 38→40, OPP_GROWTH 1.4→1.2 · blocks: hiring |  | cand pulls ahead of C1 from day 26 (gap +5,036 -> final +8,642); days 24-29 drivers: sales_rev +17,235, work_turns +68, feed_hour -1.9, idle_turns -16. Hands 6 vs 6, animals 12 vs 11, plants 27 vs 17. |
 | `b78610c183a0` | wide | crossover | **+3,072** | 2.0 | 17-3 | -26,162 | +4,886 | melon_floor 0→100, open_melons 8→10, fert_keep 0→1, wheat_sell_price 30→25, wheat_hold_days 0→1, setup_capital_share 0.25→0.4, ROUTE_LEN 3→2, CROP_SWEEP_LEN 6→3, CROP_SWEEP_RADIUS 5→6, MELON_MAX_TILES 38→34, HERD_LAST_DAY 17→22, MAX_SHEEP 14→10, FERT_RADIUS 3→4 · blocks: hiring |  | cand falls behind C1 from day 17 (gap -3,254 -> final -9,989); days 15-22 drivers: sales_rev -11,173, work_turns -225. Hands 13 vs 14, animals 7 vs 11, plants 67 vs 85. |
 | `bb47f6f0b3ef` | queue | archive_crossover:crossover_g000025_20260910-102949_1 | **+2,737** | 2.8 | 16-4 | -25,920 | +3,291 | melon_floor 0→200, load_per_hand 20→19, open_melons 8→10, wheat_per_animal 0.0→0.1, wheat_cap 22→5, wheat_sell_price 30→25, setup_capital_share 0.25→0.4, ROUTE_LEN 3→2, CROP_SWEEP_RADIUS 5→6, MELON_MAX_TILES 38→40, MAX_SHEEP 14→12 · blocks: hiring |  | cand falls behind C1 from day 17 (gap -3,781 -> final -34,668); days 15-22 drivers: sales_rev -16,255, work_turns -235, water_hour +0.63. Hands 14 vs 14, animals 7 vs 11, plants 66 vs 85. |
+| `28fca2943584` | queue | archive_crossover:crossover_g000075_20260910-113243_0 | **+2,718** | 2.0 | 18-2 | -25,815 | +4,876 | load_per_hand 20→19, open_melons 8→10, early_hire_days 5→6, feed_spare_poor 0→1, fert_keep 0→1, setup_capital_share 0.25→0.4, ROUTE_LEN 3→2, MELON_MAX_TILES 38→40, OPP_GROWTH 1.4→1.2, MAX_SHEEP 14→10 · blocks: hiring |  | cand falls behind C1 from day 16 (gap -1,727 -> final -24,949); days 14-21 drivers: sales_rev -17,219, work_turns -237, water_hour +0.46. Hands 8 vs 14, animals 7 vs 11, plants 68 vs 84. |
 | `1019eca510ac` | wide | paired | **+2,593** | 1.9 | 15-5 | -29,280 | +5,473 | melon_floor 0→100, load_per_hand 20→18, open_melons 8→10, fert_keep 0→1, max_animals 17→20, wheat_sell_price 30→25, wheat_hold_days 0→1, setup_capital_share 0.25→0.4, ROUTE_LEN 3→2, CROP_SWEEP_LEN 6→3, CROP_SWEEP_RADIUS 5→6, MELON_MAX_TILES 38→34, HERD_LAST_DAY 17→22, MAX_SHEEP 14→10, FERT_RADIUS 3→4 · blocks: hiring |  | cand falls behind C1 from day 16 (gap -1,647 -> final -14,317); days 14-21 drivers: sales_rev -15,740, work_turns -238, travel_per_task +0.06. Hands 11 vs 14, animals 7 vs 11, plants 67 vs 84. |
-| `2521e3906eb6` | M2 | migrate | **+2,378** | 2.2 | 13-7 | -28,392 | +4,110 | melon_floor 0→200, load_per_hand 20→19, open_melons 8→10, max_animals 17→16, wheat_per_animal 0.0→0.1, wheat_cap 22→5, wheat_sell_price 30→25, wheat_hold_days 0→1, setup_capital_share 0.25→0.4, ROUTE_LEN 3→2, CROP_SWEEP_LEN 6→3, CROP_SWEEP_RADIUS 5→6, MELON_MAX_TILES 38→40, HERD_LAST_DAY 17→22, MAX_SHEEP 14→12, FERT_RADIUS 3→4 · blocks: hiring |  | cand falls behind C1 from day 17 (gap -2,742 -> final -20,054); days 15-22 drivers: sales_rev -13,764, work_turns -255, water_hour +0.41. Hands 14 vs 14, animals 7 vs 11, plants 67 vs 85. |
-| `edd7288369ba` | queue | archive_crossover:crossover_g000025_20260910-105611_0 | **+2,328** | 1.5 | 13-7 | -26,820 | +6,527 | load_per_hand 20→19, open_melons 8→10, fert_keep 0→1, wheat_sell_price 30→25, setup_capital_share 0.25→0.4, ROUTE_LEN 3→2, CROP_SWEEP_LEN 6→3, MELON_MAX_TILES 38→40, HERD_LAST_DAY 17→22, MAX_SHEEP 14→10 · blocks: hiring |  | cand falls behind C1 from day 16 (gap -2,255 -> final -4,859); days 14-21 drivers: sales_rev -16,071, work_turns -227. Hands 10 vs 14, animals 7 vs 11, plants 66 vs 84. |
+| `d5fdd7605657` | queue | archive_crossover:crossover_g000050_20260910-111312_1 | **+2,576** | 2.1 | 13-7 | -28,823 | +5,411 | melon_floor 0→200, load_per_hand 20→18, open_melons 8→10, fert_keep 0→1, max_animals 17→20, wheat_sell_price 30→25, wheat_hold_days 0→1, setup_capital_share 0.25→0.4, ROUTE_LEN 3→2, CROP_SWEEP_LEN 6→3, MELON_MAX_TILES 38→34, MELON_PRICE_CUSHION 100→61, HERD_LAST_DAY 17→22, MAX_SHEEP 14→10, FERT_RADIUS 3→4 · blocks: hiring |  | cand falls behind C1 from day 16 (gap -1,761 -> final -17,078); days 14-21 drivers: sales_rev -16,651, work_turns -211, water_hour +0.29, travel_per_task +0.02. Hands 13 vs 14, animals 7 vs 11, plants |
 
 ## Top 15 by dev margin (selection score; may be seed-fit — trust held-out)
 
@@ -52,26 +52,26 @@ Population (all runs, reached dev): 413 · held-out evaluated: 35 · held-out PA
 | `b3324e9b7110` | queue | mutate | +6,108 | 2.6 | 10-0 | -28,038 | held_fail | harvest_min 1→2, load_per_hand 20→19, open_melons 8→10, open_wheat 7→8, fert_keep 0→1, wheat_sell_price 30→25, setup_capital_share 0.25→0.3, ROUTE_LEN 3→2, CROP_SWEEP_LEN 6→3, MELON_MAX_TILES 38→40, HERD_LAST_DAY 17→22, MAX_SHEEP 14→10 · blocks: hiring |
 | `1019eca510ac` | wide | paired | +5,473 | 2.3 | 8-2 | -24,553 | held_fail | melon_floor 0→100, load_per_hand 20→18, open_melons 8→10, fert_keep 0→1, max_animals 17→20, wheat_sell_price 30→25, wheat_hold_days 0→1, setup_capital_share 0.25→0.4, ROUTE_LEN 3→2, CROP_SWEEP_LEN 6→3, CROP_SWEEP_RADIUS 5→6, MELON_MAX_TILES 38→34, HERD_LAST_DAY 17→22, MAX_SHEEP 14→10, FERT_RADIUS 3→4 · blocks: hiring |
 | `8d73168f191f` | wide | paired | +5,425 | 2.7 | 9-1 | -28,015 | held_fail | melon_floor 0→100, load_per_hand 20→18, open_melons 8→10, wheat_per_animal 0.0→0.3, wheat_sell_price 30→27, wheat_hold_days 0→2, ROUTE_LEN 3→2, CROP_SWEEP_LEN 6→3, STRAW_CUTOFF 19→16, MELON_MAX_TILES 38→34, HERD_LAST_DAY 17→19, OPP_GROWTH 1.4→1.5, MAX_SHEEP 14→10 · blocks: hiring |
-| `d5fdd7605657` | queue | archive_crossover:crossover_g000050_20260910-111312_1 | +5,411 | 2.6 | 8-2 | -23,346 | alive | melon_floor 0→200, load_per_hand 20→18, open_melons 8→10, fert_keep 0→1, max_animals 17→20, wheat_sell_price 30→25, wheat_hold_days 0→1, setup_capital_share 0.25→0.4, ROUTE_LEN 3→2, CROP_SWEEP_LEN 6→3, MELON_MAX_TILES 38→34, MELON_PRICE_CUSHION 100→61, HERD_LAST_DAY 17→22, MAX_SHEEP 14→10, FERT_RADIUS 3→4 · blocks: hiring |
+| `d5fdd7605657` | queue | archive_crossover:crossover_g000050_20260910-111312_1 | +5,411 | 2.6 | 8-2 | -23,346 | held_fail | melon_floor 0→200, load_per_hand 20→18, open_melons 8→10, fert_keep 0→1, max_animals 17→20, wheat_sell_price 30→25, wheat_hold_days 0→1, setup_capital_share 0.25→0.4, ROUTE_LEN 3→2, CROP_SWEEP_LEN 6→3, MELON_MAX_TILES 38→34, MELON_PRICE_CUSHION 100→61, HERD_LAST_DAY 17→22, MAX_SHEEP 14→10, FERT_RADIUS 3→4 · blocks: hiring |
 | `bcf4dbd52f8d` | queue | mutate | +5,330 | 3.5 | 9-1 | -20,888 | held_fail | load_per_hand 20→19, open_wheat 7→4, early_hire_days 5→6, feed_spare_poor 0→1, demand_share 0.55→0.7, wheat_cap 22→13, wheat_water_tier 0→1, ROUTE_LEN 3→2, MELON_MAX_TILES 38→40, OPP_GROWTH 1.4→1.2 · blocks: hiring |
 | `2757e6c92f26` | queue | mutate | +5,290 | 5.1 | 10-0 | -18,243 | held_fail | melon_floor 0→150, open_wheat 7→4, feed_spare_poor 0→1, demand_share 0.55→0.65, max_animals 17→16, wheat_cap 22→13, ROUTE_LEN 3→2, MELON_MAX_TILES 38→39, OPP_GROWTH 1.4→1.3 · blocks: hiring |
 | `c06c14efa4e0` | queue | archive_crossover:crossover_g000050_20260910-111312_0 | +5,132 | 3.4 | 9-1 | -23,025 | held_fail | load_per_hand 20→19, open_wheat 7→4, early_hire_days 5→6, feed_spare_poor 0→1, fert_keep 0→1, demand_share 0.55→0.7, ROUTE_LEN 3→2, MELON_MAX_TILES 38→40, OPP_GROWTH 1.4→1.2, MAX_SHEEP 14→10 · blocks: hiring |
+| `cc8718994c22` | wide | block_pair | +5,046 | 2.1 | 9-1 | -24,840 | held_fail | melon_floor 0→100, load_per_hand 20→18, open_melons 8→10, wheat_per_animal 0.0→0.2, wheat_sell_price 30→27, wheat_hold_days 0→2, ROUTE_LEN 3→2, CROP_SWEEP_LEN 6→3, STRAW_CUTOFF 19→16, MELON_MAX_TILES 38→34, HERD_LAST_DAY 17→19, OPP_GROWTH 1.4→1.5, MAX_SHEEP 14→10 · blocks: hiring |
+| `e05397e4510f` | v312 | migrate | +4,992 | 2.6 | 8-2 | -23,981 | held_fail | melon_floor 0→150, load_per_hand 20→18, open_melons 8→10, wheat_per_animal 0.0→0.2, wheat_sell_price 30→25, wheat_hold_days 0→1, ROUTE_LEN 3→2, CROP_SWEEP_LEN 6→3, STRAW_CUTOFF 19→16, MELON_MAX_TILES 38→37, HERD_LAST_DAY 17→18, OPP_GROWTH 1.4→1.5, MAX_SHEEP 14→10 · blocks: hiring |
 | `b78610c183a0` | wide | crossover | +4,886 | 2.9 | 8-2 | -25,073 | held_fail | melon_floor 0→100, open_melons 8→10, fert_keep 0→1, wheat_sell_price 30→25, wheat_hold_days 0→1, setup_capital_share 0.25→0.4, ROUTE_LEN 3→2, CROP_SWEEP_LEN 6→3, CROP_SWEEP_RADIUS 5→6, MELON_MAX_TILES 38→34, HERD_LAST_DAY 17→22, MAX_SHEEP 14→10, FERT_RADIUS 3→4 · blocks: hiring |
+| `28fca2943584` | queue | archive_crossover:crossover_g000075_20260910-113243_0 | +4,876 | 3.9 | 10-0 | -22,949 | held_fail | load_per_hand 20→19, open_melons 8→10, early_hire_days 5→6, feed_spare_poor 0→1, fert_keep 0→1, setup_capital_share 0.25→0.4, ROUTE_LEN 3→2, MELON_MAX_TILES 38→40, OPP_GROWTH 1.4→1.2, MAX_SHEEP 14→10 · blocks: hiring |
 | `7ec902ce836b` | queue | crossover | +4,836 | 4.6 | 10-0 | -21,491 | held_fail | open_wheat 7→4, feed_spare_poor 0→1, demand_share 0.55→0.65, wheat_cap 22→13, ROUTE_LEN 3→2, MELON_MAX_TILES 38→39, OPP_GROWTH 1.4→1.3 · blocks: hiring |
 | `f5e71682ea28` | c1 | migrate | +4,572 | 2.5 | 8-2 | -20,162 | held_fail | melon_floor 0→200, load_per_hand 20→19, open_melons 8→10, fert_keep 0→1, max_animals 17→15, wheat_sell_price 30→25, wheat_hold_days 0→2, setup_capital_share 0.25→0.4, ROUTE_LEN 3→2, CROP_SWEEP_LEN 6→3, MELON_MAX_TILES 38→40, MELON_PRICE_CUSHION 100→61, HERD_LAST_DAY 17→22, MAX_SHEEP 14→10 · blocks: hiring |
 | `c45dceed4bc0` | queue | migrate | +4,549 | 3.8 | 9-1 | -23,362 | held_fail | min_hands 3→4, load_per_hand 20→19, open_melons 8→10, fert_keep 0→1, wheat_cap 22→25, wheat_sell_price 30→25, setup_capital_share 0.25→0.4, ROUTE_LEN 3→2, CROP_SWEEP_LEN 6→3, MELON_MAX_TILES 38→40, HERD_LAST_DAY 17→20, MAX_SHEEP 14→10 · blocks: hiring |
-| `150b6a4263d7` | queue | archive_crossover:crossover_g000050_20260910-103203_0 | +4,249 | 3.1 | 8-2 | -20,451 | held_fail | melon_floor 0→200, load_per_hand 20→19, open_melons 8→10, wheat_per_animal 0.0→0.1, wheat_cap 22→5, wheat_sell_price 30→25, wheat_hold_days 0→1, setup_capital_share 0.25→0.4, ROUTE_LEN 3→2, CROP_SWEEP_LEN 6→3, CROP_SWEEP_RADIUS 5→6, MELON_MAX_TILES 38→40, HERD_LAST_DAY 17→22, MAX_SHEEP 14→12, FERT_RADIUS 3→4 · blocks: hiring |
-| `2521e3906eb6` | M2 | migrate | +4,110 | 3.2 | 8-2 | -19,934 | held_fail | melon_floor 0→200, load_per_hand 20→19, open_melons 8→10, max_animals 17→16, wheat_per_animal 0.0→0.1, wheat_cap 22→5, wheat_sell_price 30→25, wheat_hold_days 0→1, setup_capital_share 0.25→0.4, ROUTE_LEN 3→2, CROP_SWEEP_LEN 6→3, CROP_SWEEP_RADIUS 5→6, MELON_MAX_TILES 38→40, HERD_LAST_DAY 17→22, MAX_SHEEP 14→12, FERT_RADIUS 3→4 · blocks: hiring |
-| `4da7ca753338` | queue | mutate | +4,086 | 2.7 | 9-1 | -19,685 | held_fail | open_wheat 7→4, feed_spare_poor 0→1, wheat_cap 22→13, wheat_water_tier 0→1, setup_capital_share 0.25→0.3, ROUTE_LEN 3→2, STRAW_CUTOFF 19→16, MELON_MAX_TILES 38→39, OPP_GROWTH 1.4→1.2, SPREAD_CAP 3→5 · blocks: hiring |
 
 ## Islands (best dev margin, population size)
 
-- H32: best +2,565 (`db96e76075e4`), n=54
-- M2: best +4,110 (`2521e3906eb6`), n=43
-- c1: best +4,572 (`f5e71682ea28`), n=69
-- queue: best +6,527 (`edd7288369ba`), n=126
-- v312: best +4,008 (`bfe4bb8d3609`), n=57
-- wide: best +5,473 (`1019eca510ac`), n=64
+- H32: best +2,565 (`db96e76075e4`), n=58
+- M2: best +4,110 (`2521e3906eb6`), n=49
+- c1: best +4,572 (`f5e71682ea28`), n=75
+- queue: best +6,527 (`edd7288369ba`), n=138
+- v312: best +4,992 (`e05397e4510f`), n=63
+- wide: best +5,473 (`1019eca510ac`), n=66
 
 ## Where the signal is (observed outcome variation by parameter value, all runs)
 
@@ -81,75 +81,75 @@ Per-value sample counts (`n=`) let you judge reliability: n<5 is fragile, n>=30 
 
 | param | observed spread ($, best−worst mean) | best value | C1 value | values tested | total n | sampling balance | per-value means (value: $mean, n) |
 |---|---:|---|---|---:|---:|---:|---|
-| MELON_PRICE_CUSHION | +10,675 | 61 | 100 | 32 | 400 | 13.82 | 61: +4,066 (n=3), 84: +1,257 (n=3), 91: +839 (n=2), 78: +287 (n=4), 74: -125 (n=2), 102: -347 (n=21), 115: -403 (n=3), 124: -740 (n=2), 90: -950 (n=5), 100: -1,030 (n=312), 83: -1,174 (n=3), 85: -1,611 (n=12), 92: -2,134 (n=12), 82: -2,202 (n=2), 71: -2,386 (n=2), 114: -3,075 (n=2), 104: -3,341 (n=2), 110: -4,472 (n=6), 99: -6,609 (n=2) |
+| MELON_PRICE_CUSHION | +10,675 | 61 | 100 | 35 | 433 | 13.66 | 61: +4,066 (n=3), 91: +839 (n=2), 78: +287 (n=4), 84: +137 (n=5), 74: -125 (n=2), 115: -141 (n=4), 102: -624 (n=24), 124: -740 (n=2), 100: -926 (n=334), 90: -950 (n=5), 83: -1,174 (n=3), 85: -1,380 (n=16), 82: -2,202 (n=2), 92: -2,219 (n=13), 71: -2,386 (n=2), 114: -3,075 (n=2), 104: -3,341 (n=2), 110: -4,472 (n=6), 99: -6,609 (n=2) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| demand_share | +10,235 | 0.7 | 0.55 | 11 | 413 | 5.61 | 0.7: +5,231 (n=2), 0.65: +192 (n=32), 0.6: -482 (n=29), 0.45: -758 (n=34), 0.55: -1,044 (n=248), 0.5: -2,102 (n=45), 0.8: -2,572 (n=3), 0.75: -2,707 (n=4), 0.3: -3,924 (n=12), 0.85: -4,162 (n=2), 0.35: -5,004 (n=2) |
+| demand_share | +9,426 | 0.7 | 0.55 | 12 | 448 | 5.41 | 0.7: +5,231 (n=2), 0.65: +364 (n=35), 0.45: -462 (n=42), 0.6: -699 (n=34), 0.55: -929 (n=261), 0.5: -2,151 (n=48), 0.8: -2,572 (n=3), 0.75: -2,922 (n=5), 0.3: -3,931 (n=13), 0.85: -4,162 (n=2), 0.35: -4,194 (n=3) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| MELON_MAX_TILES | +8,224 | 40 | 38 | 20 | 410 | 4.47 | 40: +2,772 (n=15), 39: +655 (n=49), 50: +235 (n=2), 27: -236 (n=5), 33: -247 (n=3), 41: -441 (n=6), 32: -462 (n=8), 35: -799 (n=54), 34: -1,436 (n=132), 38: -1,898 (n=109), 28: -1,927 (n=2), 31: -2,709 (n=2), 46: -2,903 (n=6), 42: -2,924 (n=3), 43: -3,008 (n=10), 25: -3,320 (n=2), 45: -5,453 (n=2) |
+| MELON_MAX_TILES | +7,550 | 40 | 38 | 21 | 446 | 4.65 | 40: +2,097 (n=21), 37: +830 (n=2), 39: +697 (n=52), 27: +660 (n=8), 50: +235 (n=2), 33: -247 (n=3), 41: -554 (n=7), 32: -714 (n=9), 35: -756 (n=59), 34: -1,409 (n=140), 25: -1,798 (n=3), 38: -1,896 (n=115), 28: -1,927 (n=2), 31: -2,709 (n=2), 46: -2,903 (n=6), 42: -2,924 (n=3), 43: -3,008 (n=10), 45: -5,453 (n=2) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| labor_reserve_buffer | +6,538 | 95 | 92 | 33 | 403 | 14.24 | 95: +803 (n=7), 87: +688 (n=3), 102: +500 (n=8), 124: -40 (n=7), 58: -219 (n=21), 107: -542 (n=8), 121: -689 (n=6), 106: -780 (n=2), 92: -1,049 (n=267), 118: -1,081 (n=2), 88: -1,408 (n=2), 59: -1,461 (n=3), 94: -1,493 (n=3), 16: -1,522 (n=2), 73: -1,731 (n=2), 11: -1,820 (n=36), 72: -1,999 (n=3), 150: -2,267 (n=10), 0: -2,575 (n=3), 76: -3,783 (n=2), 114: -4,072 (n=2), 91: -5,597 (n=2), 69: -5,735 (n=2) |
+| labor_reserve_buffer | +6,962 | 134 | 92 | 40 | 434 | 15.47 | 134: +1,226 (n=2), 95: +803 (n=7), 102: +767 (n=10), 87: +688 (n=3), 124: -40 (n=7), 58: -144 (n=24), 121: -689 (n=6), 106: -780 (n=2), 107: -785 (n=9), 92: -911 (n=286), 118: -1,081 (n=2), 88: -1,408 (n=2), 59: -1,461 (n=3), 94: -1,493 (n=3), 16: -1,522 (n=2), 73: -1,731 (n=2), 11: -1,789 (n=38), 72: -1,999 (n=3), 150: -2,267 (n=10), 0: -2,575 (n=3), 76: -3,783 (n=2), 115: -3,837 (n=2), 114: -4,072 (n=2), 91: -5,597 (n=2), 69: -5,735 (n=2) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| wheat_per_animal | +6,326 | 0.1 | 0.0 | 6 | 413 | 3.01 | 0.1: +231 (n=11), 0.0: -968 (n=276), 0.2: -1,309 (n=21), 0.3: -1,513 (n=101), 0.6: -1,828 (n=2), 0.5: -6,095 (n=2) |
+| wheat_per_animal | +6,511 | 0.1 | 0.0 | 6 | 449 | 3.01 | 0.1: +416 (n=13), 0.2: -249 (n=28), 0.0: -934 (n=300), 0.3: -1,549 (n=103), 0.6: -3,949 (n=3), 0.5: -6,095 (n=2) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| MAX_HANDS | +5,907 | 13 | 14 | 7 | 413 | 3.69 | 13: +111 (n=41), 12: -887 (n=53), 14: -1,139 (n=277), 11: -1,616 (n=7), 15: -2,074 (n=24), 16: -2,642 (n=7), 10: -5,796 (n=4) |
+| open_melons | +5,813 | 6 | 8 | 10 | 449 | 3.28 | 6: +125 (n=4), 10: -560 (n=192), 14: -756 (n=4), 11: -806 (n=36), 9: -908 (n=22), 7: -1,453 (n=8), 8: -1,460 (n=175), 12: -4,033 (n=2), 4: -4,132 (n=2), 5: -5,688 (n=4) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| ROUTE_LEN | +5,842 | 2 | 3 | 3 | 413 | 1.23 | 2: +776 (n=89), 3: -1,445 (n=307), 4: -5,066 (n=17) |
+| ROUTE_LEN | +5,811 | 2 | 3 | 3 | 449 | 1.17 | 2: +746 (n=107), 3: -1,412 (n=325), 4: -5,066 (n=17) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| open_melons | +5,813 | 6 | 8 | 10 | 412 | 2.89 | 6: +125 (n=4), 10: -688 (n=178), 14: -756 (n=4), 9: -1,023 (n=18), 11: -1,061 (n=29), 7: -1,109 (n=7), 8: -1,463 (n=166), 4: -4,132 (n=2), 5: -5,688 (n=4) |
+| MAX_HANDS | +5,796 | 13 | 14 | 7 | 449 | 3.68 | 13: +0 (n=46), 12: -900 (n=59), 14: -1,029 (n=300), 11: -1,360 (n=8), 15: -2,041 (n=25), 16: -2,642 (n=7), 10: -5,796 (n=4) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| open_sheep | +5,569 | 2 | 2 | 4 | 413 | 2.53 | 2: -902 (n=364), 1: -2,351 (n=42), 0: -4,123 (n=5), 3: -6,471 (n=2) |
+| load_per_hand | +5,782 | 18 | 20 | 10 | 448 | 4.32 | 18: +75 (n=22), 19: -4 (n=91), 15: -715 (n=3), 20: -1,051 (n=265), 22: -1,465 (n=6), 17: -2,091 (n=6), 21: -2,608 (n=41), 23: -2,815 (n=9), 24: -5,706 (n=5) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| wheat_cap | +5,409 | 5 | 22 | 14 | 411 | 5.74 | 5: +1,485 (n=6), 12: +426 (n=11), 13: +128 (n=50), 22: -1,149 (n=231), 25: -1,329 (n=58), 21: -1,542 (n=2), 19: -1,887 (n=4), 20: -2,011 (n=13), 17: -2,111 (n=3), 18: -2,159 (n=21), 24: -2,671 (n=6), 23: -3,923 (n=6) |
+| open_sheep | +5,644 | 2 | 2 | 4 | 449 | 2.55 | 2: -827 (n=398), 1: -2,327 (n=44), 0: -4,123 (n=5), 3: -6,471 (n=2) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| setup_capital_share | +5,215 | 0.3 | 0.25 | 10 | 412 | 5.44 | 0.3: +749 (n=7), 0.4: -213 (n=51), 0.45: -913 (n=18), 0.25: -1,057 (n=295), 0.2: -1,303 (n=7), 0.15: -1,761 (n=4), 0.5: -2,713 (n=4), 0.35: -3,794 (n=24), 0.05: -4,467 (n=2) |
+| wheat_cap | +5,395 | 5 | 22 | 15 | 446 | 5.59 | 5: +1,471 (n=8), 13: +202 (n=57), 12: +122 (n=12), 22: -1,037 (n=245), 25: -1,261 (n=66), 21: -1,542 (n=2), 19: -1,595 (n=5), 20: -1,999 (n=14), 17: -2,111 (n=3), 18: -2,236 (n=22), 24: -2,671 (n=6), 23: -3,923 (n=6) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| load_per_hand | +5,043 | 19 | 20 | 10 | 412 | 4.5 | 19: -43 (n=80), 18: -539 (n=17), 15: -1,043 (n=2), 20: -1,085 (n=252), 22: -1,465 (n=6), 17: -2,638 (n=5), 21: -2,743 (n=37), 23: -2,815 (n=9), 24: -5,086 (n=4) |
+| setup_capital_share | +5,215 | 0.3 | 0.25 | 10 | 448 | 5.47 | 0.3: +749 (n=7), 0.4: -195 (n=56), 0.45: -611 (n=21), 0.25: -1,002 (n=322), 0.2: -1,303 (n=7), 0.5: -1,613 (n=5), 0.15: -1,761 (n=4), 0.35: -3,794 (n=24), 0.05: -4,467 (n=2) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| opening | +4,332 | frontier | frontier | 2 | 413 | 0.87 | frontier: -843 (n=387), v312: -5,175 (n=26) |
+| open_cows | +4,374 | 2 | 2 | 3 | 449 | 1.83 | 2: -850 (n=424), 1: -3,619 (n=16), 3: -5,224 (n=9) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| open_cows | +4,307 | 2 | 2 | 3 | 413 | 1.82 | 2: -917 (n=388), 1: -3,619 (n=16), 3: -5,224 (n=9) |
+| opening | +4,349 | frontier | frontier | 2 | 449 | 0.88 | frontier: -775 (n=422), v312: -5,124 (n=27) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| wheat_stock | +3,693 | 7 | 0 | 11 | 408 | 4.25 | 7: -237 (n=3), 9: -407 (n=6), 0: -1,060 (n=357), 1: -1,595 (n=2), 4: -1,676 (n=38), 6: -3,930 (n=2) |
+| wheat_stock | +3,693 | 7 | 0 | 12 | 443 | 4.26 | 7: -237 (n=3), 9: -407 (n=6), 0: -959 (n=388), 4: -1,773 (n=41), 1: -2,141 (n=3), 6: -3,930 (n=2) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| SPREAD_CAP | +3,532 | 5 | 3 | 3 | 413 | 1.69 | 5: +2,291 (n=4), 3: -1,139 (n=371), 4: -1,241 (n=38) |
+| fert_keep | +3,462 | 1 | 0 | 3 | 449 | 1.77 | 1: +1,404 (n=30), 0: -1,203 (n=415), 2: -2,057 (n=4) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| fert_keep | +3,400 | 1 | 0 | 3 | 413 | 1.78 | 1: +1,342 (n=26), 0: -1,273 (n=383), 2: -2,057 (n=4) |
+| HERD_LAST_DAY | +3,011 | 22 | 17 | 9 | 448 | 3.0 | 22: +293 (n=28), 16: +260 (n=7), 18: -195 (n=19), 17: -1,099 (n=224), 19: -1,211 (n=146), 20: -1,427 (n=8), 14: -2,248 (n=14), 21: -2,718 (n=2) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| open_wheat | +2,915 | 4 | 7 | 8 | 413 | 4.56 | 4: -11 (n=57), 6: -448 (n=19), 10: -763 (n=5), 3: -916 (n=24), 9: -1,086 (n=11), 7: -1,343 (n=287), 5: -2,706 (n=4), 8: -2,926 (n=6) |
+| SPREAD_CAP | +2,966 | 5 | 3 | 3 | 449 | 1.7 | 5: +1,821 (n=5), 3: -1,061 (n=404), 4: -1,146 (n=40) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| max_animals | +2,877 | 19 | 17 | 8 | 413 | 4.85 | 19: +491 (n=8), 16: +87 (n=7), 18: -566 (n=23), 14: -935 (n=5), 17: -1,081 (n=302), 15: -1,202 (n=34), 13: -1,877 (n=2), 20: -2,386 (n=32) |
+| early_hire_days | +2,916 | 4 | 5 | 8 | 449 | 5.06 | 4: -139 (n=18), 8: -779 (n=10), 5: -1,031 (n=340), 7: -1,043 (n=18), 6: -1,125 (n=10), 2: -1,168 (n=2), 3: -1,195 (n=45), 0: -3,055 (n=6) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| HERD_LAST_DAY | +2,757 | 16 | 17 | 9 | 411 | 2.51 | 16: +509 (n=6), 22: +396 (n=25), 18: -813 (n=16), 20: -1,091 (n=7), 17: -1,160 (n=206), 19: -1,288 (n=137), 14: -2,248 (n=14) |
+| MAX_SHEEP | +2,853 | 10 | 14 | 7 | 448 | 2.74 | 10: -238 (n=78), 13: -989 (n=30), 14: -1,179 (n=279), 12: -1,338 (n=55), 11: -2,242 (n=4), 8: -3,091 (n=2) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
 
 ## Behavioural cells (animals@d15, land, max hands) → best dev margin, n
 
-- (7, 3, 4): +6,527 (n=45)
+- (7, 3, 4): +6,527 (n=48)
 - (9, 3, 3): +6,108 (n=7)
-- (12, 4, 6): +5,330 (n=9)
-- (8, 3, 5): +5,290 (n=15)
+- (12, 4, 6): +5,330 (n=11)
+- (8, 3, 5): +5,290 (n=16)
+- (7, 3, 3): +4,876 (n=18)
 - (8, 3, 4): +4,836 (n=23)
 - (7, 3, 5): +4,572 (n=6)
-- (16, 3, 6): +4,008 (n=2)
+- (16, 3, 6): +4,008 (n=3)
+- (9, 3, 4): +3,671 (n=28)
 - (14, 3, 6): +3,652 (n=9)
-- (7, 3, 3): +3,486 (n=17)
-- (10, 3, 5): +3,207 (n=15)
-- (9, 3, 4): +2,962 (n=26)
+- (6, 3, 3): +3,350 (n=8)
+- (10, 3, 5): +3,207 (n=17)
+- (6, 3, 4): +2,790 (n=7)
 - (11, 3, 5): +2,663 (n=16)
-- (11, 3, 6): +2,574 (n=17)
-- (9, 3, 5): +2,565 (n=11)
-- (10, 3, 4): +2,514 (n=13)
+- (11, 3, 6): +2,574 (n=18)
 
-_Generated 2026-09-10 11:16. Candidate files in `evolve/gen/`, DB `evolve/evolve.db`._
+_Generated 2026-09-10 11:36. Candidate files in `evolve/gen/`, DB `evolve/evolve.db`._
 
 ## Recent failure observations (grouped by failure class)
 
 **Observational only. Correlations, not established causes.** These groups describe parameter ranges frequently seen in recent failures of each class. A parameter appearing here may be part of the failure mechanism, or it may be confounded by the companion parameters tested alongside it, the seeds/matchups used, or RNG-path effects. Do not interpret these as 'avoid this parameter range.'
 
-### EXECUTION_FAILURE (observed in 195 recent candidates)
+### EXECUTION_FAILURE (observed in 212 recent candidates)
 
 - **Observed outcome:** unknown
-- **Associated parameter ranges (correlation, not cause):** melon_floor=0–200 (n=195); harvest_min=1–3 (n=195); wheat_tiles=0–5 (n=195); wheat_stock=0–19 (n=195); min_hands=3–6 (n=195); load_per_hand=12–26 (n=195); geese=0–2 (n=195); open_melons=4–14 (n=195)
-- **Evidence:** 195 candidates, multiple seeds. Confidence: high
+- **Associated parameter ranges (correlation, not cause):** melon_floor=0–200 (n=212); harvest_min=1–3 (n=212); wheat_tiles=0–5 (n=212); wheat_stock=0–19 (n=212); min_hands=3–6 (n=212); load_per_hand=12–26 (n=212); geese=0–2 (n=212); open_melons=4–14 (n=212)
+- **Evidence:** 212 candidates, multiple seeds. Confidence: high
 
-_Generated 2026-09-10 11:16. Candidate files in `evolve/gen/`, DB `evolve/evolve.db`._
+_Generated 2026-09-10 11:36. Candidate files in `evolve/gen/`, DB `evolve/evolve.db`._
