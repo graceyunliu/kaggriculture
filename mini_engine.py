@@ -127,11 +127,28 @@ def load_engine(name="master"):
     spec = importlib.util.spec_from_file_location(f"kag_engine_{name.replace('.', '_')}", d / "kaggriculture.py")
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
+    if os.environ.get("KAGG_FIXED_SHOPS") == "1":
+        _patch_fixed_shops(mod)
     cfg_defaults = {}
     for k, v in json.load(open(d / "kaggriculture.json"))["configuration"].items():
         cfg_defaults[k] = v.get("default") if isinstance(v, dict) else v
     _ENGINE_CACHE[name] = (mod, cfg_defaults)
     return mod, cfg_defaults
+
+
+def _patch_fixed_shops(mod):
+    """MEASUREMENT MODE (KAGG_FIXED_SHOPS=1): draw each day's shop unlock from its own seeded RNG stream instead of the
+    day RNG that _spawn_weeds has already consumed once per empty tile. In the real engine the shop identity therefore
+    depends on both farms' occupancy (the Sep 7 partial-coupling finding); here it depends only on (seed, day), so a
+    policy change no longer re-rolls the shop lottery and paired comparisons isolate the policy's own effect.
+    Never use for ladder-truth absolute numbers; use for counterfactuals and paired candidate comparisons."""
+    import inspect, textwrap
+    src = inspect.getsource(mod._end_of_day)
+    needle = "rng.choice(sorted(SHOPS))"
+    assert needle in src, "engine _end_of_day changed; fixed-shops patch needs updating"
+    src = textwrap.dedent(src).replace(needle, "random.Random((seed * 7919) ^ (day * 104729) ^ 0x5F3759DF).choice(sorted(SHOPS))")
+    ns = mod.__dict__
+    exec(compile(src, "<fixed_shops>", "exec"), ns)
 
 
 _AGENT_N = 0
@@ -294,7 +311,8 @@ def _sha(path):
 
 def _cache_key(a, b, seed, engine, config):
     c = json.dumps(config or {}, sort_keys=True)
-    return f"{CACHE_VERSION}_{_sha(a)}_{_sha(b)}_{engine}_{hashlib.md5(c.encode()).hexdigest()[:8]}_{seed}"
+    fs = "_fs" if os.environ.get("KAGG_FIXED_SHOPS") == "1" else ""
+    return f"{CACHE_VERSION}_{_sha(a)}_{_sha(b)}_{engine}{fs}_{hashlib.md5(c.encode()).hexdigest()[:8]}_{seed}"
 
 
 def _job(args):
