@@ -4,7 +4,7 @@ The chassis (evolve/chassis.py) is a frozen copy of candidates/K.py with marker 
 groups of functions. A candidate may replace the source of any block. Everything outside the
 blocks (engine constants, perception, the crash guard) is fixed.
 
-    python3 evolve/blocks.py build            # (re)build evolve/chassis.py from candidates/K.py
+    python3 evolve/blocks.py build            # (re)build evolve/chassis.py from K_LIVE (O15_SALE_PRIORITY.py since Sep 9)
     python3 evolve/blocks.py list             # show blocks and line counts
 """
 from __future__ import annotations
@@ -16,7 +16,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-K_LIVE = ROOT / "candidates" / "K.py"
+K_LIVE = ROOT / "candidates" / "O15_SALE_PRIORITY.py"   # Sep 9 night: chassis re-based from K.py onto the O15 frontier
 CHASSIS = ROOT / "evolve" / "chassis.py"
 
 # block name -> top-level function names (must be contiguous in the file, in this order)
@@ -27,7 +27,7 @@ BLOCKS = {
     "animal_routing": ["_build_route", "_route_step"],
     "siting":         ["_pick_site", "_setup_step"],
     "crop_admission": ["_crop_pools", "_plant_choice", "_task_valid"],
-    "sweep":          ["_build_sweep", "_crop_step"],
+    "sweep":          ["_build_sweep", "_steal_task", "_crop_step"],
     "dispatch":       ["_unit_action"],
 }
 
@@ -58,8 +58,14 @@ def _func_ranges(src):
     return out
 
 
+_MARKER_RE = re.compile(r"^# ===== (?:EVOLVE-BLOCK|END-BLOCK): \w+ =====\n", re.M)
+
+
 def build(src_path=K_LIVE, out_path=CHASSIS):
     src = Path(src_path).read_text()
+    # The O-lineage candidates descend from a rendered chassis and still carry the marker comments;
+    # strip them so the rebuild does not double them up.
+    src = _MARKER_RE.sub("", src)
     lines = src.splitlines(keepends=True)
     ranges = _func_ranges(src)
     inserts = []  # (line_index, text)
@@ -78,7 +84,7 @@ def build(src_path=K_LIVE, out_path=CHASSIS):
     for idx, text in sorted(inserts, key=lambda t: -t[0]):
         lines.insert(idx, text)
     text = "".join(lines)
-    header = ("# evolve/chassis.py -- frozen copy of candidates/K.py with typed mutation blocks.\n"
+    header = (f"# evolve/chassis.py -- frozen copy of {Path(src_path).name} with typed mutation blocks.\n"
               f"# source sha256 {hashlib.sha256(src.encode()).hexdigest()[:12]}. Rebuild: python3 evolve/blocks.py build\n")
     Path(out_path).write_text(header + text)
     return out_path

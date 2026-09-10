@@ -114,6 +114,11 @@ KNOB_SPACE = {
     "herd_species_bias":  ("float", -2.0, 2.0, 0.5),
     "setup_capital_share": ("float", 0.0, 0.5, 0.05),
     "labor_reserve_buffer": ("int", 0, 150, 25),
+    # Sep 9: O8's animal_claim coordination throttle, promoted from a hardcoded literal to a
+    # tunable knob so mutate/crossover can explore around it -- the <4/<2 jump from O2's original
+    # <2/<1 was a single hand-picked change, never itself searched. See evolve/RULES.md Pillar 1.
+    "animal_claim_pickup_gate": ("int", 2, 8, 1),
+    "animal_claim_move_gate":   ("int", 1, 4, 1),
 }
 
 CONST_SPACE = {
