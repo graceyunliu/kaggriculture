@@ -507,6 +507,8 @@ def export_archive(db, run_id, k_sha, frontier=None):
         "SELECT origin, note, smoke_margin, status, diagnosis, failure_profile, exec_summary, params FROM candidates WHERE status IN ('dead_smoke','dead_pattern','held_fail','error') ORDER BY created DESC LIMIT 40")]
     # grouped failure observations (observational only — present in archive for LLM context)
     failure_groups = report_mod._grouped_failure_observations(db.all())
+    # AGE-359: action timing matrix from all alive candidates — feeds proposer context + report
+    action_table_summary = report_mod.action_table_summary(rows) if rows else {}
     # execution gap between C1 and the frontier tape (clone) on seed 1 -- the standing diagnosis for the LLM
     run = db.run(run_id) or {}
     frontier_gap = None
@@ -530,6 +532,7 @@ def export_archive(db, run_id, k_sha, frontier=None):
         "param_exploration": imp[:20],
         "recent_dead": dead,
         "failure_observations": failure_groups,
+        "action_table_summary": action_table_summary,
         "frontier_gap": frontier_gap,
         "reference": {"c1": slim(db.get(space.params_key(c1))) if db.get(space.params_key(c1)) else None},
     }
