@@ -110,6 +110,9 @@ REJECTED_MECHANISMS = (
     ("land_deadline_tightening_to_marginal_decay", "rejected",
      "O33_LAND_DEADLINE_TIGHT (LAND_DEADLINE pulled in ~3-4 days/tier to match the marginal-value decay to 0 by day 12) loses on both own and margin, all four tapes on the stronger seed set. The single-unit marginal counterfactual doesn't see the option value of completing a quad early enough to use the extra tile-days; tightening the deadline throws that value away too.",
      "evolve/directions.yaml#land_deadline_horizon", "2026-09-11"),
+    ("goose_animal_class", "rejected",
+     "O34_GOOSE_TEST (chassis's disabled geese knob turned on, 4 GOOSE, affordability window widened from a dead day<=3 to day<=10): margin -7,058/-7,301 on two 20-seed sets, negative on all four tapes both sets, own money not even sign-consistent. A cheaper/faster-cycling animal class is not automatically profitable at this scale.",
+     "evolve/directions.yaml#goose_animal_class", "2026-09-11"),
 )
 
 
