@@ -6,7 +6,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 HOURS="${1:-${HOURS:-8}}"
-FRONTIER="${2:-${FRONTIER:-candidates/V3_12.py}}"
+FRONTIER="${2:-${FRONTIER:-candidates/O26_CARROT_SIZING.py}}"
 # secondary opponent = current ladder frontier tape (Opponents/frontier.txt, maintained by
 # evolve/refresh_frontier.py on the Mac); falls back to the September frontier tape.
 if [ -z "${CLONE:-}" ]; then

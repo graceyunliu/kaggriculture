@@ -1,5 +1,6 @@
-# evolve/chassis.py -- frozen copy of O26_CARROT_SIZING.py with typed mutation blocks.
-# source sha256 c982f399aa94. Rebuild: python3 evolve/blocks.py build
+# O33_FERT_DENIAL4: O26 with the daily opportunistic fertilizer buy cap raised 3 -> 4.
+# Removing these purchases hurt both own money and opponent suppression; this tests
+# the smallest increase in the locally supported direction.
 # O26_CARROT_SIZING: O25_STRAW_HIREGATE with the seed allocator's carrot yield assumption corrected 4.0 -> 3.0 units/planting (measured 3.0 on both farms). Effect: carrots mostly drop out of the plan (34 -> 12 plantings), the freed labour goes to wheat (64 -> 90 plantings, wheat purchases 260 -> 203), labour+land 11.3k -> 8.5k. Fixed shops vs O25: own +1.6k/+1.4k (t2.6/4.6), margin +0.8k/+0.2k/+1.5k (real tapes >= 0 on all three seed sets, clone negative). Wheat units 5.0 -> 3.9 (true) is -2k own: do not apply.
 # O25_STRAW_HIREGATE: O24_STRAW_SIZING + H_GATE144 (refuse hires priced above 144 on the daily fibonacci curve; other session's confirmed +1.3k own gain on O16).
 # O24_STRAW_SIZING: O22_MELON_MORNING with the seed allocator's strawberry yield assumption corrected from 4.5 to 7.5 units per planting (tools/allocation_matrix.py: tapes get 7.5 u/planting from 33 plantings; O16 planted 47 for the same ~250 units). Fewer plantings -> less seed, less labour, higher realised strawberry price. Own-money panel vs O22 +4.7-5.5k (t8-10); 9.0 +3.3k, 12.0 +1.7k, 20.0 -0.9k.
@@ -53,7 +54,7 @@ Knobs (default = V3.12 behaviour):
 import math
 import sys
 
-KNOBS = {'melon_floor': 0, 'harvest_min': 1, 'opening': 'frontier', 'wheat_tiles': 0, 'wheat_stock': 0, 'min_hands': 3, 'load_per_hand': 20, 'geese': 0, 'open_melons': 10, 'open_wheat': 7, 'open_cows': 2, 'open_sheep': 2, 'early_hire_days': 3, 'feed_spare_poor': 0, 'fert_keep': 0, 'fert_buy': 3, 'fert_carry': 2, 'demand_share': 0.55, 'max_animals': 17, 'wheat_per_animal': 0.0, 'wheat_cap': 22, 'wheat_water_tier': 0, 'wheat_sell_price': 30, 'wheat_hold_days': 0, 'sell_hourly': 0, 'drop_min': 0, 'drop_radius': 0, 'capital_hour2': -1, 'melon_rush': 0, 'straw_delay': 0, 'hands_early': 0, 'setup_capital_share': 0.25, 'labor_reserve_buffer': 92}
+KNOBS = {'melon_floor': 0, 'harvest_min': 1, 'opening': 'frontier', 'wheat_tiles': 0, 'wheat_stock': 0, 'min_hands': 3, 'load_per_hand': 20, 'geese': 0, 'open_melons': 10, 'open_wheat': 7, 'open_cows': 2, 'open_sheep': 2, 'early_hire_days': 3, 'feed_spare_poor': 0, 'fert_keep': 0, 'fert_buy': 4, 'fert_carry': 2, 'demand_share': 0.55, 'max_animals': 17, 'wheat_per_animal': 0.0, 'wheat_cap': 22, 'wheat_water_tier': 0, 'wheat_sell_price': 30, 'wheat_hold_days': 0, 'sell_hourly': 0, 'drop_min': 0, 'drop_radius': 0, 'capital_hour2': -1, 'melon_rush': 0, 'straw_delay': 0, 'hands_early': 0, 'setup_capital_share': 0.25, 'labor_reserve_buffer': 92}
 # ---- O5 end-of-game knobs
 EG = {"same_turn_sell": 3,   # 2 = day 29 only (default), 1 = all game (tested: wash, see header), 0 = off (O4 behaviour)
       "deadline_return": 1,  # day-29 go-home-by-h22 rule for any carried product
@@ -266,10 +267,10 @@ def perceive(obs):
 # ECONOMY
 # ======================================================================
 
+# ===== EVOLVE-BLOCK: hiring =====
 HIRE_MAX_MARGINAL = 144   # H_GATE144 (other session, AGE-360): refuse any hire whose own fibonacci price exceeds this
 
 
-# ===== EVOLVE-BLOCK: hiring =====
 def _hire_plan(target, have, hires_today, cash):
     """Return number of HIRE orders affordable now toward `target` hands."""
     n = 0
@@ -640,11 +641,11 @@ def economy(obs, v, pending_drop=None):
     slots = MAX_ORDERS - len(orders)
     orders += [["HIRE"]] * max(0, min(n, slots))
     return orders[:MAX_ORDERS]
+
+
+
+
 # ===== END-BLOCK: economy =====
-
-
-
-
 
 
 # ======================================================================
@@ -774,9 +775,9 @@ def _route_step(i, pos, v, day, hour, shed, carry, unlocked_shed):
         r["stops"].pop(0)
     del S["routes"][i]
     return None
+
+
 # ===== END-BLOCK: animal_routing =====
-
-
 
 
 # ===== EVOLVE-BLOCK: siting =====
@@ -862,9 +863,9 @@ def _task_valid(tp, kind, v, day, hour, carry, seeds_left):
     if kind == "weeds":
         return isinstance(t, dict) and t.get("kind") == "WEED"
     return False
+
+
 # ===== END-BLOCK: crop_admission =====
-
-
 
 
 # ===== EVOLVE-BLOCK: sweep =====
@@ -1063,11 +1064,11 @@ def _crop_step(i, pos, v, day, hour, carry, pools, seeds_left):
     if any(pools[k] for k in pools):
         return _crop_step(i, pos, v, day, hour, carry, pools, seeds_left)
     return _steal_task(i, pos, v, day, hour, carry, pools, seeds_left)
+
+
+
+
 # ===== END-BLOCK: sweep =====
-
-
-
-
 
 
 # ===== EVOLVE-BLOCK: dispatch =====
@@ -1194,9 +1195,9 @@ def _unit_action(i, pos, carry, obs, v, pools, seeds_left, shed, unlocked_shed):
             if hour + hd <= 23:
                 return [_step(pos, _nearest(pos, unlocked_shed))]
     return ["PASS"]
+
+
 # ===== END-BLOCK: dispatch =====
-
-
 
 
 

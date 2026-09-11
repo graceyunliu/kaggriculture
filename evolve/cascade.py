@@ -6,9 +6,10 @@ Every stage is paired, both seats, on the master (ladder) engine, via mini_engin
 Stage 0  fingerprint : 2 games (FP_SEEDS, seat 0) vs frontier. Per-day trace hash.
                        Identical to an already-evaluated candidate => no-op, skip.
 Stage 1  smoke       : SMOKE_SEEDS both seats vs frontier. Errors or margin < smoke_floor => dead.
-Stage 2  dev         : DEV_SEEDS both seats vs frontier, and vs clone. This is the ranking score.
+Stage 2  dev         : three disjoint seed blocks vs frontier; block 1 also scores the ranking panel.
+                       Every block must be positive and the pooled result must clear the promotion gate.
 Stage 3  held-out    : HELD_SEEDS both seats vs frontier (+ clone). Only for dev winners.
-                       Never used for selection of parents -- reporting only.
+                       A quarantined population panel is then required for final local promotion.
 """
 from __future__ import annotations
 
@@ -29,7 +30,14 @@ import action_table as at  # noqa: E402  # AGE-359/AGE-360: action timing table 
 FP_SEEDS = [1, 2]
 SMOKE_SEEDS = [1, 2, 3]
 DEV_SEEDS = list(range(1, 11))
-HELD_SEEDS = list(range(11, 31))
+DEV_CONFIRM_BLOCKS = [list(range(31, 41)), list(range(41, 51))]
+# Seeds 11-30, 51-70, 71-110 were inspected during the Manus bootstrap/factorial
+# trials. Keep them out of future selection claims. These ranges were preregistered
+# before the broad behavioral run and have not been used to steer mutations.
+# Perplexity evaluated held-out candidates on 111-130 and a population survivor
+# on 131-149 before its sandbox crashed. Retire both declared ranges.
+HELD_SEEDS = list(range(151, 171))
+POPULATION_SEEDS = list(range(171, 191))
 TRAJ_SEEDS = [1, 2, 3, 4, 5]   # AGE-331: subset of DEV_SEEDS, seat 0 vs frontier only, seed 1 reuses the
                                 # smoke-stage diagnosis cache so this is ~4 extra games per alive candidate.
 
@@ -146,6 +154,34 @@ def _eval(cand, opp, seeds, engine, jobs):
     t0 = time.time()
     r = evaluate(cand, opp, seeds, engine=engine, jobs=jobs)
     return r, time.time() - t0
+
+
+def combine_results(results):
+    """Pool disjoint paired-seed evaluations and recompute uncertainty from seed-level margins."""
+    merged = {}
+    errors = [0, 0]
+    for result in results:
+        overlap = set(merged) & set(result["per_seed"])
+        if overlap:
+            raise ValueError(f"development blocks overlap on seeds {sorted(overlap)}")
+        merged.update(result["per_seed"])
+        errors[0] += result["agent_errors"][0]
+        errors[1] += result["agent_errors"][1]
+    margins = [row["a"] - row["b"] for row in merged.values()]
+    n = len(margins)
+    mean = sum(margins) / max(1, n)
+    sd = (sum((m - mean) ** 2 for m in margins) / (n - 1)) ** 0.5 if n > 1 else 0.0
+    t = mean / (sd / n ** 0.5) if sd > 0 else (float("inf") if mean > 0 else (float("-inf") if mean < 0 else 0.0))
+    return {"mean_margin_per_game": mean / 2, "t": t,
+            "wins": sum(m > 0 for m in margins), "losses": sum(m < 0 for m in margins),
+            "agent_errors": errors, "per_seed": merged}
+
+
+def dev_blocks_pass(results, margin_floor, t_floor):
+    """Require direction replication in every preregistered block plus a pooled statistical pass."""
+    pooled = combine_results(results)
+    consistent = all(result["mean_margin_per_game"] > 0 for result in results)
+    return consistent and pooled["mean_margin_per_game"] >= margin_floor and pooled["t"] >= t_floor, pooled
 
 
 def panel_list(clone):
@@ -294,7 +330,23 @@ def run_cascade(db, key, cand_path, frontier, clone, cfg, jobs=None, log=print):
     except Exception as e:  # noqa: BLE001
         log(f"    trajectory/classify failed: {e!r}"[:200])
 
-    if not (r["mean_margin_per_game"] >= cfg["dev_promote"] and r["t"] >= cfg["dev_promote_t"]):
+    # Do not make a promotion decision from this noisy ten-seed block. The Sep 11
+    # Manus broad run demonstrated the failure mode directly: bf757c08b2cc had
+    # +$2,011 but t=1.9 here and was never allowed to reach the two replication
+    # blocks. The contract is three blocks first, then one pooled decision.
+    dev_results = [r]
+    for block in cfg.get("dev_confirm_blocks", DEV_CONFIRM_BLOCKS):
+        rb, dtb = _eval(cand_path, frontier, block, engine, jobs)
+        db.add_games(key, 2 * len(block), dtb)
+        dev_results.append(rb)
+    dev_ok, pooled_dev = dev_blocks_pass(dev_results, cfg["dev_promote"], cfg["dev_promote_t"])
+    block_summary = [round(x["mean_margin_per_game"], 1) for x in dev_results]
+    db.update(key, dev_margin=pooled_dev["mean_margin_per_game"], dev_t=pooled_dev["t"],
+              dev_wins=pooled_dev["wins"], dev_losses=pooled_dev["losses"],
+              dev_blocks=json.dumps(block_summary))
+    log(f"    DEV REPLICATION blocks={block_summary} pooled {pooled_dev['mean_margin_per_game']:+,.0f} "
+        f"(t={pooled_dev['t']:.1f}) -> {'PASS' if dev_ok else 'FAIL'}")
+    if not dev_ok:
         return "alive"
 
     # ---- stage 3: held-out
@@ -311,15 +363,32 @@ def run_cascade(db, key, cand_path, frontier, clone, cfg, jobs=None, log=print):
     # the tape panel's paired MARGIN (Sep 9: O-vs-O gains such as melon late-fert were null on the tapes); (3) does
     # not lower our OWN money on the panel (Sep 11: the capital checkpoint's +margin was an input-price attack with
     # own money -$1k -- an exploit, never core architecture). A candidate that fails only (3) is recorded as an exploit.
-    passed = (r["mean_margin_per_game"] > 0 and r["t"] >= 2.0
+    passed = (not cfg.get("panel_baseline_error")
+              and r["mean_margin_per_game"] > 0 and r["t"] >= 2.0
               and (panel_delta_held is None or panel_delta_held >= cfg.get("panel_floor", 0.0))
               and (own_delta_held is None or own_delta_held >= cfg.get("own_floor", 0.0)))
+    population = cfg.get("population_panel")
+    population_delta = population_own_delta = None
+    population_per_opp = None
+    if passed and population and cfg.get("population_baseline_error"):
+        passed = False
+        population_per_opp = {"error": cfg["population_baseline_error"]}
+    elif passed and population:
+        rp, dtp = eval_panel(cand_path, population, cfg.get("population_seeds", POPULATION_SEEDS), engine, jobs)
+        db.add_games(key, 2 * len(cfg.get("population_seeds", POPULATION_SEEDS)) * len(panel_list(population)), dtp)
+        population_delta = rp["mean_margin_per_game"] - cfg["frontier_population_margin"]
+        population_own_delta = rp["own_money_per_game"] - cfg["frontier_population_own"]
+        population_per_opp = rp["per_opp"]
+        passed = (population_delta >= cfg.get("population_floor", 0.0)
+                  and population_own_delta >= cfg.get("population_own_floor", 0.0))
     status = "held_pass" if passed else ("held_exploit" if kind_held == "exploit" and r["t"] >= 2.0 else "held_fail")
     db.update(key, stage=3, status=status,
               held_margin=r["mean_margin_per_game"], held_t=r["t"], held_wins=r["wins"], held_losses=r["losses"],
-              held_clone_margin=rc["mean_margin_per_game"],
-              note=f"panel_held={rc['per_opp']} panel_delta_held={panel_delta_held} own_held={rc['per_opp_own']} own_delta_held={own_delta_held} kind_held={kind_held}")
+              held_clone_margin=rc["mean_margin_per_game"], population_margin=population_delta,
+              population_own=population_own_delta, ladder_status="pending_external_validation" if passed else None,
+              note=f"panel_held={rc['per_opp']} panel_delta_held={panel_delta_held} own_held={rc['per_opp_own']} own_delta_held={own_delta_held} kind_held={kind_held} population={population_per_opp} population_delta={population_delta} population_own_delta={population_own_delta}")
     log(f"    HELD-OUT {r['mean_margin_per_game']:+,.0f} (t={r['t']:.1f}, {r['wins']}-{r['losses']})  "
         f"panel {rc['mean_margin_per_game']:+,.0f}" + (f" (delta vs frontier {panel_delta_held:+,.0f}, own {own_delta_held:+,.0f}, {kind_held})" if panel_delta_held is not None and own_delta_held is not None else "")
+        + (f" population delta {population_delta:+,.0f}, own {population_own_delta:+,.0f}" if population_delta is not None else "")
         + f"  -> {status.upper()}")
     return "held_pass" if passed else "held_fail"

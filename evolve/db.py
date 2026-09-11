@@ -125,6 +125,30 @@ REJECTED_MECHANISMS = (
     ("shed_overflow_wheat_only_gate_sell_genes", "rejected",
      "SCOPE: only the two tested interventions (wheat_buy_gate, wheat_sell_override) and their crossbreed, NOT the underlying shed-overflow mechanism (see shed_capacity_margin_calibration in directions.yaml, refined not abandoned). A/B/C/baseline family, 160 games/config (4 tapes x 20 seeds x both seats): all four configs identical to the decimal on own money, margin, discard $/game (220.9) and wheat buys/game -- own money +552/+552/+552/+552, discard $ 220.9 in every cell. Root cause (confirmed by direct instrumentation, not inferred): gene A (wheat_buy_gate, capping feed purchase by same-moment shed_load) checks shed_load at the wrong time -- feed is bought early in the day (hour-0 capital checkpoint) before harvests accumulate the occupancy that overflows at day's end, so the gate's threshold is essentially never crossed at the moment it's evaluated. Gene B (wheat_sell_override, bypassing the price gate when shed_load>=90) DOES fire (3 confirmed live triggers in one traced seed) but is structurally too narrow: it can only sell WHEAT already resident in the shed dict at that instant, while (a) STRAWBERRY/CARROT/MELON are frequently the items actually overflowing, and (b) the WHEAT that ultimately gets discarded is often still carried in a hand's inventory, not yet dropped into the shed, so shed.get('WHEAT',0) never sees it. A+B does not rescue either flaw (crossbreed identical to both singles and baseline). This SHARPENED the mechanism model rather than closing it: the relevant state is projected end-of-day inventory pressure (shed + all carried inventory), not current-turn shed-resident stock -- that reframing is the real value of this null.",
      "tools/regime_experiment/O26_SHED.py, tools/regime_experiment/shed_gene_family.py", "2026-09-11"),
+    ("o26_open_wheat9_fert_carry1", "rejected",
+     "Manus factorial: +$1,942 on development reversed to -$817 (t=-1.35) on fresh seeds 71-90; fitted seed-set interaction, not an O26 improvement.",
+     "docs/cloud-evolution-results-sep11.md", "2026-09-11"),
+    ("o26_melon_max_tiles_knob", "exhausted",
+     "MELON_MAX_TILES produced zero factorial effect and is not consumed by the exact-O26 decision path; removed from active search.",
+     "docs/cloud-evolution-results-sep11.md", "2026-09-11"),
+    ("single_dev_block_promotion", "rejected",
+     "A ten-seed t/margin pre-screen can reject candidates before the required three-block pooled decision; all three dev blocks must run before promotion is decided.",
+     "docs/cloud-evolution-results-sep11.md", "2026-09-11"),
+    ("bf757c08b2cc_behavioral_bundle", "rejected",
+     "Corrected three-block evaluation: +2010.6/+43.6/+1233.4 by block, pooled +1095.9 with t=1.85. Failed both pooled gates; fresh seeds 111-150 were not touched.",
+     "docs/cloud-evolution-results-sep11.md", "2026-09-11"),
+    ("cloud_7a735e93b1b9_panel_failure", "rejected",
+     "Pooled dev +1989 and held-out +2576 did not generalize to the historical panel: margin delta -2748 and own-money delta -2016.",
+     "docs/cloud-evolution-results-sep11.md", "2026-09-11"),
+    ("cloud_26bb1ab37c2d_population_failure", "rejected",
+     "Pooled dev +3380 and held-out +2703 passed the historical panel, then failed population validation: margin delta -3344 and own-money delta -4775.",
+     "docs/cloud-evolution-results-sep11.md", "2026-09-11"),
+    ("f01cec5376e1_rapid_parameter_bundle", "rejected",
+     "Three-block dev +5934 (t=6.29) shrank to +2677 with t=1.67 and 10-10 on confirmation seeds 111-130; failed confirmation and never reached population.",
+     "docs/cloud-evolution-results-sep11.md", "2026-09-11"),
+    ("global_hard_veto_capital_lookahead", "rejected",
+     "All eight 2/4-day reserve-gate cells lost every dev block; best was -125913/game (t=-28.25). Reserving future inputs before every purchase starves the farm of investments needed to generate future cash.",
+     "docs/cloud-evolution-results-sep11.md", "2026-09-11"),
 )
 
 
@@ -170,7 +194,7 @@ class DB:
             raise RuntimeError(f"rejected_mechanisms seed incomplete -- {missing} were not inserted "
                                f"(verdict must be one of rejected/exhausted/no_general_fix; check the CHECK constraint)")
         cols = {r["name"] for r in self.conn.execute("PRAGMA table_info(candidates)")}
-        for col, decl in (("island", "TEXT DEFAULT 'c1'"), ("blocks", "TEXT"), ("ablation", "TEXT"), ("diagnosis", "TEXT"), ("exec_summary", "TEXT"), ("trajectory_summary", "TEXT"), ("failure_profile", "TEXT"), ("action_table", "TEXT")):
+        for col, decl in (("island", "TEXT DEFAULT 'c1'"), ("blocks", "TEXT"), ("ablation", "TEXT"), ("diagnosis", "TEXT"), ("exec_summary", "TEXT"), ("trajectory_summary", "TEXT"), ("failure_profile", "TEXT"), ("action_table", "TEXT"), ("dev_blocks", "TEXT"), ("population_margin", "REAL"), ("population_own", "REAL"), ("ladder_status", "TEXT")):
             if col not in cols:
                 self.conn.execute(f"ALTER TABLE candidates ADD COLUMN {col} {decl}")
         self.conn.commit()
