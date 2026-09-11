@@ -720,3 +720,13 @@ cannot copy without losing feeds (O16 runs 12-16 animals on d10).
   them as "do not re-propose". Own/opponent/margin classification (`cascade.classify_gain`) and the two-axis promotion
   gate were already in place (other session).
 - Hardcoded sandbox paths removed from tools/*.py (the sandbox mount name changes between sessions).
+
+## Sep 11: O26 vs O25 on the 29 tapes NOT in the panel (`evolve/wide_tapes.py`, fixed shops, seeds 11-20, both seats)
+
+Generalisation check beyond the 4 fitted tapes. Pooled over 29 tapes x 10 seeds (n=290 paired games): **margin +1,258/game,
+own money +1,497/game**; margin positive on 25 of 29 tapes (negative: keiz -1.9k, milanleonard -1.1k, kronki -0.3k,
+strawhats -0.2k -- all opponents O25 already beats by +1.3k..+35k), own money positive on 27 of 29. By block of 8:
+margin +2,045 (t3.7) / +719 (t2.0) / +724 (t1.6) / +1,718 (t2.7); own +2,134 (t5.0) / +820 (t2.8) / +1,292 (t3.2) /
++1,887 (t3.6). Against the current frontier tape (feeltheagi, Opponents/frontier.txt): margin +3.7k, own +3.7k (t3.6).
+Read: the carrot step is a general gain, not a fit to the panel; the clone's -0.5..-3.4k is the outlier. O26 is the
+submission candidate.
