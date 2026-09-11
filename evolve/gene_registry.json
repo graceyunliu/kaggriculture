@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "immutable_reference": "candidates/O26_CARROT_SIZING.py",
+  "experimental_champion": "candidates/O33_FERT_DENIAL4.py",
+  "genes": [
+    {
+      "id": "LIFECYCLE_AWARE_HUSBANDRY",
+      "status": "validated_inherited",
+      "base": "candidates/O2_STATE_OWNERSHIP.py",
+      "candidate": "candidates/O4_PRODUCTIVE_SERVICE.py",
+      "mechanism": "Schedule feed and care from the animal production calendar, stored care bonus, and feed history instead of visiting when no later harvest can benefit.",
+      "evidence": {
+        "ablation": "B alone versus O2",
+        "dev_margin_delta": 2457,
+        "dev_margin_t": 2.38,
+        "heldout_margin_delta": 2457,
+        "heldout_margin_t": 2.19,
+        "source": "evolve/RULES.md: O4 factorial ablation"
+      },
+      "adoption": {"internal_chassis": true, "inherited_by": "O33"}
+    },
+    {
+      "id": "INTRADAY_RELEASE_AND_SELL",
+      "status": "validated_interaction_pair",
+      "base": "candidates/O2_STATE_OWNERSHIP.py",
+      "candidate": "candidates/O4_PRODUCTIVE_SERVICE.py",
+      "mechanism": "Treat mid-route product release and intraday selling/reinvestment as one coupled gene; either half alone is negligible or negative.",
+      "evidence": {
+        "interaction": "C plus D versus D alone",
+        "margin_delta_range": [2864, 3304],
+        "margin_t_range": [2.97, 3.23],
+        "bundle_heldout_margin_delta": 3392,
+        "bundle_heldout_margin_t": 4.42,
+        "source": "evolve/RULES.md: O4 factorial ablation"
+      },
+      "adoption": {"internal_chassis": true, "inherited_by": "O33", "never_split": true}
+    },
+    {
+      "id": "ANIMAL_CLAIM4_2",
+      "status": "validated_inherited",
+      "base": "candidates/O4_PRODUCTIVE_SERVICE.py",
+      "candidate": "candidates/O8_PURE_ANIMAL_THROTTLE.py",
+      "parameter_change": {"animal_claim_commit": {"from": 2, "to": 4}, "animal_claim_move": {"from": 1, "to": 2}},
+      "mechanism": "Permit more simultaneous animal pickup-and-placement claims when an actual shed backlog exists.",
+      "evidence": {"heldout_margin_delta": 1905, "heldout_margin_t": 3.33, "heldout_record": "17-3", "source": "evolve/RULES.md: O8_PURE_ANIMAL_THROTTLE"},
+      "adoption": {"internal_chassis": true, "inherited_by": "O33"}
+    },
+    {
+      "id": "GLOBAL_CROP_ORCHESTRATOR",
+      "status": "validated_inherited",
+      "base": "candidates/O15_SALE_PRIORITY.py",
+      "candidate": "candidates/O16_ORCH_ON_O15.py",
+      "mechanism": "Assign free units to open crop tasks with a global cost matrix instead of independent nearest-task selection.",
+      "evidence": {"own_delta": 1700, "margin_delta": 3100, "source": "docs/economic-self-model.md"},
+      "adoption": {"internal_chassis": true, "inherited_by": "O33"}
+    },
+    {
+      "id": "MELON_MORNING_CONVOY",
+      "status": "validated_bundle",
+      "base": "candidates/O16_ORCH_ON_O15.py",
+      "candidate": "candidates/O22_MELON_MORNING.py",
+      "mechanism": "Late-fertilize melons to six units, then harvest and carry them to the shed during the morning price window; late fertilizer alone was null.",
+      "evidence": {"seed_blocks": ["11-30", "31-50", "51-70"], "own_delta_range": [372, 1798], "margin_delta_range": [899, 2502], "source": "evolve/RULES.md: O22_MELON_MORNING"},
+      "adoption": {"internal_chassis": true, "inherited_by": "O33", "never_split_without_new_ablation": true}
+    },
+    {
+      "id": "STRAW_UNITS7_5",
+      "status": "validated_inherited",
+      "base": "candidates/O22_MELON_MORNING.py",
+      "candidate": "candidates/O24_STRAW_SIZING.py",
+      "parameter_change": {"STRAW_UNITS": {"from": 4.5, "to": 7.5}},
+      "mechanism": "Size strawberry commitments from measured sellable yield, avoiding over-planting, excess labor, and self-induced price depression.",
+      "evidence": {"heldout_own_delta": 5483, "heldout_own_t": 10, "heldout_margin_delta": 5826, "heldout_margin_t": 14, "fresh_own_delta": 4736, "source": "evolve/RULES.md: O24_STRAW_SIZING"},
+      "adoption": {"internal_chassis": true, "inherited_by": "O33"}
+    },
+    {
+      "id": "HIRE_MAX_MARGINAL144",
+      "status": "validated_inherited",
+      "base": "candidates/O24_STRAW_SIZING.py",
+      "candidate": "candidates/O25_STRAW_HIREGATE.py",
+      "parameter_change": {"HIRE_MAX_MARGINAL": {"from": null, "to": 144}},
+      "mechanism": "Refuse the next daily hire when its convex marginal Fibonacci price exceeds 144.",
+      "evidence": {"own_delta_blocks": [1568, 1352], "own_t_blocks": [12.4, 11.2], "margin_delta": 1397, "margin_t": 9.5, "positive_on_all_five_panel_streams": true, "source": "evolve/RULES.md: O25_STRAW_HIREGATE"},
+      "adoption": {"internal_chassis": true, "inherited_by": "O33"}
+    },
+    {
+      "id": "CARROT_UNITS3",
+      "status": "validated_inherited",
+      "base": "candidates/O25_STRAW_HIREGATE.py",
+      "candidate": "candidates/O26_CARROT_SIZING.py",
+      "parameter_change": {"CARROT_UNITS": {"from": 4.0, "to": 3.0}},
+      "mechanism": "Use measured carrot yield in the allocator so low-value carrot commitments are rejected and labor shifts to paying work.",
+      "evidence": {"own_delta_blocks": [1600, 1400], "own_t_blocks": [2.6, 4.6], "wide_tape_cells": 290, "wide_tape_own_delta": 1497, "wide_tape_margin_delta": 1258, "source": "evolve/RULES.md: O26 crop sweep and wide-tape check"},
+      "adoption": {"internal_chassis": true, "inherited_by": "O33", "weakest_gate_pass": true}
+    },
+    {
+      "id": "FERT_DENIAL4",
+      "status": "validated_small_positive",
+      "base": "candidates/O26_CARROT_SIZING.py",
+      "candidate": "candidates/O33_FERT_DENIAL4.py",
+      "parameter_change": {
+        "fert_buy": {"from": 3, "to": 4}
+      },
+      "mechanism": "Increasing opportunistic fertilizer acquisition by one unit produced both a small private-economy gain and an adverse shared-market effect on opponents.",
+      "evidence": {
+        "historical_seed_blocks": ["235-254", "255-274", "275-294"],
+        "historical_pooled_margin_deltas": [303.1375, 634.1, 504.45625],
+        "fresh_leader_seed_block": "295-314",
+        "fresh_leader_streams": 4,
+        "fresh_leader_cells": 80,
+        "fresh_own_delta": 261.9,
+        "fresh_opponent_delta": -272.60625,
+        "fresh_margin_delta": 534.50625,
+        "fresh_margin_t": 2.5703266012087105,
+        "positive_margin_on_all_fresh_streams": true
+      },
+      "adoption": {
+        "internal_chassis": true,
+        "ladder_submission_required": false,
+        "freeze_family": true,
+        "next_test": "Crossbreed factorial: O26, FERT_DENIAL4, next independent gene, and FERT_DENIAL4 plus that gene."
+      }
+    }
+  ],
+  "non_genes": [
+    {"id": "FERT_COURIER", "status": "mechanism_only_no_economic_gain", "reason": "Coverage improved from 1.9 to 2.7 nights per planting, but own money was +0 alone."},
+    {"id": "WHEAT_SELL_PRICE", "status": "rejected_private_only", "reason": "Own money rose, but margin fell because the tapes are net wheat sellers."},
+    {"id": "MIN_HANDS2", "status": "rejected_after_replication", "reason": "A historical positive block failed to replicate on a fresh block."}
+  ]
+}

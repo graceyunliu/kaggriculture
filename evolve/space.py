@@ -75,7 +75,9 @@ KNOB_SPACE = {
     "early_hire_days":  ("int", 0, 8, 1),
     "feed_spare_poor":  ("int", 0, 3, 1),
     "fert_keep":        ("int", 0, 3, 1),
-    "fert_buy":         ("int", 0, 3, 1),
+    # 4 is the validated O33 chassis gene. Keep it representable for inheritance and
+    # ablation, while deprioritized_params.yaml prevents another blind fertilizer sweep.
+    "fert_buy":         ("int", 0, 4, 1),
     "fert_carry":       ("int", 1, 5, 1),
     "demand_share":     ("float", 0.3, 1.0, 0.05),
     "max_animals":      ("int", 10, 20, 1),

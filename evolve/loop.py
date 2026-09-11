@@ -7,9 +7,9 @@
 Candidates are (params, blocks): 36 numeric/categorical parameters of the frozen chassis
 (evolve/chassis.py) plus optional replacement source for any typed mutation block (evolve/blocks.py).
 
-Islands (separate parent pools, occasional migration; chassis = K_SELFMODEL since Sep 11):
+Islands (separate parent pools, occasional migration; default chassis = O33 since Sep 11):
     o15    chassis with every self-model switch off (exactly O15_SALE_PRIORITY), sigma 0.2 -- legacy control
-    best   chassis defaults (O26_CARROT_SIZING + O23 engine facts), sigma 0.2
+    best   experimental champion defaults (O33 = O26 + FERT_DENIAL4), sigma 0.2
     wide   same seed, sigma 0.5 / rate 0.20 -- the exploration island
     queue  every externally supplied candidate (factorial designs, LLM proposals, hand-written files)
 Parent choice inside an island: tournament from its top (65%), a random behavioural cell (25%),
@@ -589,8 +589,8 @@ def main():
     ap.add_argument("--minutes", type=float, default=0.0)
     ap.add_argument("--max-candidates", type=int, default=0)
     ap.add_argument("--jobs", type=int, default=None)
-    ap.add_argument("--frontier", default=str(ROOT / "candidates" / "O26_CARROT_SIZING.py"),
-                    help="head-to-head yardstick (selection score). Sep 11: O26, the current ladder candidate/control")
+    ap.add_argument("--frontier", default=str(ROOT / "candidates" / "O33_FERT_DENIAL4.py"),
+                    help="head-to-head yardstick (selection score). Sep 11: O33 experimental champion; O26 remains the immutable control")
     ap.add_argument("--clone", default=",".join(str(ROOT / "Opponents" / t) for t in (
                         "tape_peterparker_106816877.py", "tape_alaylm_106813359.py",
                         "tape_bahaenes_106828159.py", "tape_yangkuang2_106819729.py")),
@@ -614,7 +614,8 @@ def main():
     ap.add_argument("--dev-promote", type=float, default=DEFAULTS["dev_promote"])
     ap.add_argument("--no-pattern-death", action="store_true", help="disable the stage 0.5 trace screen")
     ap.add_argument("--db", default=None)
-    ap.add_argument("--base", default=None, help="chassis file to snapshot (default evolve/chassis.py)")
+    ap.add_argument("--base", default=str(ROOT / "candidates" / "O33_FERT_DENIAL4.py"),
+                    help="chassis file to snapshot (default validated O33 experimental champion)")
     ap.add_argument("--queue-dir", default=str(QUEUE_DIR), help="queue directory")
     ap.add_argument("--crossover-interval", type=int, default=25,
                     help="periodically queue archive crossovers; 0 disables")
