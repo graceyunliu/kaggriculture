@@ -798,3 +798,15 @@ tile-days for the rest of the game) that a single-unit removal doesn't see, and 
 away along with the low-value last unit. The two measurements were answering different questions; the observational
 one didn't transfer to a working intervention. Ledger now DO 5 / DELAY 0 / ABANDON 14 / SWITCH 4 -- every inherited
 direction from the O12-O26 programme is closed. Next: open-ended candidate discovery from the K_SELFMODEL chassis.
+
+## Sep 11: first open-ended scout -- goose_animal_class -> ABANDON (dead knob, then a real loss)
+
+The chassis has a ready-made but disabled `geese` knob (GOOSE/EGG: cost 300 vs COW 400/SHEEP 500, interval 1 vs
+COW's 2/SHEEP's 3 -- cheaper and faster-cycling). Turning it on (O34_GOOSE_TEST, 4 GOOSE) first found the knob's
+`day <= 3` affordability window is DEAD under the current "frontier" opening: a single-seed debug trace showed
+free capital at -50/234/273 on days 1-3, only clearing $300 on day 4. Relaxed to `day <= 10` to test the real
+economic question, then ran O26 vs O34 on the 4-tape panel, own+margin, two 20-seed sets: margin -7,058 (s11-30)
+and -7,301 (s31-50), negative on ALL FOUR TAPES both sets (~30x the noise floor); own money didn't even agree in
+sign (+1,451 then -585). Not an exploit or spillover pattern -- once the dead window is fixed, geese are a
+straightforward loss at this quantity. Ledger: DO 5 / DELAY 0 / ABANDON 15 / SWITCH 4. Side-finding: the knob's
+`day<=3` deadman window should be fixed or removed independent of this verdict, since it silently no-ops today.
