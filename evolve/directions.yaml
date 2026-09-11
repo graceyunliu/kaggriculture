@@ -239,3 +239,33 @@
   reopen: "only with a different acquisition schedule (later, fewer, or demand-gated) that is shown NOT to be captured by this test -- e.g. a small goose count (1-2) added only once the fast-cycle EGG income has clear shed room, not a wholesale 4-bird open. The current knob's day<=3 deadman window should also be fixed or removed regardless of this direction's outcome, since it silently no-ops"
   panel_note: "20x2, not the nominal 32x2 for lumpy_capital -- the effect size (30x noise floor, unanimous sign across 4 tapes and both sets on margin) makes a 32-cell confirmation unlikely to change the verdict, but a reopener should still run the full depth"
   date: 2026-09-11
+
+- id: knob_space_local_optimum_sweep
+  state: ABANDON
+  type: knob
+  hypothesis: "second open-ended scout: a 20-knob one-at-a-time sweep of every live, currently-default KNOBS value in the chassis (O26_CARROT_SIZING) that hadn't already been closed by a named ledger direction -- open_melons/open_wheat/open_cows/open_sheep, min_hands, load_per_hand, early_hire_days, melon_floor, harvest_min, demand_share, max_animals, hands_early, drop_min, feed_spare_poor, each nudged both directions where sensible -- should turn up an easy win the O16-O26 programme's manual tuning missed"
+  measurement: "dev-seed h2h screen (10 seeds, KAGG_FIXED_SHOPS=1) of each of 20 single-knob perturbations vs unmodified O26, via a batch harness (/tmp/scout_sweep.py, not committed -- one-shot screening tool, results in evolve/RULES.md)"
+  negative_evidence: "18 of 20 nudges are flat-to-negative at 10 seeds (|delta| <=1.5k, several sharply negative and informative: open_cows 2->3 is -31,066, open_sheep 2->3 is -35,685 -- a 3rd starting animal is a large mistake; load_per_hand in EITHER direction from 20 is negative, -5,886 at 25 and -4,401 at 15, an interior optimum already at the default; open_wheat similarly interior at 7, -2,889 at 10 and -6,261 at 4). The 2 positive nudges (demand_share 0.65: +1,350 h2h; min_hands 2: +1,530 h2h) were escalated separately -- demand_share_065 did not survive the real tape panel (see demand_share_up ABANDON below); min_hands_2 did (see min_hands_lower DO below)"
+  scope: "one-at-a-time perturbation of the 20 named knobs at the tested values, dev-seed h2h screen only (not a panel-confirmed rejection of any individual knob beyond the two escalated) -- most of the current defaults sit at or near a local optimum in this knob space"
+  reopen: "a genuinely different value for one of the 18 flat/negative knobs (not adjacent to what was tested), or a joint (multi-knob) sweep -- one-at-a-time perturbation can miss an interaction effect that a paired change would catch"
+  date: 2026-09-11
+
+- id: demand_share_up
+  state: ABANDON
+  type: knob
+  hypothesis: "from the sweep above: demand_share 0.55 -> 0.65 (seed allocator commits to a larger share of remaining demand per planting) showed +1,350 h2h vs O26 at 10 dev seeds"
+  measurement: "O35_DEMAND_SHARE065.py vs O26, 4-tape panel, own+margin, one 20-seed set (11-30), KAGG_FIXED_SHOPS=1"
+  negative_evidence: "the h2h screen did not transfer to the real panel: margin -503, own -1,663, both negative (h2h vs the O26 clone alone is a weak signal for this class of change, exactly the documented caveat in docs/economic-self-model.md)"
+  scope: demand_share at 0.65; not swept further (0.55 stays default)
+  reopen: a different demand_share value shown positive on the real panel, not just h2h
+  date: 2026-09-11
+
+- id: min_hands_lower
+  state: DO
+  type: knob
+  mechanism: "the standing-workforce floor outside the early-hire window (min_hands) was set to 3; a floor of 2 lets the marginal-price hire gate (HIRE_MAX_MARGINAL=144, hire_marginal_price) do more of the sizing work instead of a fixed floor forcing hands the gate wouldn't have bought"
+  intervention: "min_hands 3 -> 2 (O36_MIN_HANDS2)"
+  evidence: "vs O26, 4-tape panel: set1 (s11-30) margin +748, own +320 (3 of 4 tapes positive, bahaenes -275); set2 (s31-50) margin +906, own +420 (3 of 4 tapes positive, peterparker -329). Both metrics positive on both independent 20-seed sets, majority of tapes each time, no tape reliably negative twice"
+  held_out: set2 (s31-50) agrees in sign and magnitude with set1 (s11-30)
+  caution: "modest effect size (~$300-900/game, 1-4x the noise floor) -- weakest DO in the lineage alongside carrot_yield_sizing; the one negative tape differs between sets (bahaenes then peterparker), consistent with noise rather than a real tape-specific loss, but worth another seed set before folding into the frontier chassis"
+  date: 2026-09-11
