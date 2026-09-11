@@ -66,16 +66,14 @@ ISLANDS = {
     "o15":   {"seed": {"base": "base", "params": {"ORCH_ON": 0}}, "rate": 0.15, "sigma": 0.2},   # exactly O15 at the seed
     "orch":  {"seed": "base", "rate": 0.15, "sigma": 0.2},                                       # exactly O16 at the seed
     "wide":  {"seed": "base", "rate": 0.20, "sigma": 0.5},                                       # exploration, orchestrator on
-    # O16_CAPITAL_CHECKPOINT (other session, Sep 10): O15 with a cumulative cash anchor for the capital event; changes
-    # only the `economy` block. Fixed-shops tape panel vs O15: +711 (t=2.4, seeds 11-30) and +1,091 (t=2.4, seeds 31-45),
-    # positive on every tape -> passes the island gate. Seeded with the orchestrator OFF: stacked on O16 (O18_CAPITAL_ORCH)
-    # the gain vanishes on the tapes (-177, t=-1.0, negative on all 4 real tapes, seeds 11-40) despite +1.5k h2h vs O16.
-    "capital": {"seed": {"base": "base", "params": {"ORCH_ON": 0},
-                         "blocks": {"economy": {"candidate": "candidates/O16_CAPITAL_CHECKPOINT.py", "block": "economy"}}},
-                "rate": 0.15, "sigma": 0.2},
+    # "capital" island REMOVED (Sep 10, later the same evening): O16_CAPITAL_CHECKPOINT's tape-panel margin gain (+711)
+    # is an input-price attack, not an own-economy gain -- PANEL_METRIC=own reads -1,032/game (t=-2.8) while the tape
+    # loses ~1.7k (its fixed wheat/fert BUY quantities pay the prices we push up). Same for capital_hour2=2 on O16
+    # (margin +1.6k, own -2.6k). Seeding a margin-gated search on that would fill the archive with opponent-harm
+    # variants that live opponents absorb (M2/M3 lesson). Re-enable only with an own-money gate. See RULES.md.
     "queue": {"seed": None, "rate": 0.15, "sigma": 0.2},
 }
-MUTABLE_ISLANDS = ("o15", "orch", "wide", "capital")
+MUTABLE_ISLANDS = ("o15", "orch", "wide")
 MIGRATE = 0.1
 CROSSOVER = 0.3
 
