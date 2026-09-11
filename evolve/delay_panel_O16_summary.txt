@@ -1,0 +1,44 @@
+
+== summary: 3060 counterfactuals, 3 tapes, 6 seeds ==
+
+-- horizon 0 (final money) --
+bucket                             d1 mean±ci       d2 mean±ci       d4 mean±ci   sign/seed  sign/tape  (delay 1)
+HARVEST/MELON/early             -360±  932n30     -282±  925n30     -360±  975n30          3/6        2/3
+COLLECT                         -279±  448n30     -144±  496n30     -209±  481n30          4/6        2/3
+WATER/oneshot/cu1               -194±  270n30      -94±  346n30      -67±  360n30          4/6        2/3
+DROP/day                        -159±  452n30     -243±  462n30     -234±  455n30          4/6        2/3
+PLANT/mid                       -140±  293n30     -106±  252n30      -73±  274n30          4/6        2/3
+HARVEST/CARROT/at_maxday         -79±  204n30      -45±   80n30      -79±  244n30          1/6        1/3
+HARVEST/WHEAT/at_maxday          -61±  215n30      -88±  277n30     -209±  244n30          3/6        2/3
+CARE                             -51±  123n30      +44±  221n30      -54±  222n30          4/6        2/3
+PLANT/late                       -48±   75n30      +17±   73n30      -82±  101n30          3/6        2/3
+WATER/oneshot/cu0                -34±   30n30      +86±  207n30     +136±  212n30          4/6        3/3
+WATER/ongoing/cu0                -31±   87n30      -15±  129n30       -4±  238n30          3/6        1/3
+PLANT/early                      -13±  570n30     +138±  459n30     +114±  736n30          4/6        1/3
+HARVEST/animal                    +7±  229n30      +78±  291n30     -197±  462n30          4/6        2/3
+WATER/ongoing/cu1                 +9±  218n30      +21±  337n30     +181±  315n30          2/6        1/3
+HARVEST/STRAWBERRY               +81±   94n30      +26±  128n30       -4±  124n30          2/6        1/3
+FEED/cu0                        +126±  280n30      +99±  359n30      +73±  518n30          3/6        1/3
+FEED/cu1                        +180±  218n30     +106±  232n30     +310±  391n30          1/6        0/3
+
+-- horizon 48 (net-worth proxy 48 steps after) --
+bucket                             d1 mean±ci       d2 mean±ci       d4 mean±ci   sign/seed  sign/tape  (delay 1)
+HARVEST/WHEAT/at_maxday          -51±   37n30      -23±   55n30       -2±   77n30          4/6        3/3
+PLANT/mid                        -44±   88n30      -18±   31n30      -60±   72n30          4/6        3/3
+HARVEST/STRAWBERRY               -29±   38n30       -4±   56n30      -27±   56n30          4/6        2/3
+CARE                             -16±   33n30      -13±   23n30      -10±   42n30          4/6        2/3
+WATER/oneshot/cu0                -13±   12n30      +31±  117n30      +75±  112n30          3/6        3/3
+FEED/cu1                          -8±   27n30      -40±   46n30      +38±  126n30          3/6        2/3
+WATER/oneshot/cu1                 -6±   23n30       +3±   38n30      -10±   52n30          3/6        1/3
+HARVEST/CARROT/at_maxday          -4±   10n30       +2±   14n30       -3±   15n30          2/6        2/3
+PLANT/early                       +1±  295n30       +2±  303n30      +51±  328n30          3/6        2/3
+HARVEST/MELON/early               +5±  295n30      +45±  282n30     -125±  404n30          4/6        2/3
+WATER/ongoing/cu0                 +9±   12n30      +14±   19n30      +51±   49n30          1/6        1/3
+HARVEST/animal                   +10±   65n30      -25±   69n30      -26±   78n30          4/6        2/3
+PLANT/late                       +14±   36n30      +32±   42n30      +31±   41n30          2/6        0/3
+DROP/day                         +18±   35n30      -54±   46n30      -77±   70n30          1/6        0/3
+COLLECT                          +30±   70n30       -4±   71n30      -36±   98n30          2/6        1/3
+FEED/cu0                         +46±  112n30       +9±   47n30      +13±  108n30          4/6        1/3
+WATER/ongoing/cu1                +88±  120n30       -9±   74n30      +61±  123n30          2/6        0/3
+
+0s
