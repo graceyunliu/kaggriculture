@@ -666,3 +666,19 @@ Also read, and set aside: `O23_FERT_COURIER` (phase rule + free units fetch fert
 "cargo to deposit" count -- PRODUCTS includes FERTILIZER, so units carrying >=3 fert walked it straight back to the
 shed; fixed, coverage 1.9 -> 2.7 fertilized nights/planting) raises units/planting to 6.3 but own money is +0 (margin
 +1.3k): strawberry volume is demand-limited; the courier is worth revisiting only as a way to cut plantings further.
+
+## Sep 11: wheat line closed at knob level (third time); O25 = O24 + H_GATE144
+
+Remaining matrix gaps after O24 (yangk, s11-14): purchases 25.6k vs 18.7k (wheat: we buy 260 u/$10k, sell 144 at $41 --
+a daily round-trip because `reserve_feed` keeps one day of feed; tape grows 515 and buys 111), labour+land 11.3k vs 8.0k,
+melon price $175 vs $219. Own-money panel vs O24 (fixed shops, s11-20 / s21-40):
+- wheat_sell_price 40/45/50 (stop selling feed wheat): own **+1.45k (t4.5) / +1.24k / +0.76k**, but margin panel **-635**
+  and h2h -2.1k..-3.3k (4-16): the tapes are net wheat SELLERS (287 u), so our withheld supply raises the price they get
+  by more than it saves us. Own gate passes, margin gate fails -> rejected. (Mirror image of the price-attack case.)
+- wheat_per_animal 0.5/1.0, wheat_tiles 8 (grow feed): own +0.2..+0.7k (t<1.2), h2h -4.2..-4.6k (0-10). Closed.
+- wheat_hold_days 2-3 / wheat_stock 10: own +0.4-0.5k (t0.9). Null.
+
+**O25_STRAW_HIREGATE** = O24 + `HIRE_MAX_MARGINAL = 144` in `_hire_plan` (the other session's H_GATE144). vs O24: own
++1,568 (t12.4, s11-30) / +1,352 (t11.2, s31-50), margin +1,397 (t9.5), all 5 positive. **vs O15: margin +8,669 (t14.6),
+own +7,522 (t11.9), every tape +6.5-9.0k.** `submissions/O25_STRAW_HIREGATE.zip`. Lineage: O15 + orchestrator (O16) +
+melon convoy (O22) + strawberry sizing (O24) + hire gate (O25); each step passed both gates.
