@@ -100,10 +100,14 @@ accounting bridge covers <20% of the $504 residual with no concentrated class, N
 HIRE_MAX_MARGINAL=144). `investment_readiness_threshold` resolved SWITCH: BUY_ANIMAL's marginal sign is unmeasurable at
 32 cells (flips between two independent seed sets, matching the pre-registered would_abandon condition) and stays a
 hand threshold; BUY_LAND's marginal sign is stable and significant through day 10, decaying to noise by day 12 -- real
-but observational, not yet a tested intervention. The sole remaining open direction is `land_deadline_horizon`: build a
-candidate that pulls the hand-tuned LAND_DEADLINE (14/17/18 by quad tier) in to track that decay, and test it on the
-standard 20x2 own+margin panel. Keep the ledger current -- a direction that is not in it has not been decided -- and
-only then return to open-ended candidate discovery from the K_SELFMODEL chassis.
+but observational, not yet a tested intervention. `land_deadline_horizon` was then tested and ABANDONed: pulling the hand-tuned LAND_DEADLINE (14/17/18 by quad tier)
+in to track the marginal-value decay (O33_LAND_DEADLINE_TIGHT, {2:11,3:13,4:14}) lost on both own and margin, on
+all four tapes on the stronger seed set. Lesson: the marginal counterfactual measured the value of the LAST land
+unit under the unchanged policy; it did not see the option value of completing a quad early enough to use the extra
+tile-days for the rest of the game, and tightening the deadline threw that away too. Ledger is now DO 5 / DELAY 0 /
+ABANDON 14 / SWITCH 4 -- every inherited direction from the O12-O26 programme is closed. Keep the ledger current --
+a direction that is not in it has not been decided -- and the loop now moves to open-ended candidate discovery from
+the K_SELFMODEL chassis.
 
 Durable rule from the melon programme: a protected block (the h<=8 convoy) tolerates EDGE TRIMMING (h7 vs h8, +$250)
 but not INTERIOR INTERRUPTION (every urgency-shaped hole lost on all four tapes). Champion record: O26_CARROT_SIZING is
