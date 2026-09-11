@@ -1,4 +1,5 @@
-# O22_MELON_MORNING: O20_MELON_FIRST (melon late-fert -> 6 units by age 9-10) + melon morning: on days 9-14 until h12, free units harvest ready melon tiles first and carry them straight to the shed, so the crop sells into the fresh day-10 melon price pool (tapes realise $231/melon, O16 $171).
+# O22_MELON_MORNING: O16_ORCH_ON_O15 + melon late-fert (O20: fertilize MELON at age 7-8 -> 6 units by age 9-10) + melon morning: on days 9-14 until h8, units not on an animal route harvest ready (6-unit) melon tiles first and carry them straight to the shed, so the crop sells into the fresh day-10 melon price pool ahead of the tapes' 60-unit dump (tapes realise $231/melon, O16 $171; tools/sale_timeline.py).
+# Fixed shops vs O16, 4 tapes + clone: margin +1,233 (t3.4, s11-30) / +899 (t2.4, s31-50) / +2,502 (t6.5, s51-70); OWN money +372 (t1.0) / +1,258 (t3.2) / +1,798 (t4.2). h12 or harvest-at-5-units variants: null/negative (displace animal routes).
 # O20_MELON_FIRST: O16_ORCH_ON_O15 + melon late-fert (B4_01 patch) so all melons reach 6 units by age 9-10 and sell on day 10 at the top of the melon price curve (tools/sale_timeline.py: tapes realise $231/melon, O16 $171 because 30+ units sit in hands until the nightly auto-drop and sell at the d11 h0 dump).
 # O16_ORCH_ON_O15: O15_SALE_PRIORITY.py + X1 global crop orchestrator (per-turn cost matrix over free units x open crop tasks, flat priorities, commitment bonus 0.75).
 # O15_SALE_PRIORITY: O12 plus state-based scheduling of existing SELL orders.
@@ -943,8 +944,8 @@ def _steal_task(i, pos, v, day, hour, carry, pools, seeds_left):
 ORCH_PRIO = {"urgent": 0.0, "harvest": 0.5, "wwater": 0.5, "fert": 0.5, "plant": 1.0, "water": 1.0, "weeds": 1.5, "slack": 6.0}
 ORCH_COMMIT = 0.75
 MELON_MORNING = 1            # O22
-MELON_MORNING_LAST_HOUR = 12 # O22
-MELON_MORNING_MIN_YIELD = 5   # O22: a 5-unit melon sold at the top of the pool beats a 6-unit one sold into the dump      # bonus for keeping the task a unit is already heading to (prevents swap oscillation)
+MELON_MORNING_LAST_HOUR = 8 # O22
+MELON_MORNING_MIN_YIELD = 6   # O22: a 5-unit melon sold at the top of the pool beats a 6-unit one sold into the dump      # bonus for keeping the task a unit is already heading to (prevents swap oscillation)
 ORCH_SLACK_HOUR = 14
 
 
