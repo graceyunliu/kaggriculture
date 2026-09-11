@@ -10,7 +10,7 @@ Aggregated by (verb, state bucket) this is the empirical "value at risk per hour
 Usage: python3 tools/delay_counterfactual.py CAND OPP --seed 1 --sample 80 [--verbs WATER,HARVEST,FEED,...]
 """
 import sys, argparse, random
-sys.path.insert(0, "/sessions/confident-jolly-fermat/mnt/Kaggriculture")
+sys.path.insert(0, __import__("os").path.dirname(__import__("os").path.dirname(__import__("os").path.abspath(__file__))))
 import mini_engine as me
 WORK = {"WATER", "HARVEST", "PLANT", "FEED", "CARE", "COLLECT_FERTILIZER", "FERTILIZE", "DIG", "DROP"}
 
