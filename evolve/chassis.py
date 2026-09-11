@@ -1,7 +1,13 @@
-# evolve/chassis.py -- frozen copy of O16K_ORCH_KNOBBED.py with typed mutation blocks.
-# source sha256 61e3a9c879a6. Rebuild: python3 evolve/blocks.py build
-# O16K_ORCH_KNOBBED: O16_ORCH_ON_O15 with ORCH_ON gate (0 = O15 behaviour, 1 = O16) and the orchestrator's
-# priorities/commit bonus/slack hour as top-level constants so the evolve loop can mutate them. Chassis source since Sep 10.
+# evolve/chassis.py -- frozen copy of K_SELFMODEL.py with typed mutation blocks.
+# source sha256 aae2e0ff8cc9. Rebuild: python3 evolve/blocks.py build
+# K_SELFMODEL: O26_CARROT_SIZING (= O25 + carrot sizing) with every validated self-model correction behind a top-level switch (see evolve/gen_o26k.py).
+# Defaults = O26 + two engine facts (fert phase rule, fertilizer-is-input). All switches off + STRAW_UNITS 4.5 + CARROT_UNITS 4.0 + HIRE_MAX_MARGINAL 10**9 == O15 exactly.
+# O26_CARROT_SIZING: O25_STRAW_HIREGATE with the seed allocator's carrot yield assumption corrected 4.0 -> 3.0 units/planting (measured 3.0 on both farms). Effect: carrots mostly drop out of the plan (34 -> 12 plantings), the freed labour goes to wheat (64 -> 90 plantings, wheat purchases 260 -> 203), labour+land 11.3k -> 8.5k. Fixed shops vs O25: own +1.6k/+1.4k (t2.6/4.6), margin +0.8k/+0.2k/+1.5k (real tapes >= 0 on all three seed sets, clone negative). Wheat units 5.0 -> 3.9 (true) is -2k own: do not apply.
+# O25_STRAW_HIREGATE: O24_STRAW_SIZING + H_GATE144 (refuse hires priced above 144 on the daily fibonacci curve; other session's confirmed +1.3k own gain on O16).
+# O24_STRAW_SIZING: O22_MELON_MORNING with the seed allocator's strawberry yield assumption corrected from 4.5 to 7.5 units per planting (tools/allocation_matrix.py: tapes get 7.5 u/planting from 33 plantings; O16 planted 47 for the same ~250 units). Fewer plantings -> less seed, less labour, higher realised strawberry price. Own-money panel vs O22 +4.7-5.5k (t8-10); 9.0 +3.3k, 12.0 +1.7k, 20.0 -0.9k.
+# O22_MELON_MORNING: O16_ORCH_ON_O15 + melon late-fert (O20: fertilize MELON at age 7-8 -> 6 units by age 9-10) + melon morning: on days 9-14 until h8, units not on an animal route harvest ready (6-unit) melon tiles first and carry them straight to the shed, so the crop sells into the fresh day-10 melon price pool ahead of the tapes' 60-unit dump (tapes realise $231/melon, O16 $171; tools/sale_timeline.py).
+# Fixed shops vs O16, 4 tapes + clone: margin +1,233 (t3.4, s11-30) / +899 (t2.4, s31-50) / +2,502 (t6.5, s51-70); OWN money +372 (t1.0) / +1,258 (t3.2) / +1,798 (t4.2). h12 or harvest-at-5-units variants: null/negative (displace animal routes).
+# O20_MELON_FIRST: O16_ORCH_ON_O15 + melon late-fert (B4_01 patch) so all melons reach 6 units by age 9-10 and sell on day 10 at the top of the melon price curve (tools/sale_timeline.py: tapes realise $231/melon, O16 $171 because 30+ units sit in hands until the nightly auto-drop and sell at the d11 h0 dump).
 # O16_ORCH_ON_O15: O15_SALE_PRIORITY.py + X1 global crop orchestrator (per-turn cost matrix over free units x open crop tasks, flat priorities, commitment bonus 0.75).
 # O15_SALE_PRIORITY: O12 plus state-based scheduling of existing SELL orders.
 # Sale priority = approximate local price sensitivity * batch quantity squared.
@@ -101,11 +107,13 @@ MELON_MAX_TILES = 38
 MELON_UNITS_PER_TILE = 6.0
 MELON_PRICE_CUSHION = 100
 OPENING_MELONS = 14
+CARROT_UNITS = 3.0  # O26_CARROT_SIZING: expected units per carrot planting (was 4.0; measured 3.0)
+STRAW_UNITS = 7.5   # O24: expected sellable units per strawberry planting used by the seed allocator (was 4.5; measured 5.5-7.5 -> the farm over-planted strawberries by ~40%)
 CROP_SPECS = {
-    "STRAWBERRY": {"seed": 100, "units": 4.5, "first": 10, "cycle": 18, "cutoff": 17, "base": 120, "min_val": 12},
+    "STRAWBERRY": {"seed": 100, "units": STRAW_UNITS, "first": 10, "cycle": 18, "cutoff": 17, "base": 120, "min_val": 12},
     "MELON":      {"seed": 80,  "units": 6.0, "first": 10, "cycle": 12, "cutoff": 16, "base": 250, "min_val": 12, "cushion": 100},
     "WHEAT":      {"seed": 10,  "units": 5.0, "first": 2,  "cycle": 5,  "cutoff": 24, "base": 25,  "min_val": 12},
-    "CARROT":     {"seed": 20,  "units": 4.0, "first": 2,  "cycle": 4,  "cutoff": 25, "base": 35,  "min_val": 12},
+    "CARROT":     {"seed": 20,  "units": CARROT_UNITS, "first": 2,  "cycle": 4,  "cutoff": 25, "base": 35,  "min_val": 12},
     "TOMATO":     {"seed": 50,  "units": 5.0, "first": 8,  "cycle": 12, "cutoff": 20, "base": 60,  "min_val": 12},
 }     # units above I0 before MELON drops from $250 toward $150 (sq curve)
 HERD_LAST_DAY = 17
@@ -200,12 +208,26 @@ def _harvest_ready(t, day):
 
 def _fert_eligible(t, day):
     c = CROPS.get(t.get("crop"))
-    if not c or not c["ongoing"] or day > 26:
+    if not c or day > 26:
         return False
     age = day - t.get("planted_day", day)
+    if not c["ongoing"]:
+        if not MELON_LATE_FERT or t.get("crop") != "MELON":
+            return False
+        # O20: fertilize melons late in the yield window (age 7-8) -> 6 units by age 9-10 -> the whole crop is
+        # harvested on day 10 and sold into the fresh $270 melon pool before/with the tapes' 60-unit dump
+        return (7 <= age <= 8 and t.get("yield_units", 0) < c["max_yield"]
+                and t.get("fertilized_until_day", -1) < day)
     step_i = max(1, c["interval"])
     done = 0 if age < c["first"] else (age - c["first"]) // step_i + 1
-    return done < c["max_yield"] and age >= c["first"] - 1 and t.get("fertilized_until_day", -1) < day
+    if not (done < c["max_yield"] and age >= c["first"] - 1 and t.get("fertilized_until_day", -1) < day):
+        return False
+    if FERT_PHASE_RULE:
+        # engine fact: fertilizer lasts 3 days (day..day+2) and an ongoing crop produces on the night of day d when
+        # (d + 1 - first) % interval == 0 -> fertilizing on a production day covers two production nights, on an
+        # off day only one (strawberry: ages 9, 11, 13, 15; the tapes fertilize at exactly 9 and 13).
+        return (age + 1 - c["first"]) % step_i == 0
+    return True
 
 
 def perceive(obs):
@@ -254,6 +276,9 @@ def perceive(obs):
 # ECONOMY
 # ======================================================================
 
+HIRE_MAX_MARGINAL = 144   # H_GATE144 (other session, AGE-360): refuse any hire whose own fibonacci price exceeds this
+
+
 # ===== EVOLVE-BLOCK: hiring =====
 def _hire_plan(target, have, hires_today, cash):
     """Return number of HIRE orders affordable now toward `target` hands."""
@@ -262,6 +287,8 @@ def _hire_plan(target, have, hires_today, cash):
     while have + n < target:
         c = _fib(hires_today + n)
         if spent + c > cash:
+            break
+        if c > HIRE_MAX_MARGINAL:
             break
         spent += c
         n += 1
@@ -851,7 +878,6 @@ def _task_valid(tp, kind, v, day, hour, carry, seeds_left):
 
 
 # ===== ORCHESTRATOR (global assignment of crop tasks) =====
-ORCH_ON = 1             # 0 = no orchestration (exactly O15), 1 = global crop-task assignment (exactly O16)
 ORCH_P_HARVEST = 0.5    # priority offsets added to walking distance; lower = taken first
 ORCH_P_WWATER = 0.5
 ORCH_P_FERT = 0.5
@@ -859,7 +885,14 @@ ORCH_P_PLANT = 1.0
 ORCH_P_WATER = 1.0
 ORCH_P_WEEDS = 1.5
 ORCH_P_SLACK = 6.0
-ORCH_COMMIT = 0.75      # bonus for keeping the task a unit is already heading to (prevents swap oscillation)
+ORCH_ON = 1                  # O16 global crop-task orchestrator (0 = O15 per-unit sweeps)
+ORCH_COMMIT = 0.75
+MELON_MORNING = 1            # O22 melon morning (0 = off)
+MELON_LATE_FERT = 1          # O20/O22 melon fert at age 7-8 (0 = off)
+FERT_PHASE_RULE = 1          # O23 engine fact: fertilize ongoing crops on production days only (0 = off)
+FERT_IS_INPUT = 1            # O23 engine fact: carried fertilizer is not deposit cargo (0 = off)
+MELON_MORNING_LAST_HOUR = 8 # O22
+MELON_MORNING_MIN_YIELD = 6   # O22: a 5-unit melon sold at the top of the pool beats a 6-unit one sold into the dump      # bonus for keeping the task a unit is already heading to (prevents swap oscillation)
 ORCH_SLACK_HOUR = 14
 
 
@@ -1074,6 +1107,37 @@ def _unit_action(i, pos, carry, obs, v, pools, seeds_left, shed, unlocked_shed):
         if op is not None:
             return op
     prod_carried = sum(carry.get(k, 0) for k in PRODUCTS if k != "WHEAT")
+    if FERT_IS_INPUT and day <= 26 and v["fert"]:
+        prod_carried -= carry.get("FERTILIZER", 0)   # engine fact: PRODUCTS contains FERTILIZER; carried fertilizer is on its way to a tile, not cargo to deposit
+    # O22 melon morning: on the days the melon crop comes in, ready melon tiles are the crew's first job of the day and
+    # the melons go straight back to the shed (the melon price pool is emptied by whoever sells first; tapes harvest
+    # 60 units by h9 and sell at $217-260, our units used to trickle them in all day and dump 30 at the d11 h0 price).
+    if MELON_MORNING and 9 <= day <= 14 and hour <= MELON_MORNING_LAST_HOUR and i not in S["routes"]:
+        mc = S.setdefault("melon_claim", {})
+        if mc.get("day") != day:
+            mc.clear(); mc["day"] = day
+        if carry.get("MELON", 0) >= 4 or (carry.get("MELON", 0) > 0 and not any(
+                _t.get("crop") == "MELON" and (_harvest_ready(_t, day) or _t.get("yield_units", 0) >= MELON_MORNING_MIN_YIELD)
+                for q, _t in v["crops"])):
+            if pos in unlocked_shed:
+                return ["DROP"]
+            return [_step(pos, _nearest(pos, unlocked_shed))]
+        tp = mc.get(i)
+        if tp is not None:
+            tt = v["tiles"][tp[1]][tp[0]]
+            if not (isinstance(tt, dict) and tt.get("crop") == "MELON" and tt.get("yield_units", 0) > 0):
+                mc.pop(i, None); tp = None
+        if tp is None:
+            taken = {q for j, q in mc.items() if j != "day"}
+            ready = [q for q, _t in v["crops"] if q not in taken and isinstance(v["tiles"][q[1]][q[0]], dict)
+                     and v["tiles"][q[1]][q[0]].get("crop") == "MELON" and (_harvest_ready(v["tiles"][q[1]][q[0]], day) or v["tiles"][q[1]][q[0]].get("yield_units", 0) >= MELON_MORNING_MIN_YIELD)]
+            if ready:
+                tp = _nearest(pos, ready); mc[i] = tp
+        if tp is not None:
+            if pos == tp:
+                mc.pop(i, None)
+                return ["HARVEST"]
+            return [_step(pos, tp)]
     if EG["deadline_return"] and day == 29:
         # O5: anything still carried after the last processed hour is worth $0 -- get it home in time.
         cargo = sum(n for k, n in carry.items() if k not in ANIMALS and n > 0)
