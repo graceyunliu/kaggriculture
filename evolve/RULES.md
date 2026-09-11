@@ -589,3 +589,25 @@ about the third.
 the capital checkpoint's margin gain was an input-price attack on a fixed-quantity opponent (own money
 -$1,032 vs O15 while margin +$711). Every promotion needs both a relative margin result and an own-money
 result, and a candidate whose own money falls is not promoted whatever its margin does.
+
+## Sep 11: O22_MELON_MORNING -- melon sale timing is a real own-money gain (for review, not promoted)
+
+`tools/sale_timeline.py` (every committed SELL unit with day/hour/price + harvest hour, both farms): the tapes harvest all
+60-72 melons by d10 h9 (5 hands on melon tiles at h5-h6) and sell them h9-h15 at $217-260; O16 harvests one tile every
+~2 h through day 10, 30+ units sit in hands until the nightly auto-drop and sell at the d11 h0 dump ($121-166).
+`melon_rush` alone changes nothing (the melons are not harvested early enough); melon late-fert alone (O20) is null.
+
+O22 = O16 + melon late-fert (age 7-8, so tiles are at 6 units on d10 morning) + "melon morning": days 9-14, hours <= 8,
+units not on an animal route take the nearest unclaimed 6-unit melon tile, HARVEST, and carry it straight to the shed.
+Fixed shops, vs O16, 4 tapes + clone:
+
+| seeds | margin panel | own-money panel |
+|---|---|---|
+| 11-30 | +1,233 (t3.4), all 5 positive | +372 (t1.0) |
+| 31-50 | +899 (t2.4) | +1,258 (t3.2), all 5 positive |
+| 51-70 | +2,502 (t6.5), all 5 positive | +1,798 (t4.2), all 5 positive |
+
+Both gates pass on 60 seeds (mean margin ~+1.5k, own ~+1.1k). h2h vs O16 is noisy (+1.4k / -0.8k / +1.9k) as expected
+for a timing mechanism against a self-play opponent. Variants that lose: melon morning until h12 (own +127, h2h -1.5k) and
+harvesting 5-unit tiles (both displace the h1-h12 animal routes; O16 carries 12-16 animals on d10, the tapes 10-11).
+Zip: `submissions/O22_MELON_MORNING.zip`. Stacks on O16 (which is itself pending review vs O15).
