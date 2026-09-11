@@ -13,7 +13,7 @@ moves-per-leg (how far each phase walks) as well as totals.
 Usage: python3 tools/move_ledger.py cand opp --seeds 1-5
 """
 import sys, argparse
-sys.path.insert(0, "/sessions/confident-jolly-fermat/mnt/Kaggriculture")
+sys.path.insert(0, __import__("os").path.dirname(__import__("os").path.dirname(__import__("os").path.abspath(__file__))))
 import mini_engine as me
 MOVES = {"NORTH", "SOUTH", "EAST", "WEST"}
 WORK = {"WATER", "HARVEST", "PLANT", "FEED", "CARE", "COLLECT_FERTILIZER", "FERTILIZE", "DIG", "PLACE", "BUILD_PASTURE", "BUILD_COOP"}
