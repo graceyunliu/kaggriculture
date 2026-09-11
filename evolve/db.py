@@ -128,6 +128,9 @@ REJECTED_MECHANISMS = (
     ("single_dev_block_promotion", "rejected",
      "A ten-seed t/margin pre-screen can reject candidates before the required three-block pooled decision; all three dev blocks must run before promotion is decided.",
      "docs/cloud-evolution-results-sep11.md", "2026-09-11"),
+    ("bf757c08b2cc_behavioral_bundle", "rejected",
+     "Corrected three-block evaluation: +2010.6/+43.6/+1233.4 by block, pooled +1095.9 with t=1.85. Failed both pooled gates; fresh seeds 111-150 were not touched.",
+     "docs/cloud-evolution-results-sep11.md", "2026-09-11"),
 )
 
 

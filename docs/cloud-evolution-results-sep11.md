@@ -26,7 +26,11 @@ Factors were open wheat 7/9, fertilizer carry 2/1, melon max tiles 38/31, and he
 
 ### Manus broad-behavioral run
 
-141 candidates / 5,804 games / 17,378 games/hour, zero errors. No candidate reached fresh confirmation. `bf757c08b2cc` scored +$2,011, t=1.9 on seeds 1-10 but was prematurely rejected by the obsolete single-block pre-screen. It is not a winner; it must receive blocks 31-40 and 41-50 under the corrected pooled contract before any conclusion. Do not use confirmation or population seeds to tune it.
+141 candidates / 5,804 games / 17,378 games/hour, zero errors. No candidate reached fresh confirmation. `bf757c08b2cc` scored +$2,011, t=1.9 on seeds 1-10 but was prematurely rejected by the obsolete single-block pre-screen.
+
+### Targeted pooled evaluation of `bf757c08b2cc`
+
+The candidate was evaluated once under the corrected contract. Block margins were +$2,010.6 (seeds 1-10), +$43.6 (31-40), and +$1,233.4 (41-50). Although every block was positive, the pooled result was only +$1,095.9, t=1.85, 19-11. It failed both pooled thresholds and is closed. Confirmation seeds 111-130 and population seeds 131-150 were not evaluated and remain quarantined.
 
 ## Seed exposure ledger
 
@@ -39,4 +43,4 @@ After either current quarantined range is inspected, record that fact here and p
 
 ## Current action
 
-O26 remains the only submission candidate. First re-evaluate `bf757c08b2cc` on the remaining development blocks. Continue broad search only with controls proven renderable in the exact-O26 chassis. Preserve final-gate-first reporting and archive all failures so the proposer cannot recycle them as novel ideas.
+O26 remains the only submission candidate. `bf757c08b2cc` has completed its one corrected evaluation and must not be retried. Continue broad search only with controls proven renderable in the exact-O26 chassis. Preserve final-gate-first reporting and archive all failures so the proposer cannot recycle them as novel ideas.
