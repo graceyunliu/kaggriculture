@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Layout probe: mean shed-distance of animal / melon / strawberry / wheat tiles at given days, both players."""
 import sys, argparse
-sys.path.insert(0, "/sessions/confident-jolly-fermat/mnt/Kaggriculture")
+sys.path.insert(0, __import__("os").path.dirname(__import__("os").path.dirname(__import__("os").path.abspath(__file__))))
 import mini_engine as me
 SHED = [(4, 4), (5, 4), (4, 5), (5, 5)]
 def sd(x, y): return min(abs(x - a) + abs(y - b) for a, b in SHED)
