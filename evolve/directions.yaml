@@ -228,3 +228,14 @@
   became: strawberry_yield_sizing
   evidence: allocation matrix -- same ~250 units from 33 plantings/520 actions vs our 47/800; own +0 from more fert, own +5.5k from fewer plantings
   date: 2026-09-11
+
+- id: goose_animal_class
+  state: ABANDON
+  type: lumpy_capital
+  hypothesis: "first open-ended K_SELFMODEL-era candidate (Sep 11, post-ledger-closure): the chassis has a ready-made but disabled 'geese' knob (GOOSE/EGG, cost 300 -- cheaper than COW 400/SHEEP 500, interval 1 -- faster cycle than COW's 2 or SHEEP's 3); an unused, cheaper, faster-cycling animal class should add money if bought"
+  measurement: "O34_GOOSE_TEST.py = O26_CARROT_SIZING with the geese knob turned on (4 GOOSE). First found the knob's affordability window (day<=3) never has the required $300 free under the current 'frontier' opening (single-seed debug trace: free was -50/234/273 on days 1-3, only clears $300 on day 4 -- the knob was wired for a different, no-longer-used opening and has been silently dead). Widened the window to day<=10 to test the actual economic question, then ran on the standard 4-tape panel, own+margin, two 20-seed sets (11-30, 31-50), KAGG_FIXED_SHOPS=1"
+  negative_evidence: "margin is heavily and consistently negative: set1 -7,058 (all 4 tapes: -8.6k/-6.4k/-7.8k/-5.4k), set2 -7,301 (all 4 tapes: -7.2k/-6.6k/-9.4k/-6.0k) -- about 30x the $250 noise floor, on every tape, both sets. Own money does not compensate and does not even agree in sign: set1 +1,451 (all 4 tapes positive), set2 -585 (mixed). Reads as own-money-neutral-to-noisy with a large, robust margin loss -- not the 'economic spillover' pattern (own up, margin flat) of the wheat-portfolio rejection, closer to a straight failure once the affordability bug is fixed and the class is actually bought"
+  scope: "buying GOOSE at all under the current chassis (COW/SHEEP/melon/strawberry/wheat portfolio, current prices and demand); tested with the day<=10 relaxation of the affordability window, not a schedule search over when/how many to buy"
+  reopen: "only with a different acquisition schedule (later, fewer, or demand-gated) that is shown NOT to be captured by this test -- e.g. a small goose count (1-2) added only once the fast-cycle EGG income has clear shed room, not a wholesale 4-bird open. The current knob's day<=3 deadman window should also be fixed or removed regardless of this direction's outcome, since it silently no-ops"
+  panel_note: "20x2, not the nominal 32x2 for lumpy_capital -- the effect size (30x noise floor, unanimous sign across 4 tapes and both sets on margin) makes a 32-cell confirmation unlikely to change the verdict, but a reopener should still run the full depth"
+  date: 2026-09-11
