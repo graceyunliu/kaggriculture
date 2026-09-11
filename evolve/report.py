@@ -17,6 +17,7 @@ import space  # noqa: E402
 from db import DB  # noqa: E402
 import action_table as at_mod  # noqa: E402  # AGE-359/AGE-360: action timing matrix
 
+ROOT = HERE.parent
 REPORT_DIR = HERE / "reports"
 
 
@@ -297,6 +298,48 @@ def param_exploration(rows, ref):
     return out
 
 
+def horizon_roi_section():
+    """Render artifacts/horizon_roi/latest.json if a sweep has been run (AGE-360).
+
+    Non-blocking and non-authoritative: the file is written by hand via
+    `KAGG_FIXED_SHOPS=1 python3 tools/horizon_roi.py <cand> --emit`, never by the loop, and nothing here
+    feeds mutation weighting. It is a reading aid so the remaining-horizon ROI of each investment class is
+    visible next to the run it was measured on.
+    """
+    path = ROOT / "artifacts" / "horizon_roi" / "latest.json"
+    if not path.exists():
+        return []
+    try:
+        d = json.loads(path.read_text())
+    except Exception:
+        return []
+    L = ["## Remaining-horizon ROI (AGE-360)", ""]
+    n_cells = len(d.get("tapes", [])) * len(d.get("seeds", []))
+    L.append(f"`{d.get('cand')}` | mode `{d.get('mode')}` | {n_cells} cells "
+             f"({len(d.get('tapes', []))} tapes x {len(d.get('seeds', []))} seeds) | "
+             f"fixed_shops={d.get('fixed_shops')} | generated {d.get('generated')}")
+    L.append("")
+    L.append("ROI = base final money - counterfactual final money when that investment class is blocked from "
+             "the given day onward. Positive = the policy's continued spending on that class paid for itself "
+             "over the remaining horizon, net of acquisition, operating and opportunity cost.")
+    L.append("")
+    L.append("| investment | from day | n | ROI | t | 95% CI | cells + | payback |")
+    L.append("|---|---:|---:|---:|---:|---|---:|---|")
+    for r in d.get("rows", []):
+        pb = f"by day {r['payback_median']}" if r.get("payback_median") is not None else "never"
+        L.append(f"| {r['type']} | {r['day']} | {r['n']} | {r['roi_mean']:+,.0f} | {r['t']:.2f} | "
+                 f"[{r['ci_lo']:+,.0f}, {r['ci_hi']:+,.0f}] | {r['pos_frac']:.0%} | "
+                 f"{r['payback_rate']:.0%} {pb} |")
+    L.append("")
+    L.append(f"__{d.get('caveat', '')}__")
+    L.append("")
+    L.append("A wide CI here is the measurement telling you the panel is too thin for that class, not that "
+             "the class is worthless -- lumpy investments (animals, land) need more cells than the 12-cell "
+             "margin panel provides. See `docs/AGE-360-horizon-roi.md`.")
+    L.append("")
+    return L
+
+
 def write_report(db, run_id):
     run = db.run(run_id) or {}
     cfg = json.loads(run["config"]) if run.get("config") else {}
@@ -312,7 +355,7 @@ def write_report(db, run_id):
 
     alive = [r for r in all_rows if r.get("dev_margin") is not None]
     alive.sort(key=lambda r: r["dev_margin"], reverse=True)
-    held = [r for r in all_rows if r["status"] in ("held_pass", "held_fail")]
+    held = [r for r in all_rows if r["status"] in ("held_pass", "held_fail", "held_exploit")]
     held.sort(key=lambda r: (r["held_margin"] or -1e9), reverse=True)
 
     summary = json.loads(run["summary"]) if run.get("summary") else {}
@@ -330,7 +373,7 @@ def write_report(db, run_id):
     L.append("")
     L.append("| status | candidates | games |")
     L.append("|---|---:|---:|")
-    for s in ("noop", "dead_pattern", "dead_smoke", "alive", "held_fail", "held_pass", "error"):
+    for s in ("noop", "dead_pattern", "dead_smoke", "alive", "held_fail", "held_exploit", "held_pass", "error"):
         n, g = counts.get(s, (0, 0))
         L.append(f"| {s} | {n} | {g} |")
     L.append("")
@@ -441,6 +484,8 @@ def write_report(db, run_id):
     for k, v in sorted(cells.items(), key=lambda kv: -max(kv[1]))[:15]:
         L.append(f"- {k}: {max(v):+,.0f} (n={len(v)})")
     L.append("")
+    L += horizon_roi_section()
+
     L.append(f"_Generated {datetime.now().strftime('%Y-%m-%d %H:%M')}. Candidate files in `evolve/gen/`, DB `evolve/evolve.db`._")
 
     # grouped failure observations (observational only — correlations, not established causes)
@@ -548,6 +593,8 @@ def write_report(db, run_id):
         for atype, ctx_key, mean, n in ctx_rows[:15]:
             L.append(f"- **{atype}** in {ctx_key}: {mean:+,.0f} (n={n})")
         L.append("")
+
+    L += horizon_roi_section()
 
     L.append(f"_Generated {datetime.now().strftime('%Y-%m-%d %H:%M')}. Candidate files in `evolve/gen/`, DB `evolve/evolve.db`._")
 
