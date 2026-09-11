@@ -248,6 +248,46 @@ Tested against this attribution (all on O9_MELON_LATEFERT, paired self-play; non
 - Never touch the crash guard, the engine constants, or `perceive`.
 - Make proposals materially different from each other and from what is already in the archive.
 
+### H_GATE144: hiring's marginal fibonacci price — CONFIRMED on both axes (Sep 11, AGE-360 follow-through)
+
+**Engine fact that drives it.** `farm["hands"] = []` at the end of every day (engine ~line 881), and the
+n-th hire of a day costs `_fib(n)`: 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233. Labour is therefore
+re-bought daily on a CONVEX curve, and the 13th hire of a day costs 233 against the 9th at 34.
+
+**The leak.** `_hire_plan` tops up toward a workload-derived target and stops only on affordability. It
+never asks whether the NEXT hire is worth its own fibonacci price. Measured wage bill on O17: **$6,698/game,
+9.5% of final money**, concentrated in the tail — days 18-28 pay 144-233 for the last hire of the day
+(hires/day peaks at 13.3). `tools/horizon_roi.py --mode marginal` priced that last hire at **-$361 to
+-$2,108/game** (t=-2.6 to -10.4), replicated on held-out seeds at **0% of 32 cells positive**. The wage
+arithmetic matches the counterfactual almost exactly: removing one hire/day saves $804 in wages over days
+24-29 against a measured net gain of $361, i.e. the marginal hand produces ~$443 for an $804 wage.
+
+**The fix is one line, at the single choke point** (`evolve/gen_hire_gate.py` generates it): refuse a hire
+whose own marginal price exceeds `HIRE_MAX_MARGINAL`. Inert on cheap early hires (days 0-7 place 5-8 hires,
+marginal cost <= 8), binds only on the steep tail. M maps to an effective cap: 55->10, 89->11, 144->12,
+233->13 hands/day.
+
+**Dose-response, held-out seeds 21-40, vs frontier `O16_ORCH_ON_O15`, `KAGG_FIXED_SHOPS=1`:**
+
+| M | cap | h2h margin | t | w-l | panel OWN | t |
+|---|---|---|---|---|---|---|
+| 233 | 13 | +435 | 3.09 | 14-5 | +745 | 8.39 |
+| **144** | **12** | **+1,018** | **3.41** | **16-4** | **+1,334** | **9.58** |
+| 89 | 11 | -21 | -0.03 | 13-7 | +1,893 | 7.82 |
+| 55 | 10 | -905 | -0.72 | 11-9 | +1,792 | 4.95 |
+
+A clean interior optimum at M=144. Own money rises monotonically as the cap tightens (more wages saved)
+while h2h peaks and then falls (production lost) — the two curves crossing is the tradeoff, and h2h is the
+discriminator. M=144 panel margin: **+877 (t=5.21), positive on all four tapes AND the clone.**
+
+**Classification: `architecture`, not `exploit`.** Panel own (+1,334) is LARGER than panel margin (+877) —
+we gain more than the opponent loses. That is the exact inverse of the capital checkpoint's signature
+(margin +711 / own -1,032) and is why this one should transfer to a live field: it is a farm mechanism
+(we stop overpaying for labour), not a market mechanism.
+
+**Caution.** M=89 looked best in dev h2h (+1,072, t=2.60, 15-5 on seeds 1-20) and collapsed to -21 on
+held-out seeds 21-40. Selection data is not confirmation data; the dev ranking of the M values was wrong.
+
 ## Evidence rules — the three ways this project has fooled itself
 
 Each of these was discovered the expensive way. Check a result against all three before promoting it.
@@ -420,3 +460,36 @@ better, and its extra misses are policy-intended endgame/placement skips. The 17
 service debt -- yangk earns more with FEWER crop obligations (567 vs 797 ongoing-water obligations/game). Together with
 the delay panel: labour execution (ordering, matching, lateness) is closed as a lever on O16; what remains is what is
 planted/bought and when (allocation, commitment timing, cash-enabled transitions).
+
+## Sep 11: Production Allocation Matrix -- where the tapes' money comes from (stable across 3 tapes)
+
+`tools/allocation_matrix.py` (exact market accounting by wrapping the engine's `_commit_unit`; per production line and
+farm: asset-days, plantings, obligations, work actions, output units, units sold, revenue, direct cost, net, $/obligation,
+$/action, $/asset-day, action share, revenue share; totals + realised unit prices) and `tools/straw_life.py` (per
+planting-day: units/planting, production nights, fertilized+watered nights). O16 vs yangk/bahaen/alaylm, seeds 11-14,
+fixed shops. O16 money 95-98k vs tapes 89-112k. Stable structural differences:
+
+| item | O16 | tapes (3) | $/game |
+|---|---|---|---|
+| MELON realised price (same 12 plantings, 69-72 units) | $171-172 | $231 on all three | ~4.2k |
+| STRAWBERRY units per planting | 5.5 (47 plantings, 800 actions, $7k seed) | 7.5 (33 plantings, 520 actions, $5k seed) -- same ~250 units | seed 1.4k + 280 labour-hours |
+| STRAWBERRY fertilized+watered production nights / planting | 1.9 (1.2 fert/planting) | 3.5 (1.85 fert/planting; fert at ages 9 and 13 exactly) | |
+| STRAWBERRY realised price | $84-90 | $100-111 | ~4-5k (shared market: whoever sells more/later gets less) |
+| WHEAT | 52 plantings, buys 256-273 units @$40 ($10.5k) | 160 plantings (31% of its labour), buys 111-155 ($4.5k), sells 285-344 | ~6k purchases |
+| SHEEP | 12 (306 wool units, $68-73k) | 5-10 (122-247 units) | O16 +15-30k -- our edge |
+| labour+land (implied = revenue - purchases - money delta) | 12.5-12.8k | 6.6-8.3k | ~4.5k, same hire counts (280 vs 260-279) -- unexplained |
+| action share vs revenue share, STRAWBERRY | 31% of actions -> 17% of revenue | 18% -> 19-22% | |
+
+Interventions read so far (all fixed shops, vs O16, margin AND own-money panels):
+- `O19_FERT_PHASE` (fertilize ongoing crops only on production days so each fert covers 2 nights): coverage per fert
+  2.07 -> 2.2 nights (O16 was already mostly in phase); h2h +336 (t1.3). Neutral alone.
+- `O19_FERT_PHASE_FB8` (fert_buy 3 -> 8; SPACE caps fert_buy at 3, so the loop could never try this): coverage 2.7
+  nights/planting, 6.6 u/planting; h2h +1.9k (10-0); **margin panel +1,525 (t6.8) but own-money +287 (t1.6) and +59
+  (t0.4) on fresh seeds -> the extra strawberries only shift price share in the demand-limited strawberry market.
+  Fails the own-money gate.** The tape's advantage is not more strawberries; it is the same units from fewer plantings.
+- STRAW_CUTOFF 19 -> 12/14: identical games (does not control the planting count). wheat_per_animal 0.6/1.0, wheat_tiles 6:
+  -1.6 to -1.9k h2h (as in the C1 era) -- the tape's wheat line does not port as a knob.
+
+Open, in order: (1) melon sale timing (who sells first at the $231 price -- an own-money gain if we do, and the one
+line where O16 and the tapes have identical production); (2) a real strawberry planting-count control (same units
+from ~33 fully-fertilized plantings, freeing 280 labour-hours and $1.4k seed); (3) the $4.5k labour/land cost gap.
