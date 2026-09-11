@@ -66,13 +66,23 @@
   date: 2026-09-11
 
 - id: investment_readiness_threshold
+  state: SWITCH
+  type: lumpy_capital
+  original_hypothesis: "BUY_ANIMAL and BUY_LAND are one 'lumpy capital' class and the marginal (last-unit-per-day) value of each has a stable, measurable sign by day at 32-cell panel depth"
+  failed_assumption: "they do not behave as one class. tools/horizon_roi.py --mode marginal --reduce 1, O26_CARROT_SIZING, panel tapes (alaylm/bahaen/peter/yangk), days 4/6/8/10/12, two independent 32-cell seed sets (61-68 and 69-76 x 4 tapes), KAGG_FIXED_SHOPS=1: BUY_ANIMAL sign is UNSTABLE between the two sets at every day -- set1 trends negative and significant (day6 -2,148 t-2.21, day8 -2,320 t-2.80, day10 -2,397 t-3.01), set2 trends positive but not significant (day6 +2,448 t1.46, day8 +1,211 t0.93, day10 +695 t0.80). That is exactly the pre-registered would_abandon condition: the class is not measurable at this panel size, so BUY_ANIMAL's hand threshold stays as-is and this axis is closed, not promoted. BUY_LAND's sign is the opposite story: stable and significant on BOTH sets at days 4-10 (set1/set2: day4 20,818 t10.69 / 28,975 t8.35; day6 same values -- no land order fell in [4,6) so the two cutoffs are the same intervention; day8 3,457 t4.61 / 3,761 t7.34; day10 2,298 t3.80 / 3,710 t8.99), decaying to noise by day12 (-38 t-0.34 / +643 t2.29, neither past the $250 floor with agreement). That is a real, replicable interior decay curve, not an unmeasurable sign"
+  became: land_deadline_horizon
+  evidence: "artifacts/horizon_roi/invest_readiness_set1.jsonl, invest_readiness_set2.jsonl (320 cells each, 2 types x 5 days x 32 tape-seed cells)"
+  date: 2026-09-11
+
+- id: land_deadline_horizon
   state: DELAY
   type: lumpy_capital
-  mechanism: buy an animal/land only when remaining horizon pays back acquisition + operating + opportunity cost
-  unknown: sign of marginal animal/land value by day -- two 12-cell results flipped at 24-32 cells (AGE-360)
-  resolving_measurement: horizon_roi --mode marginal, BUY_ANIMAL/BUY_LAND, days 4-12, >=32 cells, fresh seeds
-  would_do: stable sign at 32 cells on two seed sets
-  would_abandon: sign still unstable at 32 cells -> the class is not measurable at our panel size; leave hand thresholds
+  mechanism: buy land only while the remaining horizon still pays back acquisition + operating + opportunity cost; the marginal per-day counterfactual (investment_readiness_threshold) found that value decays to ~0 by day 12
+  unknown: "the chassis's hand-tuned LAND_DEADLINE (quads-after-purchase -> last day: 2->14, 3->17, 4->18) lets land purchases continue well past the day the marginal-value counterfactual shows the last unit is worth ~0 (day 12, both seed sets). Whether pulling LAND_DEADLINE in to track that decay beats the current thresholds on both own and margin is untested -- the horizon_roi result is observational (it counterfactually removes the marginal unit under the EXISTING policy), not a tested intervention"
+  resolving_measurement: build a candidate with LAND_DEADLINE pulled in by ~2-6 days per quad tier (e.g. 2->11, 3->13, 4->14), test on the standard architecture-class panel vs O26 (20x2, own AND margin, fresh seeds)
+  would_do: reproducible own AND margin gain, >=2 seed sets, positive on every tape
+  would_abandon: no gain, or a margin/own split (net loss on either metric) -- the current deadlines already price in something horizon_roi's single-unit counterfactual doesn't see (e.g. quad-completion option value)
+  cost: cheap -- one constant change, existing panel harness
   date: 2026-09-11
 
 - id: strawberry_early_death
