@@ -460,3 +460,131 @@ better, and its extra misses are policy-intended endgame/placement skips. The 17
 service debt -- yangk earns more with FEWER crop obligations (567 vs 797 ongoing-water obligations/game). Together with
 the delay panel: labour execution (ordering, matching, lateness) is closed as a lever on O16; what remains is what is
 planted/bought and when (allocation, commitment timing, cash-enabled transitions).
+
+## Sep 11: Production Allocation Matrix -- where the tapes' money comes from (stable across 3 tapes)
+
+`tools/allocation_matrix.py` (exact market accounting by wrapping the engine's `_commit_unit`; per production line and
+farm: asset-days, plantings, obligations, work actions, output units, units sold, revenue, direct cost, net, $/obligation,
+$/action, $/asset-day, action share, revenue share; totals + realised unit prices) and `tools/straw_life.py` (per
+planting-day: units/planting, production nights, fertilized+watered nights). O16 vs yangk/bahaen/alaylm, seeds 11-14,
+fixed shops. O16 money 95-98k vs tapes 89-112k. Stable structural differences:
+
+| item | O16 | tapes (3) | $/game |
+|---|---|---|---|
+| MELON realised price (same 12 plantings, 69-72 units) | $171-172 | $231 on all three | ~4.2k |
+| STRAWBERRY units per planting | 5.5 (47 plantings, 800 actions, $7k seed) | 7.5 (33 plantings, 520 actions, $5k seed) -- same ~250 units | seed 1.4k + 280 labour-hours |
+| STRAWBERRY fertilized+watered production nights / planting | 1.9 (1.2 fert/planting) | 3.5 (1.85 fert/planting; fert at ages 9 and 13 exactly) | |
+| STRAWBERRY realised price | $84-90 | $100-111 | ~4-5k (shared market: whoever sells more/later gets less) |
+| WHEAT | 52 plantings, buys 256-273 units @$40 ($10.5k) | 160 plantings (31% of its labour), buys 111-155 ($4.5k), sells 285-344 | ~6k purchases |
+| SHEEP | 12 (306 wool units, $68-73k) | 5-10 (122-247 units) | O16 +15-30k -- our edge |
+| labour+land (implied = revenue - purchases - money delta) | 12.5-12.8k | 6.6-8.3k | ~4.5k, same hire counts (280 vs 260-279) -- unexplained |
+| action share vs revenue share, STRAWBERRY | 31% of actions -> 17% of revenue | 18% -> 19-22% | |
+
+Interventions read so far (all fixed shops, vs O16, margin AND own-money panels):
+- `O19_FERT_PHASE` (fertilize ongoing crops only on production days so each fert covers 2 nights): coverage per fert
+  2.07 -> 2.2 nights (O16 was already mostly in phase); h2h +336 (t1.3). Neutral alone.
+- `O19_FERT_PHASE_FB8` (fert_buy 3 -> 8; SPACE caps fert_buy at 3, so the loop could never try this): coverage 2.7
+  nights/planting, 6.6 u/planting; h2h +1.9k (10-0); **margin panel +1,525 (t6.8) but own-money +287 (t1.6) and +59
+  (t0.4) on fresh seeds -> the extra strawberries only shift price share in the demand-limited strawberry market.
+  Fails the own-money gate.** The tape's advantage is not more strawberries; it is the same units from fewer plantings.
+- STRAW_CUTOFF 19 -> 12/14: identical games (does not control the planting count). wheat_per_animal 0.6/1.0, wheat_tiles 6:
+  -1.6 to -1.9k h2h (as in the C1 era) -- the tape's wheat line does not port as a knob.
+
+Open, in order: (1) melon sale timing (who sells first at the $231 price -- an own-money gain if we do, and the one
+line where O16 and the tapes have identical production); (2) a real strawberry planting-count control (same units
+from ~33 fully-fertilized plantings, freeing 280 labour-hours and $1.4k seed); (3) the $4.5k labour/land cost gap.
+
+## Sep 11 — O12 to O18 synthesis. The search target has moved from worker efficiency to production cycles.
+
+Read this before proposing anything in the execution family. Most of the individual results below already
+have their own sections above; this is the through-line they add up to, plus the two findings that were
+not yet written down anywhere.
+
+**The central claim.** The remaining advantage is not in making workers generally more efficient. It is in
+choosing economically valuable production cycles and protecting the specific obligations those cycles
+depend on. The project began by asking "how do we make workers work better"; the evidence now says the
+open question is "what economic commitments should we create, and which of their obligations must
+execution protect so the payoff actually arrives".
+
+**Three layers, in the order they now matter.**
+1. Economic allocation. What to invest in: crops, animals, land, labour, inputs.
+2. Production-cycle planning. What downstream cycle does that commitment create? For wheat:
+   seed -> crop care -> one-shot preservation -> harvest -> feed substitution or sale -> cash recovery.
+3. Execution protection. When tasks compete, which obligations must survive for the cycle to pay off?
+
+Layer 3 is where execution work still earns its keep, and only there. Generic efficiency in layer 3 is
+closed (next paragraph); cycle-protecting choices in layer 3 are where O18 found its gain.
+
+**The broad worker-execution hypothesis is closed.** Three independent probes, three nulls:
+- Worker matching. With tasks, priorities, eligibility and claims all frozen, perfect reassignment saves
+  about 26 travel tiles per game, roughly 0.8% of O15's travel. Choosing a different eligible worker is
+  not where the gains are. (See also the X1 audit: ~100 extra state-changing actions, ~28 tiles saved, no
+  margin; and the compact-siting/routing factorial, <1% travel saved, in the Sep 10 section.)
+- Short-term ordering. The value-at-risk panel (3,060 counterfactuals across seeds, tapes, delays and
+  horizons) found no action bucket with a consequence distinguishable from zero. The single-seed ranking
+  of COLLECT/FEED/WATER/HARVEST was noise. Mechanism: delaying one action 1-4 hours makes the
+  orchestrator replan and another worker services it.
+- Chronic lateness. The service-debt ledger found O16 carries essentially no economically meaningful
+  chronic service debt; overnight carry near zero. Tapes that earn much more do so with fewer
+  obligations at similar service quality.
+Taken together: the farm executes its chosen obligations successfully, so the gap is in which obligations
+it chooses to create. Do not propose another generic dispatch, routing or matching improvement without
+first showing why these three nulls do not apply to it.
+
+**Cash is a state-transition trigger, not just a resource.** The causal study that matters most here:
+delaying one small sale cost about $85 in immediate proceeds and changed final money by more than
+$10,000. The sale moved when cash thresholds were crossed, which moved when the policy reconsidered
+purchases and expansions. This is the mechanism behind O12's evening deposit, behind the capital
+checkpoint, and behind why O17 and O18 do not stack. It is also why action-level correlations are
+dangerous here: a $85 local effect and a $10k downstream effect are the same event, and only the
+counterfactual separates them.
+
+**O18: execution choices matter when they preserve a production cycle. Mechanism identified: wheat
+self-supply.** O18 harvests before routine watering and planting, moderately favours one-shot watering,
+and recalculates assignments from the live board every turn. Paired vs O16 it finishes about $746/game
+richer. The attribution chain, not the policy description, is the finding:
+  +4.2 wheat seeds ordered -> +17.4 wheat harvested -> +9.5 wheat sold -> -7.2 feed wheat purchased,
+  plus a small melon increase and more fertilizer sold with fewer fertilizer applications.
+The cash trajectory shows it is a delayed-payback mechanism, not an efficiency gain: about $1,111 behind
+on day 15, $859 behind on day 20, recovered around day 22, ahead about $643 by day 25, finishing +$746.
+It is explicitly NOT a general efficiency win: movement rises slightly, PASS rises, animal output falls
+slightly, daily hand counts are unchanged. The gain comes from preserving a one-shot wheat cycle so the
+farm feeds itself instead of buying feed, and sells the surplus.
+
+**NAME COLLISION, resolve before citing either.** `candidates/O18_CAPITAL_ORCH.py` in this repo is a
+DIFFERENT candidate: the orchestrator + capital-block stacking test, recorded in the Sep 10 (late)
+island section as vs O16 panel -177 (t=-1.0), negative on all four real tapes. The wheat self-supply
+O18 described above is not that file. Two different things are being called O18; rename one before any
+result gets attributed to the wrong lineage.
+
+**Why O17 and O18 do not stack: mechanisms are not Lego bricks.** O18's wheat mechanism requires a
+specific trajectory: greater crop investment, temporarily lower cash, preserved wheat production,
+delayed recovery through harvest, then feed substitution and surplus sales. O17's capital checkpoint
+changes exactly that midgame cash and investment trajectory, so adding it back disrupts the conditions
+O18's gain depends on, and the straightforward merge loses most of it. Generalise this: because cash
+timing changes future decisions, a mechanism that helps in one policy regime can interfere with the
+trajectory another regime needs. Always test a merge against BOTH parents, never only against the weaker
+one, and treat a merge that loses as evidence about trajectory interference rather than as a bad
+implementation.
+
+**Marginal mode, corrected. Labour was over-provisioned; planting was not.** Class ablation is not
+marginal value (see the Sep 11 H_GATE144 section for the full argument). Under the corrected marginal
+tests:
+- Roughly one fewer hire per day is an improvement, with dose-response confirming a local optimum:
+  -1 unit/day helps meaningfully, -2 units/day gives the gain back.
+- An additional marginal planting commitment stays valuable well into the game.
+- Marginal feed is near break-even. Fertilizer remains a weak or null lever.
+This reverses the older "high movement share means we are overcommitted on work" intuition. The farm did
+not have too much work for its labour; it had too much labour for its economically valuable workload.
+
+**Measurement, prediction and profit are three different questions.** The market ledger was an excellent
+instrument (388,260 validation checks, zero incorrect bounds, nearly all inferred transitions exact) and
+improved forecasting at 12 turns, yet the first adaptive selling policy lost about $578/game and
+forecasting got worse at short horizons. Always answer these separately: can we measure the state, can we
+predict the future, and does acting on the prediction make money. A yes to the first two implies nothing
+about the third.
+
+**Promotion gate, restated.** Margin alone is not sufficient and has already been climbed the wrong way:
+the capital checkpoint's margin gain was an input-price attack on a fixed-quantity opponent (own money
+-$1,032 vs O15 while margin +$711). Every promotion needs both a relative margin result and an own-money
+result, and a candidate whose own money falls is not promoted whatever its margin does.
