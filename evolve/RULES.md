@@ -539,8 +539,8 @@ checkpoint, and behind why O17 and O18 do not stack. It is also why action-level
 dangerous here: a $85 local effect and a $10k downstream effect are the same event, and only the
 counterfactual separates them.
 
-**O18: execution choices matter when they preserve a production cycle. Mechanism identified: wheat
-self-supply.** O18 harvests before routine watering and planting, moderately favours one-shot watering,
+**O18_HARVEST_ONESHOT: execution choices matter when they preserve a production cycle. Mechanism
+identified: wheat self-supply.** It harvests before routine watering and planting, moderately favours one-shot watering,
 and recalculates assignments from the live board every turn. Paired vs O16 it finishes about $746/game
 richer. The attribution chain, not the policy description, is the finding:
   +4.2 wheat seeds ordered -> +17.4 wheat harvested -> +9.5 wheat sold -> -7.2 feed wheat purchased,
@@ -551,17 +551,18 @@ It is explicitly NOT a general efficiency win: movement rises slightly, PASS ris
 slightly, daily hand counts are unchanged. The gain comes from preserving a one-shot wheat cycle so the
 farm feeds itself instead of buying feed, and sells the surplus.
 
-**NAME COLLISION, resolve before citing either.** `candidates/O18_CAPITAL_ORCH.py` in this repo is a
-DIFFERENT candidate: the orchestrator + capital-block stacking test, recorded in the Sep 10 (late)
-island section as vs O16 panel -177 (t=-1.0), negative on all four real tapes. The wheat self-supply
-O18 described above is not that file. Two different things are being called O18; rename one before any
-result gets attributed to the wrong lineage.
+**Which file is which.** The wheat self-supply result above belongs to `O18_HARVEST_ONESHOT`.
+`candidates/O18_CAPITAL_ORCH.py` is a DIFFERENT, EARLIER candidate that also carries an O18 prefix: the
+orchestrator + capital-block stacking test, recorded in the Sep 10 (late) island section as vs O16 panel
+-177 (t=-1.0), negative on all four real tapes. Do not read one's numbers onto the other. The two share
+a prefix and have opposite verdicts, so cite the full name every time, and consider renaming
+`O18_CAPITAL_ORCH` out of the O18 slot since it predates the harvest candidate that now owns the name.
 
-**Why O17 and O18 do not stack: mechanisms are not Lego bricks.** O18's wheat mechanism requires a
+**Why O17 and O18_HARVEST_ONESHOT do not stack: mechanisms are not Lego bricks.** The wheat mechanism requires a
 specific trajectory: greater crop investment, temporarily lower cash, preserved wheat production,
 delayed recovery through harvest, then feed substitution and surplus sales. O17's capital checkpoint
 changes exactly that midgame cash and investment trajectory, so adding it back disrupts the conditions
-O18's gain depends on, and the straightforward merge loses most of it. Generalise this: because cash
+O18_HARVEST_ONESHOT's gain depends on, and the straightforward merge loses most of it. Generalise this: because cash
 timing changes future decisions, a mechanism that helps in one policy regime can interfere with the
 trajectory another regime needs. Always test a merge against BOTH parents, never only against the weaker
 one, and treat a merge that loses as evidence about trajectory interference rather than as a bad
