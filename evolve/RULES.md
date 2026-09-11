@@ -706,3 +706,17 @@ the d11/d12 dump) + the second melon wave (d20-21, sold at $63-134 into an empty
 - harvest at 5 units in the convoy: own -608. Rejected.
 Melon line is closed at this level; what is left there is the tape's ordering of animals after melons on d10, which we
 cannot copy without losing feeds (O16 runs 12-16 animals on d10).
+
+## Sep 11: feedback into the engine and the loop -- see docs/economic-self-model.md
+
+- Chassis rebuilt on `candidates/K_SELFMODEL.py` (gen `evolve/gen_o26k.py`): O26_CARROT_SIZING with every validated
+  self-model correction as a top-level switch/const -- ORCH_ON, MELON_LATE_FERT, MELON_MORNING(+LAST_HOUR, MIN_YIELD),
+  STRAW_UNITS, CARROT_UNITS, HIRE_MAX_MARGINAL, FERT_PHASE_RULE, FERT_IS_INPUT -- all in `space.CONST_SPACE`. All off
+  == O15 exactly; facts off == O26 exactly (`evolve/o26k_check.py`). Chassis defaults (O26 + the two engine facts) vs
+  O25: own +699 (t2.9), margin +279 (t0.9) -- weak but non-negative on both axes.
+- Islands: `o15` (control = yardstick), `best` (chassis defaults), `wide`, `queue`. `space.O15_OVERRIDES` defines the
+  control point.
+- `db.REJECTED_MECHANISMS` seeded with the eight closed/exploit/boundary items from the programme; the proposer shows
+  them as "do not re-propose". Own/opponent/margin classification (`cascade.classify_gain`) and the two-axis promotion
+  gate were already in place (other session).
+- Hardcoded sandbox paths removed from tools/*.py (the sandbox mount name changes between sessions).
