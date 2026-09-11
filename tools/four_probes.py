@@ -6,7 +6,7 @@
  4. EARLY IDLE: P0 PASS turns by day (0-9) and by hour band, vs pending work that existed at those turns
 """
 import sys, argparse
-sys.path.insert(0, "/sessions/confident-jolly-fermat/mnt/Kaggriculture")
+sys.path.insert(0, __import__("os").path.dirname(__import__("os").path.dirname(__import__("os").path.abspath(__file__))))
 import mini_engine as me
 ONE_SHOT = {"WHEAT", "CARROT", "MELON"}
 
