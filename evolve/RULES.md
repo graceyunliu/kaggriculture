@@ -836,3 +836,16 @@ were escalated to the real 4-tape panel:
   (~$300-900/game) -- weakest DO alongside carrot_yield_sizing, not yet folded into the frontier chassis.
 
 Ledger: DO 6 / DELAY 0 / ABANDON 17 / SWITCH 4.
+
+## Sep 11: min_hands_knob_interactions -> DELAY (first DELAY since the ledger closed)
+
+Checked whether the mild individual h2h winners from the 20-knob sweep (hands_early=4 +681, max_animals=21 +701,
+feed_spare_poor=3 +406, alongside min_hands_lower's own +1,530) combine. They do not add: combo(min_hands=2,
+hands_early=4) = +681, IDENTICAL to hands_early=4 alone -- code reason found: `floor = KNOBS["hands_early"] if
+(KNOBS["hands_early"] and day<=10) else KNOBS["min_hands"]`, so hands_early REPLACES min_hands rather than stacking
+with it. Every combo tested is sub-additive vs the naive sum of its singles, and the 4-way combo (+1,151) actually
+underperforms the best 2-way (min_hands=2 + feed_spare_poor=3, +1,593 h2h -- the best single h2h number seen in
+either sweep). That best combo has NOT been panel-tested, and h2h-vs-clone is a documented weak signal (see
+demand_share_up). DELAY, not DO or ABANDON: plausible upside, but real panel confirmation (vs O36, not vs O26) is
+needed before picking a joint-knob candidate, and the interaction structure is too inconsistent to guess from h2h
+alone. Ledger: DO 6 / DELAY 1 / ABANDON 17 / SWITCH 4.
