@@ -84,3 +84,19 @@ arch_search/ledger_test.db*
 arch_search/ledger_test2.db*
 experiments/
 Claude outputs/
+
+# editor/tool backups -- never worth committing
+*.bak
+*.orig
+*.rej
+*~
+
+# underscore-prefixed scratch: throwaway candidate variants and one-off probe scripts
+# (_A_c12_w0.py, _O16_FB8.py, _ch2.py ...). Promote a scratch file by renaming it
+# without the underscore; anything still prefixed is assumed disposable.
+candidates/_*.py
+evolve/_*.py
+
+# large regenerable experiment dumps (the summary .txt next to them is the artefact worth keeping)
+evolve/delay_panel_*.jsonl
+artifacts/horizon_roi/*.jsonl
