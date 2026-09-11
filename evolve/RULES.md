@@ -280,10 +280,41 @@ A clean interior optimum at M=144. Own money rises monotonically as the cap tigh
 while h2h peaks and then falls (production lost) — the two curves crossing is the tradeoff, and h2h is the
 discriminator. M=144 panel margin: **+877 (t=5.21), positive on all four tapes AND the clone.**
 
-**Classification: `architecture`, not `exploit`.** Panel own (+1,334) is LARGER than panel margin (+877) —
-we gain more than the opponent loses. That is the exact inverse of the capital checkpoint's signature
-(margin +711 / own -1,032) and is why this one should transfer to a live field: it is a farm mechanism
-(we stop overpaying for labour), not a market mechanism.
+**Classification: own-economy gain, but NOT "we gain what they lose" — CORRECTED Sep 11.** The first
+reading of this table said panel own (+1,334) exceeding panel margin (+877) meant we gain more than the
+opponent loses. Direct both-sides measurement on peterparker, seeds 21-40, says the opponent does not lose
+at all:
+
+| candidate | our money | tape's money | margin |
+|---|---:|---:|---:|
+| O16_ORCH (base) | 171,962 | 210,110 | -38,148 |
+| H_GATE233 | +1,415 | +266 | +1,149 |
+| H_GATE144 | +2,664 | +873 | +1,791 |
+| H_GATE89 | +4,217 | +1,482 | +2,735 |
+| H_GATE55 | +4,480 | +2,846 | +1,634 |
+
+**Both sides gain, and the spillover grows as the cap tightens.** Hypothesis (NOT yet verified): fewer hands
+means less production, so we sell less into the shared pool and prices rise for everyone, including the tape.
+That is a supply-side price spillover, the mirror image of the capital checkpoint's input-price attack. It is
+not an exploit -- our own money rises strongly and it rises for a real reason (we stop overpaying for labour)
+-- but part of the margin gain is a price effect, and against a field that adapts its quantities the
+spillover need not behave the same way. The margin optimum is where our gain still outruns theirs; at M=55
+theirs has grown to 64% of ours and the margin collapses. Treat the third gain class as
+**own-up/opponent-up** rather than forcing it into architecture-vs-exploit.
+
+**Which M to ship is UNSETTLED.** The two baselines disagree and the disagreement is systematic:
+
+| M | self-play h2h vs base | 4-tape panel margin (excl. clone) | clone |
+|---|---:|---:|---:|
+| 144 | **+1,018 (t=3.41, 16-4)** | +903 | +773 (t1.7) |
+| 89 | -21 (t=-0.03, 13-7) | **+1,238** | +208 (t0.3) |
+
+M=89 is better on every one of the four real ladder tapes and worse in self-play and against the clone.
+M=144 is the safer pick if the field plays like us or like the shared clone script (see the
+opponent-detection note: 93.2% of sampled ladder opponents match one clone fingerprint); M=89 is the better
+pick if the tapes are the right proxy. This project has said both "judge ladder candidates on the 4-tape
+margin panel" and "the clone is not a ladder proxy", and those two rules point opposite ways here. Grace's
+call; do not let a later session read the earlier M=144 recommendation as settled.
 
 **Caution.** M=89 looked best in dev h2h (+1,072, t=2.60, 15-5 on seeds 1-20) and collapsed to -21 on
 held-out seeds 21-40. Selection data is not confirmation data; the dev ranking of the M values was wrong.
@@ -611,3 +642,27 @@ Both gates pass on 60 seeds (mean margin ~+1.5k, own ~+1.1k). h2h vs O16 is nois
 for a timing mechanism against a self-play opponent. Variants that lose: melon morning until h12 (own +127, h2h -1.5k) and
 harvesting 5-unit tiles (both displace the h1-h12 animal routes; O16 carries 12-16 animals on d10, the tapes 10-11).
 Zip: `submissions/O22_MELON_MORNING.zip`. Stacks on O16 (which is itself pending review vs O15).
+
+## Sep 11: O24_STRAW_SIZING -- the strawberry planting count (for review; biggest own-money gain of the O line)
+
+Following the allocation matrix (tapes: same ~250 strawberry units from 33 plantings; O16: 47). The seed allocator
+sizes strawberry plantings as demand_pool / CROP_SPECS["STRAWBERRY"]["units"] with units = 4.5, but the farm actually
+gets 5.5-7.5 units per planting, so it over-plants by ~40%: 47 plantings, 800 actions, $7k seed, and the extra volume
+depresses its own strawberry price ($89 vs the tapes' $108). O24 = O22 with `STRAW_UNITS = 7.5` (new top-level const so
+the loop can tune it). Effect (yangk, seeds 11-14): plantings 47 -> 31, units 258 -> 195, strawberry price $89 -> $111,
+seed -$1.6k, 222 labour-hours freed (-> wheat +12, carrot +6, melon +2 plantings), labour+land -$1.3k. Fixed shops:
+
+| vs | seeds | margin | own money |
+|---|---|---|---|
+| O22 | 11-30 | +5,826 (t14) | +5,483 (t10), all 5 positive |
+| O22 | 31-50 | | +4,736 (t8.8) |
+| O15 (ladder entry) | 11-30 | **+7,271 (t12.3)** | **+5,953 (t9.3)**, every tape +5.0-7.6k |
+| O15 | 31-50 | **+8,918 (t13.8)** | |
+
+Sweep of STRAW_UNITS (own vs O22, s11-30): 6.0 +3.5k, 7.5 +5.5k, 9.0 +3.3k, 12.0 +1.7k, 20.0 -0.9k -> optimum at the
+true yield per planting (an accurate self-model, not a hold-back). `submissions/O24_STRAW_SIZING.zip` (contains O22).
+
+Also read, and set aside: `O23_FERT_COURIER` (phase rule + free units fetch fertilizer + fertilizer excluded from the
+"cargo to deposit" count -- PRODUCTS includes FERTILIZER, so units carrying >=3 fert walked it straight back to the
+shed; fixed, coverage 1.9 -> 2.7 fertilized nights/planting) raises units/planting to 6.3 but own money is +0 (margin
++1.3k): strawberry volume is demand-limited; the courier is worth revisiting only as a way to cut plantings further.
