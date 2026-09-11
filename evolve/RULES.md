@@ -248,6 +248,46 @@ Tested against this attribution (all on O9_MELON_LATEFERT, paired self-play; non
 - Never touch the crash guard, the engine constants, or `perceive`.
 - Make proposals materially different from each other and from what is already in the archive.
 
+### H_GATE144: hiring's marginal fibonacci price — CONFIRMED on both axes (Sep 11, AGE-360 follow-through)
+
+**Engine fact that drives it.** `farm["hands"] = []` at the end of every day (engine ~line 881), and the
+n-th hire of a day costs `_fib(n)`: 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233. Labour is therefore
+re-bought daily on a CONVEX curve, and the 13th hire of a day costs 233 against the 9th at 34.
+
+**The leak.** `_hire_plan` tops up toward a workload-derived target and stops only on affordability. It
+never asks whether the NEXT hire is worth its own fibonacci price. Measured wage bill on O17: **$6,698/game,
+9.5% of final money**, concentrated in the tail — days 18-28 pay 144-233 for the last hire of the day
+(hires/day peaks at 13.3). `tools/horizon_roi.py --mode marginal` priced that last hire at **-$361 to
+-$2,108/game** (t=-2.6 to -10.4), replicated on held-out seeds at **0% of 32 cells positive**. The wage
+arithmetic matches the counterfactual almost exactly: removing one hire/day saves $804 in wages over days
+24-29 against a measured net gain of $361, i.e. the marginal hand produces ~$443 for an $804 wage.
+
+**The fix is one line, at the single choke point** (`evolve/gen_hire_gate.py` generates it): refuse a hire
+whose own marginal price exceeds `HIRE_MAX_MARGINAL`. Inert on cheap early hires (days 0-7 place 5-8 hires,
+marginal cost <= 8), binds only on the steep tail. M maps to an effective cap: 55->10, 89->11, 144->12,
+233->13 hands/day.
+
+**Dose-response, held-out seeds 21-40, vs frontier `O16_ORCH_ON_O15`, `KAGG_FIXED_SHOPS=1`:**
+
+| M | cap | h2h margin | t | w-l | panel OWN | t |
+|---|---|---|---|---|---|---|
+| 233 | 13 | +435 | 3.09 | 14-5 | +745 | 8.39 |
+| **144** | **12** | **+1,018** | **3.41** | **16-4** | **+1,334** | **9.58** |
+| 89 | 11 | -21 | -0.03 | 13-7 | +1,893 | 7.82 |
+| 55 | 10 | -905 | -0.72 | 11-9 | +1,792 | 4.95 |
+
+A clean interior optimum at M=144. Own money rises monotonically as the cap tightens (more wages saved)
+while h2h peaks and then falls (production lost) — the two curves crossing is the tradeoff, and h2h is the
+discriminator. M=144 panel margin: **+877 (t=5.21), positive on all four tapes AND the clone.**
+
+**Classification: `architecture`, not `exploit`.** Panel own (+1,334) is LARGER than panel margin (+877) —
+we gain more than the opponent loses. That is the exact inverse of the capital checkpoint's signature
+(margin +711 / own -1,032) and is why this one should transfer to a live field: it is a farm mechanism
+(we stop overpaying for labour), not a market mechanism.
+
+**Caution.** M=89 looked best in dev h2h (+1,072, t=2.60, 15-5 on seeds 1-20) and collapsed to -21 on
+held-out seeds 21-40. Selection data is not confirmation data; the dev ranking of the M values was wrong.
+
 ## Evidence rules — the three ways this project has fooled itself
 
 Each of these was discovered the expensive way. Check a result against all three before promoting it.
@@ -369,3 +409,54 @@ money falls and the tape's falls more. The orchestrator's gain is own-economy (+
 stack" was the wrong question -- the capital gain was never ours. A live opponent adapts its quantities (M3: general
 price-impact rule netted -2.4k vs never-touched opponents), so this is excluded like M2. Actionable: the loop's held-out/panel
 gate is margin-only and would happily climb this hill -> consider adding an own-money floor to the promotion gate.
+
+## Sep 10 (night): Phase 1 of value-at-risk -- the delay-consequence signal does NOT replicate
+
+`tools/delay_panel.py` (resumable, `--budget-s`; the sandbox kills background processes so long panels run in
+150 s chunks). O16 vs 3 tapes x 6 seeds, fixed shops, 17 state buckets x 30 events x delays {1,2,4} h x horizons
+{final money, 48-step net worth} = 3,060 counterfactuals (`evolve/delay_panel_O16.jsonl`, summary `..._summary.txt`).
+
+- Horizon 0: every bucket's 95% CI includes zero (means -360..+180, CIs +-200..900). Per-seed sign agreement is
+  3-4 of 6 for almost every bucket (coin flip); per-tape 1-2 of 3. Delay curves are not monotone (e.g. WATER/oneshot/cu0
+  -34 / +86 / +136 at 1/2/4 h).
+- Horizon 48: effects are tens of dollars, all CIs include zero, no bucket consistently negative.
+- The single-seed table that motivated the programme (COLLECT -247, FEED/cu1 -234 ...) does not survive: FEED/cu1 is
+  +180 here, COLLECT -279+-448.
+
+Reading: in O16 a one-hour delay of one action has no measurable consequence -- the dispatcher re-plans next turn,
+another unit or the same unit does it an hour later, and the game has enough slack that the loss is below the seed noise
+floor. There is therefore no per-task "value at risk per hour" to encode; V1/V2 (consequence-weighted assignment) and
+the animals-in-shared-currency step are moot at 1-4 h granularity, and X1_ORCH ~ X1_ORCH_FLATPRIO is explained.
+What could still carry value is systematic under-capacity (a task class that is chronically late by many hours or a
+whole day), which is a capacity/allocation question, not a priority-ordering one. FEED/cu0: the engine ignores FEED on
+an already-fed-today animal and O16's `_feed_useful` already gates feeding, so there is no "redundant feed" to prohibit.
+
+**Rule (Sep 10):** do not promote an observational importance ranking (action table, one-seed counterfactual) into a
+decision weight without first demonstrating marginal consequence under intervention on a multi-seed, multi-opponent
+panel. Per-action 1-4 h VaR weighting is REJECTED at the tested timescale, not "needs tuning".
+
+## Sep 11: service-debt ledger -- O16 has no chronic lateness either
+
+`tools/service_ledger.py` derives every obligation from engine tile state each step, for BOTH farms (so the tape's own
+service quality is measured on the same games): feed / feed_prod / care / fert / collect(at cap) / water_ongoing /
+water_prod / water_window / harvest_ready(rot deadline) / harvest_cap / weed, plus crop deaths (PLANT -> WEED) by
+crop/age/day. O16 vs yangk and bahaen tapes, seeds 11-14, fixed shops:
+
+| class | O16 missed | yangk | bahaen | note |
+|---|---|---|---|---|
+| feed (per animal-day) | 9.2% | 13.3% | 14.5% | O16 misses are placement days + d27-28 endgame (deliberate) |
+| feed on production night | 6.4% | 8.7% | 11.9% | |
+| care | 15.5% | 6.9% | 4.2% | O16's misses: 126 of 145 on d26-28 or placement days -> deliberate (`_care_useful`) |
+| fert collect | 1% | 9% | 5% | |
+| collect at cap: prod-days lost | 0 | 0 | 16/game | bahaen leaves capped animals |
+| water on production night | 28-30% | 2.3% | 3.1% | HARMLESS: engine accrues ongoing yield whether watered or not; water only matters for the fertilizer bonus (2.2 lost/game = $260) and the 2-day death counter |
+| one-shot water in window | 3.9% | 2.1% | 9.9% | |
+| harvest_ready | 0.3% missed, 1/game past rot (0 steps) | 0 | 1% | |
+| strawberry deaths | 36.5/game, 134/146 at age 17 | 18.5, all age 15-17 | 22.5 | age-17 = end of the 4-unit production life, deliberate abandonment on both farms; O16 simply runs 2x the strawberry tiles |
+| overnight carry, all classes | ~0% | ~0% | ~0% (collect 38%) | |
+
+Reading: no obligation class is chronically late or under-served in O16; where it differs from the tapes it is at par or
+better, and its extra misses are policy-intended endgame/placement skips. The 17k gap to yangk on these games is not
+service debt -- yangk earns more with FEWER crop obligations (567 vs 797 ongoing-water obligations/game). Together with
+the delay panel: labour execution (ordering, matching, lateness) is closed as a lever on O16; what remains is what is
+planted/bought and when (allocation, commitment timing, cash-enabled transitions).
