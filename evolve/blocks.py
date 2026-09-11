@@ -4,7 +4,7 @@ The chassis (evolve/chassis.py) is a frozen copy of candidates/K.py with marker 
 groups of functions. A candidate may replace the source of any block. Everything outside the
 blocks (engine constants, perception, the crash guard) is fixed.
 
-    python3 evolve/blocks.py build            # (re)build evolve/chassis.py from K_LIVE (O16K_ORCH_KNOBBED.py since Sep 10)
+    python3 evolve/blocks.py build            # (re)build evolve/chassis.py from K_LIVE (K_SELFMODEL.py since Sep 11)
     python3 evolve/blocks.py list             # show blocks and line counts
 """
 from __future__ import annotations
@@ -16,7 +16,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-K_LIVE = ROOT / "candidates" / "O16K_ORCH_KNOBBED.py"   # Sep 10: O15 + switchable orchestrator (ORCH_ON=0 is exactly O15); was O15_SALE_PRIORITY.py
+K_LIVE = ROOT / "candidates" / "K_SELFMODEL.py"   # Sep 11: O26 lineage with every self-model correction switchable (all off == O15); was O16K_ORCH_KNOBBED.py
 CHASSIS = ROOT / "evolve" / "chassis.py"
 
 # block name -> top-level function names (must be contiguous in the file, in this order)
