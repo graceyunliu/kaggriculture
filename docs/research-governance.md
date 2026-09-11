@@ -92,7 +92,15 @@ candidate direction
               DO / SWITCH / ABANDON   (ledger)
 ```
 
-Priority order agreed Sep 11 (revised after the cutoff sweep and O29-O31): (1) the adaptive-cutoff direction is ABANDON
-(entry-state segmentation done, optimum does not move) and the melon-preemption trigger family is ABANDON; the open
-DELAY on melon is the decomposition -- why a deferred pickup becomes a lost sale (8-11 units/game); (2) keep the ledger current — a direction that is not in it has not been
-decided; (3) only then return to open-ended candidate discovery.
+Priority order (Sep 11, current): the melon family is closed on every proposed axis -- entry-state adaptive cutoff
+(ABANDON, 2,240-game sweep), urgent-exemption triggers (ABANDON, O30/O31/O32 negative on all four tapes at 1,440 games),
+and deferred-pickup recoverability (ABANDON, tools/melon_trace.py: no lost sales, the unit delta is a d10-11 replant count,
+money does not track melon units). Open DELAYs in cost order: (1) `hire_gate_output_loss` as an accounting bridge
+(fertilizer piece closed at ~15-18%, weed piece needs stratified N>=100), (2) `investment_readiness_threshold` (32-cell
+marginal panel). Keep the ledger current -- a direction that is not in it has not been decided -- and only then return to
+open-ended candidate discovery.
+
+Durable rule from the melon programme: a protected block (the h<=8 convoy) tolerates EDGE TRIMMING (h7 vs h8, +$250)
+but not INTERIOR INTERRUPTION (every urgency-shaped hole lost on all four tapes). Champion record: O26_CARROT_SIZING is
+the verified champion with a "weakest pass" annotation; O25-vs-O26 for the ladder is an explicit deployment-risk decision,
+not a redefinition of the champion.
