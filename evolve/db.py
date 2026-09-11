@@ -113,6 +113,12 @@ REJECTED_MECHANISMS = (
     ("goose_animal_class", "rejected",
      "O34_GOOSE_TEST (chassis's disabled geese knob turned on, 4 GOOSE, affordability window widened from a dead day<=3 to day<=10): margin -7,058/-7,301 on two 20-seed sets, negative on all four tapes both sets, own money not even sign-consistent. A cheaper/faster-cycling animal class is not automatically profitable at this scale.",
      "evolve/directions.yaml#goose_animal_class", "2026-09-11"),
+    ("knob_space_local_optimum_sweep", "no_general_fix",
+     "20-knob one-at-a-time dev h2h sweep of the chassis's live KNOBS defaults: 18 of 20 nudges flat-to-negative (a 3rd starting COW/SHEEP is -31k/-35k; load_per_hand and open_wheat are interior optima in either direction). The current default knob values already sit at or near a local optimum in this space.",
+     "evolve/directions.yaml#knob_space_local_optimum_sweep", "2026-09-11"),
+    ("demand_share_up", "rejected",
+     "demand_share 0.55 -> 0.65 won the dev h2h screen (+1,350) but reversed on the real 4-tape panel (margin -503, own -1,663) -- h2h vs the O26 clone alone is a weak signal for this class of knob.",
+     "evolve/directions.yaml#demand_share_up", "2026-09-11"),
 )
 
 
