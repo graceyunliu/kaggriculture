@@ -763,3 +763,11 @@ delta is a second-wave (d10-11) melon REPLANT-count difference that goes either 
   weed_recovery_cf at N>=100 stratified by created_day, and the skew must be respected (mean +$53, median $0).
 - Champion record: O26_CARROT_SIZING (verified, weakest-pass annotation). O25 vs O26 for the ladder is an explicit
   deployment-risk decision, not a champion redefinition.
+
+## Sep 11: hire_gate_output_loss -> ABANDON (accounting bridge fails)
+
+`tools/weed_recovery_cf.py --max-per-seed 0` (every overnight-carry weed, unbiased; forced clear one day earlier at zero
+labour cost = upper bound), O26 vs bahaen, 36 seeds, N=165: mean -$28, median $0, 24% zero, no concentrated class
+(top-5 = 27% of positive value); d19-23 net negative (a freed tile is replanted at a cost that does not pay), d24-25 +$60.
+With the fertilizer piece at 15-18% the bridge covers <20% of the $504; the residual is diffuse capacity. Keep the gate
+as is. The N=38 "+$53 mean, up to +$916" was a small sample biased toward the longest carries.
