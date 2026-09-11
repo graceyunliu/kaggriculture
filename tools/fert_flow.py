@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Count fertilizer flow for player 0: BUY units, SELL units, PICKUP units, FERTILIZE actions, COLLECT actions."""
 import sys
-sys.path.insert(0, "/sessions/confident-jolly-fermat/mnt/Kaggriculture")
+sys.path.insert(0, __import__("os").path.dirname(__import__("os").path.dirname(__import__("os").path.abspath(__file__))))
 import mini_engine as me
 
 def run(a, b, seed=1):
