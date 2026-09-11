@@ -320,3 +320,22 @@ This lets the loop accumulate institutional knowledge without a correlation quie
   - Stacking test `O18_CAPITAL_ORCH` (orchestrator + capital block): vs O15 panel +2,881 (t=8.6) but vs O16 panel
     **-177 (t=-1.0), negative on all 4 real tapes** (clone +1.3k) over seeds 11-40, while h2h vs O16 is +1.5k (t=2.4, 21-9).
     The two gains do not add on the tapes; another h2h-vs-panel divergence. `capital` island therefore seeds with ORCH_ON=0.
+
+### Capital-timing gains on the tapes are input-price attacks (Sep 10, late) -- `capital` island removed
+
+`tools/capital_events.py` (wraps `economy`, logs capital-window turns and totals all BUY/HIRE orders): the checkpoint fires
+~1x/day d7-20 at h2-3 and the ONLY totals that change are BUY_PRODUCT WHEAT (+26-40/game) and FERTILIZER (+8-10);
+hires, animals, land, seeds are identical. It is a second feed/fert top-up window, i.e. what `KNOBS["capital_hour2"]` does.
+
+| candidate (fixed shops, seeds 11-30, 4 tapes+clone) | margin panel vs O15 | OWN-money panel vs O15 |
+|---|---|---|
+| O16_CAPITAL_CHECKPOINT | +711 (t=2.4) | **-1,032 (t=-2.8)** |
+| O16_ORCH_ON_O15 | +3,104 (t=9.5) | +1,672 (t=5.2) |
+| X5 O16 + capital_hour2=2, vs O16 | +1,605 (own -2,595, t=-6.0); fresh 31-50 margin +2,255 (t=5.2) | |
+| X5 O15 + capital_hour2=2 | +325 (t=0.9) | |
+
+Reading: the extra h2 buying of wheat/fertilizer raises the input prices the tape pays for its fixed BUY quantities; our own
+money falls and the tape's falls more. The orchestrator's gain is own-economy (+1.7k own). "Capital + orchestrator don't
+stack" was the wrong question -- the capital gain was never ours. A live opponent adapts its quantities (M3: general
+price-impact rule netted -2.4k vs never-touched opponents), so this is excluded like M2. Actionable: the loop's held-out/panel
+gate is margin-only and would happily climb this hill -> consider adding an own-money floor to the promotion gate.
