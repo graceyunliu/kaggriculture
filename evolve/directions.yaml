@@ -56,14 +56,13 @@
   date: 2026-09-10
 
 - id: adaptive_melon_timing
-  state: DELAY
+  state: ABANDON
   type: nonlinear_threshold
-  mechanism: the profitable melon-morning window may depend on observable state (herd size on d10, hands, ready tiles)
-  unknown: whether the conditional optimum moves with state, or h8 is simply the right constant
-  resolving_measurement: fixed-cutoff sweep h6..h10 x MIN_YIELD, segmented by d10 herd size and hand count, both panels
-  cost: ~10 candidates x 2 panels, one session
-  would_do: optimum hour differs by >=2 between state buckets with own-money support in each
-  would_abandon: h8 is best or within noise in every bucket -> keep the constant, close adaptation
+  hypothesis: the profitable melon-morning cutoff depends on observable day-9 farm state (herd, hands, plantings, cash, strawberry tiles, weeds)
+  measurement: "2,240-game cutoff sweep h6-h10 on O26, fixed shops, 4 tapes, both seats, 4 fresh seed sets, segmented by day-9 h0 state (other session, Sep 11)"
+  negative_evidence: "optimal cutoff does not vary with state: segment argmax does not replicate across seed sets, and low/high segments of the same variable pick the same cutoff (a whole-set shift). h7 weakly beats h8 (+295 margin / +242 own pooled, fails 1 of 4 sets) = calibration lead, not promoted"
+  scope: state-dependent termination of the melon window keyed on ENTRY (day-9) state; melon tiles / land degenerate (10 tiles, 2 quads in nearly every game)
+  reopen: a per-turn (inside-the-window) consequence measurement, not another entry-state segmentation
   date: 2026-09-11
 
 - id: investment_readiness_threshold
@@ -77,12 +76,43 @@
   date: 2026-09-11
 
 - id: strawberry_early_death
-  state: DELAY
+  state: SWITCH
   type: calibration
-  mechanism: 17% of our strawberry plantings die before age 10 (before any production), tapes 0% -- upstream of fertilizer (other session, Sep 11)
-  unknown: the cause (not watering frequency alone)
-  resolving_measurement: single-tile turn trace of a dying planting
-  would_do: a specific policy action/omission is identified and a one-line fix exists
+  original_hypothesis: 17% of our strawberry plantings die before age 10 (tapes 0%) because of watering frequency / fertilizer coverage
+  failed_assumption: "it is not frequency: tools/straw_trace.py found the engine's consecutive_unwatered running 0/1/0/1 with zero slack (reactive-only pre-production watering), and tools/straw_displace.py found the fatal tile sat in the URGENT pool 48/48 snapshots -- O22's melon morning diverts every routeless unit before crop dispatch runs (other session, Sep 11)"
+  became: strawberry_urgent_slack
+  evidence: "O29_STRAW_PREWATER (water daily pre-production) removes the deaths (17% -> 0%) but own -1,986 / -914 on 2 tapes: daily watering costs more labour than the demand-capped strawberries are worth"
+  date: 2026-09-11
+
+- id: strawberry_urgent_slack
+  state: DELAY
+  type: architecture
+  mechanism: guarantee service of an already-urgent pre-production strawberry without paying the full daily-watering cost (a slack-only fix), instead of exempting tiles from the melon diversion
+  unknown: whether ANY strawberry-protection variant converts to money -- O30 (exempt any urgent, 6% death) and O31 (only catastrophic pre-production urgent, 2% death) both land at a ~$0 wash on own money (-1,087/+965/-53 and -998/+722/-124 across 3 tapes)
+  resolving_measurement: tools/o31_decompose.py already shows the wash is a MELON volume loss (8-11 melon units/game lost, not a timing shift), not strawberry worthlessness -> trace why a deferred melon pickup becomes a LOST sale rather than a delayed one, before any further strawberry variant
+  cost: one traced game per tape (sale_timeline + per-tile melon trace)
+  would_do: a mechanism by which a deferred pickup loses the unit (rot / capacity / auto-drop) that a one-line rule can avoid at no strawberry cost
+  would_abandon: the melon loss is intrinsic to any diversion of the h<=8 convoy -> accept 17% strawberry early death as the price of the melon window
+  date: 2026-09-11
+
+- id: melon_preemption_trigger_variants
+  state: ABANDON
+  type: architecture
+  hypothesis: narrowing the trigger that lets an urgent strawberry preempt the melon convoy would recover the money the broad exemption lost
+  negative_evidence: "O30 (any urgent) and O31 (catastrophic pre-production only, 3x narrower) land at the same ~$0 wash; trigger precision does not move money"
+  scope: trigger-precision variants of strawberry-preempts-melon (O30/O30B/O31)
+  reopen: the melon-side decomposition in strawberry_urgent_slack, not a fourth trigger
+  date: 2026-09-11
+
+- id: hire_gate_output_loss
+  state: DELAY
+  type: threshold
+  mechanism: HIRE_MAX_MARGINAL=144 loses ~$504/game of revenue against its wage saving; recovering it would lift the gate's net
+  unknown: "which obligations go unserved -- service ledger diff (n=10) shows feed/care/fert/water/harvest counts and rates flat; only weed overnight carry (7.6% -> 14.4%) and fertilized-crop watering misses on production days (1.6 -> 3.3/game) moved"
+  resolving_measurement: confirm the two moved classes at 30+ seeds and cross-check against the exact per-product unit deltas before building a fix
+  cost: one service-ledger panel run
+  would_do: the unit deltas match the two moved classes -> a targeted rule (weed dig / fertilized-tile watering priority under the cap), gated both metrics
+  would_abandon: deltas do not line up -> the -504 is diffuse capacity, accept it
   date: 2026-09-11
 
 - id: per_task_delay_var
