@@ -4,7 +4,7 @@
   python3 tools/replay_mine.py candidates/O8_PURE_ANIMAL_THROTTLE.py Opponents/tape_peterparker_106816877.py --seed 1
 """
 import sys, argparse
-sys.path.insert(0, "/sessions/confident-jolly-fermat/mnt/Kaggriculture")
+sys.path.insert(0, __import__("os").path.dirname(__import__("os").path.dirname(__import__("os").path.abspath(__file__))))
 import mini_engine as me
 
 def run(a, b, seed):
