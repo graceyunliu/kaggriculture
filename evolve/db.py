@@ -119,6 +119,15 @@ REJECTED_MECHANISMS = (
     ("demand_share_up", "rejected",
      "demand_share 0.55 -> 0.65 won the dev h2h screen (+1,350) but reversed on the real 4-tape panel (margin -503, own -1,663) -- h2h vs the O26 clone alone is a weak signal for this class of knob.",
      "evolve/directions.yaml#demand_share_up", "2026-09-11"),
+    ("o26_open_wheat9_fert_carry1", "rejected",
+     "Manus factorial: +$1,942 on development reversed to -$817 (t=-1.35) on fresh seeds 71-90; fitted seed-set interaction, not an O26 improvement.",
+     "docs/cloud-evolution-results-sep11.md", "2026-09-11"),
+    ("o26_melon_max_tiles_knob", "exhausted",
+     "MELON_MAX_TILES produced zero factorial effect and is not consumed by the exact-O26 decision path; removed from active search.",
+     "docs/cloud-evolution-results-sep11.md", "2026-09-11"),
+    ("single_dev_block_promotion", "rejected",
+     "A ten-seed t/margin pre-screen can reject candidates before the required three-block pooled decision; all three dev blocks must run before promotion is decided.",
+     "docs/cloud-evolution-results-sep11.md", "2026-09-11"),
 )
 
 
@@ -164,7 +173,7 @@ class DB:
             raise RuntimeError(f"rejected_mechanisms seed incomplete -- {missing} were not inserted "
                                f"(verdict must be one of rejected/exhausted/no_general_fix; check the CHECK constraint)")
         cols = {r["name"] for r in self.conn.execute("PRAGMA table_info(candidates)")}
-        for col, decl in (("island", "TEXT DEFAULT 'c1'"), ("blocks", "TEXT"), ("ablation", "TEXT"), ("diagnosis", "TEXT"), ("exec_summary", "TEXT"), ("trajectory_summary", "TEXT"), ("failure_profile", "TEXT"), ("action_table", "TEXT")):
+        for col, decl in (("island", "TEXT DEFAULT 'c1'"), ("blocks", "TEXT"), ("ablation", "TEXT"), ("diagnosis", "TEXT"), ("exec_summary", "TEXT"), ("trajectory_summary", "TEXT"), ("failure_profile", "TEXT"), ("action_table", "TEXT"), ("dev_blocks", "TEXT"), ("population_margin", "REAL"), ("population_own", "REAL"), ("ladder_status", "TEXT")):
             if col not in cols:
                 self.conn.execute(f"ALTER TABLE candidates ADD COLUMN {col} {decl}")
         self.conn.commit()

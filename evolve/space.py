@@ -67,6 +67,8 @@ KNOB_SPACE = {
     "load_per_hand":    ("int", 12, 26, 1),
     "geese":            ("int", 0, 2, 1),
     "open_melons":      ("int", 4, 14, 1),
+    # Historical/reconstruction only after the failed Manus factorial; excluded
+    # from BEHAVIORAL_PARAMS so autonomous mutation cannot retry that branch.
     "open_wheat":       ("int", 3, 10, 1),
     "open_cows":        ("int", 1, 3, 1),
     "open_sheep":       ("int", 0, 3, 1),
@@ -127,7 +129,6 @@ CONST_SPACE = {
     "CROP_SWEEP_LEN":       ("int", 3, 10, 1),
     "CROP_SWEEP_RADIUS":    ("int", 2, 6, 1),
     "STRAW_CUTOFF":         ("int", 12, 20, 1),
-    "MELON_MAX_TILES":      ("int", 20, 50, 2),
     "MELON_PRICE_CUSHION":  ("int", 50, 150, 10),
     "HERD_LAST_DAY":        ("int", 14, 22, 1),
     "NEAR_RADIUS":          ("int", 2, 5, 1),
@@ -165,6 +166,21 @@ CONST_SPACE = {
 
 SPACE = {**KNOB_SPACE, **CONST_SPACE}
 
+# This run intentionally searches behavioral controls rather than tiny economic-constant
+# combinations.  The exact O26 defaults remain in the chassis; excluded names are fixed at
+# those defaults and cannot enter mutation/crossover candidates.
+BEHAVIORAL_PARAMS = {
+    "opening", "wheat_tiles", "wheat_stock", "min_hands", "load_per_hand",
+    "open_melons", "open_cows", "open_sheep", "early_hire_days", "feed_spare_poor",
+    "fert_keep", "fert_buy", "demand_share", "max_animals", "wheat_per_animal",
+    "wheat_cap", "wheat_water_tier", "wheat_sell_price", "wheat_hold_days",
+    "MAX_HANDS", "ROUTE_LEN", "CROP_SWEEP_LEN", "CROP_SWEEP_RADIUS",
+    "STRAW_CUTOFF", "MELON_PRICE_CUSHION", "HERD_LAST_DAY", "NEAR_RADIUS",
+    "OPP_GROWTH", "MAX_SHEEP", "OPENING_MELONS", "FERT_RADIUS", "SPREAD_W", "SPREAD_CAP",
+    "MELON_MORNING", "MELON_MORNING_LAST_HOUR", "MELON_MORNING_MIN_YIELD",
+    "HIRE_MAX_MARGINAL",
+}
+
 
 _warned = set()  # names we've already printed a one-time "missing from chassis" warning for
 
@@ -185,7 +201,8 @@ def _read_base():
     for name in CONST_SPACE:
         cm = re.search(rf"^{name}\s*=\s*([^#\n]+)", text, re.M)
         if not cm:
-            _warn_once(name, "constant")
+            if name in BEHAVIORAL_PARAMS:
+                _warn_once(name, "active constant")
             continue
         consts[name] = eval(cm.group(1).strip())  # noqa: S307
     return text, knobs, consts
@@ -196,8 +213,8 @@ def _live_knob_space():
     _, knobs, _ = _read_base()
     live = [k for k in KNOB_SPACE if k in knobs]
     for k in KNOB_SPACE:
-        if k not in knobs:
-            _warn_once(k, "knob")
+        if k not in knobs and k in BEHAVIORAL_PARAMS:
+            _warn_once(k, "active knob")
     return live
 
 
@@ -218,13 +235,9 @@ def c1_params():
     return p
 
 
-O15_OVERRIDES = {"ORCH_ON": 0, "MELON_LATE_FERT": 0, "MELON_MORNING": 0, "STRAW_UNITS": 4.5, "CARROT_UNITS": 4.0,
-                 "HIRE_MAX_MARGINAL": 1000000000, "FERT_PHASE_RULE": 0, "FERT_IS_INPUT": 0}
-
-
+O15_OVERRIDES = {}
 def o15_params():
-    """O15_SALE_PRIORITY exactly: the K_SELFMODEL chassis with every self-model correction switched off (verified
-    byte-behaviour identical, evolve/o26k_check.py). The evolve yardstick frontier."""
+    """Legacy island reference, rebased to the exact O26 default because O26 is the frozen frontier."""
     p = base_params()
     for k, v in O15_OVERRIDES.items():
         if k in p:
@@ -247,6 +260,16 @@ def _active_names(params):
     """SPACE names actually present in `params` — tolerant of a chassis that hasn't been
     rebuilt yet to carry every KNOB_SPACE/CONST_SPACE entry."""
     return [n for n in SPACE if n in params]
+
+
+def validate_behavioral_space():
+    """Fail if an actively searched control cannot be rendered by this chassis."""
+    _, knobs, consts = _read_base()
+    live = set(knobs) | set(consts)
+    missing = sorted(BEHAVIORAL_PARAMS - live)
+    if missing:
+        raise ValueError(f"active behavioral parameters missing from chassis: {missing}")
+    return sorted(BEHAVIORAL_PARAMS)
 
 
 DEPRIORITIZED_PARAMS_FILE = ROOT / "evolve" / "deprioritized_params.yaml"
@@ -313,7 +336,7 @@ def mutate(params, rate=0.2, sigma_frac=0.2, rng=random, respect_deprioritized=N
     if respect_deprioritized is None:
         respect_deprioritized = _deprioritization_default()
     p = dict(params)
-    names = _active_names(params)
+    names = [n for n in _active_names(params) if n in BEHAVIORAL_PARAMS]
     if respect_deprioritized:
         excluded = _load_deprioritized_params()
         if excluded:
@@ -334,7 +357,7 @@ def mutate(params, rate=0.2, sigma_frac=0.2, rng=random, respect_deprioritized=N
 
 def crossover(a, b, rng=random):
     """Uniform crossover, then a light mutation so children are never exact copies."""
-    names = [n for n in SPACE if n in a and n in b]
+    names = [n for n in SPACE if n in BEHAVIORAL_PARAMS and n in a and n in b]
     child = {n: (a[n] if rng.random() < 0.5 else b[n]) for n in names}
     return mutate(child, rate=0.05, rng=rng)
 

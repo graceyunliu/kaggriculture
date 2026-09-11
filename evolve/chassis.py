@@ -1,7 +1,5 @@
-# evolve/chassis.py -- frozen copy of K_SELFMODEL.py with typed mutation blocks.
-# source sha256 aae2e0ff8cc9. Rebuild: python3 evolve/blocks.py build
-# K_SELFMODEL: O26_CARROT_SIZING (= O25 + carrot sizing) with every validated self-model correction behind a top-level switch (see evolve/gen_o26k.py).
-# Defaults = O26 + two engine facts (fert phase rule, fertilizer-is-input). All switches off + STRAW_UNITS 4.5 + CARROT_UNITS 4.0 + HIRE_MAX_MARGINAL 10**9 == O15 exactly.
+# evolve/chassis.py -- frozen copy of O26_CARROT_SIZING.py with typed mutation blocks.
+# source sha256 c982f399aa94. Rebuild: python3 evolve/blocks.py build
 # O26_CARROT_SIZING: O25_STRAW_HIREGATE with the seed allocator's carrot yield assumption corrected 4.0 -> 3.0 units/planting (measured 3.0 on both farms). Effect: carrots mostly drop out of the plan (34 -> 12 plantings), the freed labour goes to wheat (64 -> 90 plantings, wheat purchases 260 -> 203), labour+land 11.3k -> 8.5k. Fixed shops vs O25: own +1.6k/+1.4k (t2.6/4.6), margin +0.8k/+0.2k/+1.5k (real tapes >= 0 on all three seed sets, clone negative). Wheat units 5.0 -> 3.9 (true) is -2k own: do not apply.
 # O25_STRAW_HIREGATE: O24_STRAW_SIZING + H_GATE144 (refuse hires priced above 144 on the daily fibonacci curve; other session's confirmed +1.3k own gain on O16).
 # O24_STRAW_SIZING: O22_MELON_MORNING with the seed allocator's strawberry yield assumption corrected from 4.5 to 7.5 units per planting (tools/allocation_matrix.py: tapes get 7.5 u/planting from 33 plantings; O16 planted 47 for the same ~250 units). Fewer plantings -> less seed, less labour, higher realised strawberry price. Own-money panel vs O22 +4.7-5.5k (t8-10); 9.0 +3.3k, 12.0 +1.7k, 20.0 -0.9k.
@@ -107,13 +105,12 @@ MELON_MAX_TILES = 38
 MELON_UNITS_PER_TILE = 6.0
 MELON_PRICE_CUSHION = 100
 OPENING_MELONS = 14
-CARROT_UNITS = 3.0  # O26_CARROT_SIZING: expected units per carrot planting (was 4.0; measured 3.0)
 STRAW_UNITS = 7.5   # O24: expected sellable units per strawberry planting used by the seed allocator (was 4.5; measured 5.5-7.5 -> the farm over-planted strawberries by ~40%)
 CROP_SPECS = {
     "STRAWBERRY": {"seed": 100, "units": STRAW_UNITS, "first": 10, "cycle": 18, "cutoff": 17, "base": 120, "min_val": 12},
     "MELON":      {"seed": 80,  "units": 6.0, "first": 10, "cycle": 12, "cutoff": 16, "base": 250, "min_val": 12, "cushion": 100},
     "WHEAT":      {"seed": 10,  "units": 5.0, "first": 2,  "cycle": 5,  "cutoff": 24, "base": 25,  "min_val": 12},
-    "CARROT":     {"seed": 20,  "units": CARROT_UNITS, "first": 2,  "cycle": 4,  "cutoff": 25, "base": 35,  "min_val": 12},
+    "CARROT":     {"seed": 20,  "units": 3.0, "first": 2,  "cycle": 4,  "cutoff": 25, "base": 35,  "min_val": 12},
     "TOMATO":     {"seed": 50,  "units": 5.0, "first": 8,  "cycle": 12, "cutoff": 20, "base": 60,  "min_val": 12},
 }     # units above I0 before MELON drops from $250 toward $150 (sq curve)
 HERD_LAST_DAY = 17
@@ -212,7 +209,7 @@ def _fert_eligible(t, day):
         return False
     age = day - t.get("planted_day", day)
     if not c["ongoing"]:
-        if not MELON_LATE_FERT or t.get("crop") != "MELON":
+        if t.get("crop") != "MELON":
             return False
         # O20: fertilize melons late in the yield window (age 7-8) -> 6 units by age 9-10 -> the whole crop is
         # harvested on day 10 and sold into the fresh $270 melon pool before/with the tapes' 60-unit dump
@@ -220,14 +217,7 @@ def _fert_eligible(t, day):
                 and t.get("fertilized_until_day", -1) < day)
     step_i = max(1, c["interval"])
     done = 0 if age < c["first"] else (age - c["first"]) // step_i + 1
-    if not (done < c["max_yield"] and age >= c["first"] - 1 and t.get("fertilized_until_day", -1) < day):
-        return False
-    if FERT_PHASE_RULE:
-        # engine fact: fertilizer lasts 3 days (day..day+2) and an ongoing crop produces on the night of day d when
-        # (d + 1 - first) % interval == 0 -> fertilizing on a production day covers two production nights, on an
-        # off day only one (strawberry: ages 9, 11, 13, 15; the tapes fertilize at exactly 9 and 13).
-        return (age + 1 - c["first"]) % step_i == 0
-    return True
+    return done < c["max_yield"] and age >= c["first"] - 1 and t.get("fertilized_until_day", -1) < day
 
 
 def perceive(obs):
@@ -877,73 +867,6 @@ def _task_valid(tp, kind, v, day, hour, carry, seeds_left):
 
 
 
-# ===== ORCHESTRATOR (global assignment of crop tasks) =====
-ORCH_P_HARVEST = 0.5    # priority offsets added to walking distance; lower = taken first
-ORCH_P_WWATER = 0.5
-ORCH_P_FERT = 0.5
-ORCH_P_PLANT = 1.0
-ORCH_P_WATER = 1.0
-ORCH_P_WEEDS = 1.5
-ORCH_P_SLACK = 6.0
-ORCH_ON = 1                  # O16 global crop-task orchestrator (0 = O15 per-unit sweeps)
-ORCH_COMMIT = 0.75
-MELON_MORNING = 1            # O22 melon morning (0 = off)
-MELON_LATE_FERT = 1          # O20/O22 melon fert at age 7-8 (0 = off)
-FERT_PHASE_RULE = 1          # O23 engine fact: fertilize ongoing crops on production days only (0 = off)
-FERT_IS_INPUT = 1            # O23 engine fact: carried fertilizer is not deposit cargo (0 = off)
-MELON_MORNING_LAST_HOUR = 8 # O22
-MELON_MORNING_MIN_YIELD = 6   # O22: a 5-unit melon sold at the top of the pool beats a 6-unit one sold into the dump      # bonus for keeping the task a unit is already heading to (prevents swap oscillation)
-ORCH_SLACK_HOUR = 14
-
-
-# ===== EVOLVE-BLOCK: orchestrator =====
-def _orch_prio():
-    return {"urgent": 0.0, "harvest": ORCH_P_HARVEST, "wwater": ORCH_P_WWATER, "fert": ORCH_P_FERT,
-            "plant": ORCH_P_PLANT, "water": ORCH_P_WATER, "weeds": ORCH_P_WEEDS, "slack": ORCH_P_SLACK}
-
-
-def _orchestrate(v, pools, positions, day, hour, inv, seeds_left, busy):
-    """Assign at most one crop task per free unit by global min-cost matching. Returns {unit: (tp, kind)}."""
-    prev = S.get("assign", {})
-    prio = _orch_prio()
-    tasks = []
-    for kind, lst in pools.items():
-        if kind == "slack" and hour < ORCH_SLACK_HOUR:
-            continue
-        for tp in lst:
-            tasks.append((tp, kind))
-    free = [j for j in range(len(positions)) if j not in busy]
-    if not free or not tasks:
-        return {}
-    # units already standing on a tile with an open task keep it (chain in progress)
-    pairs = []
-    for j in free:
-        pj = positions[j]
-        carry = inv[j] if j < len(inv) else {}
-        for ti, (tp, kind) in enumerate(tasks):
-            if kind == "fert" and carry.get("FERTILIZER", 0) <= 0:
-                continue
-            if kind == "plant" and not any(seeds_left.get(c, 0) > 0 for c in CROP_SPECS):
-                continue
-            d = _dist(pj, tp)
-            if d + 1 > 24 - hour:
-                continue
-            cost = d + prio[kind]
-            if prev.get(j, (None, None))[0] == tp:
-                cost -= ORCH_COMMIT
-            pairs.append((cost, j, ti))
-    pairs.sort()
-    assigned = {}; used_t = set()
-    for cost, j, ti in pairs:
-        if j in assigned or ti in used_t:
-            continue
-        assigned[j] = tasks[ti]; used_t.add(ti)
-        if len(assigned) == len(free):
-            break
-    return assigned
-# ===== END-BLOCK: orchestrator =====
-
-
 # ===== EVOLVE-BLOCK: sweep =====
 def _build_sweep(i, pos, v, day, hour, carry, pools, seeds_left):
     tiers = ["urgent", "wwater", "harvest", "water"]
@@ -1028,6 +951,54 @@ def _steal_task(i, pos, v, day, hour, carry, pools, seeds_left):
 
 
 
+# ===== ORCHESTRATOR (global assignment of crop tasks) =====
+ORCH_PRIO = {"urgent": 0.0, "harvest": 0.5, "wwater": 0.5, "fert": 0.5, "plant": 1.0, "water": 1.0, "weeds": 1.5, "slack": 6.0}
+ORCH_COMMIT = 0.75
+MELON_MORNING = 1            # O22
+MELON_MORNING_LAST_HOUR = 8 # O22
+MELON_MORNING_MIN_YIELD = 6   # O22: a 5-unit melon sold at the top of the pool beats a 6-unit one sold into the dump      # bonus for keeping the task a unit is already heading to (prevents swap oscillation)
+ORCH_SLACK_HOUR = 14
+
+
+def _orchestrate(v, pools, positions, day, hour, inv, seeds_left, busy):
+    """Assign at most one crop task per free unit by global min-cost matching. Returns {unit: (tp, kind)}."""
+    prev = S.get("assign", {})
+    tasks = []
+    for kind, lst in pools.items():
+        if kind == "slack" and hour < ORCH_SLACK_HOUR:
+            continue
+        for tp in lst:
+            tasks.append((tp, kind))
+    free = [j for j in range(len(positions)) if j not in busy]
+    if not free or not tasks:
+        return {}
+    # units already standing on a tile with an open task keep it (chain in progress)
+    pairs = []
+    for j in free:
+        pj = positions[j]
+        carry = inv[j] if j < len(inv) else {}
+        for ti, (tp, kind) in enumerate(tasks):
+            if kind == "fert" and carry.get("FERTILIZER", 0) <= 0:
+                continue
+            if kind == "plant" and not any(seeds_left.get(c, 0) > 0 for c in CROP_SPECS):
+                continue
+            d = _dist(pj, tp)
+            if d + 1 > 24 - hour:
+                continue
+            cost = d + ORCH_PRIO[kind]
+            if prev.get(j, (None, None))[0] == tp:
+                cost -= ORCH_COMMIT
+            pairs.append((cost, j, ti))
+    pairs.sort()
+    assigned = {}; used_t = set()
+    for cost, j, ti in pairs:
+        if j in assigned or ti in used_t:
+            continue
+        assigned[j] = tasks[ti]; used_t.add(ti)
+        if len(assigned) == len(free):
+            break
+    return assigned
+
 def _crop_step(i, pos, v, day, hour, carry, pools, seeds_left):
     sweep = S["sweep"].get(i)
     if not sweep:
@@ -1107,8 +1078,6 @@ def _unit_action(i, pos, carry, obs, v, pools, seeds_left, shed, unlocked_shed):
         if op is not None:
             return op
     prod_carried = sum(carry.get(k, 0) for k in PRODUCTS if k != "WHEAT")
-    if FERT_IS_INPUT and day <= 26 and v["fert"]:
-        prod_carried -= carry.get("FERTILIZER", 0)   # engine fact: PRODUCTS contains FERTILIZER; carried fertilizer is on its way to a tile, not cargo to deposit
     # O22 melon morning: on the days the melon crop comes in, ready melon tiles are the crew's first job of the day and
     # the melons go straight back to the shed (the melon price pool is emptied by whoever sells first; tapes harvest
     # 60 units by h9 and sell at $217-260, our units used to trickle them in all day and dump 30 at the d11 h0 price).
@@ -1280,20 +1249,19 @@ def _agent(obs):
             d.pop(j, None)
     positions = [tuple(me["farmer"])] + [tuple(h) for h in me["hands"]]
     v["positions"] = positions
-    if ORCH_ON:
-        busy = set(S["routes"].keys())
-        for j, bag in enumerate(inv):
-            if any(bag.get(sp, 0) > 0 for sp in ANIMALS):
-                busy.add(j)
-        # rebuild the pools fresh (the sweep-based removal above is no longer the source of truth)
-        pools = _crop_pools(v, seeds_left, day)
-        S["assign"] = _orchestrate(v, pools, positions, day, hour, inv, seeds_left, busy)
-        for j, (tp, kind) in S["assign"].items():
-            sw = S["sweep"].get(j)
-            if not sw or sw[0][0] != tp:
-                S["sweep"][j] = [(tp, kind)]
-            for pool in pools.values():
-                if tp in pool: pool.remove(tp)
+    busy = set(S["routes"].keys())
+    for j, bag in enumerate(inv):
+        if any(bag.get(sp, 0) > 0 for sp in ANIMALS):
+            busy.add(j)
+    # rebuild the pools fresh (the sweep-based removal above is no longer the source of truth)
+    pools = _crop_pools(v, seeds_left, day)
+    S["assign"] = _orchestrate(v, pools, positions, day, hour, inv, seeds_left, busy)
+    for j, (tp, kind) in S["assign"].items():
+        sw = S["sweep"].get(j)
+        if not sw or sw[0][0] != tp:
+            S["sweep"][j] = [(tp, kind)]
+        for pool in pools.values():
+            if tp in pool: pool.remove(tp)
     ops = []
     for i, pos in enumerate(positions):
         carry = inv[i] if i < len(inv) else {}

@@ -8,7 +8,7 @@ Candidates are (params, blocks): 36 numeric/categorical parameters of the frozen
 (evolve/chassis.py) plus optional replacement source for any typed mutation block (evolve/blocks.py).
 
 Islands (separate parent pools, occasional migration; chassis = K_SELFMODEL since Sep 11):
-    o15    chassis with every self-model switch off (exactly O15_SALE_PRIORITY), sigma 0.2 -- the control
+    o15    chassis with every self-model switch off (exactly O15_SALE_PRIORITY), sigma 0.2 -- legacy control
     best   chassis defaults (O26_CARROT_SIZING + O23 engine facts), sigma 0.2
     wide   same seed, sigma 0.5 / rate 0.20 -- the exploration island
     queue  every externally supplied candidate (factorial designs, LLM proposals, hand-written files)
@@ -50,7 +50,7 @@ import blocks as blocks_mod  # noqa: E402
 import crossover as crossover_mod  # noqa: E402
 import operators  # noqa: E402
 import space  # noqa: E402
-from cascade import DEFAULTS, DEV_SEEDS, close_pool, get_pool, run_cascade, evaluate as cascade_eval  # noqa: E402
+from cascade import DEFAULTS, DEV_SEEDS, DEV_CONFIRM_BLOCKS, HELD_SEEDS, POPULATION_SEEDS, close_pool, get_pool, run_cascade, evaluate as cascade_eval  # noqa: E402
 from db import DB  # noqa: E402
 import report as report_mod  # noqa: E402
 
@@ -59,8 +59,9 @@ QUEUE_DIR = HERE / "queue"
 ARCHIVE = HERE / "archive.json"
 
 # Sep 11: islands on the K_SELFMODEL chassis (O26 lineage; every self-model correction is a switch/const, all off == O15).
-#   o15   exactly the yardstick frontier (space.o15_params), the control
-#   best  chassis defaults = O26_CARROT_SIZING + the two O23 engine facts (fert phase rule, fertilizer-is-input)
+#   o15   legacy O15 control (space.o15_params)
+#   best  evolvable O26 lineage defaults. The frozen O26 submission file is the selection frontier; rendered chassis
+#         defaults are close but not behaviorally identical, so they must clear the same gates as every challenger.
 #   wide  same seed, sigma 0.5 -- exploration
 # Sep 10 history: v312/c1/H32/M2 dropped (stale V3-era knobs on the O15 chassis); "capital" island removed the same
 # night (O16_CAPITAL_CHECKPOINT's margin gain was an input-price attack -- own money -1k; see RULES.md).
@@ -129,11 +130,17 @@ class Loop:
         snap, self.k_sha = space.freeze_base(args.base) if args.base else space.freeze_base()
         space.set_frontier(args.frontier)   # keys candidates by (params, chassis, frontier) so switching the
                                              # yardstick can never reuse or mix in a score from the old one
+        space.validate_behavioral_space()   # fail before games if an active control cannot render
         self.cfg["base"] = str(snap)
         self.chassis_text = snap.read_text()
         self.cfg["reference"] = str(space.render(space.o15_params()))   # diagnosis baseline = O15 (chassis, ORCH_ON=0)
         self.cfg["panel_floor"] = args.panel_floor
         self.cfg["own_floor"] = args.own_floor
+        self.cfg["dev_confirm_blocks"] = DEV_CONFIRM_BLOCKS
+        self.cfg["population_panel"] = args.population_panel
+        self.cfg["population_seeds"] = POPULATION_SEEDS
+        self.cfg["population_floor"] = args.population_floor
+        self.cfg["population_own_floor"] = args.population_own_floor
         # The frontier's own panel numbers (dev + held seeds), so every candidate's panel result can be read as
         # a delta against the ladder submission. mini_engine caches games by sha, so this costs once per run.
         try:
@@ -143,9 +150,21 @@ class Loop:
             self.cfg["frontier_panel_dev"], self.cfg["frontier_panel_held"] = fd["mean_margin_per_game"], fh["mean_margin_per_game"]
             self.cfg["frontier_panel_own_dev"], self.cfg["frontier_panel_own_held"] = fd["own_money_per_game"], fh["own_money_per_game"]
             self.cfg["frontier_panel_per_opp_held"] = fh["per_opp"]
-        except Exception as e:  # noqa: BLE001 - a missing tape must not stop the loop; the gate then degrades to head-to-head only
+        except Exception as e:  # noqa: BLE001 - searching may continue, but promotion must fail closed
             self.cfg["frontier_panel_dev"] = self.cfg["frontier_panel_held"] = None
-            print(f"frontier panel baseline failed: {e!r}", file=sys.stderr)
+            self.cfg["panel_baseline_error"] = repr(e)
+            print(f"frontier panel baseline failed; held-out promotion disabled: {e!r}", file=sys.stderr)
+        if args.population_panel:
+            try:
+                pop, _ = eval_panel(args.frontier, args.population_panel, POPULATION_SEEDS, "master", args.jobs)
+                self.cfg["frontier_population_margin"] = pop["mean_margin_per_game"]
+                self.cfg["frontier_population_own"] = pop["own_money_per_game"]
+                self.cfg["frontier_population_per_opp"] = pop["per_opp"]
+            except Exception as e:  # noqa: BLE001
+                # Population validation is mandatory when configured. Disable local promotion rather
+                # than silently falling back to the narrower historical panel.
+                self.cfg["population_baseline_error"] = repr(e)
+                print(f"population panel baseline failed; held-out promotion disabled: {e!r}", file=sys.stderr)
         self.db.start_run(self.run_id, self.engine_sha, self.k_sha, args.frontier, args.clone, self.cfg)
         self.stats = defaultdict(int)
         self.gen = 0
@@ -388,9 +407,21 @@ class Loop:
             return False
         if not pool:
             pool = by.get("best") or allp
-        if not pool:
-            return False
-        if self.rng.random() < MIGRATE and allp:
+        bootstrap = not pool
+        if bootstrap:
+            # A stronger external frontier can reject every configured seed before dev. Those rows are still valid
+            # mutation starting points; requiring an already-alive parent would otherwise leave allp empty and make
+            # the main loop spin without evaluating another candidate for the entire time budget.
+            seed = cfg.get("seed") or ISLANDS["best"]["seed"]
+            seed_blocks = blocks_mod.resolve_sources(seed.get("blocks"), ROOT) if isinstance(seed, dict) else None
+            seed_params = self.base_params_for(seed)
+            parent = {
+                "key": space.params_key(seed_params, seed_blocks),
+                "params": json.dumps(seed_params),
+                "blocks": json.dumps(seed_blocks) if seed_blocks else None,
+            }
+            origin = "bootstrap_mutate"
+        elif self.rng.random() < MIGRATE and allp:
             parent = self.rng.choice(allp[:10])
             origin = "migrate"
         else:
@@ -558,8 +589,8 @@ def main():
     ap.add_argument("--minutes", type=float, default=0.0)
     ap.add_argument("--max-candidates", type=int, default=0)
     ap.add_argument("--jobs", type=int, default=None)
-    ap.add_argument("--frontier", default=str(ROOT / "candidates" / "O15_SALE_PRIORITY.py"),
-                    help="head-to-head yardstick (selection score). Sep 9: O15, the ladder submission")
+    ap.add_argument("--frontier", default=str(ROOT / "candidates" / "O26_CARROT_SIZING.py"),
+                    help="head-to-head yardstick (selection score). Sep 11: O26, the current ladder candidate/control")
     ap.add_argument("--clone", default=",".join(str(ROOT / "Opponents" / t) for t in (
                         "tape_peterparker_106816877.py", "tape_alaylm_106813359.py",
                         "tape_bahaenes_106828159.py", "tape_yangkuang2_106819729.py")),
@@ -570,6 +601,13 @@ def main():
     ap.add_argument("--own-floor", type=float, default=0.0,
                     help="min (candidate - frontier) OWN money per game on the panel for held_pass; a candidate above the margin "
                          "floor but below this is recorded as held_exploit (opponent-specific), never promoted")
+    ap.add_argument("--population-panel", default=",".join(str(ROOT / "Opponents" / t) for t in (
+                        "opp_frontier_v12.py", "opp_kaito_v21.py", "opp_scenario_v14.py", "opp_soil_v25.py")),
+                    help="quarantined reactive opponent panel used only after held-out selection")
+    ap.add_argument("--population-floor", type=float, default=0.0,
+                    help="minimum margin delta versus the frontier on the quarantined population panel")
+    ap.add_argument("--population-own-floor", type=float, default=0.0,
+                    help="minimum own-money delta on the quarantined population panel")
     ap.add_argument("--run-id", default=None)
     ap.add_argument("--seed", type=int, default=None)
     ap.add_argument("--smoke-floor", type=float, default=DEFAULTS["smoke_floor"])

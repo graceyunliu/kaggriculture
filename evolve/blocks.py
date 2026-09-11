@@ -16,7 +16,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-K_LIVE = ROOT / "candidates" / "K_SELFMODEL.py"   # Sep 11: O26 lineage with every self-model correction switchable (all off == O15); was O16K_ORCH_KNOBBED.py
+K_LIVE = ROOT / "candidates" / "O26_CARROT_SIZING.py"   # Frozen behavioral source of truth for the exact O26 chassis.
 CHASSIS = ROOT / "evolve" / "chassis.py"
 
 # block name -> top-level function names (must be contiguous in the file, in this order)
@@ -27,8 +27,9 @@ BLOCKS = {
     "animal_routing": ["_build_route", "_route_step"],
     "siting":         ["_pick_site", "_setup_step"],
     "crop_admission": ["_crop_pools", "_plant_choice", "_task_valid"],
-    "orchestrator":   ["_orch_prio", "_orchestrate"],
-    "sweep":          ["_build_sweep", "_steal_task", "_crop_step"],
+    # O26 places _orchestrate between _steal_task and _crop_step; keep the range contiguous
+    # rather than relocating the function or creating a behavior-changing split.
+    "sweep":          ["_build_sweep", "_steal_task", "_orchestrate", "_crop_step"],
     "dispatch":       ["_unit_action"],
 }
 
@@ -39,7 +40,6 @@ BLOCK_DOC = {
     "animal_routing": "per-hand routes for animal feed/care/collect trips and pickups from the shed",
     "siting":         "where new animals are placed and how a hand sets one up",
     "crop_admission": "which tiles are eligible for which crop task; what crop to plant where",
-    "orchestrator":   "per-turn global assignment of crop tasks to free units (cost = distance + priority - commitment); ORCH_ON gates it",
     "sweep":          "per-hand crop sweeps: tier order (urgent water, harvest, water, plant, weeds) and step choice",
     "dispatch":       "top-level per-unit action choice: animal route vs crop sweep vs idle",
 }

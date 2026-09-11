@@ -36,6 +36,17 @@ params:
     reason: >
       Same finding as fert_keep — Phase 2 fertilizer apply/hold parity.
       REPORT_PHASE2.md.
+  open_wheat:
+    reason: >
+      Manus exact-O26 2x2x2x2 factorial: open_wheat=9 interacted with
+      fert_carry=1 for +$1,942 on development, then reversed to -$817,
+      t=-1.35 on fresh seeds 71-90. Do not retry this fitted branch.
+      See docs/cloud-evolution-results-sep11.md.
+  HERD_LAST_DAY:
+    reason: >
+      The same factorial found only negligible, non-replicating effects for
+      day 15 versus 17. Keep fixed until a mechanism-specific hypothesis exists.
+      See docs/cloud-evolution-results-sep11.md.
 
 blocks:
   dispatch:
