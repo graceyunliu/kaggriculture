@@ -786,3 +786,15 @@ the hand threshold stays. BUY_LAND's sign is the opposite: stable and significan
 current LAND_DEADLINE (14/17/18 by quad tier) already runs well past where the marginal value hits zero. New DELAY:
 `land_deadline_horizon` -- build a candidate that pulls LAND_DEADLINE in by 2-6 days per tier and test it on the
 standard 20x2 own+margin panel vs O26. Ledger: DO 5 / DELAY 1 / ABANDON 13 / SWITCH 4.
+
+## Sep 11: land_deadline_horizon -> ABANDON (the deadline already prices in quad-completion option value)
+
+O33_LAND_DEADLINE_TIGHT (LAND_DEADLINE {2:14,3:17,4:18} -> {2:11,3:13,4:14}) vs O26, 4-tape panel, own+margin, two
+20-seed sets (s11-30, s31-50), KAGG_FIXED_SHOPS=1: set1 margin -257 / own -219 (at the noise floor), set2 margin
+-1,296 / own -1,094, NEGATIVE ON ALL FOUR TAPES. No gain on either metric, either set. Reading: the marginal
+per-day counterfactual (investment_readiness_threshold) measured the value of the LAST land unit under the
+unchanged policy and found it decays to ~0 by day 12 -- but completing a quad earlier has option value (more
+tile-days for the rest of the game) that a single-unit removal doesn't see, and tightening the deadline throws that
+away along with the low-value last unit. The two measurements were answering different questions; the observational
+one didn't transfer to a working intervention. Ledger now DO 5 / DELAY 0 / ABANDON 14 / SWITCH 4 -- every inherited
+direction from the O12-O26 programme is closed. Next: open-ended candidate discovery from the K_SELFMODEL chassis.
