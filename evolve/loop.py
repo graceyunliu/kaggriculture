@@ -7,9 +7,9 @@
 Candidates are (params, blocks): 36 numeric/categorical parameters of the frozen chassis
 (evolve/chassis.py) plus optional replacement source for any typed mutation block (evolve/blocks.py).
 
-Islands (separate parent pools, occasional migration; chassis = O16K_ORCH_KNOBBED since Sep 10):
-    o15    seeded from the chassis with ORCH_ON=0 (exactly O15_SALE_PRIORITY), sigma 0.2
-    orch   seeded from the chassis defaults (exactly O16_ORCH_ON_O15), sigma 0.2
+Islands (separate parent pools, occasional migration; chassis = K_SELFMODEL since Sep 11):
+    o15    chassis with every self-model switch off (exactly O15_SALE_PRIORITY), sigma 0.2 -- the control
+    best   chassis defaults (O26_CARROT_SIZING + O23 engine facts), sigma 0.2
     wide   same seed, sigma 0.5 / rate 0.20 -- the exploration island
     queue  every externally supplied candidate (factorial designs, LLM proposals, hand-written files)
 Parent choice inside an island: tournament from its top (65%), a random behavioural cell (25%),
@@ -58,22 +58,19 @@ LOG_DIR = HERE / "logs"
 QUEUE_DIR = HERE / "queue"
 ARCHIVE = HERE / "archive.json"
 
-# Sep 10: islands re-seeded on the O16K chassis. "base" = the chassis's own KNOBS/constants (O16 with the
-# orchestrator on); a dict seed is base + overrides. v312/c1/H32/M2 dropped: their seeds were V3-era knob
-# values overlaid on the O15 chassis (H32/M2's real mechanisms lived in K.py code and never ported; M2 is
-# excluded anyway as opponent fingerprinting), and c1_params() itself re-applied C1's 2020-era opening knobs.
+# Sep 11: islands on the K_SELFMODEL chassis (O26 lineage; every self-model correction is a switch/const, all off == O15).
+#   o15   exactly the yardstick frontier (space.o15_params), the control
+#   best  chassis defaults = O26_CARROT_SIZING + the two O23 engine facts (fert phase rule, fertilizer-is-input)
+#   wide  same seed, sigma 0.5 -- exploration
+# Sep 10 history: v312/c1/H32/M2 dropped (stale V3-era knobs on the O15 chassis); "capital" island removed the same
+# night (O16_CAPITAL_CHECKPOINT's margin gain was an input-price attack -- own money -1k; see RULES.md).
 ISLANDS = {
-    "o15":   {"seed": {"base": "base", "params": {"ORCH_ON": 0}}, "rate": 0.15, "sigma": 0.2},   # exactly O15 at the seed
-    "orch":  {"seed": "base", "rate": 0.15, "sigma": 0.2},                                       # exactly O16 at the seed
-    "wide":  {"seed": "base", "rate": 0.20, "sigma": 0.5},                                       # exploration, orchestrator on
-    # "capital" island REMOVED (Sep 10, later the same evening): O16_CAPITAL_CHECKPOINT's tape-panel margin gain (+711)
-    # is an input-price attack, not an own-economy gain -- PANEL_METRIC=own reads -1,032/game (t=-2.8) while the tape
-    # loses ~1.7k (its fixed wheat/fert BUY quantities pay the prices we push up). Same for capital_hour2=2 on O16
-    # (margin +1.6k, own -2.6k). Seeding a margin-gated search on that would fill the archive with opponent-harm
-    # variants that live opponents absorb (M2/M3 lesson). Re-enable only with an own-money gate. See RULES.md.
+    "o15":   {"seed": {"base": "base", "params": dict(space.O15_OVERRIDES)}, "rate": 0.15, "sigma": 0.2},
+    "best":  {"seed": "base", "rate": 0.15, "sigma": 0.2},
+    "wide":  {"seed": "base", "rate": 0.20, "sigma": 0.5},
     "queue": {"seed": None, "rate": 0.15, "sigma": 0.2},
 }
-MUTABLE_ISLANDS = ("o15", "orch", "wide")
+MUTABLE_ISLANDS = ("o15", "best", "wide")
 MIGRATE = 0.1
 CROSSOVER = 0.3
 
@@ -390,7 +387,7 @@ class Loop:
         if not pool and island == "queue":
             return False
         if not pool:
-            pool = by.get("orch") or allp
+            pool = by.get("best") or allp
         if not pool:
             return False
         if self.rng.random() < MIGRATE and allp:
@@ -454,7 +451,7 @@ class Loop:
                         self.log(f"queued {len(paths)} archive crossovers at generation {self.gen}")
                 island = order[self.gen % len(order)] if self.gen % 4 else "queue"
                 if not self.generate_one(island):
-                    self.generate_one("orch")
+                    self.generate_one("best")
         finally:
             close_pool()
             elapsed = time.time() - self.t_start
