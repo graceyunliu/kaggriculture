@@ -682,3 +682,17 @@ melon price $175 vs $219. Own-money panel vs O24 (fixed shops, s11-20 / s21-40):
 +1,568 (t12.4, s11-30) / +1,352 (t11.2, s31-50), margin +1,397 (t9.5), all 5 positive. **vs O15: margin +8,669 (t14.6),
 own +7,522 (t11.9), every tape +6.5-9.0k.** `submissions/O25_STRAW_HIREGATE.zip`. Lineage: O15 + orchestrator (O16) +
 melon convoy (O22) + strawberry sizing (O24) + hire gate (O25); each step passed both gates.
+
+## Sep 11: crop self-model sweep on O25 (own-money panel vs O25, fixed shops)
+
+The allocator's `CROP_SPECS[c]["units"]` (expected sellable units per planting) vs measured: STRAWBERRY 4.5 vs 5.5-7.5,
+WHEAT 5.0 vs 3.9, CARROT 4.0 vs 3.0, MELON 6.0 vs 5.9, TOMATO 5.0 (never planted).
+- STRAW_UNITS 6.5 / 7.5 / 8.5: -0.8k / 0 / -0.2k -> 7.5 stays.
+- WHEAT 5.0 -> 3.9 (true): **-2.0k (t-7.5)** -- plants more wheat, loses. Not applied (wheat line: fourth negative read).
+- CARROT 4.0 -> 3.0 (true): own **+1.6k (t2.6, s11-20) / +1.4k (t4.6, s21-40)**; margin +0.8k / +0.2k / +1.5k (s11-30/31-50/51-70),
+  real tapes >= 0 on all sets (peter +2-4k, bahaen +2k, alaylm +0.3-0.6k, yangk -0.1..+0.8k), clone -0.1..-3.4k. Mechanism:
+  with true units the carrot `val < min_val` test fails more often, carrots drop 34 -> 12 plantings and the labour goes to
+  wheat (64 -> 90 plantings; wheat bought 260 -> 203), labour+land 11.3k -> 8.5k. Adopted as **O26_CARROT_SIZING**
+  (`submissions/O26_CARROT_SIZING.zip`) -- weakest gate pass of the line; margin is real-tape-only.
+Rule of thumb from the day: an accurate self-model (units per planting) beats both optimism and pessimism, but only
+where the freed resource has a paying use; the allocator then decides.
