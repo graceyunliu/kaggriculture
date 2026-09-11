@@ -7,7 +7,7 @@ Explains why a capital-timing change (O16_CAPITAL_CHECKPOINT) does or does not s
 Usage: KAGG_FIXED_SHOPS=1 python3 tools/capital_events.py CAND1 CAND2 ... --opp Opponents/tape_x.py --seeds 11-16
 """
 import sys, os, argparse, importlib.util
-sys.path.insert(0, "/sessions/confident-jolly-fermat/mnt/Kaggriculture")
+sys.path.insert(0, __import__("os").path.dirname(__import__("os").path.dirname(__import__("os").path.abspath(__file__))))
 import mini_engine as me
 CAP = ("BUY_ANIMAL", "HIRE", "BUY_LAND", "BUY_SEED", "BUY_PRODUCT")
 
