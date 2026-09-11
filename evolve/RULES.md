@@ -799,6 +799,18 @@ away along with the low-value last unit. The two measurements were answering dif
 one didn't transfer to a working intervention. Ledger now DO 5 / DELAY 0 / ABANDON 14 / SWITCH 4 -- every inherited
 direction from the O12-O26 programme is closed. Next: open-ended candidate discovery from the K_SELFMODEL chassis.
 
+## Sep 11: projected shed relief -> ABANDON (real and foreseeable, not economically recoverable)
+
+Item-level hour-23 instrumentation found 346 discarded units in 40 O33-vs-bahaen both-seat games; 31 of 32
+events were visible after planned sales. The load was mostly carried rather than stored (270 wheat, 64 carrot,
+12 strawberry). Additional shed-wheat liquidation was inert because O33 already sells above its feed buffer.
+O39 recalled wheat carriers at their last feasible departure under projected load >100: selection s355-374,
+four fresh Majkel streams, n=80, own +136 (t2.56), margin +190 (t2.96); fresh replication s375-394 collapsed
+to own +19 (t0.58), margin +30 (t0.69), with 3/4 stream means slightly negative. O40's >=10-unit overflow gate
+was weaker (own +30 t1.53, margin +53 t1.87). Close threshold/recall variants: the final crop route's option
+value exceeds the mostly low-value wheat recovered. Reopen only for a zero-displacement mechanism or specific
+proof that high-value cargo will be destroyed. Report: `experiments/PROJECTED_SHED_20260911/REPORT.md`.
+
 ## Sep 11: first open-ended scout -- goose_animal_class -> ABANDON (dead knob, then a real loss)
 
 The chassis has a ready-made but disabled `geese` knob (GOOSE/EGG: cost 300 vs COW 400/SHEEP 500, interval 1 vs

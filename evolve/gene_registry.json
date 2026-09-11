@@ -125,6 +125,7 @@
   "non_genes": [
     {"id": "FERT_COURIER", "status": "mechanism_only_no_economic_gain", "reason": "Coverage improved from 1.9 to 2.7 nights per planting, but own money was +0 alone."},
     {"id": "WHEAT_SELL_PRICE", "status": "rejected_private_only", "reason": "Own money rose, but margin fell because the tapes are net wheat sellers."},
-    {"id": "MIN_HANDS2", "status": "rejected_after_replication", "reason": "A historical positive block failed to replicate on a fresh block."}
+    {"id": "MIN_HANDS2", "status": "rejected_after_replication", "reason": "A historical positive block failed to replicate on a fresh block."},
+    {"id": "PROJECTED_SHED_RELIEF", "status": "rejected_after_replication", "reason": "Overflow was visible in 31 of 32 diagnostic events, but last-feasible-hour carrier recall fell from own +136/margin +190 on selection to own +19/margin +30 on fresh replication; a severe-overflow gate was weaker."}
   ]
 }
