@@ -66,13 +66,22 @@
   date: 2026-09-11
 
 - id: investment_readiness_threshold
-  state: DELAY
+  state: SWITCH
   type: lumpy_capital
-  mechanism: buy an animal/land only when remaining horizon pays back acquisition + operating + opportunity cost
-  unknown: sign of marginal animal/land value by day -- two 12-cell results flipped at 24-32 cells (AGE-360)
-  resolving_measurement: horizon_roi --mode marginal, BUY_ANIMAL/BUY_LAND, days 4-12, >=32 cells, fresh seeds
-  would_do: stable sign at 32 cells on two seed sets
-  would_abandon: sign still unstable at 32 cells -> the class is not measurable at our panel size; leave hand thresholds
+  original_hypothesis: "BUY_ANIMAL and BUY_LAND are one 'lumpy capital' class and the marginal (last-unit-per-day) value of each has a stable, measurable sign by day at 32-cell panel depth"
+  failed_assumption: "they do not behave as one class. tools/horizon_roi.py --mode marginal --reduce 1, O26_CARROT_SIZING, panel tapes (alaylm/bahaen/peter/yangk), days 4/6/8/10/12, two independent 32-cell seed sets (61-68 and 69-76 x 4 tapes), KAGG_FIXED_SHOPS=1: BUY_ANIMAL sign is UNSTABLE between the two sets at every day -- set1 trends negative and significant (day6 -2,148 t-2.21, day8 -2,320 t-2.80, day10 -2,397 t-3.01), set2 trends positive but not significant (day6 +2,448 t1.46, day8 +1,211 t0.93, day10 +695 t0.80). That is exactly the pre-registered would_abandon condition: the class is not measurable at this panel size, so BUY_ANIMAL's hand threshold stays as-is and this axis is closed, not promoted. BUY_LAND's sign is the opposite story: stable and significant on BOTH sets at days 4-10 (set1/set2: day4 20,818 t10.69 / 28,975 t8.35; day6 same values -- no land order fell in [4,6) so the two cutoffs are the same intervention; day8 3,457 t4.61 / 3,761 t7.34; day10 2,298 t3.80 / 3,710 t8.99), decaying to noise by day12 (-38 t-0.34 / +643 t2.29, neither past the $250 floor with agreement). That is a real, replicable interior decay curve, not an unmeasurable sign"
+  became: land_deadline_horizon
+  evidence: "artifacts/horizon_roi/invest_readiness_set1.jsonl, invest_readiness_set2.jsonl (320 cells each, 2 types x 5 days x 32 tape-seed cells)"
+  date: 2026-09-11
+
+- id: land_deadline_horizon
+  state: ABANDON
+  type: lumpy_capital
+  hypothesis: "the hand-tuned LAND_DEADLINE (quads-after-purchase -> last day: 2->14, 3->17, 4->18) is too loose -- the marginal per-day counterfactual (investment_readiness_threshold) showed the value of the LAST land unit decays to ~0 by day 12, so pulling the deadlines in to track that decay should gain money on both own and margin"
+  measurement: "O33_LAND_DEADLINE_TIGHT.py = O26_CARROT_SIZING with LAND_DEADLINE {2:14,3:17,4:18} -> {2:11,3:13,4:14}, tested on the standard 4-tape panel, own+margin, two 20-seed sets (11-30, 31-50), KAGG_FIXED_SHOPS=1"
+  negative_evidence: "no gain on either metric, either set. set1 (s11-30): margin -257, own -219 (within/at the $250 noise floor). set2 (s31-50): margin -1,296, own -1,094, NEGATIVE ON ALL FOUR TAPES (peterparker -1,226, alaylm -1,249, bahaenes -1,182, yangkuang2 -1,528 margin; every tape's own money also down). Would-abandon condition (no gain, or a metric split) met on the stronger set and not contradicted by the weaker one"
+  scope: "tightening LAND_DEADLINE to match the single-unit marginal-value decay curve, at any of the tested per-tier day counts (2->11/3->13/4->14) or nearby; the marginal counterfactual measures removing the LAST unit under the unchanged policy, not the value of buying the WHOLE quad's capacity in time to use it for the rest of the game -- completing a quad earlier likely has option value (more tile-days available to the seed allocator) that the single-unit measurement does not see, and cutting the deadline removes that, not just the low-value last unit"
+  reopen: "not another deadline-tightening variant at these or nearby cutoffs -- only a different instrument that separates the marginal-unit value from the quad-completion option value (e.g. count purchases where the LAST land order of a quad specifically pays back vs full-quad orders), or a mechanism that keeps the deadline but changes WHICH day's land order is skipped"
   date: 2026-09-11
 
 - id: strawberry_early_death
@@ -93,6 +102,7 @@
   negative_evidence: "independent second design (O32_MELON_URGENT_EXEMPT / O32B, this session): exempt a unit from the convoy when the ORCHESTRATOR assigned it an urgent crop-water task -- so the held-back unit is the nearest by global min-cost matching and at most one per outstanding urgent task, no reserved worker, h8 unchanged. Paired vs O26, fixed shops, 4 tapes, both seats, 3 fresh seed sets (151-210), 1,440 games, 0 errors: O32 margin -592 (t-4.34) / own -733 (t-5.85); O32B margin -594 (t-3.29) / own -626 (t-3.48); negative on ALL FOUR tapes. On the larger panel the family is not a wash, it is a loss"
   relocation_finding: "urgent-task protection is not free protection: straw_life O26 vs O32 (s151-154, bahaen) shows early deaths 2/155 -> 1/153 while watered-on-production-night falls 65% -> 59%. Releasing the nearest unit improves one local assignment and worsens the global allocation of the remaining capacity -- it relocates displacement inside the crop system rather than removing it"
   scope: any design in which urgent crop-water work takes capacity from the h<=8 melon convoy, at any urgency predicate, crop subset, or scheduler-priority refinement
+  scope_note: "the underlying consecutive_unwatered >= 2 -> WEED mechanism is generic across crop types (verified in _daily_refresh_plants, not strawberry-specific code). Existing evidence and ABANDON conclusions above remain specific to the measured strawberry/melon-convoy intervention scope; this does not imply equivalent failure rates or economics for other crops (wheat/carrot/tomato/melon) until separately measured. See crop_harvest_window_recoverability for the related, distinct lifespan-decay mechanism."
   reopen: "NOT with another urgency predicate, threshold, crop subset or priority tweak -- that family is exhausted (any-urgent, pre-production-urgent, catastrophic-urgent, two sessions, two implementation paths). Only a different commitment-level mechanism: a way to preserve melon capture without consuming convoy capacity, or a discontinuity that changes the convoy's lost-sale economics"
   old_failed_assumption: "trigger precision was the lever -- O30 (any urgent, 6% death) and O31 (catastrophic pre-production only, 2% death, 3x narrower trigger) both land at a ~$0 wash on own money (-1,087/+965/-53 and -998/+722/-124 across 3 tapes); narrowing the trigger did not move money"
   evidence: "tools/o31_decompose.py (paired same-seed revenue split): the wash is a real MELON VOLUME loss on every tape (8-11 fewer melon units sold/game, -950..-1,555 revenue) that strawberry revenue recovery (+24..+1,069, real but smaller/inconsistent) only sometimes covers. Melon avg price is slightly HIGHER when diverted (rules out a late-sale-worse-price story) -- a deferred morning pickup is not delayed to a later sale, some fraction of it is LOST outright"
@@ -218,4 +228,207 @@
   failed_assumption: the tapes' advantage was fewer plantings at the same output, not more output
   became: strawberry_yield_sizing
   evidence: allocation matrix -- same ~250 units from 33 plantings/520 actions vs our 47/800; own +0 from more fert, own +5.5k from fewer plantings
+  date: 2026-09-11
+
+- id: goose_animal_class
+  state: ABANDON
+  type: lumpy_capital
+  hypothesis: "first open-ended K_SELFMODEL-era candidate (Sep 11, post-ledger-closure): the chassis has a ready-made but disabled 'geese' knob (GOOSE/EGG, cost 300 -- cheaper than COW 400/SHEEP 500, interval 1 -- faster cycle than COW's 2 or SHEEP's 3); an unused, cheaper, faster-cycling animal class should add money if bought"
+  measurement: "O34_GOOSE_TEST.py = O26_CARROT_SIZING with the geese knob turned on (4 GOOSE). First found the knob's affordability window (day<=3) never has the required $300 free under the current 'frontier' opening (single-seed debug trace: free was -50/234/273 on days 1-3, only clears $300 on day 4 -- the knob was wired for a different, no-longer-used opening and has been silently dead). Widened the window to day<=10 to test the actual economic question, then ran on the standard 4-tape panel, own+margin, two 20-seed sets (11-30, 31-50), KAGG_FIXED_SHOPS=1"
+  negative_evidence: "margin is heavily and consistently negative: set1 -7,058 (all 4 tapes: -8.6k/-6.4k/-7.8k/-5.4k), set2 -7,301 (all 4 tapes: -7.2k/-6.6k/-9.4k/-6.0k) -- about 30x the $250 noise floor, on every tape, both sets. Own money does not compensate and does not even agree in sign: set1 +1,451 (all 4 tapes positive), set2 -585 (mixed). Reads as own-money-neutral-to-noisy with a large, robust margin loss -- not the 'economic spillover' pattern (own up, margin flat) of the wheat-portfolio rejection, closer to a straight failure once the affordability bug is fixed and the class is actually bought"
+  scope: "buying GOOSE at all under the current chassis (COW/SHEEP/melon/strawberry/wheat portfolio, current prices and demand); tested with the day<=10 relaxation of the affordability window, not a schedule search over when/how many to buy"
+  reopen: "only with a different acquisition schedule (later, fewer, or demand-gated) that is shown NOT to be captured by this test -- e.g. a small goose count (1-2) added only once the fast-cycle EGG income has clear shed room, not a wholesale 4-bird open. The current knob's day<=3 deadman window should also be fixed or removed regardless of this direction's outcome, since it silently no-ops"
+  panel_note: "20x2, not the nominal 32x2 for lumpy_capital -- the effect size (30x noise floor, unanimous sign across 4 tapes and both sets on margin) makes a 32-cell confirmation unlikely to change the verdict, but a reopener should still run the full depth"
+  date: 2026-09-11
+
+- id: knob_space_local_optimum_sweep
+  state: ABANDON
+  type: knob
+  hypothesis: "second open-ended scout: a 20-knob one-at-a-time sweep of every live, currently-default KNOBS value in the chassis (O26_CARROT_SIZING) that hadn't already been closed by a named ledger direction -- open_melons/open_wheat/open_cows/open_sheep, min_hands, load_per_hand, early_hire_days, melon_floor, harvest_min, demand_share, max_animals, hands_early, drop_min, feed_spare_poor, each nudged both directions where sensible -- should turn up an easy win the O16-O26 programme's manual tuning missed"
+  measurement: "dev-seed h2h screen (10 seeds, KAGG_FIXED_SHOPS=1) of each of 20 single-knob perturbations vs unmodified O26, via a batch harness (/tmp/scout_sweep.py, not committed -- one-shot screening tool, results in evolve/RULES.md)"
+  negative_evidence: "18 of 20 nudges are flat-to-negative at 10 seeds (|delta| <=1.5k, several sharply negative and informative: open_cows 2->3 is -31,066, open_sheep 2->3 is -35,685 -- a 3rd starting animal is a large mistake; load_per_hand in EITHER direction from 20 is negative, -5,886 at 25 and -4,401 at 15, an interior optimum already at the default; open_wheat similarly interior at 7, -2,889 at 10 and -6,261 at 4). The 2 positive nudges (demand_share 0.65: +1,350 h2h; min_hands 2: +1,530 h2h) were escalated separately -- demand_share_065 did not survive the real tape panel (see demand_share_up ABANDON below); min_hands_2 did (see min_hands_lower DO below)"
+  scope: "one-at-a-time perturbation of the 20 named knobs at the tested values, dev-seed h2h screen only (not a panel-confirmed rejection of any individual knob beyond the two escalated) -- most of the current defaults sit at or near a local optimum in this knob space"
+  reopen: "a genuinely different value for one of the 18 flat/negative knobs (not adjacent to what was tested), or a joint (multi-knob) sweep -- one-at-a-time perturbation can miss an interaction effect that a paired change would catch"
+  date: 2026-09-11
+
+- id: demand_share_up
+  state: ABANDON
+  type: knob
+  hypothesis: "from the sweep above: demand_share 0.55 -> 0.65 (seed allocator commits to a larger share of remaining demand per planting) showed +1,350 h2h vs O26 at 10 dev seeds"
+  measurement: "O35_DEMAND_SHARE065.py vs O26, 4-tape panel, own+margin, one 20-seed set (11-30), KAGG_FIXED_SHOPS=1"
+  negative_evidence: "the h2h screen did not transfer to the real panel: margin -503, own -1,663, both negative (h2h vs the O26 clone alone is a weak signal for this class of change, exactly the documented caveat in docs/economic-self-model.md)"
+  scope: demand_share at 0.65; not swept further (0.55 stays default)
+  reopen: a different demand_share value shown positive on the real panel, not just h2h
+  date: 2026-09-11
+
+- id: min_hands_lower
+  state: DO
+  type: knob
+  mechanism: "the standing-workforce floor outside the early-hire window (min_hands) was set to 3; a floor of 2 lets the marginal-price hire gate (HIRE_MAX_MARGINAL=144, hire_marginal_price) do more of the sizing work instead of a fixed floor forcing hands the gate wouldn't have bought"
+  intervention: "min_hands 3 -> 2 (O36_MIN_HANDS2)"
+  evidence: "vs O26, 4-tape panel: set1 (s11-30) margin +748, own +320 (3 of 4 tapes positive, bahaenes -275); set2 (s31-50) margin +906, own +420 (3 of 4 tapes positive, peterparker -329). Both metrics positive on both independent 20-seed sets, majority of tapes each time, no tape reliably negative twice"
+  held_out: set2 (s31-50) agrees in sign and magnitude with set1 (s11-30)
+  caution: "modest effect size (~$300-900/game, 1-4x the noise floor) -- weakest DO in the lineage alongside carrot_yield_sizing; the one negative tape differs between sets (bahaenes then peterparker), consistent with noise rather than a real tape-specific loss, but worth another seed set before folding into the frontier chassis"
+  date: 2026-09-11
+
+- id: min_hands_knob_interactions
+  state: DELAY
+  type: knob
+  mechanism: "min_hands_lower (DO, min_hands 3->2) and three of the other individually-mild-positive knobs from knob_space_local_optimum_sweep (hands_early=4 +681 h2h, max_animals=21 +701 h2h, feed_spare_poor=3 +406 h2h) were each tested ALONE, one-at-a-time. A dev h2h check of the pairwise and 4-way combinations found real, code-confirmed interaction: `floor = KNOBS['hands_early'] if (KNOBS['hands_early'] and day<=10) else KNOBS['min_hands']` means hands_early, when nonzero, REPLACES min_hands as the early-window floor rather than adding to it -- combo(min_hands=2, hands_early=4) scored +681 h2h, identical to hands_early=4 alone, not the ~2,200 an additive read of the two singles would suggest. Every tested combination is sub-additive versus the naive sum of its singles, and the 4-way combo (+1,151 h2h) actually underperforms the best 2-way combo (min_hands=2 + feed_spare_poor=3, +1,593 h2h, the single best h2h result seen in either sweep) -- the interaction structure is not simply diminishing returns, it is inconsistent enough that no combination can be picked by inspection"
+  unknown: "whether ANY combination beats min_hands_lower alone on the real 4-tape panel (own AND margin, not just h2h vs the O26 clone, which the demand_share_up rejection already showed can reverse), and if so which one -- the best h2h candidate (min_hands=2 + feed_spare_poor=3) has not been panel-tested at all"
+  resolving_measurement: "panel-test (4 tapes, own+margin, 2x 20-seed sets, KAGG_FIXED_SHOPS=1) at minimum the single best h2h combo (min_hands=2 + feed_spare_poor=3) against the min_hands_lower baseline (O36), not against unmodified O26 -- the comparison that matters now is 'does adding feed_spare_poor=3 on top of the already-DO'd min_hands=2 buy anything more', not vs the old frontier. If that clears, sweep the remaining 2-way and 3-way combinations the same way before picking one to fold into a numbered candidate"
+  would_do: "a combination beats O36_MIN_HANDS2 (not O26) on both own and margin, reproducibly across 2 independent seed sets, majority of tapes each time -- promotes past min_hands_lower to a joint knob DO"
+  would_abandon: "no combination beats O36 on the real panel (h2h-vs-clone gains don't transfer, matching the demand_share_up pattern), or the panel result is as inconsistent/non-additive as the h2h numbers already are -- in which case min_hands_lower stands alone and no joint-knob direction is recorded"
+  cost: "cheap per cell but several panel runs deep (the h2h screen alone needed 4 extra evaluations beyond the 20-knob singles sweep; a proper panel-level factorial is 4-5x the cost of the single min_hands_lower confirmation) -- deferred rather than folded into this scouting pass"
+  date: 2026-09-11
+
+- id: crop_harvest_window_recoverability
+  state: DELAY
+  type: nonlinear_threshold
+  mechanism: >
+    Non-ongoing crops (WHEAT, CARROT, MELON) may expire via max_lifespan_step decay
+    (_decay_plants) before being harvested, an irreversible hard cutoff. tools/crop_window_trace.py
+    (panel: 4 tapes x 2 independent 20-seed sets, ~20,721 plantings) found O26's WHEAT decay rate
+    stable at 4.4-7.6% on every tape/set cell vs 0.0-1.2% for every tape opponent on the same games
+    -- the one crop/policy gap in the panel that cleared "positive on every tape, stable across
+    sets". tools/wheat_decay_bridge.py then read the candidate's own per-turn actions on every
+    decayed wheat tile directly (a unit occupies one tile per turn and can only take one action, so
+    this is not inferred, it is observed): across all 4 tapes x 2 sets (802 decayed tiles total),
+    95-99% of decayed tiles are VISITED_WATERED_BELOW_MAX (a unit was standing on the tile and chose
+    WATER over HARVEST on a turn when yield_units was already >0 but still below WHEAT's max_yield);
+    NEVER_VISITED (the free-fix, zero-displacement class) is 0% in every single panel cell.
+  superseded_framing: >
+    ORIGINAL (pre-bridge) framing was "find missed harvests and recover them" -- a scheduling/
+    dispatch-failure hypothesis. The bridge falsifies that framing cleanly: there is essentially no
+    zero-cost recovery class (0% NEVER_VISITED, panel-wide). O26 is not failing to reach or forgetting
+    these tiles; it is making a deliberate, repeated growth-vs-harvest tradeoff (keep watering for
+    more yield instead of banking a smaller guaranteed amount) and losing that bet on ~5-7% of
+    plantings. That closes the "recoverable dispatch failure" hypothesis; do not reopen it without a
+    new instrument. The mechanism itself, the decay-rate asymmetry vs every tape, and the panel
+    depth stand as confirmed groundwork for the reframed question below.
+  unknown: >
+    Whether O26's current implicit wheat stopping rule (keep growing until forced) is economically
+    too aggressive -- i.e. whether harvesting wheat earlier, near the max_lifespan_step boundary,
+    has a stable INTERIOR economic optimum (harvest-yield-threshold x remaining-lifespan-threshold)
+    that beats both "always keep growing" (current, ~5-7% decay loss) and "always harvest early"
+    (guaranteed-but-smaller yield on every tile, sacrificing the ~93-96% that would have matured
+    fine). This is now a pure threshold/dose-response question, not a scheduling-fix question.
+  resolving_measurement: >
+    A fixed-cutoff sweep (analogous to melon_cutoff_sweep-sep11's method, which is the durable
+    precedent for this exact "protected window tolerates edge trimming, not interior interruption"
+    class): sweep a small number of harvest-yield / remaining-lifespan-to-max_lifespan_step
+    threshold combinations for WHEAT (e.g. harvest immediately once yield_units >= N with fewer
+    than K turns of margin before max_lifespan_step, for a handful of (N, K) pairs bracketing the
+    engine's own max_yield=6 and the ~8-step decay window), segmented/panel-tested per the
+    nonlinear_threshold contract (20 seeds x 2 sets, own + margin, dose-response with interior
+    optimum required -- a monotone result is an artefact per melon_cutoff_sweep's lesson).
+  would_do: >
+    A stable interior (N, K) configuration improves BOTH own money and margin at contract depth
+    (20 x 2, t>=2.0), replicated across tapes, with a genuine interior optimum (not a monotone
+    edge value, which would indicate the sweep is measuring something else).
+  would_abandon: >
+    Monotonic deterioration in either direction (no interior optimum -- "always grow" or "always
+    harvest early" wins outright), OR an interior optimum exists but its gain does not clear the
+    $250/metric noise floor once the sacrificed yield on the majority of tiles that would have
+    matured fine is netted out, OR the result fails to replicate across seed sets/tapes (the
+    demand_share_up and M=89 pattern: a win that doesn't survive held-out is not a win).
+  cost: >
+    Cheap-to-moderate sweep (single-crop, single-knob-pair, existing sweep methodology to copy from
+    melon_cutoff_sweep) but explicitly LOWER PRIORITY than a free-recovery mechanism would have been
+    -- every candidate intervention here necessarily displaces productive watering on tiles that
+    would otherwise have reached higher yield, unlike a true dispatch fix which has no such cost.
+    Sequenced behind the newly-unblocked animal marginal-economics experiments (the animal_scaling
+    structural-dead-knob findings) -- this thread is an optimization of a deliberate, already-
+    reasonable-looking tradeoff, not a bug fix, and the O29/O30/O31/O32 family's track record on
+    "protect an irreversible loss" interventions argues for caution and lower urgency, not for
+    stopping the thread. The value of this work so far is avoiding a wrong candidate (a wheat
+    "protection" guardrail built on the false recoverability premise), not finding a candidate.
+  date: 2026-09-11
+
+- id: shed_capacity_margin_calibration
+  state: DELAY
+  resolution: >
+    CORRECTED Sep 12: the first measurement pass (state: ABANDON, "occupancy never approaches 75")
+    was WRONG -- caused by a script bug (tools/shed_overflow.py never wrote the advanced step back
+    onto state[i].observation.step, so the vendor interpreter's `day = step // turns_per_day` stayed
+    pinned at day 0 for the entire simulated episode; every game was a frozen first turn replayed 720
+    times, not a real 29-day game). Fixed and re-run on the same standard 4-tape panel (seeds 71-90,
+    both seats, 160 games, KAGG_FIXED_SHOPS=1), verified against a synthetic low-capacity control
+    (shedCapacity=15 forces real discards: 46-59 units/game, confirming the discard/blocked-buy hooks
+    actually fire when overflow occurs).
+    CORRECTED RESULT: O26_CARROT_SIZING runs much closer to the ceiling than assumed -- mean max
+    shed_load 91.2-94.2 across the 4 tapes, touching exactly 100 in 15-30 of 40 games per tape
+    (38-75%), touching >=95 in 19-30 of 40 (48-75%). Opponent tapes run even closer (mean max_load
+    98.9-100, touching >=90 for a mean of 6.3-16.2 turns/game, vs O26's 1.0-1.4). BUT: zero forced
+    end-of-day discard events and zero purchases blocked by a full shed, for EITHER farm, in all 160
+    games -- the 75/80 sell triggers are doing real, constant work at the edge of the cap, not sitting
+    unused, and (on this panel) they hold: no measured loss despite the frequent ceiling contact.
+  resolution_date: 2026-09-12
+  type: calibration
+  mechanism: >
+    shed_cap=100 is a hard discard ceiling (_drop_inventories_to_shed deletes overflow
+    outright); the chassis already defends with shed_load>75/80 sell triggers, but no
+    tool measures how close actual games get to either the triggers or the cap.
+  unknown: >
+    Whether the chassis's existing shed_load > 75 (melon sell trigger) and > 80 (wheat
+    surplus sell trigger) margins under the verified shed_cap=100 hard-discard ceiling
+    (_drop_inventories_to_shed, vendor code: overflow is deleted outright, not held or
+    blocked) are well-calibrated -- too conservative (selling early, depressing price for
+    no reason), too late (games still hitting 100 and silently losing inventory), or
+    already correct.
+  resolving_measurement: >
+    Cheap calibration audit only, not a candidate pipeline: a small addition to an existing
+    replay-reading tool (e.g. allocation_matrix.py or spend_diff.py, which already see
+    shed_capacity) to report per-game max shed_load and count of turns >=90/>=95/=100, both
+    farms, standard tape panel. No new infrastructure beyond that query.
+  would_do: >
+    Games are found regularly touching >=95 (or hitting 100 and discarding real inventory)
+    -- that would mean the existing 75/80 margins are too loose and a knob-type direction
+    (raise the trigger thresholds) is warranted.
+  would_abandon: >
+    Occupancy rarely approaches 75 (or never approaches the cap) under current triggers --
+    analogous to the animal_production_rate and hire_gate_output_loss "no discrepancy"
+    results. In that case the current margin is probably conservative and this closes
+    cheaply as a non-issue, same disposition as the 10-order market cap.
+  cost: >
+    Very cheap -- a measurement pass on data existing tools already read, no new candidate
+    build, no panel run beyond the standard tape panel.
+  date: 2026-09-11
+
+- id: shop_demand_regime_ranking
+  state: DELAY
+  type: market_interaction
+  mechanism: >
+    Shop unlocks are a seed+day RNG draw (_end_of_day) independent of policy actions and
+    already observed by K_SELFMODEL; unknown is whether this observable regime actually
+    changes which candidate/policy ranks best, not whether it is observed.
+  unknown: >
+    Whether candidate/policy rankings actually change across shop-demand regimes (which
+    shops are unlocked, and when), rather than shops being merely observable but
+    ranking-irrelevant. Verified in vendor code: shop unlocks are a pure seed+day RNG draw
+    (kaggriculture.py _end_of_day, ~L886-891), independent of policy actions; K_SELFMODEL.py
+    already reads unlocked_shops and sizes sell targets off it. tools/regime_experiment/
+    shop_regime.py and tools/regime/matrix.py already exist and can reconstruct per-seed
+    unlock timelines and stratify by regime -- the goal here is to finish and
+    falsify/confirm the interaction hypothesis with the existing tooling, NOT to justify
+    regime branching in advance.
+  resolving_measurement: >
+    Run the existing shop_regime.py / regime/matrix.py stratification to completion against
+    the standard tape panel and check whether candidate margin/own-money ranking flips
+    between regimes, per the market_interaction contract (20 seeds x 3 independent sets,
+    both own and margin, t>=2.0).
+  would_do: >
+    A reproducible ranking flip or interaction is found across regimes on >=2 of 3 seed
+    sets, clearing the full market_interaction contract depth -- only then would a
+    regime-conditional policy branch become a candidate architecture direction. Given the
+    recent nulls (adaptive_melon_timing, land_deadline_horizon, hire_gate_output_loss all
+    ABANDONed on thinner evidence claims), the burden of proof here should be high before
+    promotion.
+  would_abandon: >
+    No ranking difference across regimes (candidates stay in the same relative order
+    regardless of which shops are unlocked) -- shops remain correctly-observed but not a
+    source of untapped edge, and this closes without a new build.
+  cost: >
+    Near-zero -- tooling exists; this is running it to completion and reading the result,
+    not building anything new.
   date: 2026-09-11

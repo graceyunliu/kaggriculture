@@ -45,6 +45,11 @@ output; it does not plant because capacity exists.
    planting commitment. Reason about blocks and what they displace.
 4. **Displaced work is a first-class cost.** The value of prioritising work is compared with the value of the work it
    displaces. The melon convoy is the worked example: profitable on the crew's slack, negative when it eats feeding.
+5. **Herd scale is capped by market saturation, not chassis reachability.** Cows and sheep both plateau at a real
+   `demand_room` (milk/wool market) ceiling once the land/knob-level reachability limits are relaxed (Sep 11
+   `land_reserve`/`max_sheep`/`geese_day_limit` fix + validation, 360 games/3 opponents) -- own money fell in every
+   panel when sheep scale was pushed past the default. Treat any apparent hard cap (`MAX_SHEEP=14`, a dead purchase
+   gate) as a reachability question first, but once reachability is fixed, expect the market to be the real wall.
 
 ## Tier 3 — evaluation infrastructure (`evolve/cascade.py`, `evolve/db.py`)
 

@@ -2,6 +2,8 @@
 
 Read before proposing. Everything here was measured on the ladder engine, both seats, paired seeds.
 
+**Panel-qualified absolute numbers (Sep 11, governance).** Never write or quote a standing absolute-money figure without its panel definition: policy / opponent(s) / seeds / shop regime / seats / metric. 'O26 is a ~105k policy' is a governance violation; 'O26 vs bahaen, seeds 11-14, fixed shops: 102-107k own' is correct. This is not pedantry -- two independent audits today (animal yield, strawberry early death) found the same policy scoring ~76-80k on fresh seeds against opponents where the standing memory quoted ~102-107k, purely from seed-window variance. A naked absolute number in a doc or memory file is read later as the policy's level and misleads every downstream comparison. Paired deltas (own +X, margin +Y, t=Z) do not need this qualifier since the comparison is self-contained; only naked levels do.
+
 **Build vs. benchmark, don't conflate them.** "Diff against X" (the frontier — **currently `candidates/O9_MELON_LATEFERT.py`** = O8 + the O9 endgame fixes + melon late-fertilization; see below) means X is the architecture new proposals should be built as a minimal patch on top of. "Test against X" (C1, V3_15, the real clone `opp_scenario_v14`, and the opponent tapes) means X is a fixed, non-evolving opponent used to measure a candidate's margin — keep testing against these even after they stop being competitive, because they're what makes results comparable across the whole project history (e.g. O8's +$14,800/game vs C1 is directly comparable to O4's own +$12,668 and V3_15's own +$2,160 against that same fixed opponent). Never replace a benchmark opponent with the current frontier — a moving target only tells you "better than my last self," not progress against a fixed yardstick.
 
 **Measurement mode — `KAGG_FIXED_SHOPS=1` (Sep 10). READ THIS BEFORE JUDGING ANY CANDIDATE ON THE TAPE PANEL.** The engine draws each day's shop unlock from the same per-day RNG that `_spawn_weeds` has already consumed once per empty tile on both farms, so any policy change that alters empty-tile count re-rolls which shop unlocks (the Sep 7 coupling). Shop identity swings a game's money by $25k–$160k, which is why every tape-panel comparison this week at n≤30 came out "null" with ±$15k per-opponent swings that flipped sign between seed sets. `mini_engine.load_engine` now accepts `KAGG_FIXED_SHOPS=1` (patched `_end_of_day` draws the shop from its own seeded stream; cache keys carry `_fs`), and `evolve/batch_vs_o8.py` inherits it. Under it the tape panel resolves to about ±$300 at n=30 instead of ±$1.2k. **Use it for every paired comparison; it is NOT for absolute ladder-truth numbers** (the real ladder has the coupling — but that re-roll is zero-mean noise, so the expected margin gain under coupling equals the fixed-shops estimate). First result: the orchestrator's tape gain was always there — see O16 below. Second tool from the same idea: `tools/delay_counterfactual.py` (fork a real game, force one unit to PASS once, play on, read final money) is now clean too; its first value-at-risk table (O16 vs alaylm, seed 1) ranks a one-hour delay at −$247 for fertilizer COLLECT (fertilizer_available resets daily — a missed collect is a lost unit), −$234 FEED of an already-unfed animal, −$172 daytime DROP, −$151 animal-product HARVEST, −$121 near-weed WATER, −$63 melon HARVEST, and +$237 for delaying an *unnecessary* feed. Previously-"null" candidates (B4_01 melon, X1) should be re-read under this mode before being called null.
@@ -771,3 +773,79 @@ labour cost = upper bound), O26 vs bahaen, 36 seeds, N=165: mean -$28, median $0
 (top-5 = 27% of positive value); d19-23 net negative (a freed tile is replanted at a cost that does not pay), d24-25 +$60.
 With the fertilizer piece at 15-18% the bridge covers <20% of the $504; the residual is diffuse capacity. Keep the gate
 as is. The N=38 "+$53 mean, up to +$916" was a small sample biased toward the longest carries.
+
+## Sep 11: investment_readiness_threshold -> SWITCH (BUY_ANIMAL unmeasurable, BUY_LAND real)
+
+`tools/horizon_roi.py --mode marginal --reduce 1`, O26_CARROT_SIZING, panel tapes, days 4/6/8/10/12, two independent
+32-cell seed sets (61-68 and 69-76 x 4 tapes, KAGG_FIXED_SHOPS=1). BUY_ANIMAL's sign flips between the two sets at
+every day (set1 trending negative and significant at days 6-10: t -2.2 to -3.0; set2 trending positive but not
+significant: t 0.8-1.5) -- the pre-registered would_abandon condition, exactly. Not measurable at this panel size;
+the hand threshold stays. BUY_LAND's sign is the opposite: stable and significant on BOTH sets at days 4-10 (t 3.8 to
+10.7, agreeing every day), decaying to noise by day 12 (-38 t-0.34 / +643 t2.29). That's a real interior decay curve
+-- but it's observational (removes the marginal unit under the *existing* policy), not a tested intervention, and the
+current LAND_DEADLINE (14/17/18 by quad tier) already runs well past where the marginal value hits zero. New DELAY:
+`land_deadline_horizon` -- build a candidate that pulls LAND_DEADLINE in by 2-6 days per tier and test it on the
+standard 20x2 own+margin panel vs O26. Ledger: DO 5 / DELAY 1 / ABANDON 13 / SWITCH 4.
+
+## Sep 11: land_deadline_horizon -> ABANDON (the deadline already prices in quad-completion option value)
+
+O33_LAND_DEADLINE_TIGHT (LAND_DEADLINE {2:14,3:17,4:18} -> {2:11,3:13,4:14}) vs O26, 4-tape panel, own+margin, two
+20-seed sets (s11-30, s31-50), KAGG_FIXED_SHOPS=1: set1 margin -257 / own -219 (at the noise floor), set2 margin
+-1,296 / own -1,094, NEGATIVE ON ALL FOUR TAPES. No gain on either metric, either set. Reading: the marginal
+per-day counterfactual (investment_readiness_threshold) measured the value of the LAST land unit under the
+unchanged policy and found it decays to ~0 by day 12 -- but completing a quad earlier has option value (more
+tile-days for the rest of the game) that a single-unit removal doesn't see, and tightening the deadline throws that
+away along with the low-value last unit. The two measurements were answering different questions; the observational
+one didn't transfer to a working intervention. Ledger now DO 5 / DELAY 0 / ABANDON 14 / SWITCH 4 -- every inherited
+direction from the O12-O26 programme is closed. Next: open-ended candidate discovery from the K_SELFMODEL chassis.
+
+## Sep 11: first open-ended scout -- goose_animal_class -> ABANDON (dead knob, then a real loss)
+
+The chassis has a ready-made but disabled `geese` knob (GOOSE/EGG: cost 300 vs COW 400/SHEEP 500, interval 1 vs
+COW's 2/SHEEP's 3 -- cheaper and faster-cycling). Turning it on (O34_GOOSE_TEST, 4 GOOSE) first found the knob's
+`day <= 3` affordability window is DEAD under the current "frontier" opening: a single-seed debug trace showed
+free capital at -50/234/273 on days 1-3, only clearing $300 on day 4. Relaxed to `day <= 10` to test the real
+economic question, then ran O26 vs O34 on the 4-tape panel, own+margin, two 20-seed sets: margin -7,058 (s11-30)
+and -7,301 (s31-50), negative on ALL FOUR TAPES both sets (~30x the noise floor); own money didn't even agree in
+sign (+1,451 then -585). Not an exploit or spillover pattern -- once the dead window is fixed, geese are a
+straightforward loss at this quantity. Ledger: DO 5 / DELAY 0 / ABANDON 15 / SWITCH 4. Side-finding: the knob's
+`day<=3` deadman window should be fixed or removed independent of this verdict, since it silently no-ops today.
+
+## Sep 11: 20-knob sweep -- one DO (min_hands=2), one false-positive h2h, 18 near-optimal
+
+Second open-ended scout: one-at-a-time dev-seed h2h screen (10 seeds vs O26, KAGG_FIXED_SHOPS=1) of every live,
+currently-default KNOBS value not already closed by a named direction.
+
+```
+open_melons_14   -1,304   open_wheat_10  -2,889   open_cows_3   -31,066   min_hands_4     +680
+open_melons_6       +80   open_wheat_4   -6,261   open_sheep_3  -35,685   min_hands_2   +1,530
+load_per_hand_25 -5,886   early_hire_6     -587   melon_floor_150 -842    harvest_min_2   -312
+demand_share_065 +1,350   demand_share_045 -1,358  max_animals_21  +701   max_animals_13  -796
+hands_early_4      +681   drop_min_10      -316    feed_spare_poor_3 +406  load_per_hand_15 -4,401
+```
+
+Headline: a 3rd starting COW or SHEEP is a large mistake (-31k/-35k) -- the current 2+2 opening is well inside its
+local optimum, not just adequate. `load_per_hand` and `open_wheat` are both INTERIOR optima -- moving the default
+either direction loses money. Two knobs cleared the h2h screen (+1,350 demand_share=0.65, +1,530 min_hands=2) and
+were escalated to the real 4-tape panel:
+
+- `demand_share_up` (0.65) -- ABANDON: panel margin -503 / own -1,663 on s11-30, reversing the h2h screen entirely.
+  Exactly the documented "h2h vs the frontier is a weak signal" caveat.
+- `min_hands_lower` (2) -- **DO**: O36_MIN_HANDS2, panel margin/own BOTH positive on two independent 20-seed sets
+  (s11-30: +748/+320; s31-50: +906/+420), majority of tapes each time, no tape negative twice. Modest effect
+  (~$300-900/game) -- weakest DO alongside carrot_yield_sizing, not yet folded into the frontier chassis.
+
+Ledger: DO 6 / DELAY 0 / ABANDON 17 / SWITCH 4.
+
+## Sep 11: min_hands_knob_interactions -> DELAY (first DELAY since the ledger closed)
+
+Checked whether the mild individual h2h winners from the 20-knob sweep (hands_early=4 +681, max_animals=21 +701,
+feed_spare_poor=3 +406, alongside min_hands_lower's own +1,530) combine. They do not add: combo(min_hands=2,
+hands_early=4) = +681, IDENTICAL to hands_early=4 alone -- code reason found: `floor = KNOBS["hands_early"] if
+(KNOBS["hands_early"] and day<=10) else KNOBS["min_hands"]`, so hands_early REPLACES min_hands rather than stacking
+with it. Every combo tested is sub-additive vs the naive sum of its singles, and the 4-way combo (+1,151) actually
+underperforms the best 2-way (min_hands=2 + feed_spare_poor=3, +1,593 h2h -- the best single h2h number seen in
+either sweep). That best combo has NOT been panel-tested, and h2h-vs-clone is a documented weak signal (see
+demand_share_up). DELAY, not DO or ABANDON: plausible upside, but real panel confirmation (vs O36, not vs O26) is
+needed before picking a joint-knob candidate, and the interaction structure is too inconsistent to guess from h2h
+alone. Ledger: DO 6 / DELAY 1 / ABANDON 17 / SWITCH 4.

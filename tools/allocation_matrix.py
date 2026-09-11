@@ -135,11 +135,23 @@ def run(cand, opp, seed):
     return [o.farms[p]["money"] for p in range(2)], M, tot
 
 
+def _parse_seeds(spec):
+    out = []
+    for part in spec.split(","):
+        part = part.strip()
+        if "-" in part:
+            lo, hi = part.split("-")
+            out.extend(range(int(lo), int(hi) + 1))
+        else:
+            out.append(int(part))
+    return out
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(); ap.add_argument("cand"); ap.add_argument("--opp", required=True)
     ap.add_argument("--seeds", default="11-14"); ap.add_argument("--json", default=None)
     a = ap.parse_args(); os.chdir(ROOT)
-    lo, hi = map(int, a.seeds.split("-")); seeds = list(range(lo, hi + 1))
+    seeds = _parse_seeds(a.seeds)
     agg = [{ln: collections.Counter() for ln in LINES} for _ in range(2)]; tots = [collections.Counter(), collections.Counter()]; money = [[], []]
     for s in seeds:
         m, M, tot = run(a.cand, a.opp, s)

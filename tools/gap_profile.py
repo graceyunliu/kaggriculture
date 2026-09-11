@@ -47,10 +47,22 @@ def run(a, b, seed):
     final = [state[0].observation.farms[i]["money"] for i in range(2)]
     return daily, rev, units, final
 
+def _parse_seeds(spec):
+    out = []
+    for part in spec.split(","):
+        part = part.strip()
+        if "-" in part:
+            lo, hi = part.split("-")
+            out.extend(range(int(lo), int(hi) + 1))
+        else:
+            out.append(int(part))
+    return out
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(); ap.add_argument("a"); ap.add_argument("b"); ap.add_argument("--seeds", default="1-10")
     args = ap.parse_args()
-    lo, hi = map(int, args.seeds.split("-")); seeds = list(range(lo, hi + 1))
+    seeds = _parse_seeds(args.seeds)
     acc = {0: {}, 1: {}}; R = {0: {it: 0.0 for it in ITEMS}, 1: {it: 0.0 for it in ITEMS}}; U = {0: {it: 0 for it in ITEMS}, 1: {it: 0 for it in ITEMS}}
     finals = [0.0, 0.0]
     for s in seeds:
