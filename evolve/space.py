@@ -150,6 +150,17 @@ CONST_SPACE = {
     "ORCH_P_SLACK":         ("float", 2.0, 10.0, 0.5),
     "ORCH_COMMIT":          ("float", 0.0, 2.0, 0.25),
     "ORCH_SLACK_HOUR":      ("int", 8, 22, 1),
+    # Sep 11: the economic self-model (chassis = K_SELFMODEL). Each is a validated correction of what the policy
+    # believed about its own farm/market; the loop may tune them, and all-off reproduces O15.
+    "STRAW_UNITS":          ("float", 4.0, 12.0, 0.5),   # expected sellable units per strawberry planting (true ~7.5; O24)
+    "CARROT_UNITS":         ("float", 2.0, 5.0, 0.5),    # per carrot planting (true 3.0; O26)
+    "HIRE_MAX_MARGINAL":    ("cat", [55, 89, 144, 233, 377, 1000000000]),  # marginal fibonacci hire price cap (O25)
+    "MELON_LATE_FERT":      ("cat", [0, 1]),
+    "MELON_MORNING":        ("cat", [0, 1]),
+    "MELON_MORNING_LAST_HOUR": ("int", 4, 12, 1),         # h8 validated; h12 displaces animal routes
+    "MELON_MORNING_MIN_YIELD": ("cat", [5, 6]),           # 6 validated; 5 loses a unit per tile
+    "FERT_PHASE_RULE":      ("cat", [0, 1]),              # engine fact
+    "FERT_IS_INPUT":        ("cat", [0, 1]),              # engine fact
 }
 
 SPACE = {**KNOB_SPACE, **CONST_SPACE}
@@ -207,12 +218,17 @@ def c1_params():
     return p
 
 
+O15_OVERRIDES = {"ORCH_ON": 0, "MELON_LATE_FERT": 0, "MELON_MORNING": 0, "STRAW_UNITS": 4.5, "CARROT_UNITS": 4.0,
+                 "HIRE_MAX_MARGINAL": 1000000000, "FERT_PHASE_RULE": 0, "FERT_IS_INPUT": 0}
+
+
 def o15_params():
-    """O15_SALE_PRIORITY exactly: the O16K chassis with the orchestrator switched off (verified byte-behaviour
-    identical, evolve/orch_knobbed_check.py). The evolve yardstick frontier."""
+    """O15_SALE_PRIORITY exactly: the K_SELFMODEL chassis with every self-model correction switched off (verified
+    byte-behaviour identical, evolve/o26k_check.py). The evolve yardstick frontier."""
     p = base_params()
-    if "ORCH_ON" in p:
-        p["ORCH_ON"] = 0
+    for k, v in O15_OVERRIDES.items():
+        if k in p:
+            p[k] = v
     return p
 
 
