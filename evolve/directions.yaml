@@ -1,0 +1,165 @@
+# Research-direction ledger (AGE-361 / AGE-362). One record per direction; the state is a decision with the
+# evidence that produced it, not a mood. Rendered into the proposer prompt and the run report by evolve/directions.py.
+#
+# state:  DO | DELAY | ABANDON | SWITCH        (SWITCH records point at the direction they became)
+# type:   calibration | knob | threshold | nonlinear_threshold | lumpy_capital | architecture | market_interaction
+#         (drives the evidence contract in evolve/directions.py: how deep a panel this kind of claim needs)
+# scope:  what the decision covers -- ABANDON closes a mechanism at a stated scope, never "forever"
+# reopen: the only thing that reopens an ABANDON is a NEW instrument or a changed premise, never a new parameter value
+
+- id: strawberry_yield_sizing
+  state: DO
+  type: calibration
+  mechanism: seed allocator sized strawberry plantings from a stale 4.5 units/planting; true 6-7.5 -> 40% over-planting, own price depressed
+  measurement: tools/allocation_matrix.py + tools/straw_life.py (both farms, same games)
+  intervention: STRAW_UNITS 4.5 -> 7.5 (O24)
+  evidence: "own +5,483 t10.2 (s11-30), +4,736 t8.8 (s31-50); margin +5,826 t14; sweep 6.0/7.5/9/12/20 -> optimum at the true yield"
+  held_out: fresh seeds 31-50 confirm
+  status_in_chassis: STRAW_UNITS (CONST_SPACE)
+  date: 2026-09-11
+
+- id: carrot_yield_sizing
+  state: DO
+  type: calibration
+  mechanism: same as strawberry; carrot true 3.0 vs assumed 4.0
+  intervention: CARROT_UNITS 4.0 -> 3.0 (O26)
+  evidence: "own +1.6k/+1.4k (t2.6/4.6), margin +0.2..1.5k, clone negative"
+  note: weakest DO in the lineage; wheat units 5.0 -> 3.9 (true) is -2k own -- the same correction does NOT transfer to wheat (wheat is also feed)
+  date: 2026-09-11
+
+- id: hire_marginal_price
+  state: DO
+  type: threshold
+  mechanism: hands are re-bought nightly on a fibonacci curve; _hire_plan topped up to a target without pricing the marginal hire
+  measurement: tools/horizon_roi.py --mode marginal (AGE-360); wage bill $6,698/game
+  intervention: HIRE_MAX_MARGINAL = 144 (O25 / H_GATE144)
+  evidence: "own +1,334 t9.6, margin +877 t5.2, h2h +1,018 t3.4; dose-response 233/144/89/55 with interior optimum"
+  caution: M=89 won dev seeds and lost held-out -> parameter chosen on held-out only; 144 is environment-sensitive (knob, not rule)
+  date: 2026-09-11
+
+- id: melon_arrival_vs_pool
+  state: DO
+  type: market_interaction
+  mechanism: our melon crop arrived over 14 h while the price pool drains in 6; tapes harvest 60 units by h9 and sell $217-260, we dumped 30 at the d11 h0 price
+  measurement: tools/sale_timeline.py
+  intervention: MELON_LATE_FERT + MELON_MORNING (h<=8, 6-unit tiles) (O22)
+  evidence: "margin +1,233/+899/+2,502, own +372/+1,258/+1,798 on three seed sets"
+  boundary: h12 or 5-unit harvests displace animal routes and go negative -> the window is the crew's slack, not a schedule
+  date: 2026-09-11
+
+- id: crop_orchestrator
+  state: DO
+  type: architecture
+  mechanism: per-unit nearest-task sweeps ignore other workers' positions; one global cost matrix per turn
+  intervention: ORCH_ON (O16)
+  evidence: "vs O15 margin +3,104 t9.5, own +1,672 t5.2 (fixed shops; the earlier null was shop-lottery noise)"
+  date: 2026-09-10
+
+- id: adaptive_melon_timing
+  state: DELAY
+  type: nonlinear_threshold
+  mechanism: the profitable melon-morning window may depend on observable state (herd size on d10, hands, ready tiles)
+  unknown: whether the conditional optimum moves with state, or h8 is simply the right constant
+  resolving_measurement: fixed-cutoff sweep h6..h10 x MIN_YIELD, segmented by d10 herd size and hand count, both panels
+  cost: ~10 candidates x 2 panels, one session
+  would_do: optimum hour differs by >=2 between state buckets with own-money support in each
+  would_abandon: h8 is best or within noise in every bucket -> keep the constant, close adaptation
+  date: 2026-09-11
+
+- id: investment_readiness_threshold
+  state: DELAY
+  type: lumpy_capital
+  mechanism: buy an animal/land only when remaining horizon pays back acquisition + operating + opportunity cost
+  unknown: sign of marginal animal/land value by day -- two 12-cell results flipped at 24-32 cells (AGE-360)
+  resolving_measurement: horizon_roi --mode marginal, BUY_ANIMAL/BUY_LAND, days 4-12, >=32 cells, fresh seeds
+  would_do: stable sign at 32 cells on two seed sets
+  would_abandon: sign still unstable at 32 cells -> the class is not measurable at our panel size; leave hand thresholds
+  date: 2026-09-11
+
+- id: strawberry_early_death
+  state: DELAY
+  type: calibration
+  mechanism: 17% of our strawberry plantings die before age 10 (before any production), tapes 0% -- upstream of fertilizer (other session, Sep 11)
+  unknown: the cause (not watering frequency alone)
+  resolving_measurement: single-tile turn trace of a dying planting
+  would_do: a specific policy action/omission is identified and a one-line fix exists
+  date: 2026-09-11
+
+- id: per_task_delay_var
+  state: ABANDON
+  type: architecture
+  hypothesis: per-task value-at-risk-per-hour should weight the dispatcher
+  measurement: tools/delay_panel.py -- 3,060 counterfactuals, 3 tapes x 6 seeds x 17 buckets x delays 1/2/4 h x 2 horizons
+  negative_evidence: every bucket's CI through zero; per-seed sign agreement 3-4/6; delay curves non-monotone; service ledger finds no chronic debt
+  scope: within-day per-action urgency on the O16+ dispatcher (1-4 h delays)
+  reopen: a new instrument showing consequence at the block/cycle level, not another priority parameterisation
+  date: 2026-09-10
+
+- id: worker_matching
+  state: ABANDON
+  type: architecture
+  hypothesis: better free-unit-to-task matching
+  negative_evidence: frozen-assignment oracle ~26 tiles/game (<1% of travel); the orchestrator already captures it
+  scope: matching within the existing priority structure
+  date: 2026-09-10
+
+- id: chronic_service_debt
+  state: ABANDON
+  type: architecture
+  hypothesis: some obligation class is chronically late / under-served
+  measurement: tools/service_ledger.py, both farms on the same games
+  negative_evidence: ~0% overnight carry in every class; where we miss more than the tapes it is intended (endgame, placement days) or harmless (unwatered production nights accrue yield anyway)
+  scope: execution lateness on O16+
+  date: 2026-09-11
+
+- id: fertilizer_output_maximisation
+  state: ABANDON
+  type: market_interaction
+  hypothesis: more fertilized strawberry nights -> more money
+  negative_evidence: "fert phase, fert_buy 8, fert courier: coverage 1.9 -> 2.7 nights, margin +1.3-1.5k, own +0..+0.3k on every attempt -- strawberry demand is fixed, extra units shift price share"
+  scope: raising strawberry output; the two engine facts (phase rule, fertilizer-is-input) stay in the chassis as facts
+  reopen: only as a way to cut plantings further at equal output
+  date: 2026-09-11
+
+- id: tape_wheat_portfolio_knobs
+  state: ABANDON
+  type: knob
+  hypothesis: grow/hold wheat like the tapes (net sellers, 31% of their labour)
+  negative_evidence: wheat_per_animal/wheat_tiles h2h -4k own +0; hold days null; wheat_sell_price own +1.4k but margin -0.6k (tapes are net wheat sellers)
+  scope: knob-level; three rounds
+  reopen: a portfolio mechanism that changes what the freed labour does, with a smaller herd
+  date: 2026-09-11
+
+- id: speculative_inventory_holding
+  state: ABANDON
+  type: market_interaction
+  hypothesis: hold or meter late MILK/WOOL/STRAWBERRY for a better price
+  negative_evidence: O13 -1.8..-4.7k on every tape; forecast-driven timing -0.6k
+  scope: holding produced inventory; arrival-vs-pool timing (melon morning) is a different mechanism and is DO
+  date: 2026-09-09
+
+- id: capital_timing_input_price_attack
+  state: ABANDON
+  type: market_interaction
+  hypothesis: extra mid-day capital window (checkpoint / capital_hour2)
+  negative_evidence: margin +0.7..+1.6k, own -1.0..-2.6k -- the tape pays the wheat/fert prices we push up (exploit class)
+  scope: any mechanism whose margin gain is opponent-money loss
+  date: 2026-09-10
+
+- id: late_game_roi_thresholds
+  state: SWITCH
+  type: threshold
+  original_hypothesis: labour/feed have no ROI late in the game -> add cutoff-day guards
+  failed_assumption: "class cutoff measures the value of the subsystem, not of the marginal unit (HIRE: +12.8k class vs -0.4..-2.1k marginal)"
+  became: hire_marginal_price
+  evidence: horizon_roi --mode marginal, per-cell per-day calibration, n=32-64, held-out replication
+  date: 2026-09-11
+
+- id: more_strawberry_output
+  state: SWITCH
+  type: calibration
+  original_hypothesis: close the units-per-planting gap to the tapes (5.5 vs 7.5) by fertilizing more
+  failed_assumption: the tapes' advantage was fewer plantings at the same output, not more output
+  became: strawberry_yield_sizing
+  evidence: allocation matrix -- same ~250 units from 33 plantings/520 actions vs our 47/800; own +0 from more fert, own +5.5k from fewer plantings
+  date: 2026-09-11
