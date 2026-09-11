@@ -2,7 +2,7 @@
 """Average per-day gap profile of cand vs opp over seeds (both seats): money, animals, plants, hands(h3),
 and cumulative sales units + revenue by item. Usage: gap_profile.py cand opp --seeds 1-10"""
 import sys, argparse
-sys.path.insert(0, "/sessions/confident-jolly-fermat/mnt/Kaggriculture")
+sys.path.insert(0, __import__("os").path.dirname(__import__("os").path.dirname(__import__("os").path.abspath(__file__))))
 import mini_engine as me
 ITEMS = ["MELON", "STRAWBERRY", "MILK", "WOOL", "WHEAT", "TOMATO", "CARROT", "FERTILIZER"]
 
