@@ -137,6 +137,14 @@ class DB:
         self.conn.executemany(
             "INSERT OR IGNORE INTO rejected_mechanisms(mechanism_tag, verdict, one_line_cause, doc_ref, date) "
             "VALUES(?,?,?,?,?)", REJECTED_MECHANISMS)
+        # Sep 11: INSERT OR IGNORE silently dropped 5 of 14 closed mechanisms whose verdict did not satisfy the table's
+        # CHECK constraint, so the proposer was seeded with an incomplete closed set for a day. A partial seed is now a
+        # hard failure: every tag in REJECTED_MECHANISMS must be present after seeding.
+        seeded = {r[0] for r in self.conn.execute("SELECT mechanism_tag FROM rejected_mechanisms")}
+        missing = [t[0] for t in REJECTED_MECHANISMS if t[0] not in seeded]
+        if missing:
+            raise RuntimeError(f"rejected_mechanisms seed incomplete -- {missing} were not inserted "
+                               f"(verdict must be one of rejected/exhausted/no_general_fix; check the CHECK constraint)")
         cols = {r["name"] for r in self.conn.execute("PRAGMA table_info(candidates)")}
         for col, decl in (("island", "TEXT DEFAULT 'c1'"), ("blocks", "TEXT"), ("ablation", "TEXT"), ("diagnosis", "TEXT"), ("exec_summary", "TEXT"), ("trajectory_summary", "TEXT"), ("failure_profile", "TEXT"), ("action_table", "TEXT")):
             if col not in cols:
