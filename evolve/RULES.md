@@ -810,3 +810,29 @@ and -7,301 (s31-50), negative on ALL FOUR TAPES both sets (~30x the noise floor)
 sign (+1,451 then -585). Not an exploit or spillover pattern -- once the dead window is fixed, geese are a
 straightforward loss at this quantity. Ledger: DO 5 / DELAY 0 / ABANDON 15 / SWITCH 4. Side-finding: the knob's
 `day<=3` deadman window should be fixed or removed independent of this verdict, since it silently no-ops today.
+
+## Sep 11: 20-knob sweep -- one DO (min_hands=2), one false-positive h2h, 18 near-optimal
+
+Second open-ended scout: one-at-a-time dev-seed h2h screen (10 seeds vs O26, KAGG_FIXED_SHOPS=1) of every live,
+currently-default KNOBS value not already closed by a named direction.
+
+```
+open_melons_14   -1,304   open_wheat_10  -2,889   open_cows_3   -31,066   min_hands_4     +680
+open_melons_6       +80   open_wheat_4   -6,261   open_sheep_3  -35,685   min_hands_2   +1,530
+load_per_hand_25 -5,886   early_hire_6     -587   melon_floor_150 -842    harvest_min_2   -312
+demand_share_065 +1,350   demand_share_045 -1,358  max_animals_21  +701   max_animals_13  -796
+hands_early_4      +681   drop_min_10      -316    feed_spare_poor_3 +406  load_per_hand_15 -4,401
+```
+
+Headline: a 3rd starting COW or SHEEP is a large mistake (-31k/-35k) -- the current 2+2 opening is well inside its
+local optimum, not just adequate. `load_per_hand` and `open_wheat` are both INTERIOR optima -- moving the default
+either direction loses money. Two knobs cleared the h2h screen (+1,350 demand_share=0.65, +1,530 min_hands=2) and
+were escalated to the real 4-tape panel:
+
+- `demand_share_up` (0.65) -- ABANDON: panel margin -503 / own -1,663 on s11-30, reversing the h2h screen entirely.
+  Exactly the documented "h2h vs the frontier is a weak signal" caveat.
+- `min_hands_lower` (2) -- **DO**: O36_MIN_HANDS2, panel margin/own BOTH positive on two independent 20-seed sets
+  (s11-30: +748/+320; s31-50: +906/+420), majority of tapes each time, no tape negative twice. Modest effect
+  (~$300-900/game) -- weakest DO alongside carrot_yield_sizing, not yet folded into the frontier chassis.
+
+Ledger: DO 6 / DELAY 0 / ABANDON 17 / SWITCH 4.
