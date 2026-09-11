@@ -75,14 +75,13 @@
   date: 2026-09-11
 
 - id: land_deadline_horizon
-  state: DELAY
+  state: ABANDON
   type: lumpy_capital
-  mechanism: buy land only while the remaining horizon still pays back acquisition + operating + opportunity cost; the marginal per-day counterfactual (investment_readiness_threshold) found that value decays to ~0 by day 12
-  unknown: "the chassis's hand-tuned LAND_DEADLINE (quads-after-purchase -> last day: 2->14, 3->17, 4->18) lets land purchases continue well past the day the marginal-value counterfactual shows the last unit is worth ~0 (day 12, both seed sets). Whether pulling LAND_DEADLINE in to track that decay beats the current thresholds on both own and margin is untested -- the horizon_roi result is observational (it counterfactually removes the marginal unit under the EXISTING policy), not a tested intervention"
-  resolving_measurement: build a candidate with LAND_DEADLINE pulled in by ~2-6 days per quad tier (e.g. 2->11, 3->13, 4->14), test on the standard architecture-class panel vs O26 (20x2, own AND margin, fresh seeds)
-  would_do: reproducible own AND margin gain, >=2 seed sets, positive on every tape
-  would_abandon: no gain, or a margin/own split (net loss on either metric) -- the current deadlines already price in something horizon_roi's single-unit counterfactual doesn't see (e.g. quad-completion option value)
-  cost: cheap -- one constant change, existing panel harness
+  hypothesis: "the hand-tuned LAND_DEADLINE (quads-after-purchase -> last day: 2->14, 3->17, 4->18) is too loose -- the marginal per-day counterfactual (investment_readiness_threshold) showed the value of the LAST land unit decays to ~0 by day 12, so pulling the deadlines in to track that decay should gain money on both own and margin"
+  measurement: "O33_LAND_DEADLINE_TIGHT.py = O26_CARROT_SIZING with LAND_DEADLINE {2:14,3:17,4:18} -> {2:11,3:13,4:14}, tested on the standard 4-tape panel, own+margin, two 20-seed sets (11-30, 31-50), KAGG_FIXED_SHOPS=1"
+  negative_evidence: "no gain on either metric, either set. set1 (s11-30): margin -257, own -219 (within/at the $250 noise floor). set2 (s31-50): margin -1,296, own -1,094, NEGATIVE ON ALL FOUR TAPES (peterparker -1,226, alaylm -1,249, bahaenes -1,182, yangkuang2 -1,528 margin; every tape's own money also down). Would-abandon condition (no gain, or a metric split) met on the stronger set and not contradicted by the weaker one"
+  scope: "tightening LAND_DEADLINE to match the single-unit marginal-value decay curve, at any of the tested per-tier day counts (2->11/3->13/4->14) or nearby; the marginal counterfactual measures removing the LAST unit under the unchanged policy, not the value of buying the WHOLE quad's capacity in time to use it for the rest of the game -- completing a quad earlier likely has option value (more tile-days available to the seed allocator) that the single-unit measurement does not see, and cutting the deadline removes that, not just the low-value last unit"
+  reopen: "not another deadline-tightening variant at these or nearby cutoffs -- only a different instrument that separates the marginal-unit value from the quad-completion option value (e.g. count purchases where the LAST land order of a quad specifically pays back vs full-quad orders), or a mechanism that keeps the deadline but changes WHICH day's land order is skipped"
   date: 2026-09-11
 
 - id: strawberry_early_death
