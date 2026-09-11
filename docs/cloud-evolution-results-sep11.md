@@ -42,6 +42,12 @@ The cloud edit used `range(131, 150)`, which is only seeds 131-149. The canonica
 
 The candidate was evaluated once under the corrected contract. Block margins were +$2,010.6 (seeds 1-10), +$43.6 (31-40), and +$1,233.4 (41-50). Although every block was positive, the pooled result was only +$1,095.9, t=1.85, 19-11. It failed both pooled thresholds and is closed. Confirmation seeds 111-130 and population seeds 131-150 were not evaluated in this targeted trial; they were subsequently exposed by the interrupted Perplexity run below.
 
+### Manus rapid search: `f01cec5376e1`
+
+An additional five-minute parameter search evaluated 18 candidates. `f01cec5376e1` passed all three development blocks (+$6,731.2 / +$5,130.9 / +$5,940.9; pooled +$5,934.3, t=6.29, 28-2) but failed confirmation on the already-retired seeds 111-130: +$2,677, t=1.67, 10-10. Its historical-panel delta was +$844 and own-money delta +$1,707, but no population evaluation was allowed. Final status: rejected, not `pending_external_validation`.
+
+Exact changes from O26 were: `load_per_hand` 20->19, `open_melons` 10->4, `wheat_cap` 22->25, `MAX_HANDS` 14->12, `ROUTE_LEN` 3->2, `CROP_SWEEP_LEN` 6->7, `STRAW_CUTOFF` 19->20, `HERD_LAST_DAY` 17->20, `NEAR_RADIUS` 2->4, `SPREAD_W` 1.25->1.0, `MELON_MORNING` 1->0, and `MELON_MORNING_LAST_HOUR` 8->7. Do not retest this bundle on newer quarantined seeds merely because its development margin was large.
+
 ## Seed exposure ledger
 
 - Development/search-visible: 1-10, 31-50.

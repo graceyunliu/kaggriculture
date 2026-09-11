@@ -137,6 +137,9 @@ REJECTED_MECHANISMS = (
     ("cloud_26bb1ab37c2d_population_failure", "rejected",
      "Pooled dev +3380 and held-out +2703 passed the historical panel, then failed population validation: margin delta -3344 and own-money delta -4775.",
      "docs/cloud-evolution-results-sep11.md", "2026-09-11"),
+    ("f01cec5376e1_rapid_parameter_bundle", "rejected",
+     "Three-block dev +5934 (t=6.29) shrank to +2677 with t=1.67 and 10-10 on confirmation seeds 111-130; failed confirmation and never reached population.",
+     "docs/cloud-evolution-results-sep11.md", "2026-09-11"),
 )
 
 
