@@ -6,7 +6,7 @@ quantity exceeds what economy() would have computed from pre-turn shed alone -- 
 confirms the SELL order was actually topped up on a turn a DROP also fires.
 """
 import sys
-sys.path.insert(0, "/sessions/confident-jolly-fermat/mnt/Kaggriculture")
+sys.path.insert(0, __import__("os").path.dirname(__import__("os").path.dirname(__import__("os").path.abspath(__file__))))
 import mini_engine as me
 
 def verify(agent_path, opp="candidates/C1.py", seed=1):
