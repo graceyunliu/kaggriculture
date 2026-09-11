@@ -46,6 +46,12 @@ class ReplicatedDevelopmentGateTests(unittest.TestCase):
         flattened = [seed for group in groups for seed in group]
         self.assertEqual(len(flattened), len(set(flattened)))
 
+    def test_inclusive_twenty_seed_validation_ranges(self):
+        self.assertEqual(cascade.HELD_SEEDS, list(range(151, 171)))
+        self.assertEqual(cascade.POPULATION_SEEDS, list(range(171, 191)))
+        self.assertEqual(len(cascade.HELD_SEEDS), 20)
+        self.assertEqual(len(cascade.POPULATION_SEEDS), 20)
+
     def test_first_block_t_is_not_a_standalone_gate(self):
         """A noisy first block may fail t>=2 while the preregistered pool passes."""
         first = result({1: 3000, 2: 5000})

@@ -24,20 +24,32 @@ Factors were open wheat 7/9, fertilizer carry 2/1, melon max tiles 38/31, and he
 
 29 candidates / 1,078 games / 11,863 games/hour, with exact-O26 equivalence and zero errors. No candidate reached held-out. This validated Perplexity as a runner but produced no strategy evidence.
 
+### Interrupted Perplexity 30-minute run
+
+Perplexity's sandbox failed after about 26 minutes of a second attempt, after an earlier attempt had been killed by its process supervisor. The database, generated sources, and complete logs were not recovered, so candidate identities below are evidence labels only and cannot reconstruct their parameter bundles.
+
+- `7a735e93b1b9`: pooled dev +$1,989 (t=3.2); held-out +$2,576 (t=2.4), but historical-panel margin delta -$2,748 and own-money delta -$2,016. Final status: rejected.
+- `26bb1ab37c2d`: pooled dev +$3,380 (t=4.8); held-out +$2,703 (t=3.2); historical-panel delta +$1,027 and own +$1,971, but population delta -$3,344 and population own -$4,775. Final status: rejected.
+- `a34a48f59746`: pooled dev +$4,965 (t=5.6), but the sandbox died during held-out evaluation. Status: incomplete, never promoted, and not evidence of improvement.
+
+The cloud edit used `range(131, 150)`, which is only seeds 131-149. The canonical pipeline uses `range(131, 151)` for the declared inclusive 131-150 panel. Because at least 131-149 were evaluated for frozen baselines, conservatively treat the entire 131-150 range as exposed after this run; rotate population validation before the next final-gate evaluation.
+
 ### Manus broad-behavioral run
 
 141 candidates / 5,804 games / 17,378 games/hour, zero errors. No candidate reached fresh confirmation. `bf757c08b2cc` scored +$2,011, t=1.9 on seeds 1-10 but was prematurely rejected by the obsolete single-block pre-screen.
 
 ### Targeted pooled evaluation of `bf757c08b2cc`
 
-The candidate was evaluated once under the corrected contract. Block margins were +$2,010.6 (seeds 1-10), +$43.6 (31-40), and +$1,233.4 (41-50). Although every block was positive, the pooled result was only +$1,095.9, t=1.85, 19-11. It failed both pooled thresholds and is closed. Confirmation seeds 111-130 and population seeds 131-150 were not evaluated and remain quarantined.
+The candidate was evaluated once under the corrected contract. Block margins were +$2,010.6 (seeds 1-10), +$43.6 (31-40), and +$1,233.4 (41-50). Although every block was positive, the pooled result was only +$1,095.9, t=1.85, 19-11. It failed both pooled thresholds and is closed. Confirmation seeds 111-130 and population seeds 131-150 were not evaluated in this targeted trial; they were subsequently exposed by the interrupted Perplexity run below.
 
 ## Seed exposure ledger
 
 - Development/search-visible: 1-10, 31-50.
 - Previously exposed validation: 11-30, 51-110. These cannot support a new fresh-validation claim.
-- Current quarantined confirmation: 111-130.
-- Current quarantined population: 131-150.
+- Previously exposed confirmation: 111-130 (two candidates completed held-out evaluation during the interrupted Perplexity run).
+- Previously exposed population: 131-150 (the interrupted Perplexity run computed its frontier baselines; its code omitted seed 150, but the full declared range is retired conservatively).
+- Current quarantined confirmation: 151-170.
+- Current quarantined population: 171-190.
 
 After either current quarantined range is inspected, record that fact here and preregister new disjoint ranges before another search.
 

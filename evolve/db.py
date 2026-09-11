@@ -131,6 +131,12 @@ REJECTED_MECHANISMS = (
     ("bf757c08b2cc_behavioral_bundle", "rejected",
      "Corrected three-block evaluation: +2010.6/+43.6/+1233.4 by block, pooled +1095.9 with t=1.85. Failed both pooled gates; fresh seeds 111-150 were not touched.",
      "docs/cloud-evolution-results-sep11.md", "2026-09-11"),
+    ("cloud_7a735e93b1b9_panel_failure", "rejected",
+     "Pooled dev +1989 and held-out +2576 did not generalize to the historical panel: margin delta -2748 and own-money delta -2016.",
+     "docs/cloud-evolution-results-sep11.md", "2026-09-11"),
+    ("cloud_26bb1ab37c2d_population_failure", "rejected",
+     "Pooled dev +3380 and held-out +2703 passed the historical panel, then failed population validation: margin delta -3344 and own-money delta -4775.",
+     "docs/cloud-evolution-results-sep11.md", "2026-09-11"),
 )
 
 

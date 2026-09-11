@@ -34,8 +34,10 @@ DEV_CONFIRM_BLOCKS = [list(range(31, 41)), list(range(41, 51))]
 # Seeds 11-30, 51-70, 71-110 were inspected during the Manus bootstrap/factorial
 # trials. Keep them out of future selection claims. These ranges were preregistered
 # before the broad behavioral run and have not been used to steer mutations.
-HELD_SEEDS = list(range(111, 131))
-POPULATION_SEEDS = list(range(131, 151))
+# Perplexity evaluated held-out candidates on 111-130 and a population survivor
+# on 131-149 before its sandbox crashed. Retire both declared ranges.
+HELD_SEEDS = list(range(151, 171))
+POPULATION_SEEDS = list(range(171, 191))
 TRAJ_SEEDS = [1, 2, 3, 4, 5]   # AGE-331: subset of DEV_SEEDS, seat 0 vs frontier only, seed 1 reuses the
                                 # smoke-stage diagnosis cache so this is ~4 extra games per alive candidate.
 
