@@ -132,14 +132,13 @@
   date: 2026-09-11
 
 - id: hire_gate_output_loss
-  state: DELAY
+  state: ABANDON
   type: threshold
-  mechanism: HIRE_MAX_MARGINAL=144 saves ~$804/game of wages and loses ~$504/game of revenue; an accounting bridge from the wage saving through specific service degradation to the lost output would say whether any of the $504 is recoverable under the cap
-  unknown: "what the residual is made of. Known so far: obligation counts and service rates are flat at n=15 (no broad capacity shortfall); fertilizer-bonus piece CLOSED from engine code = +1.2 STRAWBERRY units/game lost (~15-18% of $504); weed overnight-carry doubles (7.6% -> 14.4%) and tools/weed_recovery_cf.py prices a weed event at mean +$53 / median $0 (N=38, right-skewed, day-dependent: d25+ worth $0, d19-23 up to $916, two negative outliers)"
-  resolving_measurement: "the bridge, not another symptom ledger: (1) enumerate the weed events that occur under the cap and not without it, (2) price each conditional on created_day/state with weed_recovery_cf at N>=100 stratified by created_day, (3) sum fertilizer piece + weed piece against the $504 residual. Be strict about the skew -- if a handful of mid-game events carry the value, the fix is about those events, not weeds"
-  cost: one stratified counterfactual run (N~100) + one accounting script
-  would_do: the two pieces bridge >=70% of the $504 and the weed piece concentrates in an identifiable day/state class -> one targeted rule under the cap (weed dig priority in that class), gated both metrics
-  would_abandon: pieces bridge <50% or the weed value is diffuse across days -> the residual is diffuse capacity; accept it and keep the gate as is
+  hypothesis: the ~$504/game of revenue HIRE_MAX_MARGINAL=144 gives up (against ~$804 of wages) is recoverable under the cap through a targeted rule, if the lost output can be bridged to specific service degradation (weed overnight carry, fertilized-tile watering misses)
+  measurement: "accounting bridge. (1) fertilizer-bonus piece closed from engine code: +1.2 STRAWBERRY units/game lost, ~15-18% of $504 (other session). (2) weed piece: tools/weed_recovery_cf.py, EVERY overnight-carry weed event (unbiased, --max-per-seed 0), O26 vs bahaen, 36 seeds, N=165 counterfactuals; each forces the weed cleared one day earlier at zero labour cost (an upper bound on recovery value)"
+  negative_evidence: "weed piece is worth nothing: mean -$28/event, median $0, 24% exactly zero, min -1,783, max +905; top-5 events are only 27% of positive value (no concentrated class). By created_day: d19-23 net NEGATIVE (-$76..-$209 mean, sum -9.6k over 61 events -- a freed tile gets replanted at a cost that does not pay back), d24-25 mildly positive (+$65/+$58 mean, medians 0). The N=38 read (mean +$53, up to +$916) was a small biased sample (longest carries first). Bridge: fertilizer ~15-18% + weeds ~0% < 50% of the residual -> would_abandon condition met"
+  scope: recovering the gate's lost output through weed-dig or fertilized-tile watering priority under the cap; the residual is diffuse capacity
+  reopen: only with a new degradation class that the service ledger has not already shown flat (feed/care/fert/water/harvest are flat at n=15)
   date: 2026-09-11
 
 - id: per_task_delay_var
