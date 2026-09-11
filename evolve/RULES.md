@@ -390,3 +390,33 @@ the animals-in-shared-currency step are moot at 1-4 h granularity, and X1_ORCH ~
 What could still carry value is systematic under-capacity (a task class that is chronically late by many hours or a
 whole day), which is a capacity/allocation question, not a priority-ordering one. FEED/cu0: the engine ignores FEED on
 an already-fed-today animal and O16's `_feed_useful` already gates feeding, so there is no "redundant feed" to prohibit.
+
+**Rule (Sep 10):** do not promote an observational importance ranking (action table, one-seed counterfactual) into a
+decision weight without first demonstrating marginal consequence under intervention on a multi-seed, multi-opponent
+panel. Per-action 1-4 h VaR weighting is REJECTED at the tested timescale, not "needs tuning".
+
+## Sep 11: service-debt ledger -- O16 has no chronic lateness either
+
+`tools/service_ledger.py` derives every obligation from engine tile state each step, for BOTH farms (so the tape's own
+service quality is measured on the same games): feed / feed_prod / care / fert / collect(at cap) / water_ongoing /
+water_prod / water_window / harvest_ready(rot deadline) / harvest_cap / weed, plus crop deaths (PLANT -> WEED) by
+crop/age/day. O16 vs yangk and bahaen tapes, seeds 11-14, fixed shops:
+
+| class | O16 missed | yangk | bahaen | note |
+|---|---|---|---|---|
+| feed (per animal-day) | 9.2% | 13.3% | 14.5% | O16 misses are placement days + d27-28 endgame (deliberate) |
+| feed on production night | 6.4% | 8.7% | 11.9% | |
+| care | 15.5% | 6.9% | 4.2% | O16's misses: 126 of 145 on d26-28 or placement days -> deliberate (`_care_useful`) |
+| fert collect | 1% | 9% | 5% | |
+| collect at cap: prod-days lost | 0 | 0 | 16/game | bahaen leaves capped animals |
+| water on production night | 28-30% | 2.3% | 3.1% | HARMLESS: engine accrues ongoing yield whether watered or not; water only matters for the fertilizer bonus (2.2 lost/game = $260) and the 2-day death counter |
+| one-shot water in window | 3.9% | 2.1% | 9.9% | |
+| harvest_ready | 0.3% missed, 1/game past rot (0 steps) | 0 | 1% | |
+| strawberry deaths | 36.5/game, 134/146 at age 17 | 18.5, all age 15-17 | 22.5 | age-17 = end of the 4-unit production life, deliberate abandonment on both farms; O16 simply runs 2x the strawberry tiles |
+| overnight carry, all classes | ~0% | ~0% | ~0% (collect 38%) | |
+
+Reading: no obligation class is chronically late or under-served in O16; where it differs from the tapes it is at par or
+better, and its extra misses are policy-intended endgame/placement skips. The 17k gap to yangk on these games is not
+service debt -- yangk earns more with FEWER crop obligations (567 vs 797 ongoing-water obligations/game). Together with
+the delay panel: labour execution (ordering, matching, lateness) is closed as a lever on O16; what remains is what is
+planted/bought and when (allocation, commitment timing, cash-enabled transitions).
