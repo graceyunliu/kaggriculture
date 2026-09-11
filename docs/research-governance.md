@@ -92,6 +92,7 @@ candidate direction
               DO / SWITCH / ABANDON   (ledger)
 ```
 
-Priority order agreed Sep 11: (1) resolve the open DELAYs that are attached to the next candidate (adaptive melon
-timing sweep; strawberry early-death trace); (2) keep the ledger current — a direction that is not in it has not been
+Priority order agreed Sep 11 (revised after the cutoff sweep and O29-O31): (1) the adaptive-cutoff direction is ABANDON
+(entry-state segmentation done, optimum does not move) and the melon-preemption trigger family is ABANDON; the open
+DELAY on melon is the decomposition -- why a deferred pickup becomes a lost sale (8-11 units/game); (2) keep the ledger current — a direction that is not in it has not been
 decided; (3) only then return to open-ended candidate discovery.
