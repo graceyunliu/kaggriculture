@@ -730,3 +730,10 @@ margin +2,045 (t3.7) / +719 (t2.0) / +724 (t1.6) / +1,718 (t2.7); own +2,134 (t5
 +1,887 (t3.6). Against the current frontier tape (feeltheagi, Opponents/frontier.txt): margin +3.7k, own +3.7k (t3.6).
 Read: the carrot step is a general gain, not a fit to the panel; the clone's -0.5..-3.4k is the outlier. O26 is the
 submission candidate.
+
+## Sep 11: research governance (AGE-361 / AGE-362) -- docs/research-governance.md
+
+- `evolve/directions.yaml` is the direction ledger (DO / DELAY / ABANDON / SWITCH with the evidence); `evolve/directions.py`
+  validates it, renders it into the proposer prompt and the run report, and holds the EVIDENCE_CONTRACT (min panel depth
+  by intervention type: lumpy capital 32 x 2 sets, market interaction 3 sets on both metrics, everything else 20 x 2 on both).
+- A direction not in the ledger has not been decided. ABANDON is scoped and reopens only with a new instrument.
