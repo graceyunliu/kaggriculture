@@ -272,7 +272,7 @@
   date: 2026-09-11
 
 - id: min_hands_knob_interactions
-  state: DELAY
+  state: ABANDON
   type: knob
   mechanism: "min_hands_lower (DO, min_hands 3->2) and three of the other individually-mild-positive knobs from knob_space_local_optimum_sweep (hands_early=4 +681 h2h, max_animals=21 +701 h2h, feed_spare_poor=3 +406 h2h) were each tested ALONE, one-at-a-time. A dev h2h check of the pairwise and 4-way combinations found real, code-confirmed interaction: `floor = KNOBS['hands_early'] if (KNOBS['hands_early'] and day<=10) else KNOBS['min_hands']` means hands_early, when nonzero, REPLACES min_hands as the early-window floor rather than adding to it -- combo(min_hands=2, hands_early=4) scored +681 h2h, identical to hands_early=4 alone, not the ~2,200 an additive read of the two singles would suggest. Every tested combination is sub-additive versus the naive sum of its singles, and the 4-way combo (+1,151 h2h) actually underperforms the best 2-way combo (min_hands=2 + feed_spare_poor=3, +1,593 h2h, the single best h2h result seen in either sweep) -- the interaction structure is not simply diminishing returns, it is inconsistent enough that no combination can be picked by inspection"
   unknown: "whether ANY combination beats min_hands_lower alone on the real 4-tape panel (own AND margin, not just h2h vs the O26 clone, which the demand_share_up rejection already showed can reverse), and if so which one -- the best h2h candidate (min_hands=2 + feed_spare_poor=3) has not been panel-tested at all"
@@ -282,8 +282,45 @@
   cost: "cheap per cell but several panel runs deep (the h2h screen alone needed 4 extra evaluations beyond the 20-knob singles sweep; a proper panel-level factorial is 4-5x the cost of the single min_hands_lower confirmation) -- deferred rather than folded into this scouting pass"
   date: 2026-09-11
 
+  resolution_2: |
+    Sep 12: panel-tested the resolving measurement (min_hands=2 + feed_spare_poor=3, candidate
+    O38_MIN_HANDS2_FSP3) against the correct comparator O36_MIN_HANDS2 (not O26), per Grace's explicit
+    instruction to isolate the single fsp3 delta rather than confound it with the already-validated
+    min_hands=2 change. tools/knob_panel.py, paired per seed/opponent/seat, 2 independent 20-seed sets
+    (s11-30, s31-50), 4-tape panel, both seats, 320 games total -- meets the knob evidence contract
+    depth. Result: combined mean delta_own -5.9 (t=-0.10), delta_margin -33.2 (t=-0.46); the two seed
+    sets disagree in sign (s11-30 net negative t=-1.41/-1.77, s31-50 net positive t=+0.71/+0.63) and
+    neither clears t_min=2.0. 224/320 games (70%) show an exact-zero delta_own -- fsp3 barely engages
+    once min_hands=2 already relieves the cash pressure it exists to handle. Classified NEUTRAL per the
+    pre-registered framework: no value added on top of the validated parent, not an interference either.
+    See kaggriculture-min-hands-fsp3-combo-abandon-sep12.md.
+  resolution_2_date: '2026-09-12'
+
 - id: crop_harvest_window_recoverability
-  state: DELAY
+  state: ABANDON
+  negative_evidence: >
+    Sep 12 scouting campaign (dev h2h screen, KAGG_FIXED_SHOPS=1, O26_CARROT_SIZING clone,
+    10 seeds 71-80, both seats, mini_engine.py, candidates/O38_WHEAT_EARLY_HARVEST.py): forcing
+    WHEAT to HARVEST instead of WATER near max_day when yield_units>=3 (of max_yield=6), i.e.
+    the aggressive edge of the sweep this DELAY called for, LOST -$3,172/game h2h (t=-3.26, 9/10
+    seeds negative, worst -$18,662). A milder threshold (only harvest at literal age==max_day,
+    yield>=5) came back an exact behavioral no-op (every seed margin $0.00 -- the condition never
+    changes a real decision, confirming it coincides with existing behavior rather than sweeping
+    new ground). Did not escalate to the real 4-tape panel: the h2h loss is large, monotone in the
+    threshold direction, and matches this entry's own pre-registered would_abandon condition
+    ("sacrificed yield on the majority of tiles that would have matured fine" outweighs the ~5-7%
+    decay saved) well past the informal screen stage -- no promising signal to escalate.
+  scope: >
+    Closes the interior-threshold-sweep hypothesis for WHEAT early harvest at this KNOBS
+    implementation point (candidates/O38_WHEAT_EARLY_HARVEST.py, line ~1032). Does not re-examine
+    the underlying decay mechanism/bridge finding (wheat_decay_bridge.py, 95-99%
+    VISITED_WATERED_BELOW_MAX) itself, which stands as confirmed groundwork -- only the "trade
+    growth for decay-avoidance" intervention built on it.
+  reopen: >
+    A differently-shaped intervention (e.g. conditioning the harvest-vs-water choice on remaining
+    hand/turn budget or on live price rather than a flat age/yield cutoff) would be a new
+    hypothesis, not a retry of this one.
+  date: 2026-09-12
   type: nonlinear_threshold
   mechanism: >
     Non-ongoing crops (WHEAT, CARROT, MELON) may expire via max_lifespan_step decay
@@ -345,8 +382,137 @@
     "protection" guardrail built on the false recoverability premise), not finding a candidate.
   date: 2026-09-11
 
-- id: shed_capacity_margin_calibration
+- id: melon_rush_engagement
   state: DELAY
+  type: knob
+  mechanism: |
+    KNOBS["melon_rush"] gates two branches: (1) _harvest_ready allows MELON to be harvested early
+    (age>=CROPS["MELON"]["first"], yield_units>=5) instead of waiting for max_yield/max_day/day>=29;
+    (2) _unit_action routes carried melons (>=4 units, no wheat, day 10-14) straight to the shed instead
+    of normal dispatch, to sell into the day-10 melon price window.
+  unknown: |
+    Whether either branch is ever actually reached in real play, or is dead code like goose_animal_class's
+    day<=3 gate was.
+  resolving_measurement: |
+    RESOLVED Sep 12 (engagement pass): tools/dormant_knob_engagement.py, 24 games (4-tape panel, seeds
+    71-73, both seats). Both branches reached at real, high frequency (harvest: 6,786 opportunities/24
+    games, 5,099 decisive; dispatch: 1,175 opportunities/24 games) and produce a real downstream ripple
+    (total strawberry plantings shift 6,490->7,149 between baseline and melon_rush=1 on identical seeds,
+    from altered tile-clearing/replant timing). REACHED, ACTION CHANGES -- promoted to DELAY. See
+    kaggriculture-dormant-knobs-engagement-audit-sep12.md.
+    CORRECTED Sep 12 (reconciled with the [[kaggriculture-research-sequence-sep11-v2]] governance rule --
+    engagement alone does not license an economic panel): next resolving measurement is a BINDING TRACE,
+    not a panel. Trace whether melon_rush's early-harvest/rush-dispatch behavior changes productive
+    timing/economic realization (e.g. captures a real price-window advantage, avoids a real yield loss)
+    versus merely reshuffling melon/strawberry tile turnover with no economic consequence. Only if that
+    trace finds a measurable error/advantage does a causal probe, then a panel, become appropriate.
+  would_do: |
+    A real economic panel (contract depth: 20 seeds x 2 sets, own+margin, t>=2.0) shows melon_rush=1
+    improves own money and/or margin without hurting the other.
+  would_abandon: |
+    The panel shows no clear improvement, or margin/own move in opposite directions in a way that reads
+    as a genuine tradeoff rather than noise.
+  cost: Cheap -- one paired knob panel, same method as O38_MIN_HANDS2_FSP3's test.
+  date: '2026-09-12'
+  resolution_2: >
+    Binding trace (tools/melon_rush_binding_trace.py), pre-registered per Grace's 4-part spec
+    (price-window capture / avoided yield loss / tile-turnover displacement / net exposed population).
+    4-tape panel, seeds 71-85, seat 0, 812 baseline / 867 rush melon plantings. Population-level captured
+    price is +3.0% under rush (202.2 vs 196.3), consistent all 4 tapes, but the DECISIVE early-harvest
+    events the knob actually causes (n=210 rush vs 16 baseline) forfeit ~0.24 units/planting and get a
+    captured price BELOW the population average (~186 vs ~196-202) -- a crude units*price proxy makes the
+    decisive events look like a net loss, not a gain. No displacement problem (idle rate lower under
+    rush, 7.3% vs 9.7%; tile-reuse composition unchanged). The population price gain can't be attributed
+    to the harvest-threshold mechanism this trace isolated -- melon_rush bundles that with a separate
+    day10-14 dispatch-speed rule, and the gain plausibly comes from the latter. CONSTRAINED/INCONCLUSIVE:
+    does not clear the bar for a causal probe yet. Historical C1-chassis prior (no-op/negative, lumped
+    with 3 other knobs, kaggriculture-schedule-block-sep04) is not overturned by this result -- broadly
+    consistent. Next step before any probe: isolate the two bundled mechanisms (harvest-threshold vs
+    dispatch-speed) and re-trace each independently. See kaggriculture-melon-rush-binding-trace-constrained-sep12.md.
+  resolution_2_date: '2026-09-12'
+
+- id: wheat_water_tier_engagement
+  state: ABANDON
+  type: knob
+  mechanism: |
+    KNOBS["wheat_water_tier"] gates whether WHEAT tiles needing water are pulled out of the generic
+    "water" dispatch tier into a separate "wwater" tier that sits at higher priority
+    (tiers = ["urgent","wwater","harvest","water"]) instead of being mixed into "water" (served after
+    "harvest").
+  unknown: Whether wheat-watering tiles are common enough for the reprioritization to matter at all.
+  resolving_measurement: |
+    RESOLVED Sep 12 (engagement pass): tools/dormant_knob_engagement.py, 24 games. The underlying
+    opportunity (wheat tiles needing water) occurs at very high frequency: 63,330 tile-opportunities /
+    9,914 turns-with-at-least-one across 24 games (baseline count, independent of the knob's own gate).
+    Combined with the code-level guarantee that engaging the knob strictly reprioritizes those tiles ahead
+    of "harvest" in dispatch order, this is REACHED, ACTION CHANGES -- promoted to DELAY. See
+    kaggriculture-dormant-knobs-engagement-audit-sep12.md (also notes an instrumentation quirk: the raw
+    "on"-config log reads 0 because perceive() already filters WHEAT out of v["water"] before the patch's
+    independent recompute runs on an already-filtered list -- not a null result).
+    CORRECTED Sep 12 (reconciled with the [[kaggriculture-research-sequence-sep11-v2]] governance rule):
+    next resolving measurement is a BINDING TRACE, not a panel. Trace whether prioritizing wheat-watering
+    ahead of "harvest" actually displaces a higher-value action at the decision point (e.g. a harvest task
+    that would have sold sooner/at a better price) -- reprioritization alone does not establish that the
+    displaced action was worth more than the wheat watering. Only if that trace finds a measurable
+    displaced-value error does a causal probe, then a panel, become appropriate.
+  would_do: Panel shows own+margin improvement from prioritizing wheat watering over harvest tasks.
+  would_abandon: No improvement, or the reprioritization costs harvest-timing value that outweighs it.
+  cost: Cheap -- one paired knob panel.
+  date: '2026-09-12'
+  resolution_2: >
+    Binding trace (tools/wheat_water_tier_binding_trace.py): tracked harvest-ready-to-clear lag and
+    crop market price at both timestamps for every planted tile, 4-tape panel, seeds 71-85, seat 0, 60
+    games/config/tape. WHEAT (n=5497/5424) and MELON (n=791/791) show essentially IDENTICAL lag and
+    price-delta on vs off; CARROT shows a tiny, economically negligible increase in lag (+0.026 days)
+    and smaller captured-price gain (+0.216 -> +0.031). No crop shows a meaningful harvest-timing or
+    price cost from wheat-watering winning the tier-priority race, despite the large engagement-audit
+    opportunity counts. Mechanism: _build_sweep chains nearby tasks across tiers into the same unit's
+    route and other idle units can pick up a harvest tile the same turn, so winning the 'first pick' does
+    not translate into an uncollected harvest. No error found -> no causal probe warranted. See
+    kaggriculture-wheat-water-tier-binding-trace-abandon-sep13.md.
+  resolution_2_date: '2026-09-13'
+
+- id: straw_delay_engagement
+  state: ABANDON
+  type: knob
+  mechanism: |
+    KNOBS["straw_delay"] blocks STRAWBERRY from the daily seed-order candidate list while day < straw_delay
+    (economy(), L572), letting other crops claim that seeding capacity early.
+  unknown: Whether the knob's gate is ever exercised (straw_delay defaults to 0, which is always false).
+  resolving_measurement: |
+    RESOLVED Sep 12 (engagement pass): tools/dormant_knob_engagement.py, 24 games. Contrast value 10
+    (chosen only to sit near STRAWBERRY's own "first"=10 constant, not for profit) produced a complete,
+    clean suppression: 0 strawberry plantings before day 10 under straw_delay=10, vs 3,119 at baseline
+    (identical seeds/opponents/seats) -- the cleanest signal of the three dormant knobs. Total plantings
+    also shifted down slightly (6,490 -> 6,262), consistent with a real capacity constraint rather than a
+    pure relabeling. REACHED, ACTION CHANGES -- promoted to DELAY. See
+    kaggriculture-dormant-knobs-engagement-audit-sep12.md.
+    CORRECTED Sep 12 (reconciled with the [[kaggriculture-research-sequence-sep11-v2]] governance rule --
+    a clean behavioral discontinuity is not itself an economic error): next resolving measurement is a
+    BINDING TRACE, not a panel. Grace's framing (Sep 12): when baseline plants strawberries before day 10,
+    what economically relevant state would justify waiting instead, and does that state later prove the
+    early planting decision wrong (e.g. displaced capacity/capital that a later, higher-value crop needed,
+    or an early planting whose realized yield/price turned out worse than a delayed one would have)? This
+    is the priority knob of the three -- cleanest discontinuity, easiest population to trace. Only if the
+    trace finds a measurable error does a causal probe, then a panel, become appropriate.
+  would_do: Panel shows own+margin improvement from delaying early strawberry seeding in favor of other crops.
+  would_abandon: No improvement, or delaying strawberries costs more than it frees up elsewhere.
+  cost: Cheap -- one paired knob panel.
+  date: '2026-09-12'
+  resolution_2: >
+    Binding trace (tools/straw_delay_binding_trace.py, built on the validated tools/straw_life.py
+    lifecycle tracker): bucketed all real O26 baseline strawberry plantings (straw_delay=0/default) by
+    planted_day<10 ("early") vs >=10 ("late"), 4-tape standard panel, seeds 71-90, seat 0, 2530 total
+    plantings. Early plantings realize MORE units/planting (6.414 vs 6.059) and a LOWER pre-production
+    death rate (1.07% vs 3.37%) than late plantings, consistently across all 4 tapes independently. No
+    downstream error found -- early planting is not shown to be a mistake, it trends the opposite way.
+    Per the Engagement -> binding trace -> causal probe -> economic validation funnel
+    ([[kaggriculture-research-sequence-sep11-v2]]), a null/negative binding trace closes the lead: no
+    causal probe, no economic panel warranted. See kaggriculture-straw-delay-binding-trace-abandon-sep12.md.
+  resolution_2_date: '2026-09-12'
+
+- id: shed_capacity_margin_calibration
+  state: ABANDON
   resolution: >
     CORRECTED Sep 12: the first measurement pass (state: ABANDON, "occupancy never approaches 75")
     was WRONG -- caused by a script bug (tools/shed_overflow.py never wrote the advanced step back
@@ -394,6 +560,117 @@
     Very cheap -- a measurement pass on data existing tools already read, no new candidate
     build, no panel run beyond the standard tape panel.
   date: 2026-09-11
+  sub_interventions_closed:
+    - shed_threshold_tightening_redundant
+  resolution_2: >
+    Sep 12 (second pass, AGE-363 Stage-1 isolation): built candidates/O34_SHED_TIGHT.py (O26 with the
+    melon sell trigger shed_load>75 -> >65 and the wheat surplus trigger shed_load>80 -> >70) and
+    tools/shed_tighten_panel.py. First-pass panel (5 seeds, seeds 71-75, both seats, 10 games, direct
+    O34-vs-O26) came back an EXACT zero: margin $0.00 (t=0.0) and every occupancy stat (max_load,
+    turns>=95/>=100, discard_units) identical to the decimal between the two variants. Per the
+    goose_animal_class precedent (exact-zero across all seeds = check for dead code before accepting
+    a null), built tools/shed_tighten_trace.py to instrument every turn where shed_load actually enters
+    the melon [65,75) or wheat [70,80) intervention window, logging shed_load, day/hour, item, price,
+    each boolean subcondition, and whether O26's and O34's thresholds would have produced a different
+    SELL decision/quantity at that exact turn.
+    BUG CAUGHT DURING INSTRUMENTATION: the first trace run crashed both game trajectories with
+    `KeyError: 'animal'` inside _next_animal_yield -- caused by loading ONE agent module instance and
+    reusing it for both player seats (agents = [agent, agent]), so both seats shared the same
+    module-level global state (S dict, etc.) and corrupted each other's tile bookkeeping mid-game.
+    Fixed by loading two separate module instances (me.load_agent(CAND_B) called once per seat,
+    matching the convention every other panel tool in tools/ already uses). Re-ran clean with no
+    exceptions.
+    TRACE RESULT (5 seeds, 71-75): 7 in-window events where the item was actually present in the shed
+    at the moment the threshold could matter (2 MELON, 5 WHEAT). 0 of 7 were decisive -- in every
+    single event price_cond was already true, so decision_old == decision_new (melon) or
+    order_old == order_new (wheat) exactly. The exact-zero panel result is explained, not just
+    observed: by the time shed occupancy reaches the 65-80 range in this sample, the melon/wheat
+    price has already cleared its own sell threshold, so the shed_load disjunct never gets to be the
+    deciding condition regardless of where its cutoff is set.
+  resolution_2_date: 2026-09-12
+  resolution_3: |
+    Sep 12 (third and final pass): built tools/shed_pressure_price_trace.py to directly test the
+    population the threshold-tightening trace never sampled -- turns under real capacity pressure
+    (shed_load>=90, matching shed_overflow.py's own definition) where sellable MELON or WHEAT sits in
+    the shed unable to sell because price_cond is false. Ran against the real standard 4-tape panel
+    (not a mirror -- price pressure is opponent-market-dependent), both seats, seeds 71-90,
+    KAGG_FIXED_SHOPS=1, 160 games. Result: 191 total pressure turns across the panel (mean 1.19/game,
+    consistent with the corrected shed_overflow.py panel's own dwell-time measurement -- a cross-check
+    that this is measuring the same real dynamic, not a new instrumentation bug), and ZERO price-blocked
+    events for either MELON or WHEAT, in any of the 160 games. The would_abandon condition is met:
+    high-pressure turns do not coincide with price_cond=false at any measured frequency. Combined with
+    the corrected shed_overflow.py result (zero discards, zero blocked buys) and the retracted Sep-11
+    $18,965 pricing-artifact figure (evolve/db.py, shed_overflow_wheat_only_gate_sell_genes -- itself
+    traced to a one-hour-early inventory snapshot bug), three independent instruments now agree: no
+    irreversible or economic loss from shed capacity has ever been reproduced on this chassis. Closing
+    the whole direction ABANDON -- not just the threshold-tightening or trigger-value sub-question, but
+    the underlying "is shed capacity costing money" premise itself. See
+    kaggriculture-shed-pressure-price-blocked-null-sep12.md.
+  resolution_3_date: '2026-09-12'
+  resolving_measurement: >
+    SUPERSEDED Sep 12 (was: a per-game max shed_load / turns>=90/95/100 audit -- answered by the
+    corrected occupancy measurement above). Next resolving measurement: trace projected end-of-day
+    overflow at the last useful decision point, specifically looking for turns where projected
+    capacity pressure is high (shed_load approaching the 100 cap by end of day) WHILE sellable
+    inventory remains unsold because its price condition is false (price_cond=false at that turn).
+    The threshold-tightening trace only sampled turns where the item was already selling (price_cond
+    true) because that dominated the observed window -- it does not establish whether a
+    price-blocked / capacity-pressured population exists at all, only that it wasn't naturally
+    sampled by this specific instrumentation. This measurement answers that directly before any
+    lower-price-floor (or other) intervention is proposed, so the next candidate is chosen because a
+    target population was found, not assumed.
+  would_do: >
+    Turns are found where projected end-of-day shed_load is high, price_cond is false for sellable
+    inventory, and the unit still has a feasible action window before the flush -- i.e. a real,
+    reachable population where a capacity-aware sell-despite-low-price (or earlier-harvest, or
+    similar) intervention has something to act on. That population's size/frequency determines
+    whether a knob-type or nonlinear-threshold-type intervention is warranted next.
+  would_abandon: >
+    No such population is found at meaningful frequency -- turns with high projected pressure
+    essentially always coincide with price_cond already true (extending the threshold-tightening
+    trace's finding to the wider "projected pressure" case, not just the narrow shed_load window).
+    In that case shed_capacity_margin_calibration closes as a non-issue: the chassis is already
+    selling whenever it needs to, so there is no unexploited capacity-driven loss.
+
+- id: shed_threshold_tightening_redundant
+  state: ABANDON
+  type: threshold
+  hypothesis: >
+    Tightening the chassis's existing shed-load sell triggers (melon shed_load>75 -> >65, wheat
+    surplus shed_load>80 -> >70) would sell earlier and reduce ceiling contact / discard risk
+    without costing own money, resolving part of the shed_capacity_margin_calibration DELAY
+    (a Stage-1 isolation candidate under AGE-363 -- sell-side only, since no buy-side shed gate
+    exists in the chassis to isolate separately).
+  measurement: >
+    Built candidates/O34_SHED_TIGHT.py + tools/shed_tighten_panel.py; first-pass panel (5 seeds
+    71-75, both seats, 10 games, direct O34-vs-O26_CARROT_SIZING h2h) came back an exact $0.00
+    margin (t=0.0) with every occupancy stat identical to the decimal. Rather than accept the
+    exact-zero as a performance null (per the goose_animal_class precedent), built
+    tools/shed_tighten_trace.py to instrument every turn shed_load actually entered the melon
+    [65,75) or wheat [70,80) window with an item present, logging price, day, and every boolean
+    subcondition, classifying old-vs-new threshold as decisive iff the two thresholds would have
+    produced a different SELL decision/quantity at that turn. Caught and fixed a state-corruption
+    bug during instrumentation (both seats had been sharing one loaded agent module instance,
+    corrupting both trajectories with a KeyError('animal') crash) before trusting the trace.
+  negative_evidence: >
+    7 in-window events across 5 seeds (2 MELON, 5 WHEAT), 0 decisive. In every event price_cond
+    was already true, so old and new thresholds produced byte-identical SELL decisions/quantities.
+    The panel's exact-zero result is explained mechanistically, not just observed: the shed_load
+    disjunct cannot be the deciding condition in this sample because the price condition already
+    fires first whenever occupancy reaches the tested range.
+  scope: >
+    Closes ONLY the "tighten these two numeric thresholds" intervention, at n=5 seeds (below full
+    AGE-362 threshold-type depth of 20x2 -- not run to full panel because the trace explains the
+    exact-zero well enough that further seeds would very likely replicate the same redundancy, per
+    AGE-363's rule that a small validated finding still needs recording even when it doesn't
+    justify spending the full panel budget). Does NOT close shed_capacity_margin_calibration or the
+    broader shed-overflow mechanism -- see that DELAY record for the next resolving measurement
+    (projected end-of-day overflow vs. price-blocked sellable inventory).
+  reopen: >
+    A new instrument that finds a materially different set of in-window turns (e.g. a broader
+    panel surfacing events where price_cond is false) would reopen whether tightening these
+    specific thresholds has room to matter; a numeric retry with the same instrumentation does not.
+  date: 2026-09-12
 
 - id: shop_demand_regime_ranking
   state: DELAY
