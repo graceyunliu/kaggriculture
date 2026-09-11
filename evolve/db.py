@@ -101,6 +101,15 @@ REJECTED_MECHANISMS = (
     ("melon_convoy_beyond_slack", "rejected",
      "BOUNDARY: melon morning pays only for units the animal routes do not need (h<=8, 6-unit tiles); to h12 or harvesting 5-unit tiles displaces feeding and goes negative.",
      "evolve/RULES.md#O22", "2026-09-11"),
+    ("hire_gate_output_loss", "rejected",
+     "Weed-recovery counterfactual at N=165 (every overnight-carry event, unbiased) is worth ~$0 (mean -28, median 0, d19-23 negative); with the fertilizer piece at 15-18% the accounting bridge covers <20% of the $504 residual, no concentrated class. Keep HIRE_MAX_MARGINAL=144 as is.",
+     "evolve/directions.yaml#hire_gate_output_loss", "2026-09-11"),
+    ("investment_readiness_buy_animal_marginal_sign", "exhausted",
+     "32-cell x 2 independent seed-set marginal counterfactual: BUY_ANIMAL's sign flips between sets at every day 4-12. Not measurable at this panel size; leave the hand threshold.",
+     "evolve/directions.yaml#investment_readiness_threshold", "2026-09-11"),
+    ("land_deadline_tightening_to_marginal_decay", "rejected",
+     "O33_LAND_DEADLINE_TIGHT (LAND_DEADLINE pulled in ~3-4 days/tier to match the marginal-value decay to 0 by day 12) loses on both own and margin, all four tapes on the stronger seed set. The single-unit marginal counterfactual doesn't see the option value of completing a quad early enough to use the extra tile-days; tightening the deadline throws that value away too.",
+     "evolve/directions.yaml#land_deadline_horizon", "2026-09-11"),
 )
 
 
