@@ -68,29 +68,38 @@ REJECTED_MECHANISMS = (
      "One constraint conflates lumpy setup capital with recurring labor capacity on different cash horizons.",
      "docs/planner-allocation-hiring-results.md", "2026-09-05"),
     # Sep 10-11 (O16..O26 programme; docs/economic-self-model.md, evolve/RULES.md)
-    ("worker_matching_within_priorities", "closed",
+    ("worker_matching_within_priorities", "exhausted",
      "Changing which free unit takes which current task saves ~26 tiles/game (<1% of travel); the orchestrator already captures it.",
      "evolve/RULES.md#Sep 10", "2026-09-10"),
     ("per_task_delay_value_at_risk", "rejected",
      "3,060 counterfactuals: delaying any single action 1-4 h has no consequence distinguishable from zero (all CIs through 0). Do not weight dispatch by per-task urgency.",
      "evolve/delay_panel_O16_summary.txt", "2026-09-10"),
-    ("chronic_service_debt", "closed",
+    ("chronic_service_debt", "exhausted",
      "Service ledger: no obligation class is chronically late or under-served vs the tapes' own service on the same games; execution is not the gap.",
      "tools/service_ledger.py", "2026-09-11"),
     ("fertilizer_output_maximisation", "rejected",
      "More fertilized strawberry nights raise units but not own money (+0): strawberry demand is fixed, extra units only shift price share. Same-output-fewer-inputs pays; more-output does not.",
      "evolve/RULES.md#O23", "2026-09-11"),
-    ("tape_wheat_portfolio_via_knobs", "closed",
+    ("tape_wheat_portfolio_via_knobs", "exhausted",
      "wheat_per_animal / wheat_tiles / wheat_stock / wheat_hold_days / wheat_sell_price all fail a gate (three rounds). Holding wheat: own +1.4k but margin -0.6k because the tapes are net wheat sellers.",
      "evolve/RULES.md#wheat", "2026-09-11"),
     ("speculative_inventory_holding", "rejected",
      "Holding or metering MILK/WOOL/STRAWBERRY for a better price loses -1.8..-4.7k (O13); forecast-driven sale timing -0.6k. Sell immediately; the only timing gain is arrival-vs-pool-decay (melon morning).",
      "docs/hold-meter (Sep 9)", "2026-09-11"),
-    ("input_price_attack_capital_timing", "exploit",
-     "Extra mid-day wheat/fertilizer buying (capital checkpoint, capital_hour2) raises margin by lowering the opponent's money while lowering ours (-1.0..-2.6k own). Never core.",
+    ("input_price_attack_capital_timing", "rejected",
+     "EXPLOIT class: extra mid-day wheat/fertilizer buying (capital checkpoint, capital_hour2) raises margin by lowering the opponent's money while lowering ours (-1.0..-2.6k own). Never core.",
      "tools/capital_events.py", "2026-09-10"),
-    ("melon_convoy_beyond_slack", "boundary",
-     "Melon morning pays only for units the animal routes do not need (h<=8, 6-unit tiles); to h12 or harvesting 5-unit tiles displaces feeding and goes negative.",
+    ("melon_convoy_interior_interruption", "rejected",
+     "Any urgency-shaped hole in the h<=8 melon convoy (O30/O31/O32/O32B: any-urgent, catastrophic-only, orchestrator-assigned) loses on all four tapes at 1,440 games; edge trimming (h7) is a +$250 lead. Protected blocks tolerate edge trimming, not interior interruption.",
+     "evolve/directions.yaml#strawberry_urgent_slack", "2026-09-11"),
+    ("adaptive_melon_cutoff_on_entry_state", "rejected",
+     "2,240-game h6-h10 sweep: the optimal cutoff does not move with day-9 farm state; segment argmax does not replicate.",
+     "evolve/directions.yaml#adaptive_melon_timing", "2026-09-11"),
+    ("deferred_melon_pickup_lost_sale", "rejected",
+     "tools/melon_trace.py: every 6-unit melon is harvested and sold in both O26 and O32; the 8-11 unit delta is a d10-11 replant-count side-effect and money does not track melon units.",
+     "evolve/directions.yaml#melon_commitment_recoverability", "2026-09-11"),
+    ("melon_convoy_beyond_slack", "rejected",
+     "BOUNDARY: melon morning pays only for units the animal routes do not need (h<=8, 6-unit tiles); to h12 or harvesting 5-unit tiles displaces feeding and goes negative.",
      "evolve/RULES.md#O22", "2026-09-11"),
 )
 
@@ -128,6 +137,14 @@ class DB:
         self.conn.executemany(
             "INSERT OR IGNORE INTO rejected_mechanisms(mechanism_tag, verdict, one_line_cause, doc_ref, date) "
             "VALUES(?,?,?,?,?)", REJECTED_MECHANISMS)
+        # Sep 11: INSERT OR IGNORE silently dropped 5 of 14 closed mechanisms whose verdict did not satisfy the table's
+        # CHECK constraint, so the proposer was seeded with an incomplete closed set for a day. A partial seed is now a
+        # hard failure: every tag in REJECTED_MECHANISMS must be present after seeding.
+        seeded = {r[0] for r in self.conn.execute("SELECT mechanism_tag FROM rejected_mechanisms")}
+        missing = [t[0] for t in REJECTED_MECHANISMS if t[0] not in seeded]
+        if missing:
+            raise RuntimeError(f"rejected_mechanisms seed incomplete -- {missing} were not inserted "
+                               f"(verdict must be one of rejected/exhausted/no_general_fix; check the CHECK constraint)")
         cols = {r["name"] for r in self.conn.execute("PRAGMA table_info(candidates)")}
         for col, decl in (("island", "TEXT DEFAULT 'c1'"), ("blocks", "TEXT"), ("ablation", "TEXT"), ("diagnosis", "TEXT"), ("exec_summary", "TEXT"), ("trajectory_summary", "TEXT"), ("failure_profile", "TEXT"), ("action_table", "TEXT")):
             if col not in cols:

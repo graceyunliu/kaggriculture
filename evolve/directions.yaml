@@ -56,14 +56,13 @@
   date: 2026-09-10
 
 - id: adaptive_melon_timing
-  state: DELAY
+  state: ABANDON
   type: nonlinear_threshold
-  mechanism: the profitable melon-morning window may depend on observable state (herd size on d10, hands, ready tiles)
-  unknown: whether the conditional optimum moves with state, or h8 is simply the right constant
-  resolving_measurement: fixed-cutoff sweep h6..h10 x MIN_YIELD, segmented by d10 herd size and hand count, both panels
-  cost: ~10 candidates x 2 panels, one session
-  would_do: optimum hour differs by >=2 between state buckets with own-money support in each
-  would_abandon: h8 is best or within noise in every bucket -> keep the constant, close adaptation
+  hypothesis: the profitable melon-morning cutoff depends on observable day-9 farm state (herd, hands, plantings, cash, strawberry tiles, weeds)
+  measurement: "2,240-game cutoff sweep h6-h10 on O26, fixed shops, 4 tapes, both seats, 4 fresh seed sets, segmented by day-9 h0 state (other session, Sep 11)"
+  negative_evidence: "optimal cutoff does not vary with state: segment argmax does not replicate across seed sets, and low/high segments of the same variable pick the same cutoff (a whole-set shift). h7 weakly beats h8 (+295 margin / +242 own pooled, fails 1 of 4 sets) = calibration lead, not promoted"
+  scope: state-dependent termination of the melon window keyed on ENTRY (day-9) state; melon tiles / land degenerate (10 tiles, 2 quads in nearly every game)
+  reopen: "nothing in the entry-state OR per-turn urgency family -- the per-turn version has since been run and lost (strawberry_urgent_slack: O32/O32B, 1,440 games, negative on all four tapes). Only a melon-side mechanism"
   date: 2026-09-11
 
 - id: investment_readiness_threshold
@@ -77,12 +76,69 @@
   date: 2026-09-11
 
 - id: strawberry_early_death
-  state: DELAY
+  state: SWITCH
   type: calibration
-  mechanism: 17% of our strawberry plantings die before age 10 (before any production), tapes 0% -- upstream of fertilizer (other session, Sep 11)
-  unknown: the cause (not watering frequency alone)
-  resolving_measurement: single-tile turn trace of a dying planting
-  would_do: a specific policy action/omission is identified and a one-line fix exists
+  original_hypothesis: 17% of our strawberry plantings die before age 10 (tapes 0%) because of watering frequency / fertilizer coverage
+  prize_correction: "the 17% was a seeds-11-14 artifact. O26 vs tape_bahaenes, died-before-first-production by seed window: 11-14 12%, 15-18 2%, 21-24 0%, 151-154 1%, 171-174 1%, 191-194 8% -- roughly 4% pooled and very lumpy. The tapes 0% is real so the gap exists, but every fix in this family was budgeted against ~4x the recoverable prize. Do not quote 17%; size this on >=20 fresh seeds"
+  failed_assumption: "it is not frequency: tools/straw_trace.py found the engine's consecutive_unwatered running 0/1/0/1 with zero slack (reactive-only pre-production watering), and tools/straw_displace.py found the fatal tile sat in the URGENT pool 48/48 snapshots -- O22's melon morning diverts every routeless unit before crop dispatch runs (other session, Sep 11)"
+  became: strawberry_urgent_slack
+  evidence: "O29_STRAW_PREWATER (water daily pre-production) removes the deaths (17% -> 0%) but own -1,986 / -914 on 2 tapes: daily watering costs more labour than the demand-capped strawberries are worth"
+  date: 2026-09-11
+
+- id: strawberry_urgent_slack
+  state: ABANDON
+  type: architecture
+  hypothesis: guarantee service of an already-urgent pre-production strawberry without paying the full daily-watering cost (a slack-only fix), instead of exempting tiles from the melon diversion
+  superseded_switch_to: melon_commitment_recoverability
+  negative_evidence: "independent second design (O32_MELON_URGENT_EXEMPT / O32B, this session): exempt a unit from the convoy when the ORCHESTRATOR assigned it an urgent crop-water task -- so the held-back unit is the nearest by global min-cost matching and at most one per outstanding urgent task, no reserved worker, h8 unchanged. Paired vs O26, fixed shops, 4 tapes, both seats, 3 fresh seed sets (151-210), 1,440 games, 0 errors: O32 margin -592 (t-4.34) / own -733 (t-5.85); O32B margin -594 (t-3.29) / own -626 (t-3.48); negative on ALL FOUR tapes. On the larger panel the family is not a wash, it is a loss"
+  relocation_finding: "urgent-task protection is not free protection: straw_life O26 vs O32 (s151-154, bahaen) shows early deaths 2/155 -> 1/153 while watered-on-production-night falls 65% -> 59%. Releasing the nearest unit improves one local assignment and worsens the global allocation of the remaining capacity -- it relocates displacement inside the crop system rather than removing it"
+  scope: any design in which urgent crop-water work takes capacity from the h<=8 melon convoy, at any urgency predicate, crop subset, or scheduler-priority refinement
+  reopen: "NOT with another urgency predicate, threshold, crop subset or priority tweak -- that family is exhausted (any-urgent, pre-production-urgent, catastrophic-urgent, two sessions, two implementation paths). Only a different commitment-level mechanism: a way to preserve melon capture without consuming convoy capacity, or a discontinuity that changes the convoy's lost-sale economics"
+  old_failed_assumption: "trigger precision was the lever -- O30 (any urgent, 6% death) and O31 (catastrophic pre-production only, 2% death, 3x narrower trigger) both land at a ~$0 wash on own money (-1,087/+965/-53 and -998/+722/-124 across 3 tapes); narrowing the trigger did not move money"
+  evidence: "tools/o31_decompose.py (paired same-seed revenue split): the wash is a real MELON VOLUME loss on every tape (8-11 fewer melon units sold/game, -950..-1,555 revenue) that strawberry revenue recovery (+24..+1,069, real but smaller/inconsistent) only sometimes covers. Melon avg price is slightly HIGHER when diverted (rules out a late-sale-worse-price story) -- a deferred morning pickup is not delayed to a later sale, some fraction of it is LOST outright"
+  date: 2026-09-11
+
+- id: melon_preemption_trigger_variants
+  state: ABANDON
+  type: architecture
+  hypothesis: narrowing the trigger that lets an urgent strawberry preempt the melon convoy would recover the money the broad exemption lost
+  negative_evidence: "O30 (any urgent) and O31 (catastrophic pre-production only, 3x narrower) land at the same ~$0 wash; trigger precision does not move money; o31_decompose.py then showed why -- the cost is melon UNITS lost, not price/timing, so no trigger scoping on the strawberry side touches it"
+  confirmed_at_scale: "second session, independent implementation (O32/O32B): 1,440 paired games on 3 fresh seed sets, negative on all four tapes (-592 margin / -733 own pooled). The 3-tape wash was optimistic; the family loses"
+  scope: trigger-precision variants of strawberry-preempts-melon (O30/O30B/O31/O32/O32B)
+  reopen: never as a trigger-precision question again -- not another urgency predicate, threshold, crop subset or scheduler-priority refinement; only as a melon-side fix (see melon_commitment_recoverability)
+  date: 2026-09-11
+
+- id: melon_commitment_recoverability
+  state: ABANDON
+  type: architecture
+  hypothesis: a melon pickup deferred by the strawberry-urgent exemption becomes a LOST sale (claim dropped on reassignment, tile aging out of the window, or another lifecycle rule), which would explain the 8-11 melon units/game the o31 decomposition attributed to the exemption
+  measurement: "tools/melon_trace.py -- per-melon-tile life (yield by day, convoy claims, harvest hour/units, sale, terminal state) for O26 vs O32 on the same seed/tape; bahaen, 10 seeds (11,12,151,153,155,157,171,172,191,192)"
+  negative_evidence: "no claim or window loss exists: every melon tile that reaches 6 units is harvested and sold in both policies. The unit delta is a PLANTING-COUNT delta -- units == 6 x tiles in every game, and O32 plants 1-2 fewer OR more second-wave melons (d10-11 replants) depending on the seed (tiles 14->13, 15->14, 12->11, 14->12 on the losing seeds; 14->16, 15->17, 14->15 on the winning ones). Melon weed-deaths are rare and symmetric (1 each in 10 games; the O32 one was a 4-unit tile unwatered on d9-d10, i.e. the exemption starving a MELON's own urgent water). One sale-lost case (s171: 102 harvested, 91 sold). Money deltas do not track melon units at all: s171 O32 +12 units and -9.4k money; s151/153 +14 units and +/-0.3k"
+  scope: "any 'deferred melon pickup is lost' story for the O30/O31/O32 family; the melon revenue delta in o31_decompose is a second-wave replant count side-effect of the changed cash/labour trajectory, not recoverability"
+  reopen: only if a melon tile is ever observed standing unharvested at 6 units, or a claim is dropped while a unit is en route (never seen in 20 traced games)
+  local_observations_kept: "(a) one O32 melon weed-death from the exemption starving a MELON's own urgent water -- displacement runs both ways, reinforcing the relocation reading; (b) s171 102 harvested / 91 sold -- an unreplicated sale-lost anomaly. Neither reopens the family"
+  where_the_money_went: "not melon. O32's loss vs O26 is diffuse allocation (the relocation finding in strawberry_urgent_slack): the exemption changes which tiles get watered and, downstream, what gets replanted on d10-11"
+  date: 2026-09-11
+
+- id: animal_production_rate
+  state: ABANDON
+  type: calibration
+  hypothesis: "the herd sizer's RATE (COW 1.5, SHEEP 1.33 units/animal/day) is a stale constant like STRAW_UNITS/CARROT_UNITS, so _demand_room mis-sizes the herd"
+  measurement: "tools/animal_yield.py (new) wraps the engine's own _daily_refresh_animals and records, per production event and for both farms in the same games, entitled units (base 1 + pending_care_bonus) vs units banked after the min(max_held=6) clamp. Fixed shops, seeds 151-154, two tapes"
+  negative_evidence: "no discrepancy. RATE is the perfect-care steady-state ceiling (cow 1+2 per 2 days, sheep 1+3 per 3 days) and we REACH it: fed at 100% of production events, entitled 3.35 (COW) / 4.31 (SHEEP) vs the 3.00/4.00 steady state, 0% lost to the holding cap. Realised lifetime 1.22/1.13 u/animal-day is lower only because animal-days include the pre-first-yield ramp, which _demand_room already handles via T_new. We out-produce every tape per animal-day (tape COW 1.09-1.15, SHEEP 1.08-1.12) and the tapes miss 5-14% of feeds and lose 1% of cow / 19% of goose production to the cap"
+  scope: animal yield constants (RATE, FIRST_YIELD) and animal feeding/care/collection quality as a source of gap
+  reopen: only evidence that our feed/care rate has fallen below ~100% at production events, or a herd-sizing change that makes the ramp (not the steady rate) the binding term
+  engine_fact: "the FIRST production event banks base + the bonus accrued across the whole pre-yield ramp, clamped at max_held=6 -- pre-yield care days are banked, not wasted (a small argument for early placement), and it is why GOOSE (cap 4, interval 1) truncates 19% for the tapes. Price this in any buy-earlier or add-geese proposal"
+  date: 2026-09-11
+
+- id: hire_gate_output_loss
+  state: ABANDON
+  type: threshold
+  hypothesis: the ~$504/game of revenue HIRE_MAX_MARGINAL=144 gives up (against ~$804 of wages) is recoverable under the cap through a targeted rule, if the lost output can be bridged to specific service degradation (weed overnight carry, fertilized-tile watering misses)
+  measurement: "accounting bridge. (1) fertilizer-bonus piece closed from engine code: +1.2 STRAWBERRY units/game lost, ~15-18% of $504 (other session). (2) weed piece: tools/weed_recovery_cf.py, EVERY overnight-carry weed event (unbiased, --max-per-seed 0), O26 vs bahaen, 36 seeds, N=165 counterfactuals; each forces the weed cleared one day earlier at zero labour cost (an upper bound on recovery value)"
+  negative_evidence: "weed piece is worth nothing: mean -$28/event, median $0, 24% exactly zero, min -1,783, max +905; top-5 events are only 27% of positive value (no concentrated class). By created_day: d19-23 net NEGATIVE (-$76..-$209 mean, sum -9.6k over 61 events -- a freed tile gets replanted at a cost that does not pay back), d24-25 mildly positive (+$65/+$58 mean, medians 0). The N=38 read (mean +$53, up to +$916) was a small biased sample (longest carries first). Bridge: fertilizer ~15-18% + weeds ~0% < 50% of the residual -> would_abandon condition met"
+  scope: recovering the gate's lost output through weed-dig or fertilized-tile watering priority under the cap; the residual is diffuse capacity
+  reopen: only with a new degradation class that the service ledger has not already shown flat (feed/care/fert/water/harvest are flat at n=15)
   date: 2026-09-11
 
 - id: per_task_delay_var
