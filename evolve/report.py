@@ -456,6 +456,35 @@ def write_report(db, run_id):
     by_island = defaultdict(list)
     for r in alive:
         by_island[r.get("island") or "c1"].append(r)
+    try:
+        import directions as _dir
+        _rows = _dir.load()
+        L.append("## Research directions (evolve/directions.yaml)")
+        L.append("")
+        L.append("Counts: " + ", ".join(f"{st} {sum(1 for r in _rows if r['state']==st)}" for st in _dir.STATES) +
+                 ". DELAY items are the open measurements; see docs/research-governance.md for the lifecycle and evidence contract.")
+        for r in _rows:
+            if r["state"] == "DELAY":
+                L.append(f"- DELAY `{r['id']}` [{r['type']}]: {r['unknown']} -> {r['resolving_measurement']}")
+        L.append("")
+    except Exception as _e:  # noqa: BLE001
+        L.append(f"_direction ledger unavailable: {_e!r}_")
+        L.append("")
+    try:
+        import directions as _dir
+        _rows = _dir.load()
+        L.append("## Research directions (evolve/directions.yaml)")
+        L.append("")
+        L.append("Counts: " + ", ".join(f"{st} {sum(1 for r in _rows if r['state']==st)}" for st in _dir.STATES) +
+                 ". DELAY items are the open measurements; see docs/research-governance.md for the lifecycle and evidence contract.")
+        L.append("")
+        for r in _rows:
+            if r["state"] == "DELAY":
+                L.append(f"- DELAY `{r['id']}` [{r['type']}]: {r['unknown']} -> {r['resolving_measurement']}")
+        L.append("")
+    except Exception as _e:  # noqa: BLE001
+        L.append(f"_direction ledger unavailable: {_e!r}_")
+        L.append("")
     L.append("## Islands (best dev margin, population size)")
     L.append("")
     for name, lst in sorted(by_island.items()):
