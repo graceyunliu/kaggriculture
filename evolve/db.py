@@ -140,6 +140,9 @@ REJECTED_MECHANISMS = (
     ("f01cec5376e1_rapid_parameter_bundle", "rejected",
      "Three-block dev +5934 (t=6.29) shrank to +2677 with t=1.67 and 10-10 on confirmation seeds 111-130; failed confirmation and never reached population.",
      "docs/cloud-evolution-results-sep11.md", "2026-09-11"),
+    ("global_hard_veto_capital_lookahead", "rejected",
+     "All eight 2/4-day reserve-gate cells lost every dev block; best was -125913/game (t=-28.25). Reserving future inputs before every purchase starves the farm of investments needed to generate future cash.",
+     "docs/cloud-evolution-results-sep11.md", "2026-09-11"),
 )
 
 

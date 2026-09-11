@@ -48,6 +48,12 @@ An additional five-minute parameter search evaluated 18 candidates. `f01cec5376e
 
 Exact changes from O26 were: `load_per_hand` 20->19, `open_melons` 10->4, `wheat_cap` 22->25, `MAX_HANDS` 14->12, `ROUTE_LEN` 3->2, `CROP_SWEEP_LEN` 6->7, `STRAW_CUTOFF` 19->20, `HERD_LAST_DAY` 17->20, `NEAR_RADIUS` 2->4, `SPREAD_W` 1.25->1.0, `MELON_MORNING` 1->0, and `MELON_MORNING_LAST_HOUR` 8->7. Do not retest this bundle on newer quarantined seeds merely because its development margin was large.
 
+### O26 capital look-ahead factorial
+
+A preregistered OFF + 2x2x2 factorial wrapped O26's purchase orders with a deterministic 2/4-day cash-and-labor reserve gate. OFF reproduced O26 exactly. Every ON cell failed every development block. The least-negative cell (four-day horizon, 25% revenue haircut, inputs-only reserve) lost $125,913/game with t=-28.25. Own money fell to roughly $16k-$18k while opponents rose to roughly $144k-$145k. Final productive capacity collapsed from O26's averages of 14.2 animals, 5.3 maximum hands, and 3.0 land to 4.3-4.7 animals, 1.8-3.3 hands, and 1.7-1.8 land.
+
+The mechanism failure is specific and decisive: a hard global veto that reserves several days of projected feed/setup before allowing each current purchase blocks the investments needed to produce the cash and capacity assumed by the projection. This self-reinforcing starvation loop is rejected. It does not prove that all look-ahead is useless; any future planner must rank incremental investments or compare action alternatives, not apply another all-purchase solvency veto. Confirmation 151-170 and population 171-190 were untouched.
+
 ## Seed exposure ledger
 
 - Development/search-visible: 1-10, 31-50.
@@ -61,4 +67,4 @@ After either current quarantined range is inspected, record that fact here and p
 
 ## Current action
 
-O26 remains the only submission candidate. `bf757c08b2cc` has completed its one corrected evaluation and must not be retried. Continue broad search only with controls proven renderable in the exact-O26 chassis. Preserve final-gate-first reporting and archive all failures so the proposer cannot recycle them as novel ideas.
+O26 remains the only submission candidate. The global hard-veto capital planner is closed; do not soften its reserve constants and retry the same architecture. The parallel adaptive-opening diagnosis remains the next independent structural investigation. Preserve final-gate-first reporting and archive all failures so the proposer cannot recycle them as novel ideas.
