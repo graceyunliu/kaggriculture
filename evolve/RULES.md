@@ -369,3 +369,24 @@ money falls and the tape's falls more. The orchestrator's gain is own-economy (+
 stack" was the wrong question -- the capital gain was never ours. A live opponent adapts its quantities (M3: general
 price-impact rule netted -2.4k vs never-touched opponents), so this is excluded like M2. Actionable: the loop's held-out/panel
 gate is margin-only and would happily climb this hill -> consider adding an own-money floor to the promotion gate.
+
+## Sep 10 (night): Phase 1 of value-at-risk -- the delay-consequence signal does NOT replicate
+
+`tools/delay_panel.py` (resumable, `--budget-s`; the sandbox kills background processes so long panels run in
+150 s chunks). O16 vs 3 tapes x 6 seeds, fixed shops, 17 state buckets x 30 events x delays {1,2,4} h x horizons
+{final money, 48-step net worth} = 3,060 counterfactuals (`evolve/delay_panel_O16.jsonl`, summary `..._summary.txt`).
+
+- Horizon 0: every bucket's 95% CI includes zero (means -360..+180, CIs +-200..900). Per-seed sign agreement is
+  3-4 of 6 for almost every bucket (coin flip); per-tape 1-2 of 3. Delay curves are not monotone (e.g. WATER/oneshot/cu0
+  -34 / +86 / +136 at 1/2/4 h).
+- Horizon 48: effects are tens of dollars, all CIs include zero, no bucket consistently negative.
+- The single-seed table that motivated the programme (COLLECT -247, FEED/cu1 -234 ...) does not survive: FEED/cu1 is
+  +180 here, COLLECT -279+-448.
+
+Reading: in O16 a one-hour delay of one action has no measurable consequence -- the dispatcher re-plans next turn,
+another unit or the same unit does it an hour later, and the game has enough slack that the loss is below the seed noise
+floor. There is therefore no per-task "value at risk per hour" to encode; V1/V2 (consequence-weighted assignment) and
+the animals-in-shared-currency step are moot at 1-4 h granularity, and X1_ORCH ~ X1_ORCH_FLATPRIO is explained.
+What could still carry value is systematic under-capacity (a task class that is chronically late by many hours or a
+whole day), which is a capacity/allocation question, not a priority-ordering one. FEED/cu0: the engine ignores FEED on
+an already-fed-today animal and O16's `_feed_useful` already gates feeding, so there is no "redundant feed" to prohibit.
