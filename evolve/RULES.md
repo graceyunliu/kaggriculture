@@ -696,3 +696,13 @@ WHEAT 5.0 vs 3.9, CARROT 4.0 vs 3.0, MELON 6.0 vs 5.9, TOMATO 5.0 (never planted
   (`submissions/O26_CARROT_SIZING.zip`) -- weakest gate pass of the line; margin is real-tape-only.
 Rule of thumb from the day: an accurate self-model (units per planting) beats both optimism and pessimism, but only
 where the freed resource has a paying use; the allocator then decides.
+
+## Sep 11: melon remainder closed (O26 standing: own money 102-107k vs yangk 111k, bahaen 89k, alaylm 100k, s11-14)
+
+Remaining melon gap ($175 vs $221) = 2-4 tiles one watering short of 6 units on d10 morning (harvested h15-23, sold at
+the d11/d12 dump) + the second melon wave (d20-21, sold at $63-134 into an empty pool). Reads vs O26, fixed shops:
+- O27_MELON_WATER_FIRST (convoy waters 5-unit tiles then harvests): own -94, **margin -1,792 (t-4.1), h2h -4.1k (1-19)**. Rejected.
+- MELON cutoff 16 -> 8 (no second wave): own -1,176 (t-4.2). The late wave pays despite the price. Rejected.
+- harvest at 5 units in the convoy: own -608. Rejected.
+Melon line is closed at this level; what is left there is the tape's ordering of animals after melons on d10, which we
+cannot copy without losing feeds (O16 runs 12-16 animals on d10).
