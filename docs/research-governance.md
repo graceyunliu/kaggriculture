@@ -95,10 +95,15 @@ candidate direction
 Priority order (Sep 11, current): the melon family is closed on every proposed axis -- entry-state adaptive cutoff
 (ABANDON, 2,240-game sweep), urgent-exemption triggers (ABANDON, O30/O31/O32 negative on all four tapes at 1,440 games),
 and deferred-pickup recoverability (ABANDON, tools/melon_trace.py: no lost sales, the unit delta is a d10-11 replant count,
-money does not track melon units). Open DELAYs in cost order: (1) `hire_gate_output_loss` as an accounting bridge
-(fertilizer piece closed at ~15-18%, weed piece needs stratified N>=100), (2) `investment_readiness_threshold` (32-cell
-marginal panel). Keep the ledger current -- a direction that is not in it has not been decided -- and only then return to
-open-ended candidate discovery.
+money does not track melon units). `hire_gate_output_loss` is closed too (ABANDON: the fertilizer + weed-recovery
+accounting bridge covers <20% of the $504 residual with no concentrated class, N=165 unbiased weed sample; keep
+HIRE_MAX_MARGINAL=144). `investment_readiness_threshold` resolved SWITCH: BUY_ANIMAL's marginal sign is unmeasurable at
+32 cells (flips between two independent seed sets, matching the pre-registered would_abandon condition) and stays a
+hand threshold; BUY_LAND's marginal sign is stable and significant through day 10, decaying to noise by day 12 -- real
+but observational, not yet a tested intervention. The sole remaining open direction is `land_deadline_horizon`: build a
+candidate that pulls the hand-tuned LAND_DEADLINE (14/17/18 by quad tier) in to track that decay, and test it on the
+standard 20x2 own+margin panel. Keep the ledger current -- a direction that is not in it has not been decided -- and
+only then return to open-ended candidate discovery from the K_SELFMODEL chassis.
 
 Durable rule from the melon programme: a protected block (the h<=8 convoy) tolerates EDGE TRIMMING (h7 vs h8, +$250)
 but not INTERIOR INTERRUPTION (every urgency-shaped hole lost on all four tapes). Champion record: O26_CARROT_SIZING is
