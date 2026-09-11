@@ -401,6 +401,24 @@ def build_prompt(block_names, n, archive, chassis_text, rejected_mechanisms=None
                  "They are observational context for the proposer, not search-policy inputs.")
     parts.append("# CLOSED MECHANISMS (do not re-propose)\n" + json.dumps(
         rejected_mechanisms or [], indent=0, default=str))
+    try:
+        import directions as _dir
+        _rows = _dir.load()
+        parts.append("# RESEARCH-DIRECTION LEDGER (evolve/directions.yaml; AGE-361). A proposal must name which DELAY it "
+                     "resolves or which self-model question it corrects (docs/economic-self-model.md); do not re-propose an "
+                     "ABANDON at its stated scope without a new instrument.\n" + _dir.render(_rows))
+        parts.append("# EVIDENCE CONTRACT (AGE-362): minimum depth before a direction may be promoted or closed\n" + _dir.contract_text())
+    except Exception as _e:  # noqa: BLE001
+        parts.append(f"# RESEARCH-DIRECTION LEDGER unavailable: {_e!r}")
+    try:
+        import directions as _dir
+        _rows = _dir.load()
+        parts.append("# RESEARCH-DIRECTION LEDGER (evolve/directions.yaml; AGE-361). A proposal must name which DELAY it "
+                     "resolves or which self-model question it corrects (docs/economic-self-model.md); do not re-propose an "
+                     "ABANDON at its stated scope without a new instrument.\n" + _dir.render(_rows))
+        parts.append("# EVIDENCE CONTRACT (AGE-362): minimum depth before a direction may be promoted or closed\n" + _dir.contract_text())
+    except Exception as _e:  # noqa: BLE001
+        parts.append(f"# RESEARCH-DIRECTION LEDGER unavailable: {_e!r}")
     parts.append("# SEARCH SPACE (params you may set)\n" + json.dumps(
         {k: (v[1] if v[0] == "cat" else [v[1], v[2]]) for k, v in space.SPACE.items()}))
     parts.append("# BLOCKS YOU MAY REPLACE (current source)\n")
