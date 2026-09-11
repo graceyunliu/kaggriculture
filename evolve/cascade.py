@@ -161,15 +161,37 @@ def eval_panel(cand, clone, seeds, engine, jobs):
     Per-opponent deltas at n=10-20 swing +-$15k on this game (shop-unlock lottery), so only the panel
     mean is used for any decision."""
     per = {}
+    own = {}
     dt = 0.0
     errs = [0, 0]
     for opp in panel_list(clone):
         r, d = _eval(cand, opp, seeds, engine, jobs)
         per[Path(opp).stem] = r["mean_margin_per_game"]
+        # own money per game (both seats): the intrinsic-economy axis. A margin gain with falling own money is an
+        # opponent exploit (e.g. input-price attacks), not a better farm -- Sep 11 capital-checkpoint lesson.
+        own[Path(opp).stem] = sum(x["a"] for x in r["per_seed"].values()) / (2.0 * max(1, len(r["per_seed"])))
         dt += d
         errs[0] += r["agent_errors"][0]
     mean = sum(per.values()) / max(1, len(per))
-    return {"mean_margin_per_game": mean, "per_opp": per, "t": 0.0, "agent_errors": errs}, dt
+    own_mean = sum(own.values()) / max(1, len(own))
+    return {"mean_margin_per_game": mean, "own_money_per_game": own_mean, "per_opp": per, "per_opp_own": own,
+            "t": 0.0, "agent_errors": errs}, dt
+
+
+def classify_gain(margin_delta, own_delta, noise=250.0):
+    """Two-axis taxonomy of WHY a candidate wins vs the frontier on the tape panel (Sep 11).
+    architecture: margin up AND own money up (promote).  exploit: margin up, own money down (opponent-specific; never
+    core).  economic: own money up, margin ~flat (investigate / widen panel).  failure: both down.  neutral: both ~flat."""
+    if margin_delta is None or own_delta is None:
+        return "unknown"
+    m_up, m_dn = margin_delta > noise, margin_delta < -noise
+    o_up, o_dn = own_delta > noise, own_delta < -noise
+    if m_up and o_up: return "architecture"
+    if m_up and o_dn: return "exploit"
+    if o_up and not m_up: return "economic"
+    if m_dn and o_dn: return "failure"
+    if m_up and not o_dn: return "architecture?"   # own money flat: weak evidence, still promotable
+    return "neutral"
 
 
 def diagnose_candidate(db, key, cand_path, frontier, reference, engine="master", log=print):
@@ -245,13 +267,16 @@ def run_cascade(db, key, cand_path, frontier, clone, cfg, jobs=None, log=print):
     # panel delta = candidate's mean panel margin minus the frontier's own (cfg["frontier_panel_dev"],
     # computed once per run). This is the ladder-relevant number; self-play vs the frontier is not.
     fp_dev = cfg.get("frontier_panel_dev")
+    fo_dev = cfg.get("frontier_panel_own_dev")
     panel_delta_dev = rc["mean_margin_per_game"] - fp_dev if fp_dev is not None else None
+    own_delta_dev = rc["own_money_per_game"] - fo_dev if fo_dev is not None else None
+    kind_dev = classify_gain(panel_delta_dev, own_delta_dev)
     db.update(key, stage=2, status="alive",
               dev_margin=r["mean_margin_per_game"], dev_t=r["t"], dev_wins=r["wins"], dev_losses=r["losses"],
               clone_margin=rc["mean_margin_per_game"], clone_t=rc["t"],
-              note=f"panel_dev={rc['per_opp']} panel_delta_dev={panel_delta_dev}")
+              note=f"panel_dev={rc['per_opp']} panel_delta_dev={panel_delta_dev} own_delta_dev={own_delta_dev} kind_dev={kind_dev}")
     log(f"    dev {r['mean_margin_per_game']:+,.0f} (t={r['t']:.1f}, {r['wins']}-{r['losses']})  "
-        f"panel {rc['mean_margin_per_game']:+,.0f}" + (f" (delta vs frontier {panel_delta_dev:+,.0f})" if panel_delta_dev is not None else ""))
+        f"panel {rc['mean_margin_per_game']:+,.0f}" + (f" (delta vs frontier {panel_delta_dev:+,.0f}, own {own_delta_dev:+,.0f}, {kind_dev})" if panel_delta_dev is not None and own_delta_dev is not None else ""))
 
     # ---- trajectory summary + failure classification (AGE-331/AGE-332): cheap, post-alive,
     # never affects ranking/status. Also extract action timing table (AGE-359/AGE-360).
@@ -278,15 +303,23 @@ def run_cascade(db, key, cand_path, frontier, clone, cfg, jobs=None, log=print):
     rc, dtc = eval_panel(cand_path, clone, HELD_SEEDS, engine, jobs)
     db.add_games(key, 2 * len(HELD_SEEDS) * len(panel_list(clone)), dtc)
     fp_held = cfg.get("frontier_panel_held")
+    fo_held = cfg.get("frontier_panel_own_held")
     panel_delta_held = rc["mean_margin_per_game"] - fp_held if fp_held is not None else None
-    # Promotion needs BOTH: beats the frontier head-to-head (t>=2) AND does not lose ground on the real
-    # tape panel (Sep 9 lesson: O-vs-O gains such as melon late-fert were null-to-negative on the tapes).
-    passed = r["mean_margin_per_game"] > 0 and r["t"] >= 2.0 and (panel_delta_held is None or panel_delta_held >= cfg.get("panel_floor", 0.0))
-    db.update(key, stage=3, status="held_pass" if passed else "held_fail",
+    own_delta_held = rc["own_money_per_game"] - fo_held if fo_held is not None else None
+    kind_held = classify_gain(panel_delta_held, own_delta_held)
+    # Promotion is two-dimensional (Sep 11): (1) beats the frontier head-to-head (t>=2); (2) does not lose ground on
+    # the tape panel's paired MARGIN (Sep 9: O-vs-O gains such as melon late-fert were null on the tapes); (3) does
+    # not lower our OWN money on the panel (Sep 11: the capital checkpoint's +margin was an input-price attack with
+    # own money -$1k -- an exploit, never core architecture). A candidate that fails only (3) is recorded as an exploit.
+    passed = (r["mean_margin_per_game"] > 0 and r["t"] >= 2.0
+              and (panel_delta_held is None or panel_delta_held >= cfg.get("panel_floor", 0.0))
+              and (own_delta_held is None or own_delta_held >= cfg.get("own_floor", 0.0)))
+    status = "held_pass" if passed else ("held_exploit" if kind_held == "exploit" and r["t"] >= 2.0 else "held_fail")
+    db.update(key, stage=3, status=status,
               held_margin=r["mean_margin_per_game"], held_t=r["t"], held_wins=r["wins"], held_losses=r["losses"],
               held_clone_margin=rc["mean_margin_per_game"],
-              note=f"panel_held={rc['per_opp']} panel_delta_held={panel_delta_held}")
+              note=f"panel_held={rc['per_opp']} panel_delta_held={panel_delta_held} own_held={rc['per_opp_own']} own_delta_held={own_delta_held} kind_held={kind_held}")
     log(f"    HELD-OUT {r['mean_margin_per_game']:+,.0f} (t={r['t']:.1f}, {r['wins']}-{r['losses']})  "
-        f"panel {rc['mean_margin_per_game']:+,.0f}" + (f" (delta vs frontier {panel_delta_held:+,.0f})" if panel_delta_held is not None else "")
-        + f"  -> {'PASS' if passed else 'fail'}")
+        f"panel {rc['mean_margin_per_game']:+,.0f}" + (f" (delta vs frontier {panel_delta_held:+,.0f}, own {own_delta_held:+,.0f}, {kind_held})" if panel_delta_held is not None and own_delta_held is not None else "")
+        + f"  -> {status.upper()}")
     return "held_pass" if passed else "held_fail"

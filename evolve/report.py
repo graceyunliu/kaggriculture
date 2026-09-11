@@ -319,15 +319,20 @@ def horizon_roi_section():
              f"({len(d.get('tapes', []))} tapes x {len(d.get('seeds', []))} seeds) | "
              f"fixed_shops={d.get('fixed_shops')} | generated {d.get('generated')}")
     L.append("")
-    L.append("ROI = base final money - counterfactual final money when that investment class is blocked from "
-             "the given day onward. Positive = the policy's continued spending on that class paid for itself "
-             "over the remaining horizon, net of acquisition, operating and opportunity cost.")
+    L.append("ROI = base final money - counterfactual final money, net of acquisition, operating and "
+             "opportunity cost. **Read the intervention column before the number.** `class blocked` prices "
+             "the whole subsystem and, for a class the policy replenishes continuously (labour, feed), is "
+             "near-total ablation -- it does NOT estimate the value of the last unit. `-K unit/day` is the "
+             "marginal experiment. The two can have opposite signs, and on this chassis HIRE does.")
     L.append("")
-    L.append("| investment | from day | n | ROI | t | 95% CI | cells + | payback |")
-    L.append("|---|---:|---:|---:|---:|---|---:|---|")
+    L.append("| investment | intervention | from day | n | ROI | t | 95% CI | cells + | payback |")
+    L.append("|---|---|---:|---:|---:|---:|---|---:|---|")
     for r in d.get("rows", []):
         pb = f"by day {r['payback_median']}" if r.get("payback_median") is not None else "never"
-        L.append(f"| {r['type']} | {r['day']} | {r['n']} | {r['roi_mean']:+,.0f} | {r['t']:.2f} | "
+        mode = r.get("mode", d.get("mode", "cutoff"))
+        how = (f"-{r.get('size')} unit/day" if mode == "marginal"
+               else f"deferred {r.get('size')}d" if mode == "defer" else "class blocked")
+        L.append(f"| {r['type']} | {how} | {r['day']} | {r['n']} | {r['roi_mean']:+,.0f} | {r['t']:.2f} | "
                  f"[{r['ci_lo']:+,.0f}, {r['ci_hi']:+,.0f}] | {r['pos_frac']:.0%} | "
                  f"{r['payback_rate']:.0%} {pb} |")
     L.append("")

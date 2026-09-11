@@ -136,6 +136,7 @@ class Loop:
         self.chassis_text = snap.read_text()
         self.cfg["reference"] = str(space.render(space.o15_params()))   # diagnosis baseline = O15 (chassis, ORCH_ON=0)
         self.cfg["panel_floor"] = args.panel_floor
+        self.cfg["own_floor"] = args.own_floor
         # The frontier's own panel numbers (dev + held seeds), so every candidate's panel result can be read as
         # a delta against the ladder submission. mini_engine caches games by sha, so this costs once per run.
         try:
@@ -143,6 +144,7 @@ class Loop:
             fd, _ = eval_panel(args.frontier, args.clone, _DEV, "master", args.jobs)
             fh, _ = eval_panel(args.frontier, args.clone, _HELD, "master", args.jobs)
             self.cfg["frontier_panel_dev"], self.cfg["frontier_panel_held"] = fd["mean_margin_per_game"], fh["mean_margin_per_game"]
+            self.cfg["frontier_panel_own_dev"], self.cfg["frontier_panel_own_held"] = fd["own_money_per_game"], fh["own_money_per_game"]
             self.cfg["frontier_panel_per_opp_held"] = fh["per_opp"]
         except Exception as e:  # noqa: BLE001 - a missing tape must not stop the loop; the gate then degrades to head-to-head only
             self.cfg["frontier_panel_dev"] = self.cfg["frontier_panel_held"] = None
@@ -568,6 +570,9 @@ def main():
                          "opp_scenario_v14 is not a ladder proxy). Mean panel margin is reported; held-out promotion "
                          "requires the candidate's panel mean >= the frontier's (--panel-floor).")
     ap.add_argument("--panel-floor", type=float, default=0.0, help="min (candidate - frontier) mean panel margin for held_pass")
+    ap.add_argument("--own-floor", type=float, default=0.0,
+                    help="min (candidate - frontier) OWN money per game on the panel for held_pass; a candidate above the margin "
+                         "floor but below this is recorded as held_exploit (opponent-specific), never promoted")
     ap.add_argument("--run-id", default=None)
     ap.add_argument("--seed", type=int, default=None)
     ap.add_argument("--smoke-floor", type=float, default=DEFAULTS["smoke_floor"])

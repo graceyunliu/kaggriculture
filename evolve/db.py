@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS candidates (
     path TEXT,
     created REAL,
     stage INTEGER DEFAULT 0,   -- highest stage completed
-    status TEXT DEFAULT 'new', -- new | noop | dead_pattern | dead_smoke | dead_dev | alive | held_fail | held_pass | error
+    status TEXT DEFAULT 'new', -- new | noop | dead_pattern | dead_smoke | dead_dev | alive | held_fail | held_exploit | held_pass | error
     fingerprint TEXT,
     smoke_margin REAL,
     dev_margin REAL, dev_t REAL, dev_wins INTEGER, dev_losses INTEGER,
@@ -133,7 +133,7 @@ class DB:
 
     def alive(self, limit=None, island=None, k_sha=None, frontier=None):
         q = ("SELECT c.* FROM candidates c JOIN runs r ON r.run_id=c.run_id "
-             "WHERE c.status IN ('alive','held_pass','held_fail') AND c.dev_margin IS NOT NULL")
+             "WHERE c.status IN ('alive','held_pass','held_fail','held_exploit') AND c.dev_margin IS NOT NULL")
         args = []
         if island:
             q += " AND c.island=?"

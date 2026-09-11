@@ -16,6 +16,13 @@ counterfactual is exact rather than sampled. Two modes:
           Sweeping D gives an ROI-vs-horizon curve, which is the direct measurement behind every hand-tuned
           "buy until day X" threshold in the chassis.
 
+  marginal Allow at most (what this cell's base run placed that day) - K UNITS of type T from day D on.
+          roi = base_final - cf_final = the realized value of the LAST K units per day of that class.
+          This is the mode that answers "is one more worker / tile / animal worth it?". Cutoff does NOT
+          answer that for any class the policy replenishes continuously (labour, feed): blocking those is
+          near-total ablation, and its number is the value of HAVING the subsystem, not of its last unit.
+          The two can have opposite signs, and for HIRE on this chassis they do.
+
   defer   Block type T for days [D, D+K), then allow it again.
           roi = base_final - cf_final = the cost of postponing that investment class by K days. Negative
           means waiting was free or better -- i.e. option value of waiting.
@@ -33,6 +40,8 @@ It does NOT say the optimum is at the cutoff day where ROI hits zero (the policy
 is held fixed), and nothing here feeds mutation weighting automatically. See docs/AGE-360-horizon-roi.md.
 
 Usage:
+  KAGG_FIXED_SHOPS=1 python3 tools/horizon_roi.py CAND --mode marginal --reduce 1 \
+      --types HIRE --days 8,12,16,20,24 --seeds 1,2,3,4,5,6,7,8
   KAGG_FIXED_SHOPS=1 python3 tools/horizon_roi.py CAND --tapes panel --seeds 1,2,3 \
       --types HIRE,BUY_ANIMAL,BUY_LAND,BUY_SEED,BUY_PRODUCT --days 6,10,14,18,22,26 --emit
   KAGG_FIXED_SHOPS=1 python3 tools/horizon_roi.py CAND --mode defer --defer-days 3 --types BUY_ANIMAL
@@ -116,7 +125,7 @@ def networth(obs0, priv):
     return val
 
 
-def play(cand, opp, seed, block=None, daily=None, spend=None):
+def play(cand, opp, seed, block=None, daily=None, spend=None, units=None, marginal=None):
     """Run one deterministic game as player 0.
 
     block:  (verb, item, day_from, day_to) -- drop matching market orders on days
@@ -124,6 +133,14 @@ def play(cand, opp, seed, block=None, daily=None, spend=None):
     daily:  list to append (day, networth, cash) once per day, at the first turn of that day.
     spend:  dict to accumulate observed gross spend per investment type, so acquisition cost is
             measured rather than assumed.
+    units:  dict to accumulate observed order UNITS as units[(verb, item)][day] = qty. This is what a
+            marginal intervention is calibrated against -- you cannot cap a class at "one fewer per day"
+            without first knowing how many it places per day, in this exact cell.
+    marginal: (verb, item, day_from, day_to, caps) -- on days in range, allow at most caps[day] UNITS of
+            the matching class, reducing an order's quantity rather than dropping it whole where possible.
+            A per-DAY unit budget, not a per-turn one: the policies here re-issue a shortfall on a later
+            turn of the same day (hiring tops up to a target), so a per-turn filter would be silently
+            absorbed and measure nothing.
     Returns final money.
     """
     mod, defaults = me.load_engine("master")
@@ -139,6 +156,8 @@ def play(cand, opp, seed, block=None, daily=None, spend=None):
     steps = int(cfg["episodeSteps"])
     step = 0
     seen_day = -1
+    marg_day = -1      # day the marginal unit budget was last reset
+    marg_used = 0      # units of the capped class already allowed today
     while True:
         obs0 = state[0].observation
         day = obs0.day
@@ -154,34 +173,61 @@ def play(cand, opp, seed, block=None, daily=None, spend=None):
                 act = {}
             if i == 0:
                 orders = list(act.get("market") or [])
-                if spend is not None and orders:
-                    prices = dict(obs0.market["prices"])
-                    for o in orders:
-                        if not o:
-                            continue
-                        v = o[0]
-                        if v not in INVESTMENT_VERBS:
-                            continue
-                        item = o[1] if len(o) > 1 and isinstance(o[1], str) else None
-                        qty = o[2] if len(o) > 2 and isinstance(o[2], (int, float)) else 1
-                        # HIRE cost is a fibonacci schedule and BUY_LAND a computed price -- neither is a
-                        # market good, so est_cost is left None for them rather than silently reported as $0.
-                        unit = ANIMAL_VALUE.get(item) or prices.get(item) or PRICE_FALLBACK.get(item)
-                        key = v if item is None else f"{v}:{item}"
-                        e = spend.setdefault(key, {"orders": 0, "units": 0.0, "est_cost": 0.0,
-                                                   "priced": unit is not None, "days": []})
-                        e["orders"] += 1
-                        e["units"] += float(qty)
-                        if unit is None:
-                            e["priced"] = False
-                        else:
-                            e["est_cost"] += float(unit) * float(qty)
-                        e["days"].append(day)
                 if block is not None and orders:
                     bv, bi, d0, d1 = block
                     if day >= d0 and (d1 is None or day < d1):
                         act["market"] = [o for o in orders
                                          if not (o and o[0] == bv and (bi is None or (len(o) > 1 and o[1] == bi)))]
+                elif marginal is not None and orders:
+                    mv, mi, d0, d1, caps = marginal
+                    if day != marg_day:
+                        marg_day, marg_used = day, 0
+                    if day >= d0 and (d1 is None or day < d1):
+                        cap = caps.get(day, 0.0)
+                        kept = []
+                        for o in orders:
+                            if not (o and o[0] == mv and (mi is None or (len(o) > 1 and o[1] == mi))):
+                                kept.append(o)
+                                continue
+                            qty = o[2] if len(o) > 2 and isinstance(o[2], (int, float)) else 1
+                            room = cap - marg_used
+                            if room >= qty:
+                                marg_used += qty
+                                kept.append(o)
+                            elif room > 0 and len(o) > 2 and isinstance(o[2], (int, float)):
+                                kept.append(list(o[:2]) + [int(room)] + list(o[3:]))
+                                marg_used += int(room)
+                            # else: today's budget is spent -- drop the order entirely
+                        act["market"] = kept
+                # Record AFTER the intervention, from what is actually submitted to the engine. Recording
+                # the pre-intervention list would log what the policy WANTED, not what it got -- and a
+                # capped policy asks for more, not less, because it keeps falling short of its target. That
+                # made the first verification pass read as "the cap increased purchases".
+                final_orders = act.get("market") or []
+                if (spend is not None or units is not None) and final_orders:
+                    prices = dict(obs0.market["prices"])
+                    for o in final_orders:
+                        if not o or o[0] not in INVESTMENT_VERBS:
+                            continue
+                        item = o[1] if len(o) > 1 and isinstance(o[1], str) else None
+                        qty = o[2] if len(o) > 2 and isinstance(o[2], (int, float)) else 1
+                        if units is not None:
+                            by_day = units.setdefault((o[0], item), {})
+                            by_day[day] = by_day.get(day, 0) + float(qty)
+                        if spend is not None:
+                            # HIRE cost is a fibonacci schedule and BUY_LAND a computed price -- neither is
+                            # a market good, so est_cost stays None rather than reading as a silent $0.
+                            unit = ANIMAL_VALUE.get(item) or prices.get(item) or PRICE_FALLBACK.get(item)
+                            key = o[0] if item is None else f"{o[0]}:{item}"
+                            e = spend.setdefault(key, {"orders": 0, "units": 0.0, "est_cost": 0.0,
+                                                       "priced": unit is not None, "days": []})
+                            e["orders"] += 1
+                            e["units"] += float(qty)
+                            if unit is None:
+                                e["priced"] = False
+                            else:
+                                e["est_cost"] += float(unit) * float(qty)
+                            e["days"].append(day)
             state[i].action = act
         state = mod.interpreter(state, env)
         step += 1
@@ -243,20 +289,25 @@ def aggregate(a):
     # inflate n and shrink the CI for free. Last write wins.
     uniq = {}
     for r in recs:
-        uniq[(r["mode"], r["type"], r["day"], r.get("defer_days"), r["tape"], r["seed"])] = r
+        uniq[(r["mode"], r["type"], r["day"], r.get("defer_days"), r.get("reduce"),
+              r["tape"], r["seed"])] = r
     dropped = len(recs) - len(uniq)
     recs = list(uniq.values())
     modes = {r["mode"] for r in recs}
+    # Group by the INTERVENTION, not just (type, day): a -1 unit/day cap and a -2 unit/day cap are
+    # different experiments and pooling them averages two different effect sizes into one meaningless row.
     cells = {}
     for r in recs:
-        cells.setdefault((r["type"], r["day"]), []).append(r)
+        size = r.get("reduce") if r["mode"] == "marginal" else r.get("defer_days")
+        cells.setdefault((r["type"], r["day"], size), []).append(r)
     rows = []
-    for (label, D), rs in sorted(cells.items(), key=lambda kv: (kv[0][0], kv[0][1])):
+    for (label, D, size), rs in sorted(cells.items(), key=lambda kv: (kv[0][0], kv[0][2] or 0, kv[0][1])):
         deltas = [r["roi"] for r in rs]
         pbs = [r["payback_day"] for r in rs]
         hit = [p for p in pbs if p is not None]
         m, t, lo, hi = mean_ci(deltas)
-        rows.append({"type": label, "day": D, "roi_mean": m, "t": t, "ci_lo": lo, "ci_hi": hi,
+        rows.append({"type": label, "day": D, "size": size, "mode": rs[0]["mode"],
+                     "roi_mean": m, "t": t, "ci_lo": lo, "ci_hi": hi,
                      "n": len(deltas), "pos_frac": sum(1 for d in deltas if d > 0) / len(deltas),
                      "payback_rate": len(hit) / len(pbs),
                      "payback_median": (sorted(hit)[len(hit) // 2] if hit else None),
@@ -267,7 +318,9 @@ def aggregate(a):
               + (f" ({dropped} duplicate cells dropped)" if dropped else ""))
         for r in rows:
             pbm = r["payback_median"]
-            print(f"{r['type']:20s} from day {r['day']:2d}  n={r['n']:2d}  roi ${r['roi_mean']:9,.0f}  t={r['t']:6.2f}  "
+            how = (f"-{r['size']}u/day from day" if r["mode"] == "marginal"
+                   else f"deferred {r['size']}d at day" if r["mode"] == "defer" else "from day")
+            print(f"{r['type']:20s} {how} {r['day']:2d}  n={r['n']:2d}  roi ${r['roi_mean']:9,.0f}  t={r['t']:6.2f}  "
                   f"95% CI [{r['ci_lo']:9,.0f},{r['ci_hi']:9,.0f}]  +{r['pos_frac']:.0%}  "
                   f"payback {r['payback_rate']:.0%}" + (f" by day {pbm}" if pbm is not None else " never"))
     if a.emit:
@@ -299,7 +352,10 @@ def main():
                     help="comma list; VERB or VERB:ITEM (e.g. BUY_ANIMAL:COW, BUY_SEED:MELON)")
     ap.add_argument("--days", default="4,8,12,16,20,24",
                     help="cutoff days to sweep (cutoff mode) or start days (defer mode)")
-    ap.add_argument("--mode", choices=["cutoff", "defer"], default="cutoff")
+    ap.add_argument("--mode", choices=["cutoff", "defer", "marginal"], default="cutoff")
+    ap.add_argument("--reduce", type=int, default=1, metavar="K",
+                    help="marginal mode: remove K UNITS per day of the class, relative to what this cell's "
+                         "base run actually placed that day. K=1 prices one more worker / tile / animal.")
     ap.add_argument("--defer-days", type=int, default=3, help="defer mode: how many days to block")
     ap.add_argument("--json", default=None, help="append per-cell results to this jsonl")
     ap.add_argument("--emit", action="store_true",
@@ -328,11 +384,14 @@ def main():
     # --- base runs (one per tape x seed), plus observed acquisition spend
     base = {}
     base_daily = {}
+    base_units = {}
     spend = {}
     for tname, tpath in tapes.items():
         for seed in seeds:
             d = []
-            base[(tname, seed)] = play(a.cand, tpath, seed, daily=d, spend=spend)
+            u = {}
+            base[(tname, seed)] = play(a.cand, tpath, seed, daily=d, spend=spend, units=u)
+            base_units[(tname, seed)] = u
             base_daily[(tname, seed)] = d
     n_cells = len(tapes) * len(seeds)
     if not a.quiet:
@@ -359,7 +418,22 @@ def main():
             for tname, tpath in tapes.items():
                 for seed in seeds:
                     cfd = []
-                    cf = play(a.cand, tpath, seed, block=(verb, item, D, d1), daily=cfd)
+                    if a.mode == "marginal":
+                        # Per-day unit budget = what THIS cell's base run actually placed that day, minus K.
+                        # Calibrating per cell matters: the same policy places different quantities against
+                        # different tapes, so a single global cap would be a different-sized intervention
+                        # in every cell and the CI would be measuring that instead of the effect.
+                        bu = base_units[(tname, seed)]
+                        per_day = {}
+                        for (v, it), by_day in bu.items():
+                            if v != verb or (item is not None and it != item):
+                                continue
+                            for dd, q in by_day.items():
+                                per_day[dd] = per_day.get(dd, 0.0) + q
+                        caps = {dd: max(0.0, q - a.reduce) for dd, q in per_day.items()}
+                        cf = play(a.cand, tpath, seed, marginal=(verb, item, D, None, caps), daily=cfd)
+                    else:
+                        cf = play(a.cand, tpath, seed, block=(verb, item, D, d1), daily=cfd)
                     delta = base[(tname, seed)] - cf
                     deltas.append(delta)
                     pb, _ = payback_day(base_daily[(tname, seed)], cfd, D)
@@ -369,6 +443,7 @@ def main():
                             fh.write(json.dumps({
                                 "cand": a.cand, "mode": a.mode, "type": label, "day": D,
                                 "defer_days": a.defer_days if a.mode == "defer" else None,
+                                "reduce": a.reduce if a.mode == "marginal" else None,
                                 "tape": tname, "seed": seed, "base": base[(tname, seed)],
                                 "cf": cf, "roi": delta, "payback_day": pb}) + "\n")
             m, t, lo, hi = mean_ci(deltas)
@@ -382,7 +457,9 @@ def main():
             })
             if not a.quiet:
                 pbm = rows[-1]["payback_median"]
-                verb_word = "from day" if a.mode == "cutoff" else f"deferred {a.defer_days}d at day"
+                verb_word = ("from day" if a.mode == "cutoff"
+                             else f"-{a.reduce}u/day from day" if a.mode == "marginal"
+                             else f"deferred {a.defer_days}d at day")
                 print(f"{label:20s} {verb_word} {D:2d}  roi ${m:9,.0f}  t={t:6.2f}  "
                       f"95% CI [{lo:9,.0f},{hi:9,.0f}]  +{rows[-1]['pos_frac']:.0%}  "
                       f"payback {rows[-1]['payback_rate']:.0%}"

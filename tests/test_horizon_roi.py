@@ -78,6 +78,42 @@ def test_payback_day_uses_cash_and_excludes_the_cutoff_day():
     assert pb3 is None, f"a lead that does not hold is not payback, got {pb3}"
 
 
+def test_marginal_cap_removes_exactly_k_units_per_day(base):
+    """The marginal intervention has to actually bite, and by the intended amount.
+
+    Two ways this silently fails. (1) Recording units BEFORE the intervention logs what the policy WANTED
+    rather than what it got -- and a capped policy asks for MORE, because it keeps falling short of its
+    target -- so the verification reads as though the cap increased purchases. (2) A per-TURN filter is
+    absorbed within the same day: hiring tops up to a target, so an order dropped on turn 3 is simply
+    re-issued on turn 5 and the net intervention is nothing. Both happened during development, and both
+    produce a table of small plausible numbers rather than an error.
+    """
+    K, D = 1, 14
+    u = {}
+    H.play(CAND, TAPE, SEED, units=u)
+    per_day = {}
+    for (v, _i), by_day in u.items():
+        if v != "HIRE":
+            continue
+        for d, q in by_day.items():
+            per_day[d] = per_day.get(d, 0.0) + q
+    days_after = [d for d in per_day if d >= D]
+    assert days_after, "fixture places no HIRE orders after day D; test is vacuous"
+
+    caps = {d: max(0.0, q - K) for d, q in per_day.items()}
+    u2 = {}
+    H.play(CAND, TAPE, SEED, marginal=("HIRE", None, D, None, caps), units=u2)
+    after = sum(q for (v, _i), by_day in u2.items() if v == "HIRE"
+                for d, q in by_day.items() if d >= D)
+    before = sum(per_day[d] for d in days_after)
+    removed = before - after
+    expected = K * len(days_after)
+    # Allow a small overshoot: a day on which the base placed nothing gets cap 0, so a re-issue there is
+    # also refused. Undershoot is the real failure -- it means the cap is being absorbed.
+    assert expected <= removed <= expected + 3, (
+        f"removed {removed} units, expected ~{expected} over {len(days_after)} days")
+
+
 def test_aggregate_deduplicates_repeated_cells(tmpdir):
     import json
     import types
@@ -91,7 +127,8 @@ def test_aggregate_deduplicates_repeated_cells(tmpdir):
     H.aggregate(args)
     # aggregate() prints nothing in quiet mode, so re-derive what it saw the same way it does.
     recs = [json.loads(ln) for ln in open(p) if ln.strip()]
-    uniq = {(r["mode"], r["type"], r["day"], r.get("defer_days"), r["tape"], r["seed"]) for r in recs}
+    uniq = {(r["mode"], r["type"], r["day"], r.get("defer_days"), r.get("reduce"),
+             r["tape"], r["seed"]) for r in recs}
     assert len(recs) == 4 and len(uniq) == 2, "dedup fixture is wrong"
 
 
@@ -106,6 +143,8 @@ if __name__ == "__main__":
     print("  non-matching block is a no-op ok")
     test_matching_block_actually_removes_orders(base)
     print("  matching block removes orders ok")
+    test_marginal_cap_removes_exactly_k_units_per_day(base)
+    print("  marginal cap removes K units/day ok")
     test_payback_day_uses_cash_and_excludes_the_cutoff_day()
     print("  payback_day semantics ok")
     with tempfile.TemporaryDirectory() as td:
