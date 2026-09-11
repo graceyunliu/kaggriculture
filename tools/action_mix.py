@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Per-game action-type counts for BOTH players (moves, each work verb, PASS), plus DROP load sizes."""
 import sys
-sys.path.insert(0, "/sessions/confident-jolly-fermat/mnt/Kaggriculture")
+sys.path.insert(0, __import__("os").path.dirname(__import__("os").path.dirname(__import__("os").path.abspath(__file__))))
 import mini_engine as me
 MOVES = {"NORTH", "SOUTH", "EAST", "WEST"}
 
