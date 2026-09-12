@@ -1,0 +1,1878 @@
+{
+  "o42_source": "/Users/graceliu/Claude/Projects/Kaggriculture/candidates/O42_MAX_HANDS_LATE_EXPAND.py",
+  "o42_sha256": "154d1ff480e9aa05084e323604a1a09ce73b68adbff95dd4f410e6acf4f52813",
+  "bindings": [
+    {
+      "event": "seed_candidate_reached",
+      "intended_function": "economy",
+      "resolved_line": 603,
+      "exact_source_text": "if c in excluded or day > sp_[\"cutoff\"] or day < sp_.get(\"start\", 0):",
+      "ast_node": "If",
+      "enclosing_control": "space > 0 and n_seed_orders < 4",
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "for c, sp_ in CROP_SPECS.items():",
+      "successor_nonblank": "continue",
+      "surrounding_context": [
+        {
+          "line": 601,
+          "text": "            best = None"
+        },
+        {
+          "line": 602,
+          "text": "            for c, sp_ in CROP_SPECS.items():"
+        },
+        {
+          "line": 603,
+          "text": "                if c in excluded or day > sp_[\"cutoff\"] or day < sp_.get(\"start\", 0):"
+        },
+        {
+          "line": 604,
+          "text": "                    continue"
+        },
+        {
+          "line": 605,
+          "text": "                if c == \"STRAWBERRY\" and day < KNOBS[\"straw_delay\"]:"
+        }
+      ],
+      "context_sha256": "735ee7f1a803bd428955e5bf087cc17627f0f97d87b750825c4a95f8487a3985",
+      "textual_match_lines": [
+        603
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "seed_reject_eligibility",
+      "intended_function": "economy",
+      "resolved_line": 604,
+      "exact_source_text": "continue",
+      "ast_node": "Continue",
+      "enclosing_control": "c in excluded or day > sp_['cutoff'] or day < sp_.get('start', 0)",
+      "expected_enclosing_control": "c in excluded or day > sp_[\"cutoff\"] or day < sp_.get(\"start\", 0)",
+      "predecessor_nonblank": "if c in excluded or day > sp_[\"cutoff\"] or day < sp_.get(\"start\", 0):",
+      "successor_nonblank": "if c == \"STRAWBERRY\" and day < KNOBS[\"straw_delay\"]:",
+      "surrounding_context": [
+        {
+          "line": 602,
+          "text": "            for c, sp_ in CROP_SPECS.items():"
+        },
+        {
+          "line": 603,
+          "text": "                if c in excluded or day > sp_[\"cutoff\"] or day < sp_.get(\"start\", 0):"
+        },
+        {
+          "line": 604,
+          "text": "                    continue"
+        },
+        {
+          "line": 605,
+          "text": "                if c == \"STRAWBERRY\" and day < KNOBS[\"straw_delay\"]:"
+        },
+        {
+          "line": 606,
+          "text": "                    continue"
+        }
+      ],
+      "context_sha256": "a4ea2b52367565020ebd8fad79c01dee087245418b9ea24388de5032ac535229",
+      "textual_match_lines": [
+        538,
+        604,
+        606,
+        609,
+        615,
+        619,
+        630
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "seed_strawberry_delay_guard",
+      "intended_function": "economy",
+      "resolved_line": 605,
+      "exact_source_text": "if c == \"STRAWBERRY\" and day < KNOBS[\"straw_delay\"]:",
+      "ast_node": "If",
+      "enclosing_control": "space > 0 and n_seed_orders < 4",
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "continue",
+      "successor_nonblank": "continue",
+      "surrounding_context": [
+        {
+          "line": 603,
+          "text": "                if c in excluded or day > sp_[\"cutoff\"] or day < sp_.get(\"start\", 0):"
+        },
+        {
+          "line": 604,
+          "text": "                    continue"
+        },
+        {
+          "line": 605,
+          "text": "                if c == \"STRAWBERRY\" and day < KNOBS[\"straw_delay\"]:"
+        },
+        {
+          "line": 606,
+          "text": "                    continue"
+        },
+        {
+          "line": 607,
+          "text": "                T_sell = max(0, 29 - day - sp_[\"first\"])"
+        }
+      ],
+      "context_sha256": "dd7930bc7d1a9ca8f19ba8dbf6eb92bb276370e106a2b65da7e3ea1a4fa869ba",
+      "textual_match_lines": [
+        605
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "seed_reject_strawberry_delay",
+      "intended_function": "economy",
+      "resolved_line": 606,
+      "exact_source_text": "continue",
+      "ast_node": "Continue",
+      "enclosing_control": "c == 'STRAWBERRY' and day < KNOBS['straw_delay']",
+      "expected_enclosing_control": "c == \"STRAWBERRY\" and day < KNOBS[\"straw_delay\"]",
+      "predecessor_nonblank": "if c == \"STRAWBERRY\" and day < KNOBS[\"straw_delay\"]:",
+      "successor_nonblank": "T_sell = max(0, 29 - day - sp_[\"first\"])",
+      "surrounding_context": [
+        {
+          "line": 604,
+          "text": "                    continue"
+        },
+        {
+          "line": 605,
+          "text": "                if c == \"STRAWBERRY\" and day < KNOBS[\"straw_delay\"]:"
+        },
+        {
+          "line": 606,
+          "text": "                    continue"
+        },
+        {
+          "line": 607,
+          "text": "                T_sell = max(0, 29 - day - sp_[\"first\"])"
+        },
+        {
+          "line": 608,
+          "text": "                if T_sell <= 0:"
+        }
+      ],
+      "context_sha256": "08118dc6d0056d48052ddee1b220c5f8b17882f08e1120e9ec0fddea01e2f2fa",
+      "textual_match_lines": [
+        538,
+        604,
+        606,
+        609,
+        615,
+        619,
+        630
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "seed_sell_horizon",
+      "intended_function": "economy",
+      "resolved_line": 607,
+      "exact_source_text": "T_sell = max(0, 29 - day - sp_[\"first\"])",
+      "ast_node": "Assign",
+      "enclosing_control": "space > 0 and n_seed_orders < 4",
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "continue",
+      "successor_nonblank": "if T_sell <= 0:",
+      "surrounding_context": [
+        {
+          "line": 605,
+          "text": "                if c == \"STRAWBERRY\" and day < KNOBS[\"straw_delay\"]:"
+        },
+        {
+          "line": 606,
+          "text": "                    continue"
+        },
+        {
+          "line": 607,
+          "text": "                T_sell = max(0, 29 - day - sp_[\"first\"])"
+        },
+        {
+          "line": 608,
+          "text": "                if T_sell <= 0:"
+        },
+        {
+          "line": 609,
+          "text": "                    continue"
+        }
+      ],
+      "context_sha256": "f8e698a24698878ca1f766b552ae9b7ee9544547fba7b3f800aa984655fbb2d4",
+      "textual_match_lines": [
+        607
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "seed_reject_sell_horizon",
+      "intended_function": "economy",
+      "resolved_line": 609,
+      "exact_source_text": "continue",
+      "ast_node": "Continue",
+      "enclosing_control": "T_sell <= 0",
+      "expected_enclosing_control": "T_sell <= 0",
+      "predecessor_nonblank": "if T_sell <= 0:",
+      "successor_nonblank": "inv_c = obs[\"market\"][\"inventory\"].get(c, I0)",
+      "surrounding_context": [
+        {
+          "line": 607,
+          "text": "                T_sell = max(0, 29 - day - sp_[\"first\"])"
+        },
+        {
+          "line": 608,
+          "text": "                if T_sell <= 0:"
+        },
+        {
+          "line": 609,
+          "text": "                    continue"
+        },
+        {
+          "line": 610,
+          "text": "                inv_c = obs[\"market\"][\"inventory\"].get(c, I0)"
+        },
+        {
+          "line": 611,
+          "text": "                cushion_left = max(0.0, sp_.get(\"cushion\", 0) - max(0.0, inv_c - I0))"
+        }
+      ],
+      "context_sha256": "c18babf8eb55677581fc30b4bd141ce3d1603f519b142d242bb6cc553c334679",
+      "textual_match_lines": [
+        538,
+        604,
+        606,
+        609,
+        615,
+        619,
+        630
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "seed_demand_room",
+      "intended_function": "economy",
+      "resolved_line": 613,
+      "exact_source_text": "room_units = pool - committed[c] - seed_orders.get(c, 0) * sp_[\"units\"]",
+      "ast_node": "Assign",
+      "enclosing_control": "space > 0 and n_seed_orders < 4",
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "pool = DEMAND_SHARE * (max(0.0, I0 - inv_c) + cushion_left + _daily_demand(obs, c, day, day + sp_[\"first\"]) * (29 - day))",
+      "successor_nonblank": "if room_units < sp_[\"units\"] * 0.5:",
+      "surrounding_context": [
+        {
+          "line": 611,
+          "text": "                cushion_left = max(0.0, sp_.get(\"cushion\", 0) - max(0.0, inv_c - I0))"
+        },
+        {
+          "line": 612,
+          "text": "                pool = DEMAND_SHARE * (max(0.0, I0 - inv_c) + cushion_left + _daily_demand(obs, c, day, day + sp_[\"first\"]) * (29 - day))"
+        },
+        {
+          "line": 613,
+          "text": "                room_units = pool - committed[c] - seed_orders.get(c, 0) * sp_[\"units\"]"
+        },
+        {
+          "line": 614,
+          "text": "                if room_units < sp_[\"units\"] * 0.5:"
+        },
+        {
+          "line": 615,
+          "text": "                    continue"
+        }
+      ],
+      "context_sha256": "e8f79fa41970f81d1e5c78801385be6d80d20eb3760d4d0796ffd04f85f81a9d",
+      "textual_match_lines": [
+        613
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "seed_room_guard",
+      "intended_function": "economy",
+      "resolved_line": 614,
+      "exact_source_text": "if room_units < sp_[\"units\"] * 0.5:",
+      "ast_node": "If",
+      "enclosing_control": "space > 0 and n_seed_orders < 4",
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "room_units = pool - committed[c] - seed_orders.get(c, 0) * sp_[\"units\"]",
+      "successor_nonblank": "continue",
+      "surrounding_context": [
+        {
+          "line": 612,
+          "text": "                pool = DEMAND_SHARE * (max(0.0, I0 - inv_c) + cushion_left + _daily_demand(obs, c, day, day + sp_[\"first\"]) * (29 - day))"
+        },
+        {
+          "line": 613,
+          "text": "                room_units = pool - committed[c] - seed_orders.get(c, 0) * sp_[\"units\"]"
+        },
+        {
+          "line": 614,
+          "text": "                if room_units < sp_[\"units\"] * 0.5:"
+        },
+        {
+          "line": 615,
+          "text": "                    continue"
+        },
+        {
+          "line": 616,
+          "text": "                price = min(prices.get(c, sp_[\"base\"]), sp_[\"base\"] * 2.0)"
+        }
+      ],
+      "context_sha256": "76ebaafff2b36fe204272e9f41a7359c5753f22abc5c608edaf2542137208017",
+      "textual_match_lines": [
+        614
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "seed_reject_room",
+      "intended_function": "economy",
+      "resolved_line": 615,
+      "exact_source_text": "continue",
+      "ast_node": "Continue",
+      "enclosing_control": "room_units < sp_['units'] * 0.5",
+      "expected_enclosing_control": "room_units < sp_[\"units\"] * 0.5",
+      "predecessor_nonblank": "if room_units < sp_[\"units\"] * 0.5:",
+      "successor_nonblank": "price = min(prices.get(c, sp_[\"base\"]), sp_[\"base\"] * 2.0)",
+      "surrounding_context": [
+        {
+          "line": 613,
+          "text": "                room_units = pool - committed[c] - seed_orders.get(c, 0) * sp_[\"units\"]"
+        },
+        {
+          "line": 614,
+          "text": "                if room_units < sp_[\"units\"] * 0.5:"
+        },
+        {
+          "line": 615,
+          "text": "                    continue"
+        },
+        {
+          "line": 616,
+          "text": "                price = min(prices.get(c, sp_[\"base\"]), sp_[\"base\"] * 2.0)"
+        },
+        {
+          "line": 617,
+          "text": "                val = min(sp_[\"units\"], room_units) * price / sp_[\"cycle\"]"
+        }
+      ],
+      "context_sha256": "d84f836d1bedf4db01ff9fdabb610d587fefb181ec9212f9957ec72356af1f7f",
+      "textual_match_lines": [
+        538,
+        604,
+        606,
+        609,
+        615,
+        619,
+        630
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "seed_value",
+      "intended_function": "economy",
+      "resolved_line": 617,
+      "exact_source_text": "val = min(sp_[\"units\"], room_units) * price / sp_[\"cycle\"]",
+      "ast_node": "Assign",
+      "enclosing_control": "space > 0 and n_seed_orders < 4",
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "price = min(prices.get(c, sp_[\"base\"]), sp_[\"base\"] * 2.0)",
+      "successor_nonblank": "if val < sp_[\"min_val\"]:",
+      "surrounding_context": [
+        {
+          "line": 615,
+          "text": "                    continue"
+        },
+        {
+          "line": 616,
+          "text": "                price = min(prices.get(c, sp_[\"base\"]), sp_[\"base\"] * 2.0)"
+        },
+        {
+          "line": 617,
+          "text": "                val = min(sp_[\"units\"], room_units) * price / sp_[\"cycle\"]"
+        },
+        {
+          "line": 618,
+          "text": "                if val < sp_[\"min_val\"]:"
+        },
+        {
+          "line": 619,
+          "text": "                    continue"
+        }
+      ],
+      "context_sha256": "80e8f5eef0817032ba53f68b87744a3af9ff439774ed6c811aac6233d7b012af",
+      "textual_match_lines": [
+        617
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "seed_min_value_guard",
+      "intended_function": "economy",
+      "resolved_line": 618,
+      "exact_source_text": "if val < sp_[\"min_val\"]:",
+      "ast_node": "If",
+      "enclosing_control": "space > 0 and n_seed_orders < 4",
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "val = min(sp_[\"units\"], room_units) * price / sp_[\"cycle\"]",
+      "successor_nonblank": "continue",
+      "surrounding_context": [
+        {
+          "line": 616,
+          "text": "                price = min(prices.get(c, sp_[\"base\"]), sp_[\"base\"] * 2.0)"
+        },
+        {
+          "line": 617,
+          "text": "                val = min(sp_[\"units\"], room_units) * price / sp_[\"cycle\"]"
+        },
+        {
+          "line": 618,
+          "text": "                if val < sp_[\"min_val\"]:"
+        },
+        {
+          "line": 619,
+          "text": "                    continue"
+        },
+        {
+          "line": 620,
+          "text": "                if best is None or val > best[0]:"
+        }
+      ],
+      "context_sha256": "05c30354410dba33c063e7391630136af2547c45c831def0969fa8454831026b",
+      "textual_match_lines": [
+        618
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "seed_reject_min_value",
+      "intended_function": "economy",
+      "resolved_line": 619,
+      "exact_source_text": "continue",
+      "ast_node": "Continue",
+      "enclosing_control": "val < sp_['min_val']",
+      "expected_enclosing_control": "val < sp_[\"min_val\"]",
+      "predecessor_nonblank": "if val < sp_[\"min_val\"]:",
+      "successor_nonblank": "if best is None or val > best[0]:",
+      "surrounding_context": [
+        {
+          "line": 617,
+          "text": "                val = min(sp_[\"units\"], room_units) * price / sp_[\"cycle\"]"
+        },
+        {
+          "line": 618,
+          "text": "                if val < sp_[\"min_val\"]:"
+        },
+        {
+          "line": 619,
+          "text": "                    continue"
+        },
+        {
+          "line": 620,
+          "text": "                if best is None or val > best[0]:"
+        },
+        {
+          "line": 621,
+          "text": "                    best = (val, c, room_units)"
+        }
+      ],
+      "context_sha256": "25a85f4cd0f78a4ed7109422c3fb9bb479cda44a3cd7b72afef5d4d001a06a57",
+      "textual_match_lines": [
+        538,
+        604,
+        606,
+        609,
+        615,
+        619,
+        630
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "seed_best_update_guard",
+      "intended_function": "economy",
+      "resolved_line": 620,
+      "exact_source_text": "if best is None or val > best[0]:",
+      "ast_node": "If",
+      "enclosing_control": "space > 0 and n_seed_orders < 4",
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "continue",
+      "successor_nonblank": "best = (val, c, room_units)",
+      "surrounding_context": [
+        {
+          "line": 618,
+          "text": "                if val < sp_[\"min_val\"]:"
+        },
+        {
+          "line": 619,
+          "text": "                    continue"
+        },
+        {
+          "line": 620,
+          "text": "                if best is None or val > best[0]:"
+        },
+        {
+          "line": 621,
+          "text": "                    best = (val, c, room_units)"
+        },
+        {
+          "line": 622,
+          "text": "            if best is None:"
+        }
+      ],
+      "context_sha256": "9f5a2af7b65d30f8b05917b15472286c2892ec50673fe8a3a43a70e2f3b8ad0d",
+      "textual_match_lines": [
+        620
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "seed_best_updated",
+      "intended_function": "economy",
+      "resolved_line": 621,
+      "exact_source_text": "best = (val, c, room_units)",
+      "ast_node": "Assign",
+      "enclosing_control": "best is None or val > best[0]",
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "if best is None or val > best[0]:",
+      "successor_nonblank": "if best is None:",
+      "surrounding_context": [
+        {
+          "line": 619,
+          "text": "                    continue"
+        },
+        {
+          "line": 620,
+          "text": "                if best is None or val > best[0]:"
+        },
+        {
+          "line": 621,
+          "text": "                    best = (val, c, room_units)"
+        },
+        {
+          "line": 622,
+          "text": "            if best is None:"
+        },
+        {
+          "line": 623,
+          "text": "                break"
+        }
+      ],
+      "context_sha256": "bc38f6546db3d31ee061d9cf7322eb016b28e2d40ba29f6c9e1f55253e544423",
+      "textual_match_lines": [
+        621
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "seed_no_best",
+      "intended_function": "economy",
+      "resolved_line": 622,
+      "exact_source_text": "if best is None:",
+      "ast_node": "If",
+      "enclosing_control": "space > 0 and n_seed_orders < 4",
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "best = (val, c, room_units)",
+      "successor_nonblank": "break",
+      "surrounding_context": [
+        {
+          "line": 620,
+          "text": "                if best is None or val > best[0]:"
+        },
+        {
+          "line": 621,
+          "text": "                    best = (val, c, room_units)"
+        },
+        {
+          "line": 622,
+          "text": "            if best is None:"
+        },
+        {
+          "line": 623,
+          "text": "                break"
+        },
+        {
+          "line": 624,
+          "text": "            _val, c, room_units = best"
+        }
+      ],
+      "context_sha256": "4af2c5fc8ac0437e5ddf5323d799c7d36eac34d832bd4002f0e9f45abc235e48",
+      "textual_match_lines": [
+        622
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "seed_best_selected",
+      "intended_function": "economy",
+      "resolved_line": 624,
+      "exact_source_text": "_val, c, room_units = best",
+      "ast_node": "Assign",
+      "enclosing_control": "space > 0 and n_seed_orders < 4",
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "break",
+      "successor_nonblank": "k = min(space, int(room_units // CROP_SPECS[c][\"units\"]), int(free // CROP_SPECS[c][\"seed\"]), 20)",
+      "surrounding_context": [
+        {
+          "line": 622,
+          "text": "            if best is None:"
+        },
+        {
+          "line": 623,
+          "text": "                break"
+        },
+        {
+          "line": 624,
+          "text": "            _val, c, room_units = best"
+        },
+        {
+          "line": 625,
+          "text": "            k = min(space, int(room_units // CROP_SPECS[c][\"units\"]), int(free // CROP_SPECS[c][\"seed\"]), 20)"
+        },
+        {
+          "line": 626,
+          "text": "            while k > 0 and _load_model(v, seeds_on_hand + k, n_total, pending_place, day) >= _max_hands_for_day(day):"
+        }
+      ],
+      "context_sha256": "35afb0c911af0447a50a1bd937e4745a373c0a59f8ca8a707a84c07f14f567c6",
+      "textual_match_lines": [
+        624
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "seed_initial_quantity",
+      "intended_function": "economy",
+      "resolved_line": 625,
+      "exact_source_text": "k = min(space, int(room_units // CROP_SPECS[c][\"units\"]), int(free // CROP_SPECS[c][\"seed\"]), 20)",
+      "ast_node": "Assign",
+      "enclosing_control": "space > 0 and n_seed_orders < 4",
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "_val, c, room_units = best",
+      "successor_nonblank": "while k > 0 and _load_model(v, seeds_on_hand + k, n_total, pending_place, day) >= _max_hands_for_day(day):",
+      "surrounding_context": [
+        {
+          "line": 623,
+          "text": "                break"
+        },
+        {
+          "line": 624,
+          "text": "            _val, c, room_units = best"
+        },
+        {
+          "line": 625,
+          "text": "            k = min(space, int(room_units // CROP_SPECS[c][\"units\"]), int(free // CROP_SPECS[c][\"seed\"]), 20)"
+        },
+        {
+          "line": 626,
+          "text": "            while k > 0 and _load_model(v, seeds_on_hand + k, n_total, pending_place, day) >= _max_hands_for_day(day):"
+        },
+        {
+          "line": 627,
+          "text": "                k -= 1"
+        }
+      ],
+      "context_sha256": "07659893143db5b3cd913a5a9fe86fc20fc276e2022f76da9906f50fdf37632b",
+      "textual_match_lines": [
+        625
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "seed_labor_reduction",
+      "intended_function": "economy",
+      "resolved_line": 627,
+      "exact_source_text": "k -= 1",
+      "ast_node": "AugAssign",
+      "enclosing_control": "k > 0 and _load_model(v, seeds_on_hand + k, n_total, pending_place, day) >= _max_hands_for_day(day)",
+      "expected_enclosing_control": "k > 0 and _load_model(v, seeds_on_hand + k, n_total, pending_place, day) >= _max_hands_for_day(day)",
+      "predecessor_nonblank": "while k > 0 and _load_model(v, seeds_on_hand + k, n_total, pending_place, day) >= _max_hands_for_day(day):",
+      "successor_nonblank": "if k <= 0:",
+      "surrounding_context": [
+        {
+          "line": 625,
+          "text": "            k = min(space, int(room_units // CROP_SPECS[c][\"units\"]), int(free // CROP_SPECS[c][\"seed\"]), 20)"
+        },
+        {
+          "line": 626,
+          "text": "            while k > 0 and _load_model(v, seeds_on_hand + k, n_total, pending_place, day) >= _max_hands_for_day(day):"
+        },
+        {
+          "line": 627,
+          "text": "                k -= 1"
+        },
+        {
+          "line": 628,
+          "text": "            if k <= 0:"
+        },
+        {
+          "line": 629,
+          "text": "                excluded.add(c)"
+        }
+      ],
+      "context_sha256": "e8bd0c6844e667be84fe2ba994625a7ca2725481c97a061a282d97170ad25d20",
+      "textual_match_lines": [
+        552,
+        558,
+        627
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "seed_reject_zero_quantity",
+      "intended_function": "economy",
+      "resolved_line": 629,
+      "exact_source_text": "excluded.add(c)",
+      "ast_node": "Expr",
+      "enclosing_control": "k <= 0",
+      "expected_enclosing_control": "k <= 0",
+      "predecessor_nonblank": "if k <= 0:",
+      "successor_nonblank": "continue",
+      "surrounding_context": [
+        {
+          "line": 627,
+          "text": "                k -= 1"
+        },
+        {
+          "line": 628,
+          "text": "            if k <= 0:"
+        },
+        {
+          "line": 629,
+          "text": "                excluded.add(c)"
+        },
+        {
+          "line": 630,
+          "text": "                continue"
+        },
+        {
+          "line": 631,
+          "text": "            excluded.add(c)"
+        }
+      ],
+      "context_sha256": "563404a015112e70c92a6cfdbc4f6eaea485522d8b31f1e5dc6fb7a53e5d7e08",
+      "textual_match_lines": [
+        629,
+        631
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "seed_order_recorded",
+      "intended_function": "economy",
+      "resolved_line": 632,
+      "exact_source_text": "seed_orders[c] = seed_orders.get(c, 0) + k",
+      "ast_node": "Assign",
+      "enclosing_control": "space > 0 and n_seed_orders < 4",
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "excluded.add(c)",
+      "successor_nonblank": "free -= CROP_SPECS[c][\"seed\"] * k",
+      "surrounding_context": [
+        {
+          "line": 630,
+          "text": "                continue"
+        },
+        {
+          "line": 631,
+          "text": "            excluded.add(c)"
+        },
+        {
+          "line": 632,
+          "text": "            seed_orders[c] = seed_orders.get(c, 0) + k"
+        },
+        {
+          "line": 633,
+          "text": "            free -= CROP_SPECS[c][\"seed\"] * k"
+        },
+        {
+          "line": 634,
+          "text": "            seeds_on_hand += k"
+        }
+      ],
+      "context_sha256": "21fd55b04a897e34ecfaf005068685882ea4a162ba35797bad6be7fa1c6a8032",
+      "textual_match_lines": [
+        632
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "orch_tasks_built",
+      "intended_function": "_orchestrate",
+      "resolved_line": 1003,
+      "exact_source_text": "free = [j for j in range(len(positions)) if j not in busy]",
+      "ast_node": "Assign",
+      "enclosing_control": null,
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "tasks.append((tp, kind))",
+      "successor_nonblank": "if not free or not tasks:",
+      "surrounding_context": [
+        {
+          "line": 1001,
+          "text": "        for tp in lst:"
+        },
+        {
+          "line": 1002,
+          "text": "            tasks.append((tp, kind))"
+        },
+        {
+          "line": 1003,
+          "text": "    free = [j for j in range(len(positions)) if j not in busy]"
+        },
+        {
+          "line": 1004,
+          "text": "    if not free or not tasks:"
+        },
+        {
+          "line": 1005,
+          "text": "        return {}"
+        }
+      ],
+      "context_sha256": "5cec9cae37e38eac9ea4a7506752564103d59e158aa5291d568b4ae499d545a1",
+      "textual_match_lines": [
+        1003
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "orch_empty_guard",
+      "intended_function": "_orchestrate",
+      "resolved_line": 1004,
+      "exact_source_text": "if not free or not tasks:",
+      "ast_node": "If",
+      "enclosing_control": null,
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "free = [j for j in range(len(positions)) if j not in busy]",
+      "successor_nonblank": "return {}",
+      "surrounding_context": [
+        {
+          "line": 1002,
+          "text": "            tasks.append((tp, kind))"
+        },
+        {
+          "line": 1003,
+          "text": "    free = [j for j in range(len(positions)) if j not in busy]"
+        },
+        {
+          "line": 1004,
+          "text": "    if not free or not tasks:"
+        },
+        {
+          "line": 1005,
+          "text": "        return {}"
+        },
+        {
+          "line": 1006,
+          "text": "    # units already standing on a tile with an open task keep it (chain in progress)"
+        }
+      ],
+      "context_sha256": "8479ca2cb80848f63f1a1971e66d8e3d61bc83995652efeae26f073c2ff4cbeb",
+      "textual_match_lines": [
+        1004
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "orch_reject_no_fertilizer",
+      "intended_function": "_orchestrate",
+      "resolved_line": 1013,
+      "exact_source_text": "continue",
+      "ast_node": "Continue",
+      "enclosing_control": "kind == 'fert' and carry.get('FERTILIZER', 0) <= 0",
+      "expected_enclosing_control": "kind == \"fert\" and carry.get(\"FERTILIZER\", 0) <= 0",
+      "predecessor_nonblank": "if kind == \"fert\" and carry.get(\"FERTILIZER\", 0) <= 0:",
+      "successor_nonblank": "if kind == \"plant\" and not any(seeds_left.get(c, 0) > 0 for c in CROP_SPECS):",
+      "surrounding_context": [
+        {
+          "line": 1011,
+          "text": "        for ti, (tp, kind) in enumerate(tasks):"
+        },
+        {
+          "line": 1012,
+          "text": "            if kind == \"fert\" and carry.get(\"FERTILIZER\", 0) <= 0:"
+        },
+        {
+          "line": 1013,
+          "text": "                continue"
+        },
+        {
+          "line": 1014,
+          "text": "            if kind == \"plant\" and not any(seeds_left.get(c, 0) > 0 for c in CROP_SPECS):"
+        },
+        {
+          "line": 1015,
+          "text": "                continue"
+        }
+      ],
+      "context_sha256": "87fcd4839ff2310a7431b87f2d1d0e1ab1762a4f87692eb9dcec4d46ca5fe389",
+      "textual_match_lines": [
+        1000,
+        1013,
+        1015,
+        1018,
+        1027
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "orch_reject_no_seed",
+      "intended_function": "_orchestrate",
+      "resolved_line": 1015,
+      "exact_source_text": "continue",
+      "ast_node": "Continue",
+      "enclosing_control": "kind == 'plant' and (not any((seeds_left.get(c, 0) > 0 for c in CROP_SPECS)))",
+      "expected_enclosing_control": "kind == \"plant\" and not any((seeds_left.get(c, 0) > 0 for c in CROP_SPECS))",
+      "predecessor_nonblank": "if kind == \"plant\" and not any(seeds_left.get(c, 0) > 0 for c in CROP_SPECS):",
+      "successor_nonblank": "d = _dist(pj, tp)",
+      "surrounding_context": [
+        {
+          "line": 1013,
+          "text": "                continue"
+        },
+        {
+          "line": 1014,
+          "text": "            if kind == \"plant\" and not any(seeds_left.get(c, 0) > 0 for c in CROP_SPECS):"
+        },
+        {
+          "line": 1015,
+          "text": "                continue"
+        },
+        {
+          "line": 1016,
+          "text": "            d = _dist(pj, tp)"
+        },
+        {
+          "line": 1017,
+          "text": "            if d + 1 > 24 - hour:"
+        }
+      ],
+      "context_sha256": "77fce4cf8812cdbc0997d3af55b013649d04d0c53eefb62c7079673cf203d84e",
+      "textual_match_lines": [
+        1000,
+        1013,
+        1015,
+        1018,
+        1027
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "orch_reject_unreachable",
+      "intended_function": "_orchestrate",
+      "resolved_line": 1018,
+      "exact_source_text": "continue",
+      "ast_node": "Continue",
+      "enclosing_control": "d + 1 > 24 - hour",
+      "expected_enclosing_control": "d + 1 > 24 - hour",
+      "predecessor_nonblank": "if d + 1 > 24 - hour:",
+      "successor_nonblank": "cost = d + ORCH_PRIO[kind]",
+      "surrounding_context": [
+        {
+          "line": 1016,
+          "text": "            d = _dist(pj, tp)"
+        },
+        {
+          "line": 1017,
+          "text": "            if d + 1 > 24 - hour:"
+        },
+        {
+          "line": 1018,
+          "text": "                continue"
+        },
+        {
+          "line": 1019,
+          "text": "            cost = d + ORCH_PRIO[kind]"
+        },
+        {
+          "line": 1020,
+          "text": "            if prev.get(j, (None, None))[0] == tp:"
+        }
+      ],
+      "context_sha256": "24263c9c39e1dfb998bf4b315a1e281a8e3797667a72c375d73d77ca3233a0a5",
+      "textual_match_lines": [
+        1000,
+        1013,
+        1015,
+        1018,
+        1027
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "orch_pair_feasible",
+      "intended_function": "_orchestrate",
+      "resolved_line": 1022,
+      "exact_source_text": "pairs.append((cost, j, ti))",
+      "ast_node": "Expr",
+      "enclosing_control": null,
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "cost -= ORCH_COMMIT",
+      "successor_nonblank": "pairs.sort()",
+      "surrounding_context": [
+        {
+          "line": 1020,
+          "text": "            if prev.get(j, (None, None))[0] == tp:"
+        },
+        {
+          "line": 1021,
+          "text": "                cost -= ORCH_COMMIT"
+        },
+        {
+          "line": 1022,
+          "text": "            pairs.append((cost, j, ti))"
+        },
+        {
+          "line": 1023,
+          "text": "    pairs.sort()"
+        },
+        {
+          "line": 1024,
+          "text": "    assigned = {}; used_t = set()"
+        }
+      ],
+      "context_sha256": "66f90947c2cff90915c8dcdb352b5567a01c22e8c8e0b0f0d3f2eb7901acb2ee",
+      "textual_match_lines": [
+        1022
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "orch_reject_collision",
+      "intended_function": "_orchestrate",
+      "resolved_line": 1027,
+      "exact_source_text": "continue",
+      "ast_node": "Continue",
+      "enclosing_control": "j in assigned or ti in used_t",
+      "expected_enclosing_control": "j in assigned or ti in used_t",
+      "predecessor_nonblank": "if j in assigned or ti in used_t:",
+      "successor_nonblank": "assigned[j] = tasks[ti]; used_t.add(ti)",
+      "surrounding_context": [
+        {
+          "line": 1025,
+          "text": "    for cost, j, ti in pairs:"
+        },
+        {
+          "line": 1026,
+          "text": "        if j in assigned or ti in used_t:"
+        },
+        {
+          "line": 1027,
+          "text": "            continue"
+        },
+        {
+          "line": 1028,
+          "text": "        assigned[j] = tasks[ti]; used_t.add(ti)"
+        },
+        {
+          "line": 1029,
+          "text": "        if len(assigned) == len(free):"
+        }
+      ],
+      "context_sha256": "0148329939516fac78fe74fd8f968bd60a073f9b0da738a90f202799781792c1",
+      "textual_match_lines": [
+        1000,
+        1013,
+        1015,
+        1018,
+        1027
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "orch_assignment",
+      "intended_function": "_orchestrate",
+      "resolved_line": 1028,
+      "exact_source_text": "assigned[j] = tasks[ti]; used_t.add(ti)",
+      "ast_node": "Assign",
+      "enclosing_control": null,
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "continue",
+      "successor_nonblank": "if len(assigned) == len(free):",
+      "surrounding_context": [
+        {
+          "line": 1026,
+          "text": "        if j in assigned or ti in used_t:"
+        },
+        {
+          "line": 1027,
+          "text": "            continue"
+        },
+        {
+          "line": 1028,
+          "text": "        assigned[j] = tasks[ti]; used_t.add(ti)"
+        },
+        {
+          "line": 1029,
+          "text": "        if len(assigned) == len(free):"
+        },
+        {
+          "line": 1030,
+          "text": "            break"
+        }
+      ],
+      "context_sha256": "ada7ab68e49fbede266a80ad6aff525105dcbf94fb2b2b46e24d802a0f8ecfb8",
+      "textual_match_lines": [
+        1028
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "route_claims_built",
+      "intended_function": "_build_route",
+      "resolved_line": 732,
+      "exact_source_text": "cands = [(p2, t) for p2, t in v[\"animals\"] if p2 not in claimed and _animal_pending(t, day)]",
+      "ast_node": "Assign",
+      "enclosing_control": null,
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "claimed.update(r[\"stops\"])",
+      "successor_nonblank": "if EG[\"work_filter\"] and day == 29:",
+      "surrounding_context": [
+        {
+          "line": 730,
+          "text": "    for r in S[\"routes\"].values():"
+        },
+        {
+          "line": 731,
+          "text": "        claimed.update(r[\"stops\"])"
+        },
+        {
+          "line": 732,
+          "text": "    cands = [(p2, t) for p2, t in v[\"animals\"] if p2 not in claimed and _animal_pending(t, day)]"
+        },
+        {
+          "line": 733,
+          "text": "    if EG[\"work_filter\"] and day == 29:"
+        },
+        {
+          "line": 734,
+          "text": "        # O5: only animals we can reach, harvest, and still carry home to the shed by the last hour"
+        }
+      ],
+      "context_sha256": "2bdcafe52f37b579dfcc6407b31802fb5c15efa8d0e41395ad4e18dd89614420",
+      "textual_match_lines": [
+        732
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "route_candidates_built",
+      "intended_function": "_build_route",
+      "resolved_line": 733,
+      "exact_source_text": "if EG[\"work_filter\"] and day == 29:",
+      "ast_node": "If",
+      "enclosing_control": null,
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "cands = [(p2, t) for p2, t in v[\"animals\"] if p2 not in claimed and _animal_pending(t, day)]",
+      "successor_nonblank": "# O5: only animals we can reach, harvest, and still carry home to the shed by the last hour",
+      "surrounding_context": [
+        {
+          "line": 731,
+          "text": "        claimed.update(r[\"stops\"])"
+        },
+        {
+          "line": 732,
+          "text": "    cands = [(p2, t) for p2, t in v[\"animals\"] if p2 not in claimed and _animal_pending(t, day)]"
+        },
+        {
+          "line": 733,
+          "text": "    if EG[\"work_filter\"] and day == 29:"
+        },
+        {
+          "line": 734,
+          "text": "        # O5: only animals we can reach, harvest, and still carry home to the shed by the last hour"
+        },
+        {
+          "line": 735,
+          "text": "        cands = [(p2, t) for p2, t in cands if hour + _dist(pos, p2) + 1 + _home_dist(p2, unlocked_shed) <= EG[\"last_hour\"]]"
+        }
+      ],
+      "context_sha256": "6d34cdc61e5880f1541376f121e715800bd90861827c499449de9be53460023f",
+      "textual_match_lines": [
+        733
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "route_nearest_choice",
+      "intended_function": "_build_route",
+      "resolved_line": 758,
+      "exact_source_text": "nxt = _nearest(cur, list(pool.keys()))",
+      "ast_node": "Assign",
+      "enclosing_control": "pool and len(stops) < ROUTE_LEN",
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "while pool and len(stops) < ROUTE_LEN:",
+      "successor_nonblank": "stops.append(nxt)",
+      "surrounding_context": [
+        {
+          "line": 756,
+          "text": "    pool = dict(cands)"
+        },
+        {
+          "line": 757,
+          "text": "    while pool and len(stops) < ROUTE_LEN:"
+        },
+        {
+          "line": 758,
+          "text": "        nxt = _nearest(cur, list(pool.keys()))"
+        },
+        {
+          "line": 759,
+          "text": "        stops.append(nxt)"
+        },
+        {
+          "line": 760,
+          "text": "        cur = nxt"
+        }
+      ],
+      "context_sha256": "717701a90210d65e1489ecd836b963f5669c34e93e3c7ccb6d8cab27f9348c8d",
+      "textual_match_lines": [
+        758
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "route_stop_selected",
+      "intended_function": "_build_route",
+      "resolved_line": 759,
+      "exact_source_text": "stops.append(nxt)",
+      "ast_node": "Expr",
+      "enclosing_control": "pool and len(stops) < ROUTE_LEN",
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "nxt = _nearest(cur, list(pool.keys()))",
+      "successor_nonblank": "cur = nxt",
+      "surrounding_context": [
+        {
+          "line": 757,
+          "text": "    while pool and len(stops) < ROUTE_LEN:"
+        },
+        {
+          "line": 758,
+          "text": "        nxt = _nearest(cur, list(pool.keys()))"
+        },
+        {
+          "line": 759,
+          "text": "        stops.append(nxt)"
+        },
+        {
+          "line": 760,
+          "text": "        cur = nxt"
+        },
+        {
+          "line": 761,
+          "text": "        del pool[nxt]"
+        }
+      ],
+      "context_sha256": "bda4e2ee312036023f2f9170416d7c41382318da39d0384da0435a6dfb5f9de9",
+      "textual_match_lines": [
+        759
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "site_pasture_candidates",
+      "intended_function": "_pick_site",
+      "resolved_line": 816,
+      "exact_source_text": "c = [s_ for s_ in v[\"empty_pastures\"] if s_ not in S[\"claimed_sites\"]]",
+      "ast_node": "Assign",
+      "enclosing_control": "v['empty_pastures']",
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "if v[\"empty_pastures\"]:",
+      "successor_nonblank": "if c:",
+      "surrounding_context": [
+        {
+          "line": 814,
+          "text": "def _pick_site(v, species=None):"
+        },
+        {
+          "line": 815,
+          "text": "    if v[\"empty_pastures\"]:"
+        },
+        {
+          "line": 816,
+          "text": "        c = [s_ for s_ in v[\"empty_pastures\"] if s_ not in S[\"claimed_sites\"]]"
+        },
+        {
+          "line": 817,
+          "text": "        if c:"
+        },
+        {
+          "line": 818,
+          "text": "            return min(c, key=_shed_dist)"
+        }
+      ],
+      "context_sha256": "c4371a396932a63067256e8805981f1d4172ead36a220f7c443781bbb2598a2e",
+      "textual_match_lines": [
+        816
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "site_select_pasture",
+      "intended_function": "_pick_site",
+      "resolved_line": 818,
+      "exact_source_text": "return min(c, key=_shed_dist)",
+      "ast_node": "Return",
+      "enclosing_control": "c",
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "if c:",
+      "successor_nonblank": "c = [s_ for s_ in v[\"empty\"] if s_ not in S[\"claimed_sites\"] and s_ not in SHED_TILES]",
+      "surrounding_context": [
+        {
+          "line": 816,
+          "text": "        c = [s_ for s_ in v[\"empty_pastures\"] if s_ not in S[\"claimed_sites\"]]"
+        },
+        {
+          "line": 817,
+          "text": "        if c:"
+        },
+        {
+          "line": 818,
+          "text": "            return min(c, key=_shed_dist)"
+        },
+        {
+          "line": 819,
+          "text": "    c = [s_ for s_ in v[\"empty\"] if s_ not in S[\"claimed_sites\"] and s_ not in SHED_TILES]"
+        },
+        {
+          "line": 820,
+          "text": "    if not c:"
+        }
+      ],
+      "context_sha256": "eedc65a74d7314ee80066a67f150990ab44d29d12f3c76ae904a084c30629542",
+      "textual_match_lines": [
+        818
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "site_empty_candidates",
+      "intended_function": "_pick_site",
+      "resolved_line": 819,
+      "exact_source_text": "c = [s_ for s_ in v[\"empty\"] if s_ not in S[\"claimed_sites\"] and s_ not in SHED_TILES]",
+      "ast_node": "Assign",
+      "enclosing_control": null,
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "return min(c, key=_shed_dist)",
+      "successor_nonblank": "if not c:",
+      "surrounding_context": [
+        {
+          "line": 817,
+          "text": "        if c:"
+        },
+        {
+          "line": 818,
+          "text": "            return min(c, key=_shed_dist)"
+        },
+        {
+          "line": 819,
+          "text": "    c = [s_ for s_ in v[\"empty\"] if s_ not in S[\"claimed_sites\"] and s_ not in SHED_TILES]"
+        },
+        {
+          "line": 820,
+          "text": "    if not c:"
+        },
+        {
+          "line": 821,
+          "text": "        return None"
+        }
+      ],
+      "context_sha256": "64225d29a9ada307e2c01e1d5465f4396a275ed245ff12b2650fffe122b6a438",
+      "textual_match_lines": [
+        819
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "site_no_candidate",
+      "intended_function": "_pick_site",
+      "resolved_line": 821,
+      "exact_source_text": "return None",
+      "ast_node": "Return",
+      "enclosing_control": "not c",
+      "expected_enclosing_control": "not c",
+      "predecessor_nonblank": "if not c:",
+      "successor_nonblank": "return min(c, key=lambda s_: (_shed_dist(s_), s_))",
+      "surrounding_context": [
+        {
+          "line": 819,
+          "text": "    c = [s_ for s_ in v[\"empty\"] if s_ not in S[\"claimed_sites\"] and s_ not in SHED_TILES]"
+        },
+        {
+          "line": 820,
+          "text": "    if not c:"
+        },
+        {
+          "line": 821,
+          "text": "        return None"
+        },
+        {
+          "line": 822,
+          "text": "    return min(c, key=lambda s_: (_shed_dist(s_), s_))"
+        },
+        {
+          "line": 823,
+          "text": ""
+        }
+      ],
+      "context_sha256": "d4bce6a2db0ac80408d426ea181a9dbd7657539dc9481a82183777b39c67ce98",
+      "textual_match_lines": [
+        821
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "site_select_empty",
+      "intended_function": "_pick_site",
+      "resolved_line": 822,
+      "exact_source_text": "return min(c, key=lambda s_: (_shed_dist(s_), s_))",
+      "ast_node": "Return",
+      "enclosing_control": null,
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "return None",
+      "successor_nonblank": "def _setup_step(i, pos, v, carry):",
+      "surrounding_context": [
+        {
+          "line": 820,
+          "text": "    if not c:"
+        },
+        {
+          "line": 821,
+          "text": "        return None"
+        },
+        {
+          "line": 822,
+          "text": "    return min(c, key=lambda s_: (_shed_dist(s_), s_))"
+        },
+        {
+          "line": 823,
+          "text": ""
+        },
+        {
+          "line": 824,
+          "text": ""
+        }
+      ],
+      "context_sha256": "b78e9499fab4977f64213e659257bfd8d6a4720fb37b31e5b87912764caf3c52",
+      "textual_match_lines": [
+        822
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "steal_urgent_candidate",
+      "intended_function": "_steal_task",
+      "resolved_line": 952,
+      "exact_source_text": "for idx, (tp, kind) in enumerate(sw):",
+      "ast_node": "For",
+      "enclosing_control": null,
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "cur = v[\"positions\"][j]",
+      "successor_nonblank": "eta += _dist(cur, tp) + 1",
+      "surrounding_context": [
+        {
+          "line": 950,
+          "text": "        eta = 0"
+        },
+        {
+          "line": 951,
+          "text": "        cur = v[\"positions\"][j]"
+        },
+        {
+          "line": 952,
+          "text": "        for idx, (tp, kind) in enumerate(sw):"
+        },
+        {
+          "line": 953,
+          "text": "            eta += _dist(cur, tp) + 1"
+        },
+        {
+          "line": 954,
+          "text": "            cur = tp"
+        }
+      ],
+      "context_sha256": "18134cfb6d4eef87ddece46ce72bfec6eccca8154381414808ff52a929bf7141",
+      "textual_match_lines": [
+        952
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "steal_urgent_late",
+      "intended_function": "_steal_task",
+      "resolved_line": 955,
+      "exact_source_text": "if kind == \"urgent\" and eta > remaining:",
+      "ast_node": "If",
+      "enclosing_control": null,
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "cur = tp",
+      "successor_nonblank": "mine = _dist(pos, tp) + 1",
+      "surrounding_context": [
+        {
+          "line": 953,
+          "text": "            eta += _dist(cur, tp) + 1"
+        },
+        {
+          "line": 954,
+          "text": "            cur = tp"
+        },
+        {
+          "line": 955,
+          "text": "            if kind == \"urgent\" and eta > remaining:"
+        },
+        {
+          "line": 956,
+          "text": "                mine = _dist(pos, tp) + 1"
+        },
+        {
+          "line": 957,
+          "text": "                if mine <= remaining and (best is None or mine < best[0]):"
+        }
+      ],
+      "context_sha256": "f10d95e66728ee6dfe8449832e3ac26e82b4abd65633b4ff5a27e28ce76ea4d5",
+      "textual_match_lines": [
+        955
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "steal_urgent_feasible",
+      "intended_function": "_steal_task",
+      "resolved_line": 957,
+      "exact_source_text": "if mine <= remaining and (best is None or mine < best[0]):",
+      "ast_node": "If",
+      "enclosing_control": "kind == 'urgent' and eta > remaining",
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "mine = _dist(pos, tp) + 1",
+      "successor_nonblank": "best = (mine, j, idx)",
+      "surrounding_context": [
+        {
+          "line": 955,
+          "text": "            if kind == \"urgent\" and eta > remaining:"
+        },
+        {
+          "line": 956,
+          "text": "                mine = _dist(pos, tp) + 1"
+        },
+        {
+          "line": 957,
+          "text": "                if mine <= remaining and (best is None or mine < best[0]):"
+        },
+        {
+          "line": 958,
+          "text": "                    best = (mine, j, idx)"
+        },
+        {
+          "line": 959,
+          "text": "    if best is not None:"
+        }
+      ],
+      "context_sha256": "138955d32383cc09fbbd77300611fce83dbcbdfcfda89b4e9b3a92e5d2d0eea7",
+      "textual_match_lines": [
+        957
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "steal_urgent_best",
+      "intended_function": "_steal_task",
+      "resolved_line": 958,
+      "exact_source_text": "best = (mine, j, idx)",
+      "ast_node": "Assign",
+      "enclosing_control": "mine <= remaining and (best is None or mine < best[0])",
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "if mine <= remaining and (best is None or mine < best[0]):",
+      "successor_nonblank": "if best is not None:",
+      "surrounding_context": [
+        {
+          "line": 956,
+          "text": "                mine = _dist(pos, tp) + 1"
+        },
+        {
+          "line": 957,
+          "text": "                if mine <= remaining and (best is None or mine < best[0]):"
+        },
+        {
+          "line": 958,
+          "text": "                    best = (mine, j, idx)"
+        },
+        {
+          "line": 959,
+          "text": "    if best is not None:"
+        },
+        {
+          "line": 960,
+          "text": "        _m, j, idx = best"
+        }
+      ],
+      "context_sha256": "dd698b4cef5d3e2d75fbb7bb7901449cc97ef906ad6bcd229e4e68ed6793500f",
+      "textual_match_lines": [
+        958
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "steal_general_candidate",
+      "intended_function": "_steal_task",
+      "resolved_line": 969,
+      "exact_source_text": "tp, kind = sw[idx]",
+      "ast_node": "Assign",
+      "enclosing_control": null,
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "for idx in range(len(sw) - 1, 0, -1):",
+      "successor_nonblank": "mine = _dist(pos, tp) + 1",
+      "surrounding_context": [
+        {
+          "line": 967,
+          "text": "            continue"
+        },
+        {
+          "line": 968,
+          "text": "        for idx in range(len(sw) - 1, 0, -1):"
+        },
+        {
+          "line": 969,
+          "text": "            tp, kind = sw[idx]"
+        },
+        {
+          "line": 970,
+          "text": "            mine = _dist(pos, tp) + 1"
+        },
+        {
+          "line": 971,
+          "text": "            if mine > remaining:"
+        }
+      ],
+      "context_sha256": "8ad908b1d498e358015d3a3a0047355ccc79faada767733706cfe3fc5026c71d",
+      "textual_match_lines": [
+        969
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "steal_reject_time",
+      "intended_function": "_steal_task",
+      "resolved_line": 972,
+      "exact_source_text": "continue",
+      "ast_node": "Continue",
+      "enclosing_control": "mine > remaining",
+      "expected_enclosing_control": "mine > remaining",
+      "predecessor_nonblank": "if mine > remaining:",
+      "successor_nonblank": "key = (0 if kind == \"urgent\" else 1, mine, -len(sw))",
+      "surrounding_context": [
+        {
+          "line": 970,
+          "text": "            mine = _dist(pos, tp) + 1"
+        },
+        {
+          "line": 971,
+          "text": "            if mine > remaining:"
+        },
+        {
+          "line": 972,
+          "text": "                continue"
+        },
+        {
+          "line": 973,
+          "text": "            key = (0 if kind == \"urgent\" else 1, mine, -len(sw))"
+        },
+        {
+          "line": 974,
+          "text": "            if best is None or key < best[0]:"
+        }
+      ],
+      "context_sha256": "79028ccc4e5edd1a592c83aed8581d155595c361ef374096de47d103a8cda957",
+      "textual_match_lines": [
+        949,
+        967,
+        972
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "steal_general_score",
+      "intended_function": "_steal_task",
+      "resolved_line": 973,
+      "exact_source_text": "key = (0 if kind == \"urgent\" else 1, mine, -len(sw))",
+      "ast_node": "Assign",
+      "enclosing_control": null,
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "continue",
+      "successor_nonblank": "if best is None or key < best[0]:",
+      "surrounding_context": [
+        {
+          "line": 971,
+          "text": "            if mine > remaining:"
+        },
+        {
+          "line": 972,
+          "text": "                continue"
+        },
+        {
+          "line": 973,
+          "text": "            key = (0 if kind == \"urgent\" else 1, mine, -len(sw))"
+        },
+        {
+          "line": 974,
+          "text": "            if best is None or key < best[0]:"
+        },
+        {
+          "line": 975,
+          "text": "                best = (key, j, idx)"
+        }
+      ],
+      "context_sha256": "15b46e9502dc96ea7decbd10f4a0b59740052fc78b64c630cbab6bbe4479fdb3",
+      "textual_match_lines": [
+        973
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "steal_general_best",
+      "intended_function": "_steal_task",
+      "resolved_line": 975,
+      "exact_source_text": "best = (key, j, idx)",
+      "ast_node": "Assign",
+      "enclosing_control": "best is None or key < best[0]",
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "if best is None or key < best[0]:",
+      "successor_nonblank": "if best is not None:",
+      "surrounding_context": [
+        {
+          "line": 973,
+          "text": "            key = (0 if kind == \"urgent\" else 1, mine, -len(sw))"
+        },
+        {
+          "line": 974,
+          "text": "            if best is None or key < best[0]:"
+        },
+        {
+          "line": 975,
+          "text": "                best = (key, j, idx)"
+        },
+        {
+          "line": 976,
+          "text": "    if best is not None:"
+        },
+        {
+          "line": 977,
+          "text": "        _k, j, idx = best"
+        }
+      ],
+      "context_sha256": "d11ca168bfe659e4cf0d3d29bcba27794ae621c71b82b77360d007da156829a3",
+      "textual_match_lines": [
+        975
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "steal_transfer",
+      "intended_function": "_steal_task",
+      "resolved_line": 978,
+      "exact_source_text": "task = S[\"sweep\"][j].pop(idx)",
+      "ast_node": "Assign",
+      "enclosing_control": "best is not None",
+      "expected_enclosing_control": null,
+      "predecessor_nonblank": "_k, j, idx = best",
+      "successor_nonblank": "S[\"sweep\"][i] = [task]",
+      "surrounding_context": [
+        {
+          "line": 976,
+          "text": "    if best is not None:"
+        },
+        {
+          "line": 977,
+          "text": "        _k, j, idx = best"
+        },
+        {
+          "line": 978,
+          "text": "        task = S[\"sweep\"][j].pop(idx)"
+        },
+        {
+          "line": 979,
+          "text": "        S[\"sweep\"][i] = [task]"
+        },
+        {
+          "line": 980,
+          "text": "        return _crop_step(i, pos, v, day, hour, carry, pools, seeds_left)"
+        }
+      ],
+      "context_sha256": "3a90191fdc6936bda1e5fbca7995fc78a48a2565bd2245c2b24da52c0df65fed",
+      "textual_match_lines": [
+        978
+      ],
+      "structural_match_count": 1,
+      "uniqueness_status": "unique"
+    },
+    {
+      "event": "function_enter",
+      "intended_function": null,
+      "resolved_line": null,
+      "exact_source_text": null,
+      "surrounding_context": null,
+      "context_sha256": null,
+      "uniqueness_status": "synthetic_not_source_anchored"
+    },
+    {
+      "event": "function_return",
+      "intended_function": null,
+      "resolved_line": null,
+      "exact_source_text": null,
+      "surrounding_context": null,
+      "context_sha256": null,
+      "uniqueness_status": "synthetic_not_source_anchored"
+    },
+    {
+      "event": "engine_commit",
+      "intended_function": null,
+      "resolved_line": null,
+      "exact_source_text": null,
+      "surrounding_context": null,
+      "context_sha256": null,
+      "uniqueness_status": "synthetic_not_source_anchored"
+    }
+  ]
+}

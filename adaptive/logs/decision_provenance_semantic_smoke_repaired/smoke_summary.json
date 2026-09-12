@@ -1,0 +1,100 @@
+{
+  "trace_source": "/Users/graceliu/Claude/Projects/Kaggriculture/tools/o42_decision_provenance.py",
+  "o42_source": "/Users/graceliu/Claude/Projects/Kaggriculture/candidates/O42_MAX_HANDS_LATE_EXPAND.py",
+  "o42_sha256": "154d1ff480e9aa05084e323604a1a09ce73b68adbff95dd4f410e6acf4f52813",
+  "criteria": [
+    "money",
+    "steps",
+    "errors",
+    "actions_sha256",
+    "terminal_sha256"
+  ],
+  "semantic_binding_criteria": [
+    "AST node type",
+    "unique structural match inside intended function",
+    "expected enclosing guard for branch-body anchors",
+    "legacy ordinal resolutions demonstrably differ from intended structural resolutions",
+    "runtime predicate assertion whenever either repaired event executes"
+  ],
+  "semantic_event_counts": {
+    "seed_labor_reduction": 3,
+    "seed_reject_zero_quantity": 41
+  },
+  "semantic_event_runtime_coverage_complete": true,
+  "semantic_misbinding_regression": {
+    "seed_labor_reduction_legacy_first_text_line": 552,
+    "seed_labor_reduction_structural_line": 627,
+    "seed_reject_zero_quantity_legacy_second_text_line": 631,
+    "seed_reject_zero_quantity_structural_line": 629
+  },
+  "semantic_binding_smoke_passed": true,
+  "games": 2,
+  "parity_passed": true,
+  "anchor_bindings_passed": true,
+  "rows": [
+    {
+      "opponent": "peter",
+      "seed": 303,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          108813.0,
+          120440.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b01530364ce3693b22afd29b92a2ba4ffc9f4d3358ca8ebc2430d3a177cf62a2",
+        "terminal_sha256": "5962b782d89df8f0fc1312c8d50ed2965c2527d6c36e7befec5fec51fd843e1a",
+        "events": 186504,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 3,
+          "seed_reject_zero_quantity": 22
+        }
+      },
+      "baseline": {
+        "money": [
+          108813.0,
+          120440.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b01530364ce3693b22afd29b92a2ba4ffc9f4d3358ca8ebc2430d3a177cf62a2",
+        "terminal_sha256": "5962b782d89df8f0fc1312c8d50ed2965c2527d6c36e7befec5fec51fd843e1a"
+      },
+      "log": "adaptive/logs/decision_provenance_semantic_smoke_repaired/peter_seat0_seed303.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 303,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          98154.0,
+          85731.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "667fb59643b49f6471bc83d6ed7cb016ccc3f11c7e1d7f9b3b0e56194f5ac811",
+        "terminal_sha256": "6a585e5841fb7e071d5d85225e90e9ffe2bdfd32c5cd3c7a6ff5ebe05ac00ba3",
+        "events": 191964,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 19
+        }
+      },
+      "baseline": {
+        "money": [
+          98154.0,
+          85731.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "667fb59643b49f6471bc83d6ed7cb016ccc3f11c7e1d7f9b3b0e56194f5ac811",
+        "terminal_sha256": "6a585e5841fb7e071d5d85225e90e9ffe2bdfd32c5cd3c7a6ff5ebe05ac00ba3"
+      },
+      "log": "adaptive/logs/decision_provenance_semantic_smoke_repaired/peter_seat1_seed303.jsonl.gz"
+    }
+  ]
+}
