@@ -1,0 +1,3397 @@
+{
+  "trace_source": "/Users/graceliu/Claude/Projects/Kaggriculture/tools/o42_decision_provenance.py",
+  "trace_scope": "animal_route_upstream",
+  "o42_source": "/Users/graceliu/Claude/Projects/Kaggriculture/candidates/O42_MAX_HANDS_LATE_EXPAND.py",
+  "o42_sha256": "154d1ff480e9aa05084e323604a1a09ce73b68adbff95dd4f410e6acf4f52813",
+  "criteria": [
+    "money",
+    "steps",
+    "errors",
+    "actions_sha256",
+    "terminal_sha256"
+  ],
+  "semantic_binding_criteria": [
+    "AST node type",
+    "unique structural match inside intended function",
+    "expected enclosing guard for branch-body anchors",
+    "legacy ordinal resolutions demonstrably differ from intended structural resolutions",
+    "runtime predicate assertion whenever either repaired event executes"
+  ],
+  "semantic_event_counts": {
+    "seed_labor_reduction": 0,
+    "seed_reject_zero_quantity": 0
+  },
+  "semantic_event_runtime_coverage_complete": false,
+  "semantic_misbinding_regression": {
+    "seed_labor_reduction_legacy_first_text_line": 552,
+    "seed_labor_reduction_structural_line": 627,
+    "seed_reject_zero_quantity_legacy_second_text_line": 631,
+    "seed_reject_zero_quantity_structural_line": 629
+  },
+  "semantic_binding_smoke_passed": true,
+  "games": 80,
+  "parity_passed": true,
+  "anchor_bindings_passed": true,
+  "rows": [
+    {
+      "opponent": "yangk",
+      "seed": 301,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          53404.0,
+          63535.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f8d5e15e7bba451411915ea92f229ba649c623dfcd85a5af1008ec530cceef71",
+        "terminal_sha256": "fc643e048c743d2390d078bf2f1a4eb653860c540c49c7b7f0bf308cfca32ae2",
+        "events": 244759,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4838,
+          "raw": 32322,
+          "claimed_removed": 13471,
+          "pending_rejected": 18536,
+          "post_pending": 315,
+          "day29_removed": 0,
+          "pre_construct": 315,
+          "selected_stops": 190
+        }
+      },
+      "baseline": {
+        "money": [
+          53404.0,
+          63535.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f8d5e15e7bba451411915ea92f229ba649c623dfcd85a5af1008ec530cceef71",
+        "terminal_sha256": "fc643e048c743d2390d078bf2f1a4eb653860c540c49c7b7f0bf308cfca32ae2"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed301.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 301,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          63535.0,
+          53404.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "572c7ddc8686c999fc06eeaa81bb4096dd85c570a719c6fb64c1b6f5b65b06e2",
+        "terminal_sha256": "a2f822fb5bfd59b9c59c6a2035b30342cb59795acec77063ae6a1c6be3116fc7",
+        "events": 244759,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4838,
+          "raw": 32322,
+          "claimed_removed": 13471,
+          "pending_rejected": 18536,
+          "post_pending": 315,
+          "day29_removed": 0,
+          "pre_construct": 315,
+          "selected_stops": 190
+        }
+      },
+      "baseline": {
+        "money": [
+          63535.0,
+          53404.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "572c7ddc8686c999fc06eeaa81bb4096dd85c570a719c6fb64c1b6f5b65b06e2",
+        "terminal_sha256": "a2f822fb5bfd59b9c59c6a2035b30342cb59795acec77063ae6a1c6be3116fc7"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed301.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 302,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          131085.0,
+          122711.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "67cb88239267bc4e2c9cae7ea4141941afc0969b2d9dce07878ba9e5d3c8cfdc",
+        "terminal_sha256": "80c5d009ed7b1a8295763bb38bee0679d94f9e2713f7c618e4dd1f06218fca6b",
+        "events": 424863,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4440,
+          "raw": 54189,
+          "claimed_removed": 19960,
+          "pending_rejected": 33360,
+          "post_pending": 869,
+          "day29_removed": 0,
+          "pre_construct": 869,
+          "selected_stops": 331
+        }
+      },
+      "baseline": {
+        "money": [
+          131085.0,
+          122711.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "67cb88239267bc4e2c9cae7ea4141941afc0969b2d9dce07878ba9e5d3c8cfdc",
+        "terminal_sha256": "80c5d009ed7b1a8295763bb38bee0679d94f9e2713f7c618e4dd1f06218fca6b"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed302.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 302,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          122711.0,
+          131045.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "3e974e07c03d31b54693a6c86ce7a049077b6d495e85cde377815c3cf1f789da",
+        "terminal_sha256": "dd9ced527675e57e997dd06cff9f5c480d9854f593a21c8c4d439562e6d3ce81",
+        "events": 425472,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4443,
+          "raw": 54231,
+          "claimed_removed": 19959,
+          "pending_rejected": 33403,
+          "post_pending": 869,
+          "day29_removed": 0,
+          "pre_construct": 869,
+          "selected_stops": 331
+        }
+      },
+      "baseline": {
+        "money": [
+          122711.0,
+          131045.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "3e974e07c03d31b54693a6c86ce7a049077b6d495e85cde377815c3cf1f789da",
+        "terminal_sha256": "dd9ced527675e57e997dd06cff9f5c480d9854f593a21c8c4d439562e6d3ce81"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed302.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 303,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          116927.0,
+          116970.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "5b55effa2844d11cb0c9fc05db67d80fc2911c74a3e78dc539f7140debc3b7a3",
+        "terminal_sha256": "2bb46121a6049f85058459a28e810afb74367bfcfc2ee753f535bdf8c8b061b5",
+        "events": 327890,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4768,
+          "raw": 46068,
+          "claimed_removed": 20169,
+          "pending_rejected": 25328,
+          "post_pending": 571,
+          "day29_removed": 0,
+          "pre_construct": 571,
+          "selected_stops": 265
+        }
+      },
+      "baseline": {
+        "money": [
+          116927.0,
+          116970.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "5b55effa2844d11cb0c9fc05db67d80fc2911c74a3e78dc539f7140debc3b7a3",
+        "terminal_sha256": "2bb46121a6049f85058459a28e810afb74367bfcfc2ee753f535bdf8c8b061b5"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed303.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 303,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          116953.0,
+          115379.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "197456e50863e2defe2f672ce408b40624fa4cedfd0c698d7749201bc6b63e90",
+        "terminal_sha256": "183ddddd0d1794109388db27f015f845baa22924b9118b5af21e1b778279b2d4",
+        "events": 316754,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4737,
+          "raw": 44645,
+          "claimed_removed": 19799,
+          "pending_rejected": 24299,
+          "post_pending": 547,
+          "day29_removed": 0,
+          "pre_construct": 548,
+          "selected_stops": 260
+        }
+      },
+      "baseline": {
+        "money": [
+          116953.0,
+          115379.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "197456e50863e2defe2f672ce408b40624fa4cedfd0c698d7749201bc6b63e90",
+        "terminal_sha256": "183ddddd0d1794109388db27f015f845baa22924b9118b5af21e1b778279b2d4"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed303.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 304,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          46199.0,
+          60806.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfaa660a630270b20cb16ec2c0ac83db553daca182df462ae62a4758009fac84",
+        "terminal_sha256": "87ebfdd8c78059e9f04662bf574204f75bf21ace8d7b0b9bb916f24b52ae9b9d",
+        "events": 291030,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4929,
+          "raw": 38857,
+          "claimed_removed": 16388,
+          "pending_rejected": 22070,
+          "post_pending": 399,
+          "day29_removed": 0,
+          "pre_construct": 399,
+          "selected_stops": 218
+        }
+      },
+      "baseline": {
+        "money": [
+          46199.0,
+          60806.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfaa660a630270b20cb16ec2c0ac83db553daca182df462ae62a4758009fac84",
+        "terminal_sha256": "87ebfdd8c78059e9f04662bf574204f75bf21ace8d7b0b9bb916f24b52ae9b9d"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed304.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 304,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          60806.0,
+          46199.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "87db92a41aea3f18268aefcb8451a722f1c55e4b1a63b6404005e3ffdebcde8e",
+        "terminal_sha256": "1f9d3da317c115e9904259aa1c10b2c5fe59189b7168ff6de44a84180e365600",
+        "events": 291030,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4929,
+          "raw": 38857,
+          "claimed_removed": 16388,
+          "pending_rejected": 22070,
+          "post_pending": 399,
+          "day29_removed": 0,
+          "pre_construct": 399,
+          "selected_stops": 218
+        }
+      },
+      "baseline": {
+        "money": [
+          60806.0,
+          46199.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "87db92a41aea3f18268aefcb8451a722f1c55e4b1a63b6404005e3ffdebcde8e",
+        "terminal_sha256": "1f9d3da317c115e9904259aa1c10b2c5fe59189b7168ff6de44a84180e365600"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed304.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 305,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          108454.0,
+          106131.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "5b55effa2844d11cb0c9fc05db67d80fc2911c74a3e78dc539f7140debc3b7a3",
+        "terminal_sha256": "6203875aa4366f733ebdd3448435687b6c473ca5962e582cb726bd852dca1c01",
+        "events": 349757,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4698,
+          "raw": 50042,
+          "claimed_removed": 22446,
+          "pending_rejected": 26925,
+          "post_pending": 671,
+          "day29_removed": 0,
+          "pre_construct": 671,
+          "selected_stops": 290
+        }
+      },
+      "baseline": {
+        "money": [
+          108454.0,
+          106131.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "5b55effa2844d11cb0c9fc05db67d80fc2911c74a3e78dc539f7140debc3b7a3",
+        "terminal_sha256": "6203875aa4366f733ebdd3448435687b6c473ca5962e582cb726bd852dca1c01"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed305.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 305,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          105998.0,
+          108701.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "197456e50863e2defe2f672ce408b40624fa4cedfd0c698d7749201bc6b63e90",
+        "terminal_sha256": "0b516ff512e872c54844aa09512aa7079791ede54ec7313cd97193e2abf02c8f",
+        "events": 349333,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4665,
+          "raw": 49646,
+          "claimed_removed": 22166,
+          "pending_rejected": 26809,
+          "post_pending": 671,
+          "day29_removed": 0,
+          "pre_construct": 673,
+          "selected_stops": 292
+        }
+      },
+      "baseline": {
+        "money": [
+          105998.0,
+          108701.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "197456e50863e2defe2f672ce408b40624fa4cedfd0c698d7749201bc6b63e90",
+        "terminal_sha256": "0b516ff512e872c54844aa09512aa7079791ede54ec7313cd97193e2abf02c8f"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed305.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 306,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          118548.0,
+          137998.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "31d9132a90d10954aa2833f09c5a19662650601912b88d6d34148779ac93197c",
+        "terminal_sha256": "75dac84a6aea08af4c2d62a4a0ca3a44f41781a3023f9e194f05b205f4cd763c",
+        "events": 419126,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 3961,
+          "raw": 57953,
+          "claimed_removed": 23846,
+          "pending_rejected": 32867,
+          "post_pending": 1240,
+          "day29_removed": 0,
+          "pre_construct": 1241,
+          "selected_stops": 406
+        }
+      },
+      "baseline": {
+        "money": [
+          118548.0,
+          137998.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "31d9132a90d10954aa2833f09c5a19662650601912b88d6d34148779ac93197c",
+        "terminal_sha256": "75dac84a6aea08af4c2d62a4a0ca3a44f41781a3023f9e194f05b205f4cd763c"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed306.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 306,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          137998.0,
+          118548.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "d6d4fab456e2339171a9d279182ff7c9a59b3d9b272a3d97aeecc90953433028",
+        "terminal_sha256": "be951b1b5f45865ac698fca921762f9c20562ac5cd209017302a380b130b0160",
+        "events": 419126,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 3961,
+          "raw": 57953,
+          "claimed_removed": 23846,
+          "pending_rejected": 32867,
+          "post_pending": 1240,
+          "day29_removed": 0,
+          "pre_construct": 1241,
+          "selected_stops": 406
+        }
+      },
+      "baseline": {
+        "money": [
+          137998.0,
+          118548.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "d6d4fab456e2339171a9d279182ff7c9a59b3d9b272a3d97aeecc90953433028",
+        "terminal_sha256": "be951b1b5f45865ac698fca921762f9c20562ac5cd209017302a380b130b0160"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed306.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 307,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          65611.0,
+          79665.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f8d5e15e7bba451411915ea92f229ba649c623dfcd85a5af1008ec530cceef71",
+        "terminal_sha256": "554540e1135a06cf937e4f301e334c31abf92dc7c7f594bf6c4f46a2290f06a9",
+        "events": 253434,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4986,
+          "raw": 33358,
+          "claimed_removed": 13892,
+          "pending_rejected": 19151,
+          "post_pending": 315,
+          "day29_removed": 0,
+          "pre_construct": 315,
+          "selected_stops": 190
+        }
+      },
+      "baseline": {
+        "money": [
+          65611.0,
+          79665.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f8d5e15e7bba451411915ea92f229ba649c623dfcd85a5af1008ec530cceef71",
+        "terminal_sha256": "554540e1135a06cf937e4f301e334c31abf92dc7c7f594bf6c4f46a2290f06a9"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed307.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 307,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          79671.0,
+          65605.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "572c7ddc8686c999fc06eeaa81bb4096dd85c570a719c6fb64c1b6f5b65b06e2",
+        "terminal_sha256": "8d3bdf9eaeea22a5c0b99e27c33c330029e7288ed16b5cc4f33eeef016d39cc7",
+        "events": 253234,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4984,
+          "raw": 33344,
+          "claimed_removed": 13892,
+          "pending_rejected": 19137,
+          "post_pending": 315,
+          "day29_removed": 0,
+          "pre_construct": 315,
+          "selected_stops": 190
+        }
+      },
+      "baseline": {
+        "money": [
+          79671.0,
+          65605.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "572c7ddc8686c999fc06eeaa81bb4096dd85c570a719c6fb64c1b6f5b65b06e2",
+        "terminal_sha256": "8d3bdf9eaeea22a5c0b99e27c33c330029e7288ed16b5cc4f33eeef016d39cc7"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed307.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 308,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          84339.0,
+          93401.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f8d5e15e7bba451411915ea92f229ba649c623dfcd85a5af1008ec530cceef71",
+        "terminal_sha256": "3acfdb11ef376e9b2fa44506c0110a1fef02fe23a4bc91533d5b2f736038d4ff",
+        "events": 274916,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4894,
+          "raw": 36349,
+          "claimed_removed": 14970,
+          "pending_rejected": 21010,
+          "post_pending": 369,
+          "day29_removed": 0,
+          "pre_construct": 369,
+          "selected_stops": 208
+        }
+      },
+      "baseline": {
+        "money": [
+          84339.0,
+          93401.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f8d5e15e7bba451411915ea92f229ba649c623dfcd85a5af1008ec530cceef71",
+        "terminal_sha256": "3acfdb11ef376e9b2fa44506c0110a1fef02fe23a4bc91533d5b2f736038d4ff"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed308.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 308,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          93401.0,
+          84339.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "572c7ddc8686c999fc06eeaa81bb4096dd85c570a719c6fb64c1b6f5b65b06e2",
+        "terminal_sha256": "ef99bb73fbfa74dca2a8227218f49eb395b894c445951d01cfc6990682351d67",
+        "events": 274916,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4894,
+          "raw": 36349,
+          "claimed_removed": 14970,
+          "pending_rejected": 21010,
+          "post_pending": 369,
+          "day29_removed": 0,
+          "pre_construct": 369,
+          "selected_stops": 208
+        }
+      },
+      "baseline": {
+        "money": [
+          93401.0,
+          84339.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "572c7ddc8686c999fc06eeaa81bb4096dd85c570a719c6fb64c1b6f5b65b06e2",
+        "terminal_sha256": "ef99bb73fbfa74dca2a8227218f49eb395b894c445951d01cfc6990682351d67"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed308.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 309,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          124485.0,
+          151609.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "d74d95604dc261868212a8c270433bba65a49761ff086c0577cafe9909199c60",
+        "terminal_sha256": "e2e50a24273dbb0331c0ddbdc3f9c75ad9c2114da27ebd8279dbc8b9d7e036fc",
+        "events": 457765,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4197,
+          "raw": 61464,
+          "claimed_removed": 24193,
+          "pending_rejected": 36035,
+          "post_pending": 1236,
+          "day29_removed": 0,
+          "pre_construct": 1238,
+          "selected_stops": 403
+        }
+      },
+      "baseline": {
+        "money": [
+          124485.0,
+          151609.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "d74d95604dc261868212a8c270433bba65a49761ff086c0577cafe9909199c60",
+        "terminal_sha256": "e2e50a24273dbb0331c0ddbdc3f9c75ad9c2114da27ebd8279dbc8b9d7e036fc"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed309.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 309,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          151609.0,
+          124466.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "a1d2c43cdf8e2754f5ba4478883eacd7739ff9697846bfee46d2e294af80fdb6",
+        "terminal_sha256": "b92cacd0807afb7da7cb252580b5f2345fa5e00c5e1a1df8eeaa49c1e2864877",
+        "events": 461002,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4211,
+          "raw": 61702,
+          "claimed_removed": 24192,
+          "pending_rejected": 36274,
+          "post_pending": 1236,
+          "day29_removed": 0,
+          "pre_construct": 1238,
+          "selected_stops": 403
+        }
+      },
+      "baseline": {
+        "money": [
+          151609.0,
+          124466.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "a1d2c43cdf8e2754f5ba4478883eacd7739ff9697846bfee46d2e294af80fdb6",
+        "terminal_sha256": "b92cacd0807afb7da7cb252580b5f2345fa5e00c5e1a1df8eeaa49c1e2864877"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed309.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 310,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          115809.0,
+          118931.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "d74d95604dc261868212a8c270433bba65a49761ff086c0577cafe9909199c60",
+        "terminal_sha256": "4067186a6ee84c1e70fdccd7311f4886f9939a710e4a5996e56f152206ee1d36",
+        "events": 355960,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4414,
+          "raw": 47613,
+          "claimed_removed": 19159,
+          "pending_rejected": 27755,
+          "post_pending": 699,
+          "day29_removed": 0,
+          "pre_construct": 702,
+          "selected_stops": 300
+        }
+      },
+      "baseline": {
+        "money": [
+          115809.0,
+          118931.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "d74d95604dc261868212a8c270433bba65a49761ff086c0577cafe9909199c60",
+        "terminal_sha256": "4067186a6ee84c1e70fdccd7311f4886f9939a710e4a5996e56f152206ee1d36"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed310.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 310,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          118931.0,
+          115809.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "a1d2c43cdf8e2754f5ba4478883eacd7739ff9697846bfee46d2e294af80fdb6",
+        "terminal_sha256": "a639cbf3aaaa28bccda9c2b5c8bd46d48084b2aaefc15490b579d906b9824b33",
+        "events": 355960,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4414,
+          "raw": 47613,
+          "claimed_removed": 19159,
+          "pending_rejected": 27755,
+          "post_pending": 699,
+          "day29_removed": 0,
+          "pre_construct": 702,
+          "selected_stops": 300
+        }
+      },
+      "baseline": {
+        "money": [
+          118931.0,
+          115809.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "a1d2c43cdf8e2754f5ba4478883eacd7739ff9697846bfee46d2e294af80fdb6",
+        "terminal_sha256": "a639cbf3aaaa28bccda9c2b5c8bd46d48084b2aaefc15490b579d906b9824b33"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed310.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 311,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          113823.0,
+          108315.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "5b55effa2844d11cb0c9fc05db67d80fc2911c74a3e78dc539f7140debc3b7a3",
+        "terminal_sha256": "da9de2e0abce24b36eea683461e455460f095b04214fce9fe9252f95fe14c729",
+        "events": 442031,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4597,
+          "raw": 59471,
+          "claimed_removed": 24270,
+          "pending_rejected": 34220,
+          "post_pending": 981,
+          "day29_removed": 0,
+          "pre_construct": 985,
+          "selected_stops": 354
+        }
+      },
+      "baseline": {
+        "money": [
+          113823.0,
+          108315.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "5b55effa2844d11cb0c9fc05db67d80fc2911c74a3e78dc539f7140debc3b7a3",
+        "terminal_sha256": "da9de2e0abce24b36eea683461e455460f095b04214fce9fe9252f95fe14c729"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed311.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 311,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          108315.0,
+          113823.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "197456e50863e2defe2f672ce408b40624fa4cedfd0c698d7749201bc6b63e90",
+        "terminal_sha256": "7d97bfcecd05af3aafb0a47f7705babdbc73c959d31d2b88dd9ad9fc347ade8c",
+        "events": 442031,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4597,
+          "raw": 59471,
+          "claimed_removed": 24270,
+          "pending_rejected": 34220,
+          "post_pending": 981,
+          "day29_removed": 0,
+          "pre_construct": 985,
+          "selected_stops": 354
+        }
+      },
+      "baseline": {
+        "money": [
+          108315.0,
+          113823.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "197456e50863e2defe2f672ce408b40624fa4cedfd0c698d7749201bc6b63e90",
+        "terminal_sha256": "7d97bfcecd05af3aafb0a47f7705babdbc73c959d31d2b88dd9ad9fc347ade8c"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed311.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 312,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          51565.0,
+          63149.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "5b55effa2844d11cb0c9fc05db67d80fc2911c74a3e78dc539f7140debc3b7a3",
+        "terminal_sha256": "cf6b0095389ea017de0fd9a0fe3adf578e47d99576c4cc056d3c50a486ff6bc7",
+        "events": 287379,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4992,
+          "raw": 41997,
+          "claimed_removed": 19688,
+          "pending_rejected": 21862,
+          "post_pending": 447,
+          "day29_removed": 0,
+          "pre_construct": 448,
+          "selected_stops": 235
+        }
+      },
+      "baseline": {
+        "money": [
+          51565.0,
+          63149.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "5b55effa2844d11cb0c9fc05db67d80fc2911c74a3e78dc539f7140debc3b7a3",
+        "terminal_sha256": "cf6b0095389ea017de0fd9a0fe3adf578e47d99576c4cc056d3c50a486ff6bc7"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed312.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 312,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          63149.0,
+          51565.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "197456e50863e2defe2f672ce408b40624fa4cedfd0c698d7749201bc6b63e90",
+        "terminal_sha256": "0997e1b99ea036d3752cd10050012a8db2cb762f07545fb073a8da0cd45eb3c5",
+        "events": 287379,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4992,
+          "raw": 41997,
+          "claimed_removed": 19688,
+          "pending_rejected": 21862,
+          "post_pending": 447,
+          "day29_removed": 0,
+          "pre_construct": 448,
+          "selected_stops": 235
+        }
+      },
+      "baseline": {
+        "money": [
+          63149.0,
+          51565.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "197456e50863e2defe2f672ce408b40624fa4cedfd0c698d7749201bc6b63e90",
+        "terminal_sha256": "0997e1b99ea036d3752cd10050012a8db2cb762f07545fb073a8da0cd45eb3c5"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed312.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 313,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          99952.0,
+          108764.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "5b55effa2844d11cb0c9fc05db67d80fc2911c74a3e78dc539f7140debc3b7a3",
+        "terminal_sha256": "836d4ddf9e77d0e38ce2ba8ecf11035afae9a90d303f90b5a9f4920e92e30b18",
+        "events": 302540,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4617,
+          "raw": 44719,
+          "claimed_removed": 21167,
+          "pending_rejected": 22973,
+          "post_pending": 579,
+          "day29_removed": 0,
+          "pre_construct": 579,
+          "selected_stops": 267
+        }
+      },
+      "baseline": {
+        "money": [
+          99952.0,
+          108764.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "5b55effa2844d11cb0c9fc05db67d80fc2911c74a3e78dc539f7140debc3b7a3",
+        "terminal_sha256": "836d4ddf9e77d0e38ce2ba8ecf11035afae9a90d303f90b5a9f4920e92e30b18"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed313.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 313,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          108472.0,
+          99945.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "197456e50863e2defe2f672ce408b40624fa4cedfd0c698d7749201bc6b63e90",
+        "terminal_sha256": "434bfbe450b81607686fa3bd93dc3ffce05103c406f301fc06962af62542b49f",
+        "events": 302540,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4617,
+          "raw": 44719,
+          "claimed_removed": 21167,
+          "pending_rejected": 22973,
+          "post_pending": 579,
+          "day29_removed": 0,
+          "pre_construct": 579,
+          "selected_stops": 267
+        }
+      },
+      "baseline": {
+        "money": [
+          108472.0,
+          99945.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "197456e50863e2defe2f672ce408b40624fa4cedfd0c698d7749201bc6b63e90",
+        "terminal_sha256": "434bfbe450b81607686fa3bd93dc3ffce05103c406f301fc06962af62542b49f"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed313.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 314,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          159362.0,
+          131687.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "afc9de2a381002ef1ea8fa0ad7f15a118309d413d8d19574cff03d326a78aaf7",
+        "terminal_sha256": "86b9fc940ca337d39caaf092d48dd2c5b431437caf10e27799df544e429cb88e",
+        "events": 461211,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4299,
+          "raw": 60125,
+          "claimed_removed": 23194,
+          "pending_rejected": 35804,
+          "post_pending": 1127,
+          "day29_removed": 0,
+          "pre_construct": 1127,
+          "selected_stops": 378
+        }
+      },
+      "baseline": {
+        "money": [
+          159362.0,
+          131687.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "afc9de2a381002ef1ea8fa0ad7f15a118309d413d8d19574cff03d326a78aaf7",
+        "terminal_sha256": "86b9fc940ca337d39caaf092d48dd2c5b431437caf10e27799df544e429cb88e"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed314.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 314,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          130715.0,
+          159703.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "3e974e07c03d31b54693a6c86ce7a049077b6d495e85cde377815c3cf1f789da",
+        "terminal_sha256": "39444edfb645c068915851d34d0aface98bbab26f815787fca98fec4fd39c79f",
+        "events": 458948,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4279,
+          "raw": 59928,
+          "claimed_removed": 23140,
+          "pending_rejected": 35661,
+          "post_pending": 1127,
+          "day29_removed": 0,
+          "pre_construct": 1127,
+          "selected_stops": 378
+        }
+      },
+      "baseline": {
+        "money": [
+          130715.0,
+          159703.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "3e974e07c03d31b54693a6c86ce7a049077b6d495e85cde377815c3cf1f789da",
+        "terminal_sha256": "39444edfb645c068915851d34d0aface98bbab26f815787fca98fec4fd39c79f"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed314.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 315,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          76771.0,
+          88626.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f8d5e15e7bba451411915ea92f229ba649c623dfcd85a5af1008ec530cceef71",
+        "terminal_sha256": "349ca244ba20a11be0962f771a7773ec75972fc49414e60c750b4e25683a3218",
+        "events": 251404,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4968,
+          "raw": 33232,
+          "claimed_removed": 13895,
+          "pending_rejected": 19022,
+          "post_pending": 315,
+          "day29_removed": 0,
+          "pre_construct": 315,
+          "selected_stops": 190
+        }
+      },
+      "baseline": {
+        "money": [
+          76771.0,
+          88626.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f8d5e15e7bba451411915ea92f229ba649c623dfcd85a5af1008ec530cceef71",
+        "terminal_sha256": "349ca244ba20a11be0962f771a7773ec75972fc49414e60c750b4e25683a3218"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed315.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 315,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          88626.0,
+          76771.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "572c7ddc8686c999fc06eeaa81bb4096dd85c570a719c6fb64c1b6f5b65b06e2",
+        "terminal_sha256": "c4c2f30cf2c261fe148b8fcd6127d6061078126489cd4c4ab7df277bc5b464b9",
+        "events": 251404,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4968,
+          "raw": 33232,
+          "claimed_removed": 13895,
+          "pending_rejected": 19022,
+          "post_pending": 315,
+          "day29_removed": 0,
+          "pre_construct": 315,
+          "selected_stops": 190
+        }
+      },
+      "baseline": {
+        "money": [
+          88626.0,
+          76771.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "572c7ddc8686c999fc06eeaa81bb4096dd85c570a719c6fb64c1b6f5b65b06e2",
+        "terminal_sha256": "c4c2f30cf2c261fe148b8fcd6127d6061078126489cd4c4ab7df277bc5b464b9"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed315.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 316,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          105190.0,
+          112105.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "67cb88239267bc4e2c9cae7ea4141941afc0969b2d9dce07878ba9e5d3c8cfdc",
+        "terminal_sha256": "9f14501386af43d441ff1774ce7b0741ca1e1017ed5ac178bd19bd4fc0a34b9d",
+        "events": 356600,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4455,
+          "raw": 48105,
+          "claimed_removed": 19583,
+          "pending_rejected": 27823,
+          "post_pending": 699,
+          "day29_removed": 0,
+          "pre_construct": 700,
+          "selected_stops": 298
+        }
+      },
+      "baseline": {
+        "money": [
+          105190.0,
+          112105.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "67cb88239267bc4e2c9cae7ea4141941afc0969b2d9dce07878ba9e5d3c8cfdc",
+        "terminal_sha256": "9f14501386af43d441ff1774ce7b0741ca1e1017ed5ac178bd19bd4fc0a34b9d"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed316.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 316,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          111152.0,
+          107268.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "3e974e07c03d31b54693a6c86ce7a049077b6d495e85cde377815c3cf1f789da",
+        "terminal_sha256": "456370982b475e87a4021e57f0cafbdae4e64a17999e5297d076de4468659bb8",
+        "events": 358833,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4463,
+          "raw": 48201,
+          "claimed_removed": 19473,
+          "pending_rejected": 28029,
+          "post_pending": 699,
+          "day29_removed": 0,
+          "pre_construct": 701,
+          "selected_stops": 299
+        }
+      },
+      "baseline": {
+        "money": [
+          111152.0,
+          107268.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "3e974e07c03d31b54693a6c86ce7a049077b6d495e85cde377815c3cf1f789da",
+        "terminal_sha256": "456370982b475e87a4021e57f0cafbdae4e64a17999e5297d076de4468659bb8"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed316.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 317,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          106371.0,
+          107959.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "5b55effa2844d11cb0c9fc05db67d80fc2911c74a3e78dc539f7140debc3b7a3",
+        "terminal_sha256": "ca7a30702118e3b9350405aadd7f26fe5530d0ca0a40b5e2af514e86914b3e21",
+        "events": 341706,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4591,
+          "raw": 48758,
+          "claimed_removed": 21854,
+          "pending_rejected": 26233,
+          "post_pending": 671,
+          "day29_removed": 0,
+          "pre_construct": 671,
+          "selected_stops": 290
+        }
+      },
+      "baseline": {
+        "money": [
+          106371.0,
+          107959.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "5b55effa2844d11cb0c9fc05db67d80fc2911c74a3e78dc539f7140debc3b7a3",
+        "terminal_sha256": "ca7a30702118e3b9350405aadd7f26fe5530d0ca0a40b5e2af514e86914b3e21"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed317.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 317,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          107955.0,
+          106375.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "197456e50863e2defe2f672ce408b40624fa4cedfd0c698d7749201bc6b63e90",
+        "terminal_sha256": "6c011b12f41cea3445deb0d79647ac9b50610df1ed51bbc79b6d8a462cfec4ee",
+        "events": 341026,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4587,
+          "raw": 48710,
+          "claimed_removed": 21854,
+          "pending_rejected": 26185,
+          "post_pending": 671,
+          "day29_removed": 0,
+          "pre_construct": 671,
+          "selected_stops": 290
+        }
+      },
+      "baseline": {
+        "money": [
+          107955.0,
+          106375.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "197456e50863e2defe2f672ce408b40624fa4cedfd0c698d7749201bc6b63e90",
+        "terminal_sha256": "6c011b12f41cea3445deb0d79647ac9b50610df1ed51bbc79b6d8a462cfec4ee"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed317.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 318,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          77228.0,
+          98225.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "5b55effa2844d11cb0c9fc05db67d80fc2911c74a3e78dc539f7140debc3b7a3",
+        "terminal_sha256": "f49ee3e7d54bd93c5c9178c36493dee628db76917561705966f987d8ddfd3d02",
+        "events": 462207,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4485,
+          "raw": 63536,
+          "claimed_removed": 25755,
+          "pending_rejected": 36625,
+          "post_pending": 1156,
+          "day29_removed": 0,
+          "pre_construct": 1161,
+          "selected_stops": 392
+        }
+      },
+      "baseline": {
+        "money": [
+          77228.0,
+          98225.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "5b55effa2844d11cb0c9fc05db67d80fc2911c74a3e78dc539f7140debc3b7a3",
+        "terminal_sha256": "f49ee3e7d54bd93c5c9178c36493dee628db76917561705966f987d8ddfd3d02"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed318.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 318,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          98223.0,
+          77230.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "197456e50863e2defe2f672ce408b40624fa4cedfd0c698d7749201bc6b63e90",
+        "terminal_sha256": "e096ffb9bfb54e17a19130d2e680496642b5c5039187658c32d4a95a1ba657ce",
+        "events": 461969,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4484,
+          "raw": 63519,
+          "claimed_removed": 25754,
+          "pending_rejected": 36609,
+          "post_pending": 1156,
+          "day29_removed": 0,
+          "pre_construct": 1161,
+          "selected_stops": 392
+        }
+      },
+      "baseline": {
+        "money": [
+          98223.0,
+          77230.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "197456e50863e2defe2f672ce408b40624fa4cedfd0c698d7749201bc6b63e90",
+        "terminal_sha256": "e096ffb9bfb54e17a19130d2e680496642b5c5039187658c32d4a95a1ba657ce"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed318.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 319,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          81350.0,
+          95014.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "5b55effa2844d11cb0c9fc05db67d80fc2911c74a3e78dc539f7140debc3b7a3",
+        "terminal_sha256": "4cde1b4516134291913136abdef62d03ff7de12c32e317e8b39b65e01052f0c7",
+        "events": 280650,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4831,
+          "raw": 40548,
+          "claimed_removed": 18761,
+          "pending_rejected": 21340,
+          "post_pending": 447,
+          "day29_removed": 0,
+          "pre_construct": 447,
+          "selected_stops": 234
+        }
+      },
+      "baseline": {
+        "money": [
+          81350.0,
+          95014.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "5b55effa2844d11cb0c9fc05db67d80fc2911c74a3e78dc539f7140debc3b7a3",
+        "terminal_sha256": "4cde1b4516134291913136abdef62d03ff7de12c32e317e8b39b65e01052f0c7"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed319.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 319,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          95014.0,
+          81350.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "197456e50863e2defe2f672ce408b40624fa4cedfd0c698d7749201bc6b63e90",
+        "terminal_sha256": "e1f4af62638a8db0eb29535327a7fc1ebcd6d55d33067906b035576ee9471d2e",
+        "events": 280650,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4831,
+          "raw": 40548,
+          "claimed_removed": 18761,
+          "pending_rejected": 21340,
+          "post_pending": 447,
+          "day29_removed": 0,
+          "pre_construct": 447,
+          "selected_stops": 234
+        }
+      },
+      "baseline": {
+        "money": [
+          95014.0,
+          81350.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "197456e50863e2defe2f672ce408b40624fa4cedfd0c698d7749201bc6b63e90",
+        "terminal_sha256": "e1f4af62638a8db0eb29535327a7fc1ebcd6d55d33067906b035576ee9471d2e"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed319.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 320,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          101601.0,
+          110588.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "5b55effa2844d11cb0c9fc05db67d80fc2911c74a3e78dc539f7140debc3b7a3",
+        "terminal_sha256": "6531e88f16c07e7ea962140a1274072fa6b60976817d1b1fc36bbfce818f936e",
+        "events": 308366,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4660,
+          "raw": 45192,
+          "claimed_removed": 21242,
+          "pending_rejected": 23371,
+          "post_pending": 579,
+          "day29_removed": 0,
+          "pre_construct": 579,
+          "selected_stops": 267
+        }
+      },
+      "baseline": {
+        "money": [
+          101601.0,
+          110588.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "5b55effa2844d11cb0c9fc05db67d80fc2911c74a3e78dc539f7140debc3b7a3",
+        "terminal_sha256": "6531e88f16c07e7ea962140a1274072fa6b60976817d1b1fc36bbfce818f936e"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed320.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 320,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          110588.0,
+          101596.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "197456e50863e2defe2f672ce408b40624fa4cedfd0c698d7749201bc6b63e90",
+        "terminal_sha256": "fb72eb5b3ac2e033109c7f041da4b2f22bca44972b0b84a743889939222e8e64",
+        "events": 308825,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4663,
+          "raw": 45225,
+          "claimed_removed": 21242,
+          "pending_rejected": 23404,
+          "post_pending": 579,
+          "day29_removed": 0,
+          "pre_construct": 579,
+          "selected_stops": 267
+        }
+      },
+      "baseline": {
+        "money": [
+          110588.0,
+          101596.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "197456e50863e2defe2f672ce408b40624fa4cedfd0c698d7749201bc6b63e90",
+        "terminal_sha256": "fb72eb5b3ac2e033109c7f041da4b2f22bca44972b0b84a743889939222e8e64"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed320.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 321,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          74935.0,
+          100925.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b3f8df2c58e12252ea0cf0334737abf26ed3e0dca92f55e081bd087b16c7f027",
+        "terminal_sha256": "80e62184397952839d2eb267142e4d73f4db2df58d53cdc2e7be44331d02aee5",
+        "events": 486339,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4346,
+          "raw": 63304,
+          "claimed_removed": 23136,
+          "pending_rejected": 38945,
+          "post_pending": 1223,
+          "day29_removed": 0,
+          "pre_construct": 1223,
+          "selected_stops": 402
+        }
+      },
+      "baseline": {
+        "money": [
+          74935.0,
+          100925.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b3f8df2c58e12252ea0cf0334737abf26ed3e0dca92f55e081bd087b16c7f027",
+        "terminal_sha256": "80e62184397952839d2eb267142e4d73f4db2df58d53cdc2e7be44331d02aee5"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed321.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 321,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          100925.0,
+          74935.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "590fae3516a15d1c11ce661a7c3dd45ce533efeffd084ed350ad8106371bcbd9",
+        "terminal_sha256": "e0db28902565f02d2a1720a62d698e2287ab935d952b9043d0a306f8ac3a8672",
+        "events": 486339,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4346,
+          "raw": 63304,
+          "claimed_removed": 23136,
+          "pending_rejected": 38945,
+          "post_pending": 1223,
+          "day29_removed": 0,
+          "pre_construct": 1223,
+          "selected_stops": 402
+        }
+      },
+      "baseline": {
+        "money": [
+          100925.0,
+          74935.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "590fae3516a15d1c11ce661a7c3dd45ce533efeffd084ed350ad8106371bcbd9",
+        "terminal_sha256": "e0db28902565f02d2a1720a62d698e2287ab935d952b9043d0a306f8ac3a8672"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed321.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 322,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          71347.0,
+          95613.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "c5acf7fa6c8fb4841f76d8f39eced018be73b65927b8e7e6b2f891c78e219c6e",
+        "terminal_sha256": "256a33a909193dcad27739c6b0bce07407840280919b6583c85d209d2c8b5137",
+        "events": 468227,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4326,
+          "raw": 64039,
+          "claimed_removed": 25730,
+          "pending_rejected": 37068,
+          "post_pending": 1241,
+          "day29_removed": 0,
+          "pre_construct": 1244,
+          "selected_stops": 409
+        }
+      },
+      "baseline": {
+        "money": [
+          71347.0,
+          95613.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "c5acf7fa6c8fb4841f76d8f39eced018be73b65927b8e7e6b2f891c78e219c6e",
+        "terminal_sha256": "256a33a909193dcad27739c6b0bce07407840280919b6583c85d209d2c8b5137"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed322.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 322,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          95613.0,
+          71347.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "ac7446dc0121686034e5ebcc3cfd1ae6d0c7b31adc836336d5e2c2d389e3fde7",
+        "terminal_sha256": "10e865f2a0d9359d8448480e7774e768f5a7aa09b228e2ca39a966b08c8c9a39",
+        "events": 468227,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4326,
+          "raw": 64039,
+          "claimed_removed": 25730,
+          "pending_rejected": 37068,
+          "post_pending": 1241,
+          "day29_removed": 0,
+          "pre_construct": 1244,
+          "selected_stops": 409
+        }
+      },
+      "baseline": {
+        "money": [
+          95613.0,
+          71347.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "ac7446dc0121686034e5ebcc3cfd1ae6d0c7b31adc836336d5e2c2d389e3fde7",
+        "terminal_sha256": "10e865f2a0d9359d8448480e7774e768f5a7aa09b228e2ca39a966b08c8c9a39"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed322.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 323,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          77729.0,
+          88572.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "fdf6019cb9b6e0d5da7fca8957f6ee812348d55985a5d4134c5c2764c39b76db",
+        "terminal_sha256": "8900117b35119dc8ba962c78ed56dfbdb57c3a6022b0677dde2e92f86caf4fc2",
+        "events": 269704,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4531,
+          "raw": 37726,
+          "claimed_removed": 16700,
+          "pending_rejected": 20585,
+          "post_pending": 441,
+          "day29_removed": 0,
+          "pre_construct": 441,
+          "selected_stops": 232
+        }
+      },
+      "baseline": {
+        "money": [
+          77729.0,
+          88572.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "fdf6019cb9b6e0d5da7fca8957f6ee812348d55985a5d4134c5c2764c39b76db",
+        "terminal_sha256": "8900117b35119dc8ba962c78ed56dfbdb57c3a6022b0677dde2e92f86caf4fc2"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed323.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 323,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          88572.0,
+          77729.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "01805f2ad1262976bf461103b6f48dd98f862dfe92b709413b21347db07e24b1",
+        "terminal_sha256": "edb32c257d9c1dac05c1a9af69424b8f50fb69d46e7cf6acf59c20e423bdd154",
+        "events": 269704,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4531,
+          "raw": 37726,
+          "claimed_removed": 16700,
+          "pending_rejected": 20585,
+          "post_pending": 441,
+          "day29_removed": 0,
+          "pre_construct": 441,
+          "selected_stops": 232
+        }
+      },
+      "baseline": {
+        "money": [
+          88572.0,
+          77729.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "01805f2ad1262976bf461103b6f48dd98f862dfe92b709413b21347db07e24b1",
+        "terminal_sha256": "edb32c257d9c1dac05c1a9af69424b8f50fb69d46e7cf6acf59c20e423bdd154"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed323.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 324,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          87013.0,
+          99148.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f8d5e15e7bba451411915ea92f229ba649c623dfcd85a5af1008ec530cceef71",
+        "terminal_sha256": "a41979daefaf324e7d1cc8040769342db76c7875ef83cd00f6f1bad78750a437",
+        "events": 270909,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4847,
+          "raw": 35973,
+          "claimed_removed": 15099,
+          "pending_rejected": 20505,
+          "post_pending": 369,
+          "day29_removed": 0,
+          "pre_construct": 369,
+          "selected_stops": 208
+        }
+      },
+      "baseline": {
+        "money": [
+          87013.0,
+          99148.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f8d5e15e7bba451411915ea92f229ba649c623dfcd85a5af1008ec530cceef71",
+        "terminal_sha256": "a41979daefaf324e7d1cc8040769342db76c7875ef83cd00f6f1bad78750a437"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed324.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 324,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          99148.0,
+          87013.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "572c7ddc8686c999fc06eeaa81bb4096dd85c570a719c6fb64c1b6f5b65b06e2",
+        "terminal_sha256": "82f1e46b2a676062589e74697d8a7769ab3b240dad0e291e71712532811a3144",
+        "events": 270909,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4847,
+          "raw": 35973,
+          "claimed_removed": 15099,
+          "pending_rejected": 20505,
+          "post_pending": 369,
+          "day29_removed": 0,
+          "pre_construct": 369,
+          "selected_stops": 208
+        }
+      },
+      "baseline": {
+        "money": [
+          99148.0,
+          87013.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "572c7ddc8686c999fc06eeaa81bb4096dd85c570a719c6fb64c1b6f5b65b06e2",
+        "terminal_sha256": "82f1e46b2a676062589e74697d8a7769ab3b240dad0e291e71712532811a3144"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed324.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 325,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          108698.0,
+          112946.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f8d5e15e7bba451411915ea92f229ba649c623dfcd85a5af1008ec530cceef71",
+        "terminal_sha256": "f32f13e283a4d5a76ce48f8fc4f2c632793e578d1e34da6846c12e54a080bbe2",
+        "events": 329149,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4719,
+          "raw": 44332,
+          "claimed_removed": 18523,
+          "pending_rejected": 25265,
+          "post_pending": 544,
+          "day29_removed": 0,
+          "pre_construct": 544,
+          "selected_stops": 256
+        }
+      },
+      "baseline": {
+        "money": [
+          108698.0,
+          112946.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f8d5e15e7bba451411915ea92f229ba649c623dfcd85a5af1008ec530cceef71",
+        "terminal_sha256": "f32f13e283a4d5a76ce48f8fc4f2c632793e578d1e34da6846c12e54a080bbe2"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed325.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 325,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          112946.0,
+          108698.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "572c7ddc8686c999fc06eeaa81bb4096dd85c570a719c6fb64c1b6f5b65b06e2",
+        "terminal_sha256": "cdf6efe71ad4cb9340a181d376c6f5d245763a1981eae371d9caf2e48e19308e",
+        "events": 329149,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4719,
+          "raw": 44332,
+          "claimed_removed": 18523,
+          "pending_rejected": 25265,
+          "post_pending": 544,
+          "day29_removed": 0,
+          "pre_construct": 544,
+          "selected_stops": 256
+        }
+      },
+      "baseline": {
+        "money": [
+          112946.0,
+          108698.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "572c7ddc8686c999fc06eeaa81bb4096dd85c570a719c6fb64c1b6f5b65b06e2",
+        "terminal_sha256": "cdf6efe71ad4cb9340a181d376c6f5d245763a1981eae371d9caf2e48e19308e"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed325.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 326,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          63799.0,
+          84477.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "48643777aa4c7710ba0eba8052cebc4aee33ba600ad133f93b177fde8dafbd0d",
+        "terminal_sha256": "0ae13bdf63d4aef949336a54af489d512b9c11a1144609fd0ad8c1ea397af31a",
+        "events": 428053,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4113,
+          "raw": 58040,
+          "claimed_removed": 23372,
+          "pending_rejected": 33520,
+          "post_pending": 1148,
+          "day29_removed": 0,
+          "pre_construct": 1148,
+          "selected_stops": 385
+        }
+      },
+      "baseline": {
+        "money": [
+          63799.0,
+          84477.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "48643777aa4c7710ba0eba8052cebc4aee33ba600ad133f93b177fde8dafbd0d",
+        "terminal_sha256": "0ae13bdf63d4aef949336a54af489d512b9c11a1144609fd0ad8c1ea397af31a"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed326.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 326,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          84477.0,
+          63799.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "67c5ea31229ff8646c21af089608e22b509f0e2f1887b6a7e15641f5a1bd34c0",
+        "terminal_sha256": "e81a2c0bf5bc32e598761b28a9c85c0a831965fa66a75bfdc35da364c6fd83e3",
+        "events": 428053,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4113,
+          "raw": 58040,
+          "claimed_removed": 23372,
+          "pending_rejected": 33520,
+          "post_pending": 1148,
+          "day29_removed": 0,
+          "pre_construct": 1148,
+          "selected_stops": 385
+        }
+      },
+      "baseline": {
+        "money": [
+          84477.0,
+          63799.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "67c5ea31229ff8646c21af089608e22b509f0e2f1887b6a7e15641f5a1bd34c0",
+        "terminal_sha256": "e81a2c0bf5bc32e598761b28a9c85c0a831965fa66a75bfdc35da364c6fd83e3"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed326.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 327,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          82279.0,
+          95311.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "5b55effa2844d11cb0c9fc05db67d80fc2911c74a3e78dc539f7140debc3b7a3",
+        "terminal_sha256": "cca2b2d71560c733eba6f299f23c51fcad8cc20c2cebc1bbf8f51f378f1990e1",
+        "events": 279813,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4816,
+          "raw": 40413,
+          "claimed_removed": 18689,
+          "pending_rejected": 21277,
+          "post_pending": 447,
+          "day29_removed": 0,
+          "pre_construct": 449,
+          "selected_stops": 236
+        }
+      },
+      "baseline": {
+        "money": [
+          82279.0,
+          95311.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "5b55effa2844d11cb0c9fc05db67d80fc2911c74a3e78dc539f7140debc3b7a3",
+        "terminal_sha256": "cca2b2d71560c733eba6f299f23c51fcad8cc20c2cebc1bbf8f51f378f1990e1"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed327.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 327,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          95311.0,
+          82279.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "197456e50863e2defe2f672ce408b40624fa4cedfd0c698d7749201bc6b63e90",
+        "terminal_sha256": "63b0d1438b5af25b21a1bb7752ac644d05968878613dab8cf3e54bcfcd100154",
+        "events": 279819,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4817,
+          "raw": 40422,
+          "claimed_removed": 18698,
+          "pending_rejected": 21277,
+          "post_pending": 447,
+          "day29_removed": 0,
+          "pre_construct": 449,
+          "selected_stops": 236
+        }
+      },
+      "baseline": {
+        "money": [
+          95311.0,
+          82279.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "197456e50863e2defe2f672ce408b40624fa4cedfd0c698d7749201bc6b63e90",
+        "terminal_sha256": "63b0d1438b5af25b21a1bb7752ac644d05968878613dab8cf3e54bcfcd100154"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed327.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 328,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          39698.0,
+          57094.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfaa660a630270b20cb16ec2c0ac83db553daca182df462ae62a4758009fac84",
+        "terminal_sha256": "30987371fc25cf320f1dbee9cda4c844e2c63d32e1978b99c3f8bfa7be45e74e",
+        "events": 329787,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4645,
+          "raw": 47694,
+          "claimed_removed": 21710,
+          "pending_rejected": 25330,
+          "post_pending": 654,
+          "day29_removed": 0,
+          "pre_construct": 656,
+          "selected_stops": 285
+        }
+      },
+      "baseline": {
+        "money": [
+          39698.0,
+          57094.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfaa660a630270b20cb16ec2c0ac83db553daca182df462ae62a4758009fac84",
+        "terminal_sha256": "30987371fc25cf320f1dbee9cda4c844e2c63d32e1978b99c3f8bfa7be45e74e"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed328.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 328,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          57094.0,
+          39698.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "87db92a41aea3f18268aefcb8451a722f1c55e4b1a63b6404005e3ffdebcde8e",
+        "terminal_sha256": "825283d6e975ca8db02485af0ff95408c102848753ba7b3321c0e14e879a6279",
+        "events": 329787,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4645,
+          "raw": 47694,
+          "claimed_removed": 21710,
+          "pending_rejected": 25330,
+          "post_pending": 654,
+          "day29_removed": 0,
+          "pre_construct": 656,
+          "selected_stops": 285
+        }
+      },
+      "baseline": {
+        "money": [
+          57094.0,
+          39698.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "87db92a41aea3f18268aefcb8451a722f1c55e4b1a63b6404005e3ffdebcde8e",
+        "terminal_sha256": "825283d6e975ca8db02485af0ff95408c102848753ba7b3321c0e14e879a6279"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed328.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 329,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          108756.0,
+          103386.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "6b9c8f6f4e65709e1d7408fca64f77d563a621dd666973bcf81fa04638ac373b",
+        "terminal_sha256": "92ac00e8b2bb5e8050d083c507d3723d3841565bd4e1bb484873dedb993edd6a",
+        "events": 429007,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4124,
+          "raw": 60443,
+          "claimed_removed": 25259,
+          "pending_rejected": 33961,
+          "post_pending": 1223,
+          "day29_removed": 0,
+          "pre_construct": 1224,
+          "selected_stops": 403
+        }
+      },
+      "baseline": {
+        "money": [
+          108756.0,
+          103386.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "6b9c8f6f4e65709e1d7408fca64f77d563a621dd666973bcf81fa04638ac373b",
+        "terminal_sha256": "92ac00e8b2bb5e8050d083c507d3723d3841565bd4e1bb484873dedb993edd6a"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed329.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 329,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          103386.0,
+          108756.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "8ec8e8686b532e8269a2d823348646733ebadd31fbb711b6a128a8e56c47e4f2",
+        "terminal_sha256": "e7fac71d95f788b639b9fedb97097ce17c65ab76fc95a3b1912f7a453266fa3e",
+        "events": 429007,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4124,
+          "raw": 60443,
+          "claimed_removed": 25259,
+          "pending_rejected": 33961,
+          "post_pending": 1223,
+          "day29_removed": 0,
+          "pre_construct": 1224,
+          "selected_stops": 403
+        }
+      },
+      "baseline": {
+        "money": [
+          103386.0,
+          108756.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "8ec8e8686b532e8269a2d823348646733ebadd31fbb711b6a128a8e56c47e4f2",
+        "terminal_sha256": "e7fac71d95f788b639b9fedb97097ce17c65ab76fc95a3b1912f7a453266fa3e"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed329.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 330,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          68836.0,
+          99699.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "6abd6828aab77444a698d1e02a40086ce0d00164df045f20fdb3708371c226d8",
+        "terminal_sha256": "270183cdfb8fae94d15cd3c1e418478910f65793437f01557f7862f1462fe78b",
+        "events": 354984,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4215,
+          "raw": 55186,
+          "claimed_removed": 26788,
+          "pending_rejected": 27402,
+          "post_pending": 996,
+          "day29_removed": 0,
+          "pre_construct": 1001,
+          "selected_stops": 366
+        }
+      },
+      "baseline": {
+        "money": [
+          68836.0,
+          99699.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "6abd6828aab77444a698d1e02a40086ce0d00164df045f20fdb3708371c226d8",
+        "terminal_sha256": "270183cdfb8fae94d15cd3c1e418478910f65793437f01557f7862f1462fe78b"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed330.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 330,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          99699.0,
+          68836.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "5eb862579e5b123621bc6eeb83efecf965b7e8d1a62763080cad28926ab83648",
+        "terminal_sha256": "45508a19e003ca151bfc42150f0b00ea2d5ed97629f1737585734c1f5d38ea4c",
+        "events": 354984,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4215,
+          "raw": 55186,
+          "claimed_removed": 26788,
+          "pending_rejected": 27402,
+          "post_pending": 996,
+          "day29_removed": 0,
+          "pre_construct": 1001,
+          "selected_stops": 366
+        }
+      },
+      "baseline": {
+        "money": [
+          99699.0,
+          68836.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "5eb862579e5b123621bc6eeb83efecf965b7e8d1a62763080cad28926ab83648",
+        "terminal_sha256": "45508a19e003ca151bfc42150f0b00ea2d5ed97629f1737585734c1f5d38ea4c"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed330.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 331,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          115292.0,
+          132043.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "92122aff147aa323cc41ee52001b1ad979fbf0d8f53afa81e97657cd10988c81",
+        "terminal_sha256": "18af24cfe26ed0605c628a3af3fa6cb52ac283bf74cdfaf7377dee55cfce3872",
+        "events": 446948,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4246,
+          "raw": 61863,
+          "claimed_removed": 25533,
+          "pending_rejected": 35102,
+          "post_pending": 1228,
+          "day29_removed": 0,
+          "pre_construct": 1229,
+          "selected_stops": 404
+        }
+      },
+      "baseline": {
+        "money": [
+          115292.0,
+          132043.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "92122aff147aa323cc41ee52001b1ad979fbf0d8f53afa81e97657cd10988c81",
+        "terminal_sha256": "18af24cfe26ed0605c628a3af3fa6cb52ac283bf74cdfaf7377dee55cfce3872"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed331.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 331,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          132043.0,
+          115292.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "7a55732748436625097ce9abcb00831d42250e2aabf7fdf1a9c7c519c024f80d",
+        "terminal_sha256": "289d11b1635b26f68eb3338d733936053ca0e63f2233e108eb1a89ac74331f87",
+        "events": 446948,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4246,
+          "raw": 61863,
+          "claimed_removed": 25533,
+          "pending_rejected": 35102,
+          "post_pending": 1228,
+          "day29_removed": 0,
+          "pre_construct": 1229,
+          "selected_stops": 404
+        }
+      },
+      "baseline": {
+        "money": [
+          132043.0,
+          115292.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "7a55732748436625097ce9abcb00831d42250e2aabf7fdf1a9c7c519c024f80d",
+        "terminal_sha256": "289d11b1635b26f68eb3338d733936053ca0e63f2233e108eb1a89ac74331f87"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed331.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 332,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          102580.0,
+          123659.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f8d5e15e7bba451411915ea92f229ba649c623dfcd85a5af1008ec530cceef71",
+        "terminal_sha256": "ed6afe01e1edcddd71e323ed8780ffb23bd3f5b5e8325505999bfc22b8bd2450",
+        "events": 457416,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4393,
+          "raw": 60631,
+          "claimed_removed": 23375,
+          "pending_rejected": 36130,
+          "post_pending": 1126,
+          "day29_removed": 0,
+          "pre_construct": 1127,
+          "selected_stops": 381
+        }
+      },
+      "baseline": {
+        "money": [
+          102580.0,
+          123659.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f8d5e15e7bba451411915ea92f229ba649c623dfcd85a5af1008ec530cceef71",
+        "terminal_sha256": "ed6afe01e1edcddd71e323ed8780ffb23bd3f5b5e8325505999bfc22b8bd2450"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed332.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 332,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          123659.0,
+          102580.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "572c7ddc8686c999fc06eeaa81bb4096dd85c570a719c6fb64c1b6f5b65b06e2",
+        "terminal_sha256": "77890fc46dd7c3f599bf55d1ed0ff5c929fd4069e73b57a99cdb7e73c117f671",
+        "events": 457416,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4393,
+          "raw": 60631,
+          "claimed_removed": 23375,
+          "pending_rejected": 36130,
+          "post_pending": 1126,
+          "day29_removed": 0,
+          "pre_construct": 1127,
+          "selected_stops": 381
+        }
+      },
+      "baseline": {
+        "money": [
+          123659.0,
+          102580.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "572c7ddc8686c999fc06eeaa81bb4096dd85c570a719c6fb64c1b6f5b65b06e2",
+        "terminal_sha256": "77890fc46dd7c3f599bf55d1ed0ff5c929fd4069e73b57a99cdb7e73c117f671"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed332.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 333,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          51908.0,
+          60043.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfaa660a630270b20cb16ec2c0ac83db553daca182df462ae62a4758009fac84",
+        "terminal_sha256": "ae405f0c6b7d6c2b213d998b0f54c27593ecb61332ea3c0eb3bdbf0beff13541",
+        "events": 238743,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4780,
+          "raw": 31916,
+          "claimed_removed": 13587,
+          "pending_rejected": 18014,
+          "post_pending": 315,
+          "day29_removed": 0,
+          "pre_construct": 315,
+          "selected_stops": 190
+        }
+      },
+      "baseline": {
+        "money": [
+          51908.0,
+          60043.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfaa660a630270b20cb16ec2c0ac83db553daca182df462ae62a4758009fac84",
+        "terminal_sha256": "ae405f0c6b7d6c2b213d998b0f54c27593ecb61332ea3c0eb3bdbf0beff13541"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed333.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 333,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          60040.0,
+          52025.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "87db92a41aea3f18268aefcb8451a722f1c55e4b1a63b6404005e3ffdebcde8e",
+        "terminal_sha256": "75428dc74e79d4efcf28ea3f6625574d0896749be7e76f93c839f4d6ab45efcd",
+        "events": 237661,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4762,
+          "raw": 31790,
+          "claimed_removed": 13533,
+          "pending_rejected": 17942,
+          "post_pending": 315,
+          "day29_removed": 0,
+          "pre_construct": 315,
+          "selected_stops": 190
+        }
+      },
+      "baseline": {
+        "money": [
+          60040.0,
+          52025.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "87db92a41aea3f18268aefcb8451a722f1c55e4b1a63b6404005e3ffdebcde8e",
+        "terminal_sha256": "75428dc74e79d4efcf28ea3f6625574d0896749be7e76f93c839f4d6ab45efcd"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed333.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 334,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          110890.0,
+          126036.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b3f8df2c58e12252ea0cf0334737abf26ed3e0dca92f55e081bd087b16c7f027",
+        "terminal_sha256": "4007ee4e1783d8fc0e9be57856ab0786f8e65b2ad47ea70ecca40848520d45fa",
+        "events": 477866,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4373,
+          "raw": 63933,
+          "claimed_removed": 24873,
+          "pending_rejected": 37829,
+          "post_pending": 1231,
+          "day29_removed": 0,
+          "pre_construct": 1231,
+          "selected_stops": 402
+        }
+      },
+      "baseline": {
+        "money": [
+          110890.0,
+          126036.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b3f8df2c58e12252ea0cf0334737abf26ed3e0dca92f55e081bd087b16c7f027",
+        "terminal_sha256": "4007ee4e1783d8fc0e9be57856ab0786f8e65b2ad47ea70ecca40848520d45fa"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed334.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 334,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          126036.0,
+          110890.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "590fae3516a15d1c11ce661a7c3dd45ce533efeffd084ed350ad8106371bcbd9",
+        "terminal_sha256": "c8ea40a3cbbe71774656fd47861f110bd84206cec6843de26a9e71d460f1edb3",
+        "events": 477866,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4373,
+          "raw": 63933,
+          "claimed_removed": 24873,
+          "pending_rejected": 37829,
+          "post_pending": 1231,
+          "day29_removed": 0,
+          "pre_construct": 1231,
+          "selected_stops": 402
+        }
+      },
+      "baseline": {
+        "money": [
+          126036.0,
+          110890.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "590fae3516a15d1c11ce661a7c3dd45ce533efeffd084ed350ad8106371bcbd9",
+        "terminal_sha256": "c8ea40a3cbbe71774656fd47861f110bd84206cec6843de26a9e71d460f1edb3"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed334.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 335,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          87330.0,
+          94548.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "8de24c0863478da2b4262eebcf8c07bd3831ae8349cc27d4689db20417a12681",
+        "terminal_sha256": "6963fdb2ea6d72290f7337d1f9d6836f770d29156ae734f595d8834c77266a44",
+        "events": 346477,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4603,
+          "raw": 45715,
+          "claimed_removed": 18046,
+          "pending_rejected": 27066,
+          "post_pending": 603,
+          "day29_removed": 0,
+          "pre_construct": 603,
+          "selected_stops": 273
+        }
+      },
+      "baseline": {
+        "money": [
+          87330.0,
+          94548.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "8de24c0863478da2b4262eebcf8c07bd3831ae8349cc27d4689db20417a12681",
+        "terminal_sha256": "6963fdb2ea6d72290f7337d1f9d6836f770d29156ae734f595d8834c77266a44"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed335.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 335,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          94548.0,
+          87330.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "c03eca938a23eb4e5f388473b01b118c2c928a59e5abdab09bf3f10c7fd8e153",
+        "terminal_sha256": "b9e23c0b8ef16643c1c0d13002757f2410b599377ccf839887213b98636828c1",
+        "events": 346477,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4603,
+          "raw": 45715,
+          "claimed_removed": 18046,
+          "pending_rejected": 27066,
+          "post_pending": 603,
+          "day29_removed": 0,
+          "pre_construct": 603,
+          "selected_stops": 273
+        }
+      },
+      "baseline": {
+        "money": [
+          94548.0,
+          87330.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "c03eca938a23eb4e5f388473b01b118c2c928a59e5abdab09bf3f10c7fd8e153",
+        "terminal_sha256": "b9e23c0b8ef16643c1c0d13002757f2410b599377ccf839887213b98636828c1"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed335.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 336,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          44314.0,
+          67513.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfaa660a630270b20cb16ec2c0ac83db553daca182df462ae62a4758009fac84",
+        "terminal_sha256": "5bbb3e7fab6cf6b8f9548de4cb3d818f111cff204ac24662fd465bd14d69b5e1",
+        "events": 424127,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4286,
+          "raw": 58912,
+          "claimed_removed": 24110,
+          "pending_rejected": 33705,
+          "post_pending": 1097,
+          "day29_removed": 0,
+          "pre_construct": 1098,
+          "selected_stops": 376
+        }
+      },
+      "baseline": {
+        "money": [
+          44314.0,
+          67513.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfaa660a630270b20cb16ec2c0ac83db553daca182df462ae62a4758009fac84",
+        "terminal_sha256": "5bbb3e7fab6cf6b8f9548de4cb3d818f111cff204ac24662fd465bd14d69b5e1"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed336.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 336,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          67513.0,
+          44314.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "87db92a41aea3f18268aefcb8451a722f1c55e4b1a63b6404005e3ffdebcde8e",
+        "terminal_sha256": "f4a7de1bb38ee7aa3016298453318dbf019dece41fa99688fd1fbbe7f89f7152",
+        "events": 424127,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4286,
+          "raw": 58912,
+          "claimed_removed": 24110,
+          "pending_rejected": 33705,
+          "post_pending": 1097,
+          "day29_removed": 0,
+          "pre_construct": 1098,
+          "selected_stops": 376
+        }
+      },
+      "baseline": {
+        "money": [
+          67513.0,
+          44314.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "87db92a41aea3f18268aefcb8451a722f1c55e4b1a63b6404005e3ffdebcde8e",
+        "terminal_sha256": "f4a7de1bb38ee7aa3016298453318dbf019dece41fa99688fd1fbbe7f89f7152"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed336.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 337,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          133054.0,
+          122068.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "d74d95604dc261868212a8c270433bba65a49761ff086c0577cafe9909199c60",
+        "terminal_sha256": "02ffa7daeee4c214b1421af7347671d0f8804c81288812ddb18ac53eac5e31df",
+        "events": 413728,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4281,
+          "raw": 55711,
+          "claimed_removed": 22612,
+          "pending_rejected": 32116,
+          "post_pending": 983,
+          "day29_removed": 0,
+          "pre_construct": 984,
+          "selected_stops": 355
+        }
+      },
+      "baseline": {
+        "money": [
+          133054.0,
+          122068.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "d74d95604dc261868212a8c270433bba65a49761ff086c0577cafe9909199c60",
+        "terminal_sha256": "02ffa7daeee4c214b1421af7347671d0f8804c81288812ddb18ac53eac5e31df"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed337.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 337,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          121704.0,
+          133520.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "a1d2c43cdf8e2754f5ba4478883eacd7739ff9697846bfee46d2e294af80fdb6",
+        "terminal_sha256": "6c2b3793c517277aede42c0c5e2409c9ad76c9e41240248a8b677ed749aa1fe0",
+        "events": 417055,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4324,
+          "raw": 56356,
+          "claimed_removed": 22803,
+          "pending_rejected": 32570,
+          "post_pending": 983,
+          "day29_removed": 0,
+          "pre_construct": 984,
+          "selected_stops": 355
+        }
+      },
+      "baseline": {
+        "money": [
+          121704.0,
+          133520.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "a1d2c43cdf8e2754f5ba4478883eacd7739ff9697846bfee46d2e294af80fdb6",
+        "terminal_sha256": "6c2b3793c517277aede42c0c5e2409c9ad76c9e41240248a8b677ed749aa1fe0"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed337.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 338,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          55732.0,
+          80811.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfaa660a630270b20cb16ec2c0ac83db553daca182df462ae62a4758009fac84",
+        "terminal_sha256": "a6d821345dfbd56e7b5a5326cb0ee8afb36844affb995d9a8542108eab5e8cdc",
+        "events": 319231,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4548,
+          "raw": 44160,
+          "claimed_removed": 18843,
+          "pending_rejected": 24715,
+          "post_pending": 602,
+          "day29_removed": 0,
+          "pre_construct": 603,
+          "selected_stops": 271
+        }
+      },
+      "baseline": {
+        "money": [
+          55732.0,
+          80811.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfaa660a630270b20cb16ec2c0ac83db553daca182df462ae62a4758009fac84",
+        "terminal_sha256": "a6d821345dfbd56e7b5a5326cb0ee8afb36844affb995d9a8542108eab5e8cdc"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed338.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 338,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          80811.0,
+          55732.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "87db92a41aea3f18268aefcb8451a722f1c55e4b1a63b6404005e3ffdebcde8e",
+        "terminal_sha256": "198510f3d9ed4885a581fee624a2160df050d3198c68f30a90c124d334ff8b3f",
+        "events": 319231,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4548,
+          "raw": 44160,
+          "claimed_removed": 18843,
+          "pending_rejected": 24715,
+          "post_pending": 602,
+          "day29_removed": 0,
+          "pre_construct": 603,
+          "selected_stops": 271
+        }
+      },
+      "baseline": {
+        "money": [
+          80811.0,
+          55732.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "87db92a41aea3f18268aefcb8451a722f1c55e4b1a63b6404005e3ffdebcde8e",
+        "terminal_sha256": "198510f3d9ed4885a581fee624a2160df050d3198c68f30a90c124d334ff8b3f"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed338.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 339,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          76294.0,
+          79081.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "48643777aa4c7710ba0eba8052cebc4aee33ba600ad133f93b177fde8dafbd0d",
+        "terminal_sha256": "c4b778114a9573cc1ebb056e6fb1493a385bb6bb1c82f534e9d0bfda7a04b9ad",
+        "events": 333134,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4152,
+          "raw": 46624,
+          "claimed_removed": 20379,
+          "pending_rejected": 25494,
+          "post_pending": 751,
+          "day29_removed": 0,
+          "pre_construct": 757,
+          "selected_stops": 313
+        }
+      },
+      "baseline": {
+        "money": [
+          76294.0,
+          79081.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "48643777aa4c7710ba0eba8052cebc4aee33ba600ad133f93b177fde8dafbd0d",
+        "terminal_sha256": "c4b778114a9573cc1ebb056e6fb1493a385bb6bb1c82f534e9d0bfda7a04b9ad"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed339.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 339,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          79081.0,
+          76294.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "67c5ea31229ff8646c21af089608e22b509f0e2f1887b6a7e15641f5a1bd34c0",
+        "terminal_sha256": "b314ba046ee234ea77fcc1f5943f2f3c1bd2a0c522a235944e1550e52958df7f",
+        "events": 333134,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4152,
+          "raw": 46624,
+          "claimed_removed": 20379,
+          "pending_rejected": 25494,
+          "post_pending": 751,
+          "day29_removed": 0,
+          "pre_construct": 757,
+          "selected_stops": 313
+        }
+      },
+      "baseline": {
+        "money": [
+          79081.0,
+          76294.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "67c5ea31229ff8646c21af089608e22b509f0e2f1887b6a7e15641f5a1bd34c0",
+        "terminal_sha256": "b314ba046ee234ea77fcc1f5943f2f3c1bd2a0c522a235944e1550e52958df7f"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed339.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 340,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          58433.0,
+          66411.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "48643777aa4c7710ba0eba8052cebc4aee33ba600ad133f93b177fde8dafbd0d",
+        "terminal_sha256": "61c124e269e29af8bf10cb1c3a0c489890be4d1f6eb03409f412f8dd18791f74",
+        "events": 276037,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4554,
+          "raw": 37905,
+          "claimed_removed": 16516,
+          "pending_rejected": 20948,
+          "post_pending": 441,
+          "day29_removed": 0,
+          "pre_construct": 443,
+          "selected_stops": 234
+        }
+      },
+      "baseline": {
+        "money": [
+          58433.0,
+          66411.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "48643777aa4c7710ba0eba8052cebc4aee33ba600ad133f93b177fde8dafbd0d",
+        "terminal_sha256": "61c124e269e29af8bf10cb1c3a0c489890be4d1f6eb03409f412f8dd18791f74"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat0_seed340.jsonl.gz"
+    },
+    {
+      "opponent": "yangk",
+      "seed": 340,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          65830.0,
+          59902.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4756d922e791707813ddd29d3cfd1f6d84a3b3ba9b12f0366453075376f4480f",
+        "terminal_sha256": "6c9023b0e26f2b7f54a889776985db38eb72365a65780b78274ad2d929f81f2b",
+        "events": 274677,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4723,
+          "raw": 39431,
+          "claimed_removed": 18250,
+          "pending_rejected": 20740,
+          "post_pending": 441,
+          "day29_removed": 0,
+          "pre_construct": 441,
+          "selected_stops": 232
+        }
+      },
+      "baseline": {
+        "money": [
+          65830.0,
+          59902.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4756d922e791707813ddd29d3cfd1f6d84a3b3ba9b12f0366453075376f4480f",
+        "terminal_sha256": "6c9023b0e26f2b7f54a889776985db38eb72365a65780b78274ad2d929f81f2b"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/yangk/yangk_seat1_seed340.jsonl.gz"
+    }
+  ]
+}

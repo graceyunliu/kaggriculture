@@ -1,0 +1,3397 @@
+{
+  "trace_source": "/Users/graceliu/Claude/Projects/Kaggriculture/tools/o42_decision_provenance.py",
+  "trace_scope": "animal_route_upstream",
+  "o42_source": "/Users/graceliu/Claude/Projects/Kaggriculture/candidates/O42_MAX_HANDS_LATE_EXPAND.py",
+  "o42_sha256": "154d1ff480e9aa05084e323604a1a09ce73b68adbff95dd4f410e6acf4f52813",
+  "criteria": [
+    "money",
+    "steps",
+    "errors",
+    "actions_sha256",
+    "terminal_sha256"
+  ],
+  "semantic_binding_criteria": [
+    "AST node type",
+    "unique structural match inside intended function",
+    "expected enclosing guard for branch-body anchors",
+    "legacy ordinal resolutions demonstrably differ from intended structural resolutions",
+    "runtime predicate assertion whenever either repaired event executes"
+  ],
+  "semantic_event_counts": {
+    "seed_labor_reduction": 0,
+    "seed_reject_zero_quantity": 0
+  },
+  "semantic_event_runtime_coverage_complete": false,
+  "semantic_misbinding_regression": {
+    "seed_labor_reduction_legacy_first_text_line": 552,
+    "seed_labor_reduction_structural_line": 627,
+    "seed_reject_zero_quantity_legacy_second_text_line": 631,
+    "seed_reject_zero_quantity_structural_line": 629
+  },
+  "semantic_binding_smoke_passed": true,
+  "games": 80,
+  "parity_passed": true,
+  "anchor_bindings_passed": true,
+  "rows": [
+    {
+      "opponent": "alaylm",
+      "seed": 301,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          53947.0,
+          69080.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4a72611c3e08aedba5482651a2737509b24cc2843c8099794d146ab1daee23c1",
+        "terminal_sha256": "20b848a956e52aa717e38d01d6d8b9243fdc3ebbbd3b5b5ddd5d7c3e75eccab0",
+        "events": 244759,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4838,
+          "raw": 32322,
+          "claimed_removed": 13471,
+          "pending_rejected": 18536,
+          "post_pending": 315,
+          "day29_removed": 0,
+          "pre_construct": 315,
+          "selected_stops": 190
+        }
+      },
+      "baseline": {
+        "money": [
+          53947.0,
+          69080.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4a72611c3e08aedba5482651a2737509b24cc2843c8099794d146ab1daee23c1",
+        "terminal_sha256": "20b848a956e52aa717e38d01d6d8b9243fdc3ebbbd3b5b5ddd5d7c3e75eccab0"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed301.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 301,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          69015.0,
+          53723.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0cfb687143db94783e4bcf9660c8b648881523c6db0de4cb026ca8011ba4fe08",
+        "terminal_sha256": "c03b54205c47e1d8f2794d418ff6e848fc3fc7583182d8cf419886569bace585",
+        "events": 245997,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4863,
+          "raw": 32497,
+          "claimed_removed": 13539,
+          "pending_rejected": 18643,
+          "post_pending": 315,
+          "day29_removed": 0,
+          "pre_construct": 315,
+          "selected_stops": 190
+        }
+      },
+      "baseline": {
+        "money": [
+          69015.0,
+          53723.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0cfb687143db94783e4bcf9660c8b648881523c6db0de4cb026ca8011ba4fe08",
+        "terminal_sha256": "c03b54205c47e1d8f2794d418ff6e848fc3fc7583182d8cf419886569bace585"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed301.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 302,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          117089.0,
+          130989.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "c9e3cb338e6dc989a02adbf1e85b4a95740777a123d6adff2219c12b9f66e1a1",
+        "terminal_sha256": "5f158aa810677d16a17991818a9c7458a2e44e3677fce5f5002a9ca5c2d5f5f1",
+        "events": 424863,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4440,
+          "raw": 54189,
+          "claimed_removed": 19960,
+          "pending_rejected": 33360,
+          "post_pending": 869,
+          "day29_removed": 0,
+          "pre_construct": 869,
+          "selected_stops": 331
+        }
+      },
+      "baseline": {
+        "money": [
+          117089.0,
+          130989.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "c9e3cb338e6dc989a02adbf1e85b4a95740777a123d6adff2219c12b9f66e1a1",
+        "terminal_sha256": "5f158aa810677d16a17991818a9c7458a2e44e3677fce5f5002a9ca5c2d5f5f1"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed302.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 302,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          130989.0,
+          116988.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4ea46df02ef5789b0c5867b53902dde75b2e1079d58707d7212e87519ca20b37",
+        "terminal_sha256": "dfd9c26c894a1264f8ed5dcdf299933346aa221419178542830b0e2e3f4cbc61",
+        "events": 425472,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4443,
+          "raw": 54231,
+          "claimed_removed": 19959,
+          "pending_rejected": 33403,
+          "post_pending": 869,
+          "day29_removed": 0,
+          "pre_construct": 869,
+          "selected_stops": 331
+        }
+      },
+      "baseline": {
+        "money": [
+          130989.0,
+          116988.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4ea46df02ef5789b0c5867b53902dde75b2e1079d58707d7212e87519ca20b37",
+        "terminal_sha256": "dfd9c26c894a1264f8ed5dcdf299933346aa221419178542830b0e2e3f4cbc61"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed302.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 303,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          102330.0,
+          119038.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfed1864adf8f7ead5976694cc01658d662b342938b3634c70d4d1975d587995",
+        "terminal_sha256": "4ca4948c321b9eb60a58335bbb8d7177251c86a564bdfb1ec5a0a1a92287932f",
+        "events": 315553,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4694,
+          "raw": 44887,
+          "claimed_removed": 20113,
+          "pending_rejected": 24211,
+          "post_pending": 563,
+          "day29_removed": 0,
+          "pre_construct": 563,
+          "selected_stops": 263
+        }
+      },
+      "baseline": {
+        "money": [
+          102330.0,
+          119038.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfed1864adf8f7ead5976694cc01658d662b342938b3634c70d4d1975d587995",
+        "terminal_sha256": "4ca4948c321b9eb60a58335bbb8d7177251c86a564bdfb1ec5a0a1a92287932f"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed303.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 303,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          119396.0,
+          102765.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "18e09e888be7c0d60ff9656bad1aff2493fd171b5bf4df5a6a93751806eb0e2c",
+        "terminal_sha256": "c5f6840408636e2b7fa3944b47749461692aadfc75531ef4aa1a2a7171112493",
+        "events": 315134,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4683,
+          "raw": 44977,
+          "claimed_removed": 20316,
+          "pending_rejected": 24094,
+          "post_pending": 567,
+          "day29_removed": 0,
+          "pre_construct": 567,
+          "selected_stops": 264
+        }
+      },
+      "baseline": {
+        "money": [
+          119396.0,
+          102765.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "18e09e888be7c0d60ff9656bad1aff2493fd171b5bf4df5a6a93751806eb0e2c",
+        "terminal_sha256": "c5f6840408636e2b7fa3944b47749461692aadfc75531ef4aa1a2a7171112493"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed303.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 304,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          45869.0,
+          65803.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "19b9d5fb3798a8872de7b7743e7df6d0dde8e39c627220904350392d355e5285",
+        "terminal_sha256": "f33b65ac28cc2fff9411ee317c8316d921f870d57c8cd3e6d95c92b234dd6160",
+        "events": 284241,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4860,
+          "raw": 38236,
+          "claimed_removed": 16115,
+          "pending_rejected": 21722,
+          "post_pending": 399,
+          "day29_removed": 0,
+          "pre_construct": 399,
+          "selected_stops": 218
+        }
+      },
+      "baseline": {
+        "money": [
+          45869.0,
+          65803.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "19b9d5fb3798a8872de7b7743e7df6d0dde8e39c627220904350392d355e5285",
+        "terminal_sha256": "f33b65ac28cc2fff9411ee317c8316d921f870d57c8cd3e6d95c92b234dd6160"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed304.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 304,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          66021.0,
+          47160.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "2573651abbccbaffc5d08a830fe80a6b01f9ac3dc5214a3ecccfef28501a3774",
+        "terminal_sha256": "b601110da89059df300ed130bd63fea7cda8251b809466423e336ce922c349a8",
+        "events": 285504,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4870,
+          "raw": 38328,
+          "claimed_removed": 16281,
+          "pending_rejected": 21648,
+          "post_pending": 399,
+          "day29_removed": 0,
+          "pre_construct": 399,
+          "selected_stops": 218
+        }
+      },
+      "baseline": {
+        "money": [
+          66021.0,
+          47160.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "2573651abbccbaffc5d08a830fe80a6b01f9ac3dc5214a3ecccfef28501a3774",
+        "terminal_sha256": "b601110da89059df300ed130bd63fea7cda8251b809466423e336ce922c349a8"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed304.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 305,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          91670.0,
+          109191.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfed1864adf8f7ead5976694cc01658d662b342938b3634c70d4d1975d587995",
+        "terminal_sha256": "2cf05501a11a62787a28709ff5ce4ce0946dec28f6639c832abf9b0576197e70",
+        "events": 353696,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4735,
+          "raw": 50486,
+          "claimed_removed": 22540,
+          "pending_rejected": 27275,
+          "post_pending": 671,
+          "day29_removed": 0,
+          "pre_construct": 672,
+          "selected_stops": 291
+        }
+      },
+      "baseline": {
+        "money": [
+          91670.0,
+          109191.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfed1864adf8f7ead5976694cc01658d662b342938b3634c70d4d1975d587995",
+        "terminal_sha256": "2cf05501a11a62787a28709ff5ce4ce0946dec28f6639c832abf9b0576197e70"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed305.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 305,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          108588.0,
+          91788.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "18e09e888be7c0d60ff9656bad1aff2493fd171b5bf4df5a6a93751806eb0e2c",
+        "terminal_sha256": "a160be0786aa7b89ba5e28e53e3b27499846071a5cf14b944bf670c6209a4d9b",
+        "events": 351563,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4694,
+          "raw": 49994,
+          "claimed_removed": 22359,
+          "pending_rejected": 26964,
+          "post_pending": 671,
+          "day29_removed": 0,
+          "pre_construct": 672,
+          "selected_stops": 291
+        }
+      },
+      "baseline": {
+        "money": [
+          108588.0,
+          91788.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "18e09e888be7c0d60ff9656bad1aff2493fd171b5bf4df5a6a93751806eb0e2c",
+        "terminal_sha256": "a160be0786aa7b89ba5e28e53e3b27499846071a5cf14b944bf670c6209a4d9b"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed305.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 306,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          125621.0,
+          148035.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0bdb3e7c0e08e12edd89ad71c8fea82f838419b304c9f7c42ef1b8afe3e01ead",
+        "terminal_sha256": "48d0d5be8ed32d7a81a0ea978cfc4f1af2cb8a8c24cdb3ee40cc0adf22127392",
+        "events": 413594,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 3941,
+          "raw": 57613,
+          "claimed_removed": 23964,
+          "pending_rejected": 32409,
+          "post_pending": 1240,
+          "day29_removed": 0,
+          "pre_construct": 1241,
+          "selected_stops": 406
+        }
+      },
+      "baseline": {
+        "money": [
+          125621.0,
+          148035.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0bdb3e7c0e08e12edd89ad71c8fea82f838419b304c9f7c42ef1b8afe3e01ead",
+        "terminal_sha256": "48d0d5be8ed32d7a81a0ea978cfc4f1af2cb8a8c24cdb3ee40cc0adf22127392"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed306.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 306,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          148035.0,
+          125621.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "91ec063df513890ea9ecc6ed1e1e8e99b62f6a4193681a07b27c22d1a7c1daaf",
+        "terminal_sha256": "8d05d0b26feb153bd2eadb3a75f9dc728dd7c202e94bec091c1860d7cb614ec5",
+        "events": 413594,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 3941,
+          "raw": 57613,
+          "claimed_removed": 23964,
+          "pending_rejected": 32409,
+          "post_pending": 1240,
+          "day29_removed": 0,
+          "pre_construct": 1241,
+          "selected_stops": 406
+        }
+      },
+      "baseline": {
+        "money": [
+          148035.0,
+          125621.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "91ec063df513890ea9ecc6ed1e1e8e99b62f6a4193681a07b27c22d1a7c1daaf",
+        "terminal_sha256": "8d05d0b26feb153bd2eadb3a75f9dc728dd7c202e94bec091c1860d7cb614ec5"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed306.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 307,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          67044.0,
+          85668.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4a72611c3e08aedba5482651a2737509b24cc2843c8099794d146ab1daee23c1",
+        "terminal_sha256": "0644c24ec140470ce1b4ff7c82b35445ba643320b8013b8489ab003942dde240",
+        "events": 253434,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4986,
+          "raw": 33358,
+          "claimed_removed": 13892,
+          "pending_rejected": 19151,
+          "post_pending": 315,
+          "day29_removed": 0,
+          "pre_construct": 315,
+          "selected_stops": 190
+        }
+      },
+      "baseline": {
+        "money": [
+          67044.0,
+          85668.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4a72611c3e08aedba5482651a2737509b24cc2843c8099794d146ab1daee23c1",
+        "terminal_sha256": "0644c24ec140470ce1b4ff7c82b35445ba643320b8013b8489ab003942dde240"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed307.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 307,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          85675.0,
+          67037.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0cfb687143db94783e4bcf9660c8b648881523c6db0de4cb026ca8011ba4fe08",
+        "terminal_sha256": "f4ba3ab45784be273754281a438ddf9a183d74216bd305c73e4a94a273074e14",
+        "events": 253234,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4984,
+          "raw": 33344,
+          "claimed_removed": 13892,
+          "pending_rejected": 19137,
+          "post_pending": 315,
+          "day29_removed": 0,
+          "pre_construct": 315,
+          "selected_stops": 190
+        }
+      },
+      "baseline": {
+        "money": [
+          85675.0,
+          67037.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0cfb687143db94783e4bcf9660c8b648881523c6db0de4cb026ca8011ba4fe08",
+        "terminal_sha256": "f4ba3ab45784be273754281a438ddf9a183d74216bd305c73e4a94a273074e14"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed307.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 308,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          84173.0,
+          98289.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4a72611c3e08aedba5482651a2737509b24cc2843c8099794d146ab1daee23c1",
+        "terminal_sha256": "501324fda9f9603e73105e6166307477e4f15fcaebd77991676a6df235e932a4",
+        "events": 274916,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4894,
+          "raw": 36349,
+          "claimed_removed": 14970,
+          "pending_rejected": 21010,
+          "post_pending": 369,
+          "day29_removed": 0,
+          "pre_construct": 369,
+          "selected_stops": 208
+        }
+      },
+      "baseline": {
+        "money": [
+          84173.0,
+          98289.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4a72611c3e08aedba5482651a2737509b24cc2843c8099794d146ab1daee23c1",
+        "terminal_sha256": "501324fda9f9603e73105e6166307477e4f15fcaebd77991676a6df235e932a4"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed308.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 308,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          98289.0,
+          84173.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0cfb687143db94783e4bcf9660c8b648881523c6db0de4cb026ca8011ba4fe08",
+        "terminal_sha256": "4ca14540cd4c13327615b6abf529ededbe93784ef62b7ea0e9471a46e9a4dee1",
+        "events": 274916,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4894,
+          "raw": 36349,
+          "claimed_removed": 14970,
+          "pending_rejected": 21010,
+          "post_pending": 369,
+          "day29_removed": 0,
+          "pre_construct": 369,
+          "selected_stops": 208
+        }
+      },
+      "baseline": {
+        "money": [
+          98289.0,
+          84173.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0cfb687143db94783e4bcf9660c8b648881523c6db0de4cb026ca8011ba4fe08",
+        "terminal_sha256": "4ca14540cd4c13327615b6abf529ededbe93784ef62b7ea0e9471a46e9a4dee1"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed308.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 309,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          112301.0,
+          135528.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "8e2f6f2acca1a328b63944cb32c815a75d024311a2dc9e82d720754b8ec5782b",
+        "terminal_sha256": "2bd7d3d4097f72839e1485ff70c97845c08d8072ba6e8407e39240f5805dc871",
+        "events": 464886,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4225,
+          "raw": 61940,
+          "claimed_removed": 24265,
+          "pending_rejected": 36439,
+          "post_pending": 1236,
+          "day29_removed": 0,
+          "pre_construct": 1236,
+          "selected_stops": 401
+        }
+      },
+      "baseline": {
+        "money": [
+          112301.0,
+          135528.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "8e2f6f2acca1a328b63944cb32c815a75d024311a2dc9e82d720754b8ec5782b",
+        "terminal_sha256": "2bd7d3d4097f72839e1485ff70c97845c08d8072ba6e8407e39240f5805dc871"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed309.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 309,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          135525.0,
+          112343.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "9ca1d25f9d80464bc7075fc847fac7c9f8f2195a0500c7a599e700810201ee65",
+        "terminal_sha256": "e2d7563d885fdf248b92cdb925d14c418d01e5dbf124b6778b9a143d57815c96",
+        "events": 464223,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4221,
+          "raw": 61872,
+          "claimed_removed": 24237,
+          "pending_rejected": 36399,
+          "post_pending": 1236,
+          "day29_removed": 0,
+          "pre_construct": 1236,
+          "selected_stops": 401
+        }
+      },
+      "baseline": {
+        "money": [
+          135525.0,
+          112343.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "9ca1d25f9d80464bc7075fc847fac7c9f8f2195a0500c7a599e700810201ee65",
+        "terminal_sha256": "e2d7563d885fdf248b92cdb925d14c418d01e5dbf124b6778b9a143d57815c96"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed309.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 310,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          100540.0,
+          120825.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "8e2f6f2acca1a328b63944cb32c815a75d024311a2dc9e82d720754b8ec5782b",
+        "terminal_sha256": "384ad7700ca45d041e698f043763552e7618162a8c2928af480aa56909d6b8c4",
+        "events": 355960,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4414,
+          "raw": 47613,
+          "claimed_removed": 19159,
+          "pending_rejected": 27755,
+          "post_pending": 699,
+          "day29_removed": 0,
+          "pre_construct": 702,
+          "selected_stops": 300
+        }
+      },
+      "baseline": {
+        "money": [
+          100540.0,
+          120825.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "8e2f6f2acca1a328b63944cb32c815a75d024311a2dc9e82d720754b8ec5782b",
+        "terminal_sha256": "384ad7700ca45d041e698f043763552e7618162a8c2928af480aa56909d6b8c4"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed310.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 310,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          120825.0,
+          100540.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "9ca1d25f9d80464bc7075fc847fac7c9f8f2195a0500c7a599e700810201ee65",
+        "terminal_sha256": "5979217f420489b1300b6cd581d72fa42ed1ca3cec9804f6b680b6c87a75ccec",
+        "events": 355960,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4414,
+          "raw": 47613,
+          "claimed_removed": 19159,
+          "pending_rejected": 27755,
+          "post_pending": 699,
+          "day29_removed": 0,
+          "pre_construct": 702,
+          "selected_stops": 300
+        }
+      },
+      "baseline": {
+        "money": [
+          120825.0,
+          100540.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "9ca1d25f9d80464bc7075fc847fac7c9f8f2195a0500c7a599e700810201ee65",
+        "terminal_sha256": "5979217f420489b1300b6cd581d72fa42ed1ca3cec9804f6b680b6c87a75ccec"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed310.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 311,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          106106.0,
+          124890.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfed1864adf8f7ead5976694cc01658d662b342938b3634c70d4d1975d587995",
+        "terminal_sha256": "22b53f543ab97d7cc3176b73550e810a15d7fd3ce96e61fe65ea57007b68eac7",
+        "events": 415868,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4571,
+          "raw": 56643,
+          "claimed_removed": 23477,
+          "pending_rejected": 32258,
+          "post_pending": 908,
+          "day29_removed": 0,
+          "pre_construct": 915,
+          "selected_stops": 344
+        }
+      },
+      "baseline": {
+        "money": [
+          106106.0,
+          124890.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfed1864adf8f7ead5976694cc01658d662b342938b3634c70d4d1975d587995",
+        "terminal_sha256": "22b53f543ab97d7cc3176b73550e810a15d7fd3ce96e61fe65ea57007b68eac7"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed311.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 311,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          126378.0,
+          103572.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "18e09e888be7c0d60ff9656bad1aff2493fd171b5bf4df5a6a93751806eb0e2c",
+        "terminal_sha256": "eae5fab83ad041c77e31861731542db1ef6e5f09c50c18dbb5e4916253e04889",
+        "events": 420200,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4516,
+          "raw": 57187,
+          "claimed_removed": 23999,
+          "pending_rejected": 32231,
+          "post_pending": 957,
+          "day29_removed": 0,
+          "pre_construct": 959,
+          "selected_stops": 348
+        }
+      },
+      "baseline": {
+        "money": [
+          126378.0,
+          103572.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "18e09e888be7c0d60ff9656bad1aff2493fd171b5bf4df5a6a93751806eb0e2c",
+        "terminal_sha256": "eae5fab83ad041c77e31861731542db1ef6e5f09c50c18dbb5e4916253e04889"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed311.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 312,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          50523.0,
+          69288.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfed1864adf8f7ead5976694cc01658d662b342938b3634c70d4d1975d587995",
+        "terminal_sha256": "511c86683d673a51c397bbd1f18fee7b0828deef9e84b9550205d2d59ec31cc6",
+        "events": 287379,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4992,
+          "raw": 41997,
+          "claimed_removed": 19688,
+          "pending_rejected": 21862,
+          "post_pending": 447,
+          "day29_removed": 0,
+          "pre_construct": 448,
+          "selected_stops": 235
+        }
+      },
+      "baseline": {
+        "money": [
+          50523.0,
+          69288.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfed1864adf8f7ead5976694cc01658d662b342938b3634c70d4d1975d587995",
+        "terminal_sha256": "511c86683d673a51c397bbd1f18fee7b0828deef9e84b9550205d2d59ec31cc6"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed312.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 312,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          69428.0,
+          51015.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "18e09e888be7c0d60ff9656bad1aff2493fd171b5bf4df5a6a93751806eb0e2c",
+        "terminal_sha256": "da6afea3606d97cb1dcdb949ceed69c4e1cf30a311efc4e63884a0187c629c01",
+        "events": 291907,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 5013,
+          "raw": 42186,
+          "claimed_removed": 19577,
+          "pending_rejected": 22162,
+          "post_pending": 447,
+          "day29_removed": 0,
+          "pre_construct": 449,
+          "selected_stops": 236
+        }
+      },
+      "baseline": {
+        "money": [
+          69428.0,
+          51015.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "18e09e888be7c0d60ff9656bad1aff2493fd171b5bf4df5a6a93751806eb0e2c",
+        "terminal_sha256": "da6afea3606d97cb1dcdb949ceed69c4e1cf30a311efc4e63884a0187c629c01"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed312.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 313,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          88690.0,
+          111712.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfed1864adf8f7ead5976694cc01658d662b342938b3634c70d4d1975d587995",
+        "terminal_sha256": "36e792d830f07c8ae388063bfa279ce7dec2339c61d545e147b166183eb30db9",
+        "events": 302540,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4617,
+          "raw": 44719,
+          "claimed_removed": 21167,
+          "pending_rejected": 22973,
+          "post_pending": 579,
+          "day29_removed": 0,
+          "pre_construct": 579,
+          "selected_stops": 267
+        }
+      },
+      "baseline": {
+        "money": [
+          88690.0,
+          111712.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfed1864adf8f7ead5976694cc01658d662b342938b3634c70d4d1975d587995",
+        "terminal_sha256": "36e792d830f07c8ae388063bfa279ce7dec2339c61d545e147b166183eb30db9"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed313.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 313,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          111272.0,
+          89150.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "18e09e888be7c0d60ff9656bad1aff2493fd171b5bf4df5a6a93751806eb0e2c",
+        "terminal_sha256": "41f062ca2041d6cc2af3d74203d24131e35e78d43e1e8afb0c98fc94fe675c2c",
+        "events": 302540,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4617,
+          "raw": 44719,
+          "claimed_removed": 21167,
+          "pending_rejected": 22973,
+          "post_pending": 579,
+          "day29_removed": 0,
+          "pre_construct": 579,
+          "selected_stops": 267
+        }
+      },
+      "baseline": {
+        "money": [
+          111272.0,
+          89150.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "18e09e888be7c0d60ff9656bad1aff2493fd171b5bf4df5a6a93751806eb0e2c",
+        "terminal_sha256": "41f062ca2041d6cc2af3d74203d24131e35e78d43e1e8afb0c98fc94fe675c2c"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed313.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 314,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          148304.0,
+          145953.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "edd9960884b7d6a4ea7fcb7eccf1123631adf20f45369e5a6b8d403b90f67544",
+        "terminal_sha256": "36d697faeef23f6db667be1b55cd7a9d23de6923d0a0785d3868dbdf65bb168b",
+        "events": 442226,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4298,
+          "raw": 57982,
+          "claimed_removed": 22440,
+          "pending_rejected": 34487,
+          "post_pending": 1055,
+          "day29_removed": 0,
+          "pre_construct": 1055,
+          "selected_stops": 366
+        }
+      },
+      "baseline": {
+        "money": [
+          148304.0,
+          145953.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "edd9960884b7d6a4ea7fcb7eccf1123631adf20f45369e5a6b8d403b90f67544",
+        "terminal_sha256": "36d697faeef23f6db667be1b55cd7a9d23de6923d0a0785d3868dbdf65bb168b"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed314.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 314,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          144951.0,
+          148628.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4ea46df02ef5789b0c5867b53902dde75b2e1079d58707d7212e87519ca20b37",
+        "terminal_sha256": "90792cb6e6b55386567c62eaddc2705c4d98c82cb4e369a7330ed26eadd93cd8",
+        "events": 439963,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4278,
+          "raw": 57785,
+          "claimed_removed": 22386,
+          "pending_rejected": 34344,
+          "post_pending": 1055,
+          "day29_removed": 0,
+          "pre_construct": 1055,
+          "selected_stops": 366
+        }
+      },
+      "baseline": {
+        "money": [
+          144951.0,
+          148628.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4ea46df02ef5789b0c5867b53902dde75b2e1079d58707d7212e87519ca20b37",
+        "terminal_sha256": "90792cb6e6b55386567c62eaddc2705c4d98c82cb4e369a7330ed26eadd93cd8"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed314.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 315,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          77403.0,
+          94339.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4a72611c3e08aedba5482651a2737509b24cc2843c8099794d146ab1daee23c1",
+        "terminal_sha256": "7e522ba1c93d795911ba82e6faa9a4632c0a0437cfecf87a45287ec8e0c7b001",
+        "events": 251404,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4968,
+          "raw": 33232,
+          "claimed_removed": 13895,
+          "pending_rejected": 19022,
+          "post_pending": 315,
+          "day29_removed": 0,
+          "pre_construct": 315,
+          "selected_stops": 190
+        }
+      },
+      "baseline": {
+        "money": [
+          77403.0,
+          94339.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4a72611c3e08aedba5482651a2737509b24cc2843c8099794d146ab1daee23c1",
+        "terminal_sha256": "7e522ba1c93d795911ba82e6faa9a4632c0a0437cfecf87a45287ec8e0c7b001"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed315.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 315,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          94339.0,
+          77403.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0cfb687143db94783e4bcf9660c8b648881523c6db0de4cb026ca8011ba4fe08",
+        "terminal_sha256": "43bf61805fecabf4913f361b54d33e719aac50d09bb37aed9506b96aacfc640d",
+        "events": 251404,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4968,
+          "raw": 33232,
+          "claimed_removed": 13895,
+          "pending_rejected": 19022,
+          "post_pending": 315,
+          "day29_removed": 0,
+          "pre_construct": 315,
+          "selected_stops": 190
+        }
+      },
+      "baseline": {
+        "money": [
+          94339.0,
+          77403.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0cfb687143db94783e4bcf9660c8b648881523c6db0de4cb026ca8011ba4fe08",
+        "terminal_sha256": "43bf61805fecabf4913f361b54d33e719aac50d09bb37aed9506b96aacfc640d"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed315.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 316,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          92678.0,
+          115736.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "c9e3cb338e6dc989a02adbf1e85b4a95740777a123d6adff2219c12b9f66e1a1",
+        "terminal_sha256": "b698fa67a396808af84c4e83cd6c3ddcad9e49e55d1a60bfd99c5f51d7839051",
+        "events": 356600,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4455,
+          "raw": 48105,
+          "claimed_removed": 19583,
+          "pending_rejected": 27823,
+          "post_pending": 699,
+          "day29_removed": 0,
+          "pre_construct": 700,
+          "selected_stops": 298
+        }
+      },
+      "baseline": {
+        "money": [
+          92678.0,
+          115736.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "c9e3cb338e6dc989a02adbf1e85b4a95740777a123d6adff2219c12b9f66e1a1",
+        "terminal_sha256": "b698fa67a396808af84c4e83cd6c3ddcad9e49e55d1a60bfd99c5f51d7839051"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed316.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 316,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          114992.0,
+          94236.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4ea46df02ef5789b0c5867b53902dde75b2e1079d58707d7212e87519ca20b37",
+        "terminal_sha256": "7090a0a44804467c716895f3771bff4d2a644be3b8c13bd40654a895cf533715",
+        "events": 354515,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4408,
+          "raw": 47541,
+          "claimed_removed": 19210,
+          "pending_rejected": 27632,
+          "post_pending": 699,
+          "day29_removed": 0,
+          "pre_construct": 700,
+          "selected_stops": 298
+        }
+      },
+      "baseline": {
+        "money": [
+          114992.0,
+          94236.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4ea46df02ef5789b0c5867b53902dde75b2e1079d58707d7212e87519ca20b37",
+        "terminal_sha256": "7090a0a44804467c716895f3771bff4d2a644be3b8c13bd40654a895cf533715"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed316.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 317,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          92665.0,
+          109864.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfed1864adf8f7ead5976694cc01658d662b342938b3634c70d4d1975d587995",
+        "terminal_sha256": "f50361398c5564acf678f0b9c9b89cb99ef548ba803afe93f66dd40c836eea72",
+        "events": 345295,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4620,
+          "raw": 49106,
+          "claimed_removed": 21897,
+          "pending_rejected": 26538,
+          "post_pending": 671,
+          "day29_removed": 0,
+          "pre_construct": 672,
+          "selected_stops": 291
+        }
+      },
+      "baseline": {
+        "money": [
+          92665.0,
+          109864.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfed1864adf8f7ead5976694cc01658d662b342938b3634c70d4d1975d587995",
+        "terminal_sha256": "f50361398c5564acf678f0b9c9b89cb99ef548ba803afe93f66dd40c836eea72"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed317.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 317,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          109874.0,
+          92563.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "18e09e888be7c0d60ff9656bad1aff2493fd171b5bf4df5a6a93751806eb0e2c",
+        "terminal_sha256": "986051b4880debe039a292f4597ad507ea55327015fdaad2fef4f8266bb3fec7",
+        "events": 344166,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4617,
+          "raw": 49070,
+          "claimed_removed": 21813,
+          "pending_rejected": 26586,
+          "post_pending": 671,
+          "day29_removed": 0,
+          "pre_construct": 673,
+          "selected_stops": 292
+        }
+      },
+      "baseline": {
+        "money": [
+          109874.0,
+          92563.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "18e09e888be7c0d60ff9656bad1aff2493fd171b5bf4df5a6a93751806eb0e2c",
+        "terminal_sha256": "986051b4880debe039a292f4597ad507ea55327015fdaad2fef4f8266bb3fec7"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed317.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 318,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          76430.0,
+          95808.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfed1864adf8f7ead5976694cc01658d662b342938b3634c70d4d1975d587995",
+        "terminal_sha256": "2338187b6ab9e69f5ac859f02dc8d888fa75df708dd06406181275d88bf2c0f5",
+        "events": 465422,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4475,
+          "raw": 63366,
+          "claimed_removed": 25520,
+          "pending_rejected": 36690,
+          "post_pending": 1156,
+          "day29_removed": 0,
+          "pre_construct": 1163,
+          "selected_stops": 394
+        }
+      },
+      "baseline": {
+        "money": [
+          76430.0,
+          95808.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfed1864adf8f7ead5976694cc01658d662b342938b3634c70d4d1975d587995",
+        "terminal_sha256": "2338187b6ab9e69f5ac859f02dc8d888fa75df708dd06406181275d88bf2c0f5"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed318.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 318,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          94571.0,
+          72970.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "18e09e888be7c0d60ff9656bad1aff2493fd171b5bf4df5a6a93751806eb0e2c",
+        "terminal_sha256": "05a896116c0196916f586fd06b5c4b0ddeeb139be36688539f2813cf9d7738f9",
+        "events": 467680,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4424,
+          "raw": 62168,
+          "claimed_removed": 23794,
+          "pending_rejected": 37230,
+          "post_pending": 1144,
+          "day29_removed": 0,
+          "pre_construct": 1144,
+          "selected_stops": 385
+        }
+      },
+      "baseline": {
+        "money": [
+          94571.0,
+          72970.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "18e09e888be7c0d60ff9656bad1aff2493fd171b5bf4df5a6a93751806eb0e2c",
+        "terminal_sha256": "05a896116c0196916f586fd06b5c4b0ddeeb139be36688539f2813cf9d7738f9"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed318.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 319,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          79326.0,
+          99135.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfed1864adf8f7ead5976694cc01658d662b342938b3634c70d4d1975d587995",
+        "terminal_sha256": "e4367bfe2dd326707ec5130cc60b6bacc11e8e1aeaab8febf4a50bf705c21061",
+        "events": 277950,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4801,
+          "raw": 40278,
+          "claimed_removed": 18651,
+          "pending_rejected": 21180,
+          "post_pending": 447,
+          "day29_removed": 0,
+          "pre_construct": 447,
+          "selected_stops": 234
+        }
+      },
+      "baseline": {
+        "money": [
+          79326.0,
+          99135.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfed1864adf8f7ead5976694cc01658d662b342938b3634c70d4d1975d587995",
+        "terminal_sha256": "e4367bfe2dd326707ec5130cc60b6bacc11e8e1aeaab8febf4a50bf705c21061"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed319.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 319,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          99135.0,
+          79331.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "18e09e888be7c0d60ff9656bad1aff2493fd171b5bf4df5a6a93751806eb0e2c",
+        "terminal_sha256": "675592fde0aa99a7d2315cb2cd883f6ca5e3b1fa5dc86024f763d92f89c5e970",
+        "events": 277470,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4780,
+          "raw": 40089,
+          "claimed_removed": 18580,
+          "pending_rejected": 21062,
+          "post_pending": 447,
+          "day29_removed": 0,
+          "pre_construct": 447,
+          "selected_stops": 234
+        }
+      },
+      "baseline": {
+        "money": [
+          99135.0,
+          79331.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "18e09e888be7c0d60ff9656bad1aff2493fd171b5bf4df5a6a93751806eb0e2c",
+        "terminal_sha256": "675592fde0aa99a7d2315cb2cd883f6ca5e3b1fa5dc86024f763d92f89c5e970"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed319.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 320,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          87997.0,
+          110039.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfed1864adf8f7ead5976694cc01658d662b342938b3634c70d4d1975d587995",
+        "terminal_sha256": "ee135d143f8c712e5f9db71af1df0a630d0cd5a89defc2e86b63c8754a20a5e3",
+        "events": 308366,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4660,
+          "raw": 45192,
+          "claimed_removed": 21242,
+          "pending_rejected": 23371,
+          "post_pending": 579,
+          "day29_removed": 0,
+          "pre_construct": 579,
+          "selected_stops": 267
+        }
+      },
+      "baseline": {
+        "money": [
+          87997.0,
+          110039.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfed1864adf8f7ead5976694cc01658d662b342938b3634c70d4d1975d587995",
+        "terminal_sha256": "ee135d143f8c712e5f9db71af1df0a630d0cd5a89defc2e86b63c8754a20a5e3"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed320.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 320,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          110039.0,
+          87993.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "18e09e888be7c0d60ff9656bad1aff2493fd171b5bf4df5a6a93751806eb0e2c",
+        "terminal_sha256": "6067ce3e3ee197f393b99f43fce883368e2448019fdf5d391746dfe37fc63c98",
+        "events": 308825,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4663,
+          "raw": 45225,
+          "claimed_removed": 21242,
+          "pending_rejected": 23404,
+          "post_pending": 579,
+          "day29_removed": 0,
+          "pre_construct": 579,
+          "selected_stops": 267
+        }
+      },
+      "baseline": {
+        "money": [
+          110039.0,
+          87993.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "18e09e888be7c0d60ff9656bad1aff2493fd171b5bf4df5a6a93751806eb0e2c",
+        "terminal_sha256": "6067ce3e3ee197f393b99f43fce883368e2448019fdf5d391746dfe37fc63c98"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed320.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 321,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          84739.0,
+          101760.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "464ee65db35527a2779a04bf5b6a2a5e4e753044c622898051ce4c52c6e30556",
+        "terminal_sha256": "f932c5a9e4efe86177a0ae3792ddc6e383c3872985d1038b69995e00dbe0c695",
+        "events": 477677,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4289,
+          "raw": 62335,
+          "claimed_removed": 22885,
+          "pending_rejected": 38227,
+          "post_pending": 1223,
+          "day29_removed": 0,
+          "pre_construct": 1223,
+          "selected_stops": 402
+        }
+      },
+      "baseline": {
+        "money": [
+          84739.0,
+          101760.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "464ee65db35527a2779a04bf5b6a2a5e4e753044c622898051ce4c52c6e30556",
+        "terminal_sha256": "f932c5a9e4efe86177a0ae3792ddc6e383c3872985d1038b69995e00dbe0c695"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed321.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 321,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          101431.0,
+          85110.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "adc203fa9f0c57dabf1712e2b3cbce9e27ee687b06385f6e75b9faefbfcc17f8",
+        "terminal_sha256": "f0f57329cf8de0c265f5ba24d7c09542962b4b2e8abafe77c8c7e62d4f872b19",
+        "events": 477911,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4296,
+          "raw": 62454,
+          "claimed_removed": 23095,
+          "pending_rejected": 38136,
+          "post_pending": 1223,
+          "day29_removed": 0,
+          "pre_construct": 1223,
+          "selected_stops": 402
+        }
+      },
+      "baseline": {
+        "money": [
+          101431.0,
+          85110.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "adc203fa9f0c57dabf1712e2b3cbce9e27ee687b06385f6e75b9faefbfcc17f8",
+        "terminal_sha256": "f0f57329cf8de0c265f5ba24d7c09542962b4b2e8abafe77c8c7e62d4f872b19"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed321.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 322,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          78555.0,
+          96388.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f28bde51d51a23004342f4c137d7237128cbe0eef3798289da8cc7a1ba86fab1",
+        "terminal_sha256": "5c3f4d9f732e3e4071fbc4243046da401bb27bc6f6150de6e45b13ebfbf1dc1c",
+        "events": 453278,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4280,
+          "raw": 63366,
+          "claimed_removed": 26350,
+          "pending_rejected": 35775,
+          "post_pending": 1241,
+          "day29_removed": 0,
+          "pre_construct": 1245,
+          "selected_stops": 410
+        }
+      },
+      "baseline": {
+        "money": [
+          78555.0,
+          96388.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f28bde51d51a23004342f4c137d7237128cbe0eef3798289da8cc7a1ba86fab1",
+        "terminal_sha256": "5c3f4d9f732e3e4071fbc4243046da401bb27bc6f6150de6e45b13ebfbf1dc1c"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed322.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 322,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          96388.0,
+          78555.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "a536533517d71e9571d9d69062ed5edbd2aef69c44c2a768f7d210e2d396a6a3",
+        "terminal_sha256": "b10a8555eb457ca34365a83244946c6b1221e34c9997d5a7b8edf3cb06a22eba",
+        "events": 453278,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4280,
+          "raw": 63366,
+          "claimed_removed": 26350,
+          "pending_rejected": 35775,
+          "post_pending": 1241,
+          "day29_removed": 0,
+          "pre_construct": 1245,
+          "selected_stops": 410
+        }
+      },
+      "baseline": {
+        "money": [
+          96388.0,
+          78555.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "a536533517d71e9571d9d69062ed5edbd2aef69c44c2a768f7d210e2d396a6a3",
+        "terminal_sha256": "b10a8555eb457ca34365a83244946c6b1221e34c9997d5a7b8edf3cb06a22eba"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed322.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 323,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          80099.0,
+          97881.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "42c1ec4bec4e01e802c3ba0d44f22ee7491a191d3f239f85c17cda43f491e5ba",
+        "terminal_sha256": "c36690abe0c12edb9e4729ef149a860e0679c67e820a34148f60d843bd748235",
+        "events": 274773,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4588,
+          "raw": 38239,
+          "claimed_removed": 16816,
+          "pending_rejected": 20982,
+          "post_pending": 441,
+          "day29_removed": 0,
+          "pre_construct": 442,
+          "selected_stops": 233
+        }
+      },
+      "baseline": {
+        "money": [
+          80099.0,
+          97881.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "42c1ec4bec4e01e802c3ba0d44f22ee7491a191d3f239f85c17cda43f491e5ba",
+        "terminal_sha256": "c36690abe0c12edb9e4729ef149a860e0679c67e820a34148f60d843bd748235"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed323.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 323,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          98041.0,
+          79879.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "7a36535ef9b066c7cae1310350818421d6efabeec25ad3528ebb3da071ebbd68",
+        "terminal_sha256": "138ced8855c8912d178ddd8d0cd6f3c5ac58d25f133be1e408b322331faa7209",
+        "events": 273852,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4582,
+          "raw": 38185,
+          "claimed_removed": 16820,
+          "pending_rejected": 20924,
+          "post_pending": 441,
+          "day29_removed": 0,
+          "pre_construct": 442,
+          "selected_stops": 233
+        }
+      },
+      "baseline": {
+        "money": [
+          98041.0,
+          79879.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "7a36535ef9b066c7cae1310350818421d6efabeec25ad3528ebb3da071ebbd68",
+        "terminal_sha256": "138ced8855c8912d178ddd8d0cd6f3c5ac58d25f133be1e408b322331faa7209"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed323.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 324,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          85009.0,
+          102958.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4a72611c3e08aedba5482651a2737509b24cc2843c8099794d146ab1daee23c1",
+        "terminal_sha256": "4c72a4119d704fd4d25b079be2bf87a4da052674c13fef7a453108619978346f",
+        "events": 270909,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4847,
+          "raw": 35973,
+          "claimed_removed": 15099,
+          "pending_rejected": 20505,
+          "post_pending": 369,
+          "day29_removed": 0,
+          "pre_construct": 369,
+          "selected_stops": 208
+        }
+      },
+      "baseline": {
+        "money": [
+          85009.0,
+          102958.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4a72611c3e08aedba5482651a2737509b24cc2843c8099794d146ab1daee23c1",
+        "terminal_sha256": "4c72a4119d704fd4d25b079be2bf87a4da052674c13fef7a453108619978346f"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed324.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 324,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          102958.0,
+          85009.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0cfb687143db94783e4bcf9660c8b648881523c6db0de4cb026ca8011ba4fe08",
+        "terminal_sha256": "0b4548ac9e745c8f5167031eaf36253801298d29cc1f4efabb07cc7850dc8d77",
+        "events": 270909,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4847,
+          "raw": 35973,
+          "claimed_removed": 15099,
+          "pending_rejected": 20505,
+          "post_pending": 369,
+          "day29_removed": 0,
+          "pre_construct": 369,
+          "selected_stops": 208
+        }
+      },
+      "baseline": {
+        "money": [
+          102958.0,
+          85009.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0cfb687143db94783e4bcf9660c8b648881523c6db0de4cb026ca8011ba4fe08",
+        "terminal_sha256": "0b4548ac9e745c8f5167031eaf36253801298d29cc1f4efabb07cc7850dc8d77"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed324.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 325,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          96370.0,
+          111377.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4a72611c3e08aedba5482651a2737509b24cc2843c8099794d146ab1daee23c1",
+        "terminal_sha256": "3758985fb9f04b17ae63f994c9e2a21f79f11682b3a7aa06334f309373611a8a",
+        "events": 330713,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4742,
+          "raw": 44585,
+          "claimed_removed": 18657,
+          "pending_rejected": 25384,
+          "post_pending": 544,
+          "day29_removed": 0,
+          "pre_construct": 544,
+          "selected_stops": 256
+        }
+      },
+      "baseline": {
+        "money": [
+          96370.0,
+          111377.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4a72611c3e08aedba5482651a2737509b24cc2843c8099794d146ab1daee23c1",
+        "terminal_sha256": "3758985fb9f04b17ae63f994c9e2a21f79f11682b3a7aa06334f309373611a8a"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed325.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 325,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          111327.0,
+          95811.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0cfb687143db94783e4bcf9660c8b648881523c6db0de4cb026ca8011ba4fe08",
+        "terminal_sha256": "95b460b2434245139b8ad5aa4720460a70f944c2878f63a5c227835c3cef5e85",
+        "events": 325592,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4685,
+          "raw": 43958,
+          "claimed_removed": 18468,
+          "pending_rejected": 24946,
+          "post_pending": 544,
+          "day29_removed": 0,
+          "pre_construct": 544,
+          "selected_stops": 256
+        }
+      },
+      "baseline": {
+        "money": [
+          111327.0,
+          95811.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0cfb687143db94783e4bcf9660c8b648881523c6db0de4cb026ca8011ba4fe08",
+        "terminal_sha256": "95b460b2434245139b8ad5aa4720460a70f944c2878f63a5c227835c3cef5e85"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed325.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 326,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          74767.0,
+          82866.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4450d775da027425e1bed57376363b196fbd4fedee3b0bf2b340b2aeecf02909",
+        "terminal_sha256": "6158c209b21e84f8e77b6c8193cf93a009d9bf34e523af2abf147c6994d61a43",
+        "events": 424050,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4097,
+          "raw": 57768,
+          "claimed_removed": 23423,
+          "pending_rejected": 33197,
+          "post_pending": 1148,
+          "day29_removed": 0,
+          "pre_construct": 1148,
+          "selected_stops": 385
+        }
+      },
+      "baseline": {
+        "money": [
+          74767.0,
+          82866.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4450d775da027425e1bed57376363b196fbd4fedee3b0bf2b340b2aeecf02909",
+        "terminal_sha256": "6158c209b21e84f8e77b6c8193cf93a009d9bf34e523af2abf147c6994d61a43"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed326.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 326,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          84946.0,
+          71752.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "a3cafc041826ebb2a383b2134cf508d966a45161c053c3d9fd1ccf2afaafaec0",
+        "terminal_sha256": "b902f763b77cafe040b3127ce4f5d31c6fd727fbfaebda0485b9f11312ab14df",
+        "events": 419541,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4070,
+          "raw": 57430,
+          "claimed_removed": 23542,
+          "pending_rejected": 32734,
+          "post_pending": 1154,
+          "day29_removed": 0,
+          "pre_construct": 1154,
+          "selected_stops": 386
+        }
+      },
+      "baseline": {
+        "money": [
+          84946.0,
+          71752.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "a3cafc041826ebb2a383b2134cf508d966a45161c053c3d9fd1ccf2afaafaec0",
+        "terminal_sha256": "b902f763b77cafe040b3127ce4f5d31c6fd727fbfaebda0485b9f11312ab14df"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed326.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 327,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          80984.0,
+          100381.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfed1864adf8f7ead5976694cc01658d662b342938b3634c70d4d1975d587995",
+        "terminal_sha256": "681d24dfcf48304170f7d9601e646b4c4a659abbcaee7bf8265e8e9efe3911b3",
+        "events": 281039,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4854,
+          "raw": 40755,
+          "claimed_removed": 18879,
+          "pending_rejected": 21429,
+          "post_pending": 447,
+          "day29_removed": 0,
+          "pre_construct": 447,
+          "selected_stops": 234
+        }
+      },
+      "baseline": {
+        "money": [
+          80984.0,
+          100381.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "bfed1864adf8f7ead5976694cc01658d662b342938b3634c70d4d1975d587995",
+        "terminal_sha256": "681d24dfcf48304170f7d9601e646b4c4a659abbcaee7bf8265e8e9efe3911b3"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed327.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 327,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          100381.0,
+          80984.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "18e09e888be7c0d60ff9656bad1aff2493fd171b5bf4df5a6a93751806eb0e2c",
+        "terminal_sha256": "9b03381fffe34421f93af7e56d4fdfaa6632c3c5df106c2ceb726d1542a64440",
+        "events": 281045,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4855,
+          "raw": 40764,
+          "claimed_removed": 18888,
+          "pending_rejected": 21429,
+          "post_pending": 447,
+          "day29_removed": 0,
+          "pre_construct": 447,
+          "selected_stops": 234
+        }
+      },
+      "baseline": {
+        "money": [
+          100381.0,
+          80984.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "18e09e888be7c0d60ff9656bad1aff2493fd171b5bf4df5a6a93751806eb0e2c",
+        "terminal_sha256": "9b03381fffe34421f93af7e56d4fdfaa6632c3c5df106c2ceb726d1542a64440"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed327.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 328,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          42859.0,
+          65242.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "19b9d5fb3798a8872de7b7743e7df6d0dde8e39c627220904350392d355e5285",
+        "terminal_sha256": "6aa1113c5b8a8949051830b18026fb955c14aa61015bee9f97758865e8923eb6",
+        "events": 329787,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4645,
+          "raw": 47694,
+          "claimed_removed": 21710,
+          "pending_rejected": 25330,
+          "post_pending": 654,
+          "day29_removed": 0,
+          "pre_construct": 656,
+          "selected_stops": 285
+        }
+      },
+      "baseline": {
+        "money": [
+          42859.0,
+          65242.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "19b9d5fb3798a8872de7b7743e7df6d0dde8e39c627220904350392d355e5285",
+        "terminal_sha256": "6aa1113c5b8a8949051830b18026fb955c14aa61015bee9f97758865e8923eb6"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed328.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 328,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          65350.0,
+          43551.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "2573651abbccbaffc5d08a830fe80a6b01f9ac3dc5214a3ecccfef28501a3774",
+        "terminal_sha256": "1ace4d1ac781c1350ff56db5d08c390b3a27362f899f526883f09bad7c19e83d",
+        "events": 340562,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4604,
+          "raw": 47180,
+          "claimed_removed": 20114,
+          "pending_rejected": 26412,
+          "post_pending": 654,
+          "day29_removed": 0,
+          "pre_construct": 654,
+          "selected_stops": 283
+        }
+      },
+      "baseline": {
+        "money": [
+          65350.0,
+          43551.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "2573651abbccbaffc5d08a830fe80a6b01f9ac3dc5214a3ecccfef28501a3774",
+        "terminal_sha256": "1ace4d1ac781c1350ff56db5d08c390b3a27362f899f526883f09bad7c19e83d"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed328.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 329,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          106318.0,
+          81059.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0c6fc617087adfe5c03c288d83b7b414f2cda6dd47c50254a5f384950210b342",
+        "terminal_sha256": "d1c957dd7474e9abceea348ca9d7ea3e8264faa6e7f622ccba35ff4e5ff8b616",
+        "events": 471061,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4319,
+          "raw": 63619,
+          "claimed_removed": 24890,
+          "pending_rejected": 37506,
+          "post_pending": 1223,
+          "day29_removed": 0,
+          "pre_construct": 1223,
+          "selected_stops": 402
+        }
+      },
+      "baseline": {
+        "money": [
+          106318.0,
+          81059.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0c6fc617087adfe5c03c288d83b7b414f2cda6dd47c50254a5f384950210b342",
+        "terminal_sha256": "d1c957dd7474e9abceea348ca9d7ea3e8264faa6e7f622ccba35ff4e5ff8b616"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed329.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 329,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          80984.0,
+          106071.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f6affc2342ae4132caaf39db78c2208f3be406bb9e5b1f7a98d39bb6d2cc8c6a",
+        "terminal_sha256": "4f2ed2ed6d0b12477c792566e4b647bc33f718dbfea02805d857eea2dad6abae",
+        "events": 466450,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4290,
+          "raw": 63126,
+          "claimed_removed": 24775,
+          "pending_rejected": 37128,
+          "post_pending": 1223,
+          "day29_removed": 0,
+          "pre_construct": 1223,
+          "selected_stops": 402
+        }
+      },
+      "baseline": {
+        "money": [
+          80984.0,
+          106071.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f6affc2342ae4132caaf39db78c2208f3be406bb9e5b1f7a98d39bb6d2cc8c6a",
+        "terminal_sha256": "4f2ed2ed6d0b12477c792566e4b647bc33f718dbfea02805d857eea2dad6abae"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed329.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 330,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          79740.0,
+          87318.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "dfed1b692316da34446ad871090c069c4683dded8a0711c9b4fe2d38fabe7bb3",
+        "terminal_sha256": "d97d7e8c8287c513fcc60f023f9f1fba846e7a208dbe25babef4a5a17de95bb5",
+        "events": 381457,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 3945,
+          "raw": 55623,
+          "claimed_removed": 24829,
+          "pending_rejected": 29635,
+          "post_pending": 1159,
+          "day29_removed": 0,
+          "pre_construct": 1160,
+          "selected_stops": 389
+        }
+      },
+      "baseline": {
+        "money": [
+          79740.0,
+          87318.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "dfed1b692316da34446ad871090c069c4683dded8a0711c9b4fe2d38fabe7bb3",
+        "terminal_sha256": "d97d7e8c8287c513fcc60f023f9f1fba846e7a208dbe25babef4a5a17de95bb5"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed330.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 330,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          87508.0,
+          79420.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "5c3624af7dee373e58bd6c3737ec8750ef4d74ce325c2a66034c2dbefce6715d",
+        "terminal_sha256": "8d9cdd9ac520ce984b0b2f9e4651ddb1a3bb88a62c29058a2f46faf2187bd08a",
+        "events": 381004,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 3947,
+          "raw": 55657,
+          "claimed_removed": 24865,
+          "pending_rejected": 29633,
+          "post_pending": 1159,
+          "day29_removed": 0,
+          "pre_construct": 1160,
+          "selected_stops": 389
+        }
+      },
+      "baseline": {
+        "money": [
+          87508.0,
+          79420.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "5c3624af7dee373e58bd6c3737ec8750ef4d74ce325c2a66034c2dbefce6715d",
+        "terminal_sha256": "8d9cdd9ac520ce984b0b2f9e4651ddb1a3bb88a62c29058a2f46faf2187bd08a"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed330.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 331,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          110073.0,
+          111257.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f1363f3eed17b4db1016a71c1ecf828b2a6ceb3a416f5bede50cf51f4a6c6614",
+        "terminal_sha256": "065d959e38d0dede77612250c99bb3d895fe372d820150403d376a635c8e7ed4",
+        "events": 447926,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4252,
+          "raw": 61964,
+          "claimed_removed": 25480,
+          "pending_rejected": 35256,
+          "post_pending": 1228,
+          "day29_removed": 0,
+          "pre_construct": 1229,
+          "selected_stops": 404
+        }
+      },
+      "baseline": {
+        "money": [
+          110073.0,
+          111257.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f1363f3eed17b4db1016a71c1ecf828b2a6ceb3a416f5bede50cf51f4a6c6614",
+        "terminal_sha256": "065d959e38d0dede77612250c99bb3d895fe372d820150403d376a635c8e7ed4"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed331.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 331,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          111257.0,
+          110073.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "093a45008eb80f4aedce3476fa855a1481520444afc98a0a7355dd2dcdc1d41e",
+        "terminal_sha256": "331c24a85f8476d221d1231f1d2909541c378e14a3e6fd4d7aecf764154ab92c",
+        "events": 447926,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4252,
+          "raw": 61964,
+          "claimed_removed": 25480,
+          "pending_rejected": 35256,
+          "post_pending": 1228,
+          "day29_removed": 0,
+          "pre_construct": 1229,
+          "selected_stops": 404
+        }
+      },
+      "baseline": {
+        "money": [
+          111257.0,
+          110073.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "093a45008eb80f4aedce3476fa855a1481520444afc98a0a7355dd2dcdc1d41e",
+        "terminal_sha256": "331c24a85f8476d221d1231f1d2909541c378e14a3e6fd4d7aecf764154ab92c"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed331.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 332,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          104341.0,
+          108170.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4a72611c3e08aedba5482651a2737509b24cc2843c8099794d146ab1daee23c1",
+        "terminal_sha256": "a7763f865a83c68fc228ee7c3cc4ed679b48f03c41b2bab50b7481cd346ef974",
+        "events": 457416,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4393,
+          "raw": 60631,
+          "claimed_removed": 23375,
+          "pending_rejected": 36130,
+          "post_pending": 1126,
+          "day29_removed": 0,
+          "pre_construct": 1127,
+          "selected_stops": 381
+        }
+      },
+      "baseline": {
+        "money": [
+          104341.0,
+          108170.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4a72611c3e08aedba5482651a2737509b24cc2843c8099794d146ab1daee23c1",
+        "terminal_sha256": "a7763f865a83c68fc228ee7c3cc4ed679b48f03c41b2bab50b7481cd346ef974"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed332.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 332,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          108170.0,
+          104341.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0cfb687143db94783e4bcf9660c8b648881523c6db0de4cb026ca8011ba4fe08",
+        "terminal_sha256": "8e25d133f2e2f908e803cba506d9fd0d23fd591dfeaa7242582836efa5525121",
+        "events": 457416,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4393,
+          "raw": 60631,
+          "claimed_removed": 23375,
+          "pending_rejected": 36130,
+          "post_pending": 1126,
+          "day29_removed": 0,
+          "pre_construct": 1127,
+          "selected_stops": 381
+        }
+      },
+      "baseline": {
+        "money": [
+          108170.0,
+          104341.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0cfb687143db94783e4bcf9660c8b648881523c6db0de4cb026ca8011ba4fe08",
+        "terminal_sha256": "8e25d133f2e2f908e803cba506d9fd0d23fd591dfeaa7242582836efa5525121"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed332.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 333,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          50040.0,
+          63535.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "19b9d5fb3798a8872de7b7743e7df6d0dde8e39c627220904350392d355e5285",
+        "terminal_sha256": "f1dc13965ed8361e7757b4a3d201e83c6b1e9e4d5ff7686d23e7cb11edd78968",
+        "events": 240040,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4788,
+          "raw": 31972,
+          "claimed_removed": 13523,
+          "pending_rejected": 18134,
+          "post_pending": 315,
+          "day29_removed": 0,
+          "pre_construct": 315,
+          "selected_stops": 190
+        }
+      },
+      "baseline": {
+        "money": [
+          50040.0,
+          63535.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "19b9d5fb3798a8872de7b7743e7df6d0dde8e39c627220904350392d355e5285",
+        "terminal_sha256": "f1dc13965ed8361e7757b4a3d201e83c6b1e9e4d5ff7686d23e7cb11edd78968"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed333.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 333,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          63914.0,
+          48868.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "2573651abbccbaffc5d08a830fe80a6b01f9ac3dc5214a3ecccfef28501a3774",
+        "terminal_sha256": "b603e097cc40c4723d99967cf194be05a500cf8df6ba9e099ad837755ef024bc",
+        "events": 244951,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4882,
+          "raw": 32630,
+          "claimed_removed": 13793,
+          "pending_rejected": 18522,
+          "post_pending": 315,
+          "day29_removed": 0,
+          "pre_construct": 315,
+          "selected_stops": 190
+        }
+      },
+      "baseline": {
+        "money": [
+          63914.0,
+          48868.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "2573651abbccbaffc5d08a830fe80a6b01f9ac3dc5214a3ecccfef28501a3774",
+        "terminal_sha256": "b603e097cc40c4723d99967cf194be05a500cf8df6ba9e099ad837755ef024bc"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed333.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 334,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          109460.0,
+          129346.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "464ee65db35527a2779a04bf5b6a2a5e4e753044c622898051ce4c52c6e30556",
+        "terminal_sha256": "4fa44a55088125f647254185e826f20ef3cda4c453c53f3320aaf0cf424cc9a7",
+        "events": 486546,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4433,
+          "raw": 64953,
+          "claimed_removed": 25166,
+          "pending_rejected": 38556,
+          "post_pending": 1231,
+          "day29_removed": 0,
+          "pre_construct": 1231,
+          "selected_stops": 402
+        }
+      },
+      "baseline": {
+        "money": [
+          109460.0,
+          129346.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "464ee65db35527a2779a04bf5b6a2a5e4e753044c622898051ce4c52c6e30556",
+        "terminal_sha256": "4fa44a55088125f647254185e826f20ef3cda4c453c53f3320aaf0cf424cc9a7"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed334.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 334,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          129178.0,
+          109028.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "adc203fa9f0c57dabf1712e2b3cbce9e27ee687b06385f6e75b9faefbfcc17f8",
+        "terminal_sha256": "9176676726d9b193acd30044fc50eaa905c159c6aa113033ddf70b1b592b6783",
+        "events": 477095,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4386,
+          "raw": 64154,
+          "claimed_removed": 25124,
+          "pending_rejected": 37799,
+          "post_pending": 1231,
+          "day29_removed": 0,
+          "pre_construct": 1231,
+          "selected_stops": 402
+        }
+      },
+      "baseline": {
+        "money": [
+          129178.0,
+          109028.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "adc203fa9f0c57dabf1712e2b3cbce9e27ee687b06385f6e75b9faefbfcc17f8",
+        "terminal_sha256": "9176676726d9b193acd30044fc50eaa905c159c6aa113033ddf70b1b592b6783"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed334.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 335,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          79586.0,
+          99894.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "d6c228effd1efbeddf4f8d9bcae9ae02ab5b732bf0ade6e57fc5e9f6130d1a50",
+        "terminal_sha256": "b63041d84215dd41510fe633932f16964abb33cde1242389713283a35bc3dd56",
+        "events": 346477,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4603,
+          "raw": 45715,
+          "claimed_removed": 18046,
+          "pending_rejected": 27066,
+          "post_pending": 603,
+          "day29_removed": 0,
+          "pre_construct": 603,
+          "selected_stops": 273
+        }
+      },
+      "baseline": {
+        "money": [
+          79586.0,
+          99894.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "d6c228effd1efbeddf4f8d9bcae9ae02ab5b732bf0ade6e57fc5e9f6130d1a50",
+        "terminal_sha256": "b63041d84215dd41510fe633932f16964abb33cde1242389713283a35bc3dd56"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed335.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 335,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          99676.0,
+          79546.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "a8789abcdfd4624041ec90e640b737be28448baf0b7299a30fd8f8290d8c8f5a",
+        "terminal_sha256": "9e5aafeaba3c7ecb123c787d047fc48ecb7923b0379ed816a92b07e4508306b4",
+        "events": 345869,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4599,
+          "raw": 45671,
+          "claimed_removed": 18049,
+          "pending_rejected": 27019,
+          "post_pending": 603,
+          "day29_removed": 0,
+          "pre_construct": 603,
+          "selected_stops": 273
+        }
+      },
+      "baseline": {
+        "money": [
+          99676.0,
+          79546.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "a8789abcdfd4624041ec90e640b737be28448baf0b7299a30fd8f8290d8c8f5a",
+        "terminal_sha256": "9e5aafeaba3c7ecb123c787d047fc48ecb7923b0379ed816a92b07e4508306b4"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed335.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 336,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          49680.0,
+          68538.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "19b9d5fb3798a8872de7b7743e7df6d0dde8e39c627220904350392d355e5285",
+        "terminal_sha256": "ca7bcdf26ba13582ef49e9ff0197f4fae386b973977c75390b9b9877d0fec3d4",
+        "events": 424121,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4285,
+          "raw": 58895,
+          "claimed_removed": 24093,
+          "pending_rejected": 33705,
+          "post_pending": 1097,
+          "day29_removed": 0,
+          "pre_construct": 1098,
+          "selected_stops": 376
+        }
+      },
+      "baseline": {
+        "money": [
+          49680.0,
+          68538.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "19b9d5fb3798a8872de7b7743e7df6d0dde8e39c627220904350392d355e5285",
+        "terminal_sha256": "ca7bcdf26ba13582ef49e9ff0197f4fae386b973977c75390b9b9877d0fec3d4"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed336.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 336,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          68538.0,
+          49680.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "2573651abbccbaffc5d08a830fe80a6b01f9ac3dc5214a3ecccfef28501a3774",
+        "terminal_sha256": "3d2041a3ddd61e32c5983b5af7a53044dd51028d578ab559560f1e0f87b047d8",
+        "events": 424121,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4285,
+          "raw": 58895,
+          "claimed_removed": 24093,
+          "pending_rejected": 33705,
+          "post_pending": 1097,
+          "day29_removed": 0,
+          "pre_construct": 1098,
+          "selected_stops": 376
+        }
+      },
+      "baseline": {
+        "money": [
+          68538.0,
+          49680.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "2573651abbccbaffc5d08a830fe80a6b01f9ac3dc5214a3ecccfef28501a3774",
+        "terminal_sha256": "3d2041a3ddd61e32c5983b5af7a53044dd51028d578ab559560f1e0f87b047d8"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed336.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 337,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          116655.0,
+          127025.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "8e2f6f2acca1a328b63944cb32c815a75d024311a2dc9e82d720754b8ec5782b",
+        "terminal_sha256": "bd9412d8d0dd938c6a88750a4fa3223ea2863ac5436792fdf0466511bb4ba628",
+        "events": 413728,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4281,
+          "raw": 55711,
+          "claimed_removed": 22612,
+          "pending_rejected": 32116,
+          "post_pending": 983,
+          "day29_removed": 0,
+          "pre_construct": 984,
+          "selected_stops": 355
+        }
+      },
+      "baseline": {
+        "money": [
+          116655.0,
+          127025.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "8e2f6f2acca1a328b63944cb32c815a75d024311a2dc9e82d720754b8ec5782b",
+        "terminal_sha256": "bd9412d8d0dd938c6a88750a4fa3223ea2863ac5436792fdf0466511bb4ba628"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed337.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 337,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          126916.0,
+          115043.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "9ca1d25f9d80464bc7075fc847fac7c9f8f2195a0500c7a599e700810201ee65",
+        "terminal_sha256": "4c2679f80b6f053d01e524aa3212737eb4eff6a6d639ee03292346e715bb31dc",
+        "events": 417043,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4330,
+          "raw": 56446,
+          "claimed_removed": 23044,
+          "pending_rejected": 32419,
+          "post_pending": 983,
+          "day29_removed": 0,
+          "pre_construct": 983,
+          "selected_stops": 354
+        }
+      },
+      "baseline": {
+        "money": [
+          126916.0,
+          115043.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "9ca1d25f9d80464bc7075fc847fac7c9f8f2195a0500c7a599e700810201ee65",
+        "terminal_sha256": "4c2679f80b6f053d01e524aa3212737eb4eff6a6d639ee03292346e715bb31dc"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed337.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 338,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          54215.0,
+          87088.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "19b9d5fb3798a8872de7b7743e7df6d0dde8e39c627220904350392d355e5285",
+        "terminal_sha256": "00184c181c0443a4e495d1e3c85bee2a4ed35d3edf2d513942f022843edb2945",
+        "events": 319231,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4548,
+          "raw": 44160,
+          "claimed_removed": 18843,
+          "pending_rejected": 24715,
+          "post_pending": 602,
+          "day29_removed": 0,
+          "pre_construct": 603,
+          "selected_stops": 271
+        }
+      },
+      "baseline": {
+        "money": [
+          54215.0,
+          87088.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "19b9d5fb3798a8872de7b7743e7df6d0dde8e39c627220904350392d355e5285",
+        "terminal_sha256": "00184c181c0443a4e495d1e3c85bee2a4ed35d3edf2d513942f022843edb2945"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed338.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 338,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          87025.0,
+          54079.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "2573651abbccbaffc5d08a830fe80a6b01f9ac3dc5214a3ecccfef28501a3774",
+        "terminal_sha256": "826f23cb3018f2ecb3484e6cb4780dec2a6268234a88fb3979f8f856a9ad12ce",
+        "events": 322574,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4576,
+          "raw": 44524,
+          "claimed_removed": 18964,
+          "pending_rejected": 24958,
+          "post_pending": 602,
+          "day29_removed": 0,
+          "pre_construct": 603,
+          "selected_stops": 271
+        }
+      },
+      "baseline": {
+        "money": [
+          87025.0,
+          54079.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "2573651abbccbaffc5d08a830fe80a6b01f9ac3dc5214a3ecccfef28501a3774",
+        "terminal_sha256": "826f23cb3018f2ecb3484e6cb4780dec2a6268234a88fb3979f8f856a9ad12ce"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed338.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 339,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          61991.0,
+          82580.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4450d775da027425e1bed57376363b196fbd4fedee3b0bf2b340b2aeecf02909",
+        "terminal_sha256": "ea9267789300739945201122efafb23d8e7766d61f793c53d1e6e241689b1655",
+        "events": 333134,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4152,
+          "raw": 46624,
+          "claimed_removed": 20379,
+          "pending_rejected": 25494,
+          "post_pending": 751,
+          "day29_removed": 0,
+          "pre_construct": 757,
+          "selected_stops": 313
+        }
+      },
+      "baseline": {
+        "money": [
+          61991.0,
+          82580.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4450d775da027425e1bed57376363b196fbd4fedee3b0bf2b340b2aeecf02909",
+        "terminal_sha256": "ea9267789300739945201122efafb23d8e7766d61f793c53d1e6e241689b1655"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed339.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 339,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          82580.0,
+          61991.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "a3cafc041826ebb2a383b2134cf508d966a45161c053c3d9fd1ccf2afaafaec0",
+        "terminal_sha256": "a912380384c358e0a35b58e19cec126910bc7f6736bd52e35e244d3ff2b451d2",
+        "events": 333134,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4152,
+          "raw": 46624,
+          "claimed_removed": 20379,
+          "pending_rejected": 25494,
+          "post_pending": 751,
+          "day29_removed": 0,
+          "pre_construct": 757,
+          "selected_stops": 313
+        }
+      },
+      "baseline": {
+        "money": [
+          82580.0,
+          61991.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "a3cafc041826ebb2a383b2134cf508d966a45161c053c3d9fd1ccf2afaafaec0",
+        "terminal_sha256": "a912380384c358e0a35b58e19cec126910bc7f6736bd52e35e244d3ff2b451d2"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed339.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 340,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          55371.0,
+          71908.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4450d775da027425e1bed57376363b196fbd4fedee3b0bf2b340b2aeecf02909",
+        "terminal_sha256": "7abb76f2cb8a63a2f1db9b798142ea1d76c44b75247c6498be2e7a7bdc99f7d4",
+        "events": 276037,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4554,
+          "raw": 37905,
+          "claimed_removed": 16516,
+          "pending_rejected": 20948,
+          "post_pending": 441,
+          "day29_removed": 0,
+          "pre_construct": 443,
+          "selected_stops": 234
+        }
+      },
+      "baseline": {
+        "money": [
+          55371.0,
+          71908.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "4450d775da027425e1bed57376363b196fbd4fedee3b0bf2b340b2aeecf02909",
+        "terminal_sha256": "7abb76f2cb8a63a2f1db9b798142ea1d76c44b75247c6498be2e7a7bdc99f7d4"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat0_seed340.jsonl.gz"
+    },
+    {
+      "opponent": "alaylm",
+      "seed": 340,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          71590.0,
+          55988.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "2af8116127238fc2110a418eb6717701ee399ddf3327ea250aad3e18ed033e88",
+        "terminal_sha256": "72d563d3addf3b20dbeaccf5459ac54203d4c5bd9460836c368890ea9e79739e",
+        "events": 272823,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4648,
+          "raw": 38756,
+          "claimed_removed": 17616,
+          "pending_rejected": 20699,
+          "post_pending": 441,
+          "day29_removed": 0,
+          "pre_construct": 442,
+          "selected_stops": 233
+        }
+      },
+      "baseline": {
+        "money": [
+          71590.0,
+          55988.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "2af8116127238fc2110a418eb6717701ee399ddf3327ea250aad3e18ed033e88",
+        "terminal_sha256": "72d563d3addf3b20dbeaccf5459ac54203d4c5bd9460836c368890ea9e79739e"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/alaylm/alaylm_seat1_seed340.jsonl.gz"
+    }
+  ]
+}

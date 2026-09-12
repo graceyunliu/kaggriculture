@@ -1,0 +1,121 @@
+{
+  "trace_source": "/Users/graceliu/Claude/Projects/Kaggriculture/tools/o42_decision_provenance.py",
+  "trace_scope": "animal_route_upstream",
+  "o42_source": "/Users/graceliu/Claude/Projects/Kaggriculture/candidates/O42_MAX_HANDS_LATE_EXPAND.py",
+  "o42_sha256": "154d1ff480e9aa05084e323604a1a09ce73b68adbff95dd4f410e6acf4f52813",
+  "criteria": [
+    "money",
+    "steps",
+    "errors",
+    "actions_sha256",
+    "terminal_sha256"
+  ],
+  "semantic_binding_criteria": [
+    "AST node type",
+    "unique structural match inside intended function",
+    "expected enclosing guard for branch-body anchors",
+    "legacy ordinal resolutions demonstrably differ from intended structural resolutions",
+    "runtime predicate assertion whenever either repaired event executes"
+  ],
+  "semantic_event_counts": {
+    "seed_labor_reduction": 0,
+    "seed_reject_zero_quantity": 0
+  },
+  "semantic_event_runtime_coverage_complete": false,
+  "semantic_misbinding_regression": {
+    "seed_labor_reduction_legacy_first_text_line": 552,
+    "seed_labor_reduction_structural_line": 627,
+    "seed_reject_zero_quantity_legacy_second_text_line": 631,
+    "seed_reject_zero_quantity_structural_line": 629
+  },
+  "semantic_binding_smoke_passed": true,
+  "games": 2,
+  "parity_passed": true,
+  "anchor_bindings_passed": true,
+  "rows": [
+    {
+      "opponent": "peter",
+      "seed": 303,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          116848.0,
+          113340.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "7a733714954d3d381b8845d80dbf2182ad91798b88683d2fc628d1fc1779cef4",
+        "terminal_sha256": "849f186e13649b4908cbd811e7addae3213193431b5670c54c56a797ad4de687",
+        "events": 309854,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4637,
+          "raw": 44300,
+          "claimed_removed": 20046,
+          "pending_rejected": 23691,
+          "post_pending": 563,
+          "day29_removed": 0,
+          "pre_construct": 563,
+          "selected_stops": 263
+        }
+      },
+      "baseline": {
+        "money": [
+          116848.0,
+          113340.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "7a733714954d3d381b8845d80dbf2182ad91798b88683d2fc628d1fc1779cef4",
+        "terminal_sha256": "849f186e13649b4908cbd811e7addae3213193431b5670c54c56a797ad4de687"
+      },
+      "log": "adaptive/logs/animal_route_upstream_smoke_scoped/peter_seat0_seed303.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 303,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          112702.0,
+          116229.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0a3ce1e060e332346a93f7070b368969437969930abc14dc5206355b5356d422",
+        "terminal_sha256": "801cad0baeb65a4e50e7ced08c28286516c949a9443e235bffbd91612f7e7420",
+        "events": 337174,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4770,
+          "raw": 46118,
+          "claimed_removed": 19400,
+          "pending_rejected": 26147,
+          "post_pending": 571,
+          "day29_removed": 0,
+          "pre_construct": 571,
+          "selected_stops": 265
+        }
+      },
+      "baseline": {
+        "money": [
+          112702.0,
+          116229.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0a3ce1e060e332346a93f7070b368969437969930abc14dc5206355b5356d422",
+        "terminal_sha256": "801cad0baeb65a4e50e7ced08c28286516c949a9443e235bffbd91612f7e7420"
+      },
+      "log": "adaptive/logs/animal_route_upstream_smoke_scoped/peter_seat1_seed303.jsonl.gz"
+    }
+  ]
+}

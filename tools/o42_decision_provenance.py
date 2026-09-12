@@ -6,7 +6,7 @@ AST-structural anchors actually reached by the untouched O42 module. Engine comm
 events are recorded separately. Anchor resolution is fail-closed.
 """
 from __future__ import annotations
-import argparse, ast, gzip, hashlib, importlib.util, json, os, sys
+import argparse, ast, collections, gzip, hashlib, importlib.util, json, os, sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parent.parent
 sys.path.insert(0,str(ROOT))
@@ -42,7 +42,18 @@ ANCHORS={
   A("orch_assignment",'assigned[j] = tasks[ti]; used_t.add(ti)',node="Assign")],
  "_build_route":[A("route_claims_built",'cands = [(p2, t) for p2, t in v["animals"] if p2 not in claimed and _animal_pending(t, day)]',node="Assign"),
   A("route_candidates_built",'if EG["work_filter"] and day == 29:',node="If"),
+  A("route_candidates_after_day29_filter",'if not cands and hour >= 14:',node="If"),
+  A("route_candidates_before_construction",'if not cands:',node="If"),
   A("route_nearest_choice",'nxt = _nearest(cur, list(pool.keys()))',node="Assign"),A("route_stop_selected",'stops.append(nxt)',node="Expr")],
+ "_animal_pending":[A("pending_day29_guard",'if day >= 29:',node="If"),A("pending_feed_result",'need_care = _care_useful(t,day)',node="Assign"),
+  A("pending_final_decision",'return need_feed or need_care or t.get("fertilizer_available", False) or t.get("yield_units", 0) > 0',node="Return")],
+ "_feed_useful":[A("feed_reject_already_fed_or_late",'if t.get("fed_today",False) or day>=29:return False',node="Return",parent_test='t.get("fed_today", False) or day >= 29'),
+  A("feed_final_decision",'return t.get("consecutive_unfed",0)>=1 or due==day+1 or _care_useful(t,day)',node="Return")],
+ "_care_useful":[A("care_reject_already_cared",'if t.get("cared_today",False):return False',node="Return",parent_test='t.get("cared_today", False)'),
+  A("care_due_tomorrow_decision",'return due+interval<=29',node="Return",parent_test="due == day + 1"),
+  A("care_reject_after_horizon",'if due>29:return False',node="Return",parent_test="due > 29"),
+  A("care_reject_bonus_cap",'if t.get("pending_care_bonus",0)>=cap-1:return False',node="Return",parent_test='t.get("pending_care_bonus", 0) >= cap - 1'),
+  A("care_reject_too_early",'if True and due-day>cap:return False',node="Return",parent_test="True and due - day > cap"),A("care_accept",'return True',node="Return")],
  "_pick_site":[A("site_pasture_candidates",'c = [s_ for s_ in v["empty_pastures"] if s_ not in S["claimed_sites"]]',node="Assign"),
   A("site_select_pasture",'return min(c, key=_shed_dist)',node="Return"),A("site_empty_candidates",'c = [s_ for s_ in v["empty"] if s_ not in S["claimed_sites"] and s_ not in SHED_TILES]',node="Assign"),
   A("site_no_candidate",'return None',node="Return",parent_test="not c"),A("site_select_empty",'return min(c, key=lambda s_: (_shed_dist(s_), s_))',node="Return")],
@@ -54,6 +65,8 @@ ANCHORS={
 KEEP={"economy":{"day","hour","c","sp_","excluded","T_sell","inv_c","cushion_left","pool","room_units","price","val","best","k","space","free","seed_orders","committed","n_seed_orders","seeds_on_hand"},
  "_orchestrate":{"day","hour","pools","positions","busy","tasks","free","j","ti","tp","kind","carry","d","cost","pairs","assigned","used_t","prev"},
  "_build_route":{"i","pos","day","hour","claimed","cands","best","stops","cur","pool","nxt","unfed","need","pickup"},
+ "_animal_pending":{"t","day","need_feed","need_care"},
+ "_feed_useful":{"day","due","interval","cap"},"_care_useful":{"day","due","interval","cap"},
  "_pick_site":{"species","c"},"_steal_task":{"i","pos","day","hour","remaining","j","sw","eta","idx","tp","kind","mine","key","best","task"}}
 EVENT_KEEP={
  "function_enter":{"day","hour","i","pos","species","pools","positions","busy","seeds_left"},
@@ -82,9 +95,43 @@ def enclosing_control(node,parents):
   cur=parents.get(cur)
  return None
 
+def validate_route_provenance(events):
+ def positions(items):return collections.Counter(tuple(x["position"]) for x in items)
+ stack=[];checked=0;counts=collections.Counter()
+ for e in events:
+  fn=e.get("family");ev=e.get("event")
+  if fn=="_build_route" and ev=="function_enter":stack.append({"raw":e.get("raw_candidates",[]),"pending":[],"stops":[]})
+  elif fn=="_animal_pending" and ev=="function_return":
+   if not stack:raise RuntimeError("animal-pending event outside route provenance scope")
+   stack[-1]["pending"].append(e)
+  elif fn=="_build_route":
+   if not stack:raise RuntimeError(f"route event outside provenance scope: {ev}")
+   r=stack[-1]
+   if ev=="route_claims_built":r["claimed"]=set(map(tuple,e.get("claimed_positions",[])))
+   elif ev=="route_candidates_built":r["post_pending"]=e.get("candidates",[])
+   elif ev=="route_candidates_after_day29_filter":r["post_day29"]=e.get("candidates",[])
+   elif ev=="route_candidates_before_construction":r["pre_construct"]=e.get("candidates",[])
+   elif ev=="route_stop_selected":r["stops"].append(tuple(e["locals"]["nxt"]))
+   elif ev=="function_return":
+    r=stack.pop();required=("claimed","post_pending","post_day29","pre_construct")
+    if any(k not in r for k in required):raise RuntimeError(f"incomplete route stage provenance: {required}")
+    raw=positions(r["raw"]);unclaimed=collections.Counter({p:n for p,n in raw.items() if p not in r["claimed"]})
+    calls=collections.Counter(tuple(x["candidate"]["position"]) for x in r["pending"])
+    accepted=collections.Counter(tuple(x["candidate"]["position"]) for x in r["pending"] if x["decision"]["pending"])
+    post=positions(r["post_pending"]);post29=positions(r["post_day29"])
+    if calls!=unclaimed:raise RuntimeError("route semantic failure: pending calls do not equal raw candidates surviving claim guard")
+    if accepted!=post:raise RuntimeError("route semantic failure: helper-accepted candidates do not equal post-pending list")
+    if post29-post:raise RuntimeError("route semantic failure: day-29 filter added a candidate")
+    returned=e.get("returned");returned_stops=[] if not isinstance(returned,dict) else [tuple(x) for x in returned.get("stops",[])]
+    if r["stops"]!=returned_stops:raise RuntimeError("route semantic failure: selected stops differ from returned route")
+    checked+=1;counts["raw"]+=sum(raw.values());counts["claimed_removed"]+=sum(raw.values())-sum(unclaimed.values());counts["pending_rejected"]+=len(r["pending"])-sum(x["decision"]["pending"] for x in r["pending"]);counts["post_pending"]+=sum(post.values());counts["day29_removed"]+=sum(post.values())-sum(post29.values());counts["pre_construct"]+=len(r["pre_construct"]);counts["selected_stops"]+=len(r["stops"])
+ if stack:raise RuntimeError("unterminated route provenance scope")
+ return {"route_calls_checked":checked,**dict(counts)}
+
 class Provenance:
- def __init__(self,mod):
-  self.mod=mod;self.file=str(O42.resolve());self.events=[];self.context={};self.lines={};self.stack=[];self.seq=0;self.manifest=[]
+ def __init__(self,mod,route_only=False):
+  self.mod=mod;self.file=str(O42.resolve());self.events=[];self.context={};self.lines={};self.stack=[];self.pending_depth=0;self.seq=0;self.manifest=[];self.route_only=route_only
+  self.active_functions={"_build_route","_animal_pending","_feed_useful","_care_useful"} if route_only else set(ANCHORS)
   source=O42.read_text().splitlines();self.source=source;tree=ast.parse("\n".join(source),filename=self.file)
   parents={child:parent for parent in ast.walk(tree) for child in ast.iter_child_nodes(parent)}
   funcs={n.name:n for n in tree.body if isinstance(n,(ast.FunctionDef,ast.AsyncFunctionDef))}
@@ -112,6 +159,8 @@ class Provenance:
     self.manifest.append({"event":spec["event"],"intended_function":fn,"resolved_line":ln,"exact_source_text":source[ln-1].strip(),"ast_node":type(node).__name__,"enclosing_control":actual_parent,"expected_enclosing_control":spec["parent_test"],"predecessor_nonblank":nonblank_before,"successor_nonblank":nonblank_after,"surrounding_context":context,"context_sha256":hashlib.sha256("\n".join(x["text"] for x in context).encode()).hexdigest(),"textual_match_lines":textual_matches,"structural_match_count":len(matches),"uniqueness_status":"unique"})
   self.manifest.extend([{"event":e,"intended_function":None,"resolved_line":None,"exact_source_text":None,"surrounding_context":None,"context_sha256":None,"uniqueness_status":"synthetic_not_source_anchored"} for e in ("function_enter","function_return","engine_commit")])
   self._validate_repaired_seed_bindings()
+ def _animal(self,pos,t):
+  return {"position":clean(pos),"species":t.get("animal"),"placed_day":t.get("placed_day"),"fed_today":t.get("fed_today"),"cared_today":t.get("cared_today"),"consecutive_unfed":t.get("consecutive_unfed"),"fertilizer_available":t.get("fertilizer_available"),"yield_units":t.get("yield_units")}
  def _validate_repaired_seed_bindings(self):
   by_event={m["event"]:m for m in self.manifest}
   labor=by_event["seed_labor_reduction"];zero=by_event["seed_reject_zero_quantity"]
@@ -127,6 +176,23 @@ class Provenance:
     raise RuntimeError("runtime semantic failure: seed_labor_reduction guard is false")
   if event=="seed_reject_zero_quantity" and frame.f_locals.get("k",1)>0:
    raise RuntimeError("runtime semantic failure: seed_reject_zero_quantity observed with k > 0")
+  if fn=="_build_route":
+   raw=frame.f_locals.get("v",{}).get("animals",[]) if isinstance(frame.f_locals.get("v"),dict) else []
+   if event=="function_enter":extra["raw_candidates"]=[self._animal(p,t) for p,t in raw]
+   elif event=="route_claims_built":
+    extra["raw_candidates"]=[self._animal(p,t) for p,t in raw];extra["claimed_positions"]=clean(frame.f_locals.get("claimed",set()))
+   elif event in {"route_candidates_built","route_candidates_after_day29_filter","route_candidates_before_construction"}:
+    extra["candidates"]=[self._animal(p,t) for p,t in frame.f_locals.get("cands",[])]
+  if fn=="_animal_pending" and event=="function_return":
+   t=frame.f_locals.get("t",{});pos=None
+   for ctx in reversed(self.stack):
+    if ctx.get("kind")=="route":pos=ctx["positions"].get(id(t));break
+   extra["candidate"]=self._animal(pos,t);extra["decision"]={"pending":bool(extra.get("returned")),"need_feed":frame.f_locals.get("need_feed"),"need_care":frame.f_locals.get("need_care"),"fertilizer_available":t.get("fertilizer_available",False),"yield_units_positive":t.get("yield_units",0)>0,"day29_rule":frame.f_locals.get("day",0)>=29}
+  if fn in {"_feed_useful","_care_useful"}:
+   t=frame.f_locals.get("t",{});pos=None
+   for ctx in reversed(self.stack):
+    if ctx.get("kind")=="route":pos=ctx["positions"].get(id(t));break
+   extra["candidate"]=self._animal(pos,t);extra["caller"]=frame.f_back.f_code.co_name if frame.f_back else None
   if event=="function_return":
    allowed={"economy":{"day","hour","seed_orders","excluded","space","free"},"_orchestrate":{"day","hour","tasks","free","assigned","used_t"},"_build_route":{"i","day","hour","claimed","cands","stops","unfed","need","pickup"},"_pick_site":{"species","c"},"_steal_task":{"i","day","hour","remaining","best","task"}}.get(fn,set())
   else:allowed=EVENT_KEEP.get(event,KEEP.get(fn,set()))
@@ -135,10 +201,19 @@ class Provenance:
  def trace(self,frame,event,arg):
   if frame.f_code.co_filename!=self.file:return None
   fn=frame.f_code.co_name
-  if fn not in ANCHORS:return self.trace
-  if event=="call":self.emit("function_enter",fn,frame)
+  if fn not in self.active_functions:return None
+  if fn in {"_feed_useful","_care_useful"} and self.pending_depth<=0:return self.trace
+  if event=="call":
+   if fn=="_build_route":self.stack.append({"kind":"route","positions":{id(t):p for p,t in frame.f_locals.get("v",{}).get("animals",[])}})
+   if fn=="_animal_pending":self.pending_depth+=1
+   self.emit("function_enter",fn,frame)
   elif event=="line" and (fn,frame.f_lineno) in self.lines:self.emit(self.lines[(fn,frame.f_lineno)],fn,frame)
-  elif event=="return":self.emit("function_return",fn,frame,returned=clean(arg))
+  elif event=="return":
+   self.emit("function_return",fn,frame,returned=clean(arg))
+   if fn=="_animal_pending":self.pending_depth-=1
+   if fn=="_build_route":
+    if not self.stack or self.stack[-1].get("kind")!="route":raise RuntimeError("route provenance stack mismatch")
+    self.stack.pop()
   return self.trace
  def call(self,agent,obs,cfg):
   self.context={"day":obs.get("day"),"hour":obs.get("hour")};old=sys.gettrace();sys.settrace(self.trace)
@@ -148,13 +223,13 @@ class Provenance:
 def load(path,tag):
  s=importlib.util.spec_from_file_location(f"prov_{tag}_{os.getpid()}",path);m=importlib.util.module_from_spec(s);sys.modules[s.name]=m;s.loader.exec_module(m);return m
 
-def run(opponent,seed,seat,instrumented,log=None):
+def run(opponent,seed,seat,instrumented,log=None,route_only=False):
  eng,defaults=me.load_engine("master");cfg=dict(defaults);cfg["seed"]=None;env=me._Env(cfg,seed)
  cm=load(O42,f"c{seed}{seat}{instrumented}");om=load(OPPS[opponent],f"o{seed}{seat}{instrumented}");agents=[None,None];agents[seat]=cm.agent;agents[1-seat]=om.agent
- prov=Provenance(cm) if instrumented else None;events=[];farms=[None];orig=eng._commit_unit
+ prov=Provenance(cm,route_only=route_only) if instrumented else None;events=[];farms=[None];orig=eng._commit_unit
  def commit(op,item,price,farm,private,market,shed_capacity=100):
   before=(farm.get("money"),private.get("seeds",{}).get(item,0),private.get("shed",{}).get(item,0));ok=orig(op,item,price,farm,private,market,shed_capacity)
-  if prov and farms[0] and farm is farms[0][seat] and op in {"BUY_SEED","BUY_ANIMAL"}:
+  if prov and not route_only and farms[0] and farm is farms[0][seat] and op in {"BUY_SEED","BUY_ANIMAL"}:
    prov.seq+=1;events.append({"seq":prov.seq,"event":"engine_commit","day":prov.context.get("day"),"hour":prov.context.get("hour"),"operation":op,"item":item,"price":price,"committed":bool(ok),"before":before,"after":(farm.get("money"),private.get("seeds",{}).get(item,0),private.get("shed",{}).get(item,0))})
   return ok
  if prov:eng._commit_unit=commit
@@ -181,15 +256,15 @@ def run(opponent,seed,seat,instrumented,log=None):
   opener=gzip.open if str(log).endswith(".gz") else open
   with opener(log,"wt") as f:
    for e in sorted(prov.events+events,key=lambda x:(x.get("day",-1),x.get("hour",-1),x.get("seq",10**9))):f.write(json.dumps(e,sort_keys=True)+"\n")
-  res["events"]=len(prov.events)+len(events);res["semantic_event_counts"]={name:sum(e.get("event")==name for e in prov.events) for name in ("seed_labor_reduction","seed_reject_zero_quantity")}
+  res["events"]=len(prov.events)+len(events);res["semantic_event_counts"]={name:sum(e.get("event")==name for e in prov.events) for name in ("seed_labor_reduction","seed_reject_zero_quantity")};res["route_semantic_validation"]=validate_route_provenance(prov.events)
  return res
 
 def main():
- ap=argparse.ArgumentParser();ap.add_argument("--smoke",action="store_true");ap.add_argument("--seeds",default="301-301");ap.add_argument("--opponents",default="peter,alaylm,bahaen,yangk");ap.add_argument("--out-dir",required=True);a=ap.parse_args();lo,hi=map(int,a.seeds.split("-"));rows=[]
+ ap=argparse.ArgumentParser();ap.add_argument("--smoke",action="store_true");ap.add_argument("--route-upstream-only",action="store_true");ap.add_argument("--seeds",default="301-301");ap.add_argument("--opponents",default="peter,alaylm,bahaen,yangk");ap.add_argument("--out-dir",required=True);a=ap.parse_args();lo,hi=map(int,a.seeds.split("-"));rows=[]
  for o in a.opponents.split(","):
   for seed in range(lo,hi+1):
    for seat in (0,1):
-    log=Path(a.out_dir)/f"{o}_seat{seat}_seed{seed}.jsonl.gz";observed=run(o,seed,seat,True,log);baseline=run(o,seed,seat,False);keys=("money","steps","errors","actions_sha256","terminal_sha256");parity=all(observed[k]==baseline[k] for k in keys);rows.append({"opponent":o,"seed":seed,"seat":seat,"parity":parity,"observed":observed,"baseline":baseline,"log":str(log)})
+    log=Path(a.out_dir)/f"{o}_seat{seat}_seed{seed}.jsonl.gz";observed=run(o,seed,seat,True,log,route_only=a.route_upstream_only);baseline=run(o,seed,seat,False);keys=("money","steps","errors","actions_sha256","terminal_sha256");parity=all(observed[k]==baseline[k] for k in keys);rows.append({"opponent":o,"seed":seed,"seat":seat,"parity":parity,"observed":observed,"baseline":baseline,"log":str(log)})
     if not parity:raise SystemExit(json.dumps(rows[-1],indent=2))
  manifest=Provenance(load(O42,"manifest")).manifest
  semantic_counts={name:sum(r["observed"]["semantic_event_counts"][name] for r in rows) for name in ("seed_labor_reduction","seed_reject_zero_quantity")}
@@ -198,6 +273,6 @@ def main():
  regression={"seed_labor_reduction_legacy_first_text_line":labor["textual_match_lines"][0],"seed_labor_reduction_structural_line":labor["resolved_line"],"seed_reject_zero_quantity_legacy_second_text_line":zero["textual_match_lines"][1],"seed_reject_zero_quantity_structural_line":zero["resolved_line"]}
  semantic_passed=(len(labor["textual_match_lines"])>1 and labor["resolved_line"]!=labor["textual_match_lines"][0] and len(zero["textual_match_lines"])>1 and zero["resolved_line"]!=zero["textual_match_lines"][1])
  if a.smoke and not semantic_passed:raise SystemExit(f"semantic misbinding regression failed: {regression}")
- summary={"trace_source":str(Path(__file__).resolve()),"o42_source":str(O42.resolve()),"o42_sha256":hashlib.sha256(O42.read_bytes()).hexdigest(),"criteria":["money","steps","errors","actions_sha256","terminal_sha256"],"semantic_binding_criteria":["AST node type","unique structural match inside intended function","expected enclosing guard for branch-body anchors","legacy ordinal resolutions demonstrably differ from intended structural resolutions","runtime predicate assertion whenever either repaired event executes"],"semantic_event_counts":semantic_counts,"semantic_event_runtime_coverage_complete":all(n>0 for n in semantic_counts.values()),"semantic_misbinding_regression":regression,"semantic_binding_smoke_passed":semantic_passed,"games":len(rows),"parity_passed":all(r["parity"] for r in rows),"anchor_bindings_passed":all(m["uniqueness_status"] in {"unique","synthetic_not_source_anchored"} for m in manifest),"rows":rows}
+ summary={"trace_source":str(Path(__file__).resolve()),"trace_scope":"animal_route_upstream" if a.route_upstream_only else "all_phase1_families","o42_source":str(O42.resolve()),"o42_sha256":hashlib.sha256(O42.read_bytes()).hexdigest(),"criteria":["money","steps","errors","actions_sha256","terminal_sha256"],"semantic_binding_criteria":["AST node type","unique structural match inside intended function","expected enclosing guard for branch-body anchors","legacy ordinal resolutions demonstrably differ from intended structural resolutions","runtime predicate assertion whenever either repaired event executes"],"semantic_event_counts":semantic_counts,"semantic_event_runtime_coverage_complete":all(n>0 for n in semantic_counts.values()),"semantic_misbinding_regression":regression,"semantic_binding_smoke_passed":semantic_passed,"games":len(rows),"parity_passed":all(r["parity"] for r in rows),"anchor_bindings_passed":all(m["uniqueness_status"] in {"unique","synthetic_not_source_anchored"} for m in manifest),"rows":rows}
  Path(a.out_dir).mkdir(parents=True,exist_ok=True);(Path(a.out_dir)/"anchor_binding_manifest.json").write_text(json.dumps({"o42_source":str(O42.resolve()),"o42_sha256":summary["o42_sha256"],"bindings":manifest},indent=2));(Path(a.out_dir)/"smoke_summary.json").write_text(json.dumps(summary,indent=2));print(json.dumps({k:summary[k] for k in ("games","parity_passed","anchor_bindings_passed","criteria","semantic_binding_criteria","o42_sha256")},indent=2))
 if __name__=="__main__":main()

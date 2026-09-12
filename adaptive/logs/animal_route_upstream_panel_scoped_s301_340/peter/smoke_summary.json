@@ -1,0 +1,3397 @@
+{
+  "trace_source": "/Users/graceliu/Claude/Projects/Kaggriculture/tools/o42_decision_provenance.py",
+  "trace_scope": "animal_route_upstream",
+  "o42_source": "/Users/graceliu/Claude/Projects/Kaggriculture/candidates/O42_MAX_HANDS_LATE_EXPAND.py",
+  "o42_sha256": "154d1ff480e9aa05084e323604a1a09ce73b68adbff95dd4f410e6acf4f52813",
+  "criteria": [
+    "money",
+    "steps",
+    "errors",
+    "actions_sha256",
+    "terminal_sha256"
+  ],
+  "semantic_binding_criteria": [
+    "AST node type",
+    "unique structural match inside intended function",
+    "expected enclosing guard for branch-body anchors",
+    "legacy ordinal resolutions demonstrably differ from intended structural resolutions",
+    "runtime predicate assertion whenever either repaired event executes"
+  ],
+  "semantic_event_counts": {
+    "seed_labor_reduction": 0,
+    "seed_reject_zero_quantity": 0
+  },
+  "semantic_event_runtime_coverage_complete": false,
+  "semantic_misbinding_regression": {
+    "seed_labor_reduction_legacy_first_text_line": 552,
+    "seed_labor_reduction_structural_line": 627,
+    "seed_reject_zero_quantity_legacy_second_text_line": 631,
+    "seed_reject_zero_quantity_structural_line": 629
+  },
+  "semantic_binding_smoke_passed": true,
+  "games": 80,
+  "parity_passed": true,
+  "anchor_bindings_passed": true,
+  "rows": [
+    {
+      "opponent": "peter",
+      "seed": 301,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          53050.0,
+          61632.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0549adff8e59ea0283821340bdcfd9b7aa7f11dd5ff6fd4262e5f6bf99180f24",
+        "terminal_sha256": "417314802691f48f1006cecebd81c55db77be87249d54c193ef58e05ad185bd7",
+        "events": 246347,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4873,
+          "raw": 32567,
+          "claimed_removed": 13696,
+          "pending_rejected": 18556,
+          "post_pending": 315,
+          "day29_removed": 0,
+          "pre_construct": 316,
+          "selected_stops": 191
+        }
+      },
+      "baseline": {
+        "money": [
+          53050.0,
+          61632.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0549adff8e59ea0283821340bdcfd9b7aa7f11dd5ff6fd4262e5f6bf99180f24",
+        "terminal_sha256": "417314802691f48f1006cecebd81c55db77be87249d54c193ef58e05ad185bd7"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed301.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 301,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          61632.0,
+          53050.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "789d2a9c1d46792bcc425e8932bea0e8b97cb13531b161db0f884ce51a2df329",
+        "terminal_sha256": "a38a37fe5d462b174a3c8297cd4e501a1a851998d6ddf9108971cbb6e1aa8cca",
+        "events": 246347,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4873,
+          "raw": 32567,
+          "claimed_removed": 13696,
+          "pending_rejected": 18556,
+          "post_pending": 315,
+          "day29_removed": 0,
+          "pre_construct": 316,
+          "selected_stops": 191
+        }
+      },
+      "baseline": {
+        "money": [
+          61632.0,
+          53050.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "789d2a9c1d46792bcc425e8932bea0e8b97cb13531b161db0f884ce51a2df329",
+        "terminal_sha256": "a38a37fe5d462b174a3c8297cd4e501a1a851998d6ddf9108971cbb6e1aa8cca"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed301.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 302,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          132504.0,
+          117250.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "36dd4cbe162249753055cec375b4ec97400e6ef2a9586ab97fc2ed028b4f1834",
+        "terminal_sha256": "bf6e781720179edd5ebbfc4a034d1ac1691973d6a3ba3525a231233582e8ad14",
+        "events": 419156,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4387,
+          "raw": 53462,
+          "claimed_removed": 19752,
+          "pending_rejected": 32841,
+          "post_pending": 869,
+          "day29_removed": 0,
+          "pre_construct": 869,
+          "selected_stops": 331
+        }
+      },
+      "baseline": {
+        "money": [
+          132504.0,
+          117250.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "36dd4cbe162249753055cec375b4ec97400e6ef2a9586ab97fc2ed028b4f1834",
+        "terminal_sha256": "bf6e781720179edd5ebbfc4a034d1ac1691973d6a3ba3525a231233582e8ad14"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed302.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 302,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          117250.0,
+          132504.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "a4da6143ea67b8e87afc310a7056f31f1f0ec2854f0b694f46ebe8cd1f5cd266",
+        "terminal_sha256": "09edfe8b751027e9dee37f5eae6d473ef9473ac8318780adaa738e9fafe17ebd",
+        "events": 419156,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4387,
+          "raw": 53462,
+          "claimed_removed": 19752,
+          "pending_rejected": 32841,
+          "post_pending": 869,
+          "day29_removed": 0,
+          "pre_construct": 869,
+          "selected_stops": 331
+        }
+      },
+      "baseline": {
+        "money": [
+          117250.0,
+          132504.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "a4da6143ea67b8e87afc310a7056f31f1f0ec2854f0b694f46ebe8cd1f5cd266",
+        "terminal_sha256": "09edfe8b751027e9dee37f5eae6d473ef9473ac8318780adaa738e9fafe17ebd"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed302.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 303,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          116848.0,
+          113340.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "7a733714954d3d381b8845d80dbf2182ad91798b88683d2fc628d1fc1779cef4",
+        "terminal_sha256": "849f186e13649b4908cbd811e7addae3213193431b5670c54c56a797ad4de687",
+        "events": 309854,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4637,
+          "raw": 44300,
+          "claimed_removed": 20046,
+          "pending_rejected": 23691,
+          "post_pending": 563,
+          "day29_removed": 0,
+          "pre_construct": 563,
+          "selected_stops": 263
+        }
+      },
+      "baseline": {
+        "money": [
+          116848.0,
+          113340.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "7a733714954d3d381b8845d80dbf2182ad91798b88683d2fc628d1fc1779cef4",
+        "terminal_sha256": "849f186e13649b4908cbd811e7addae3213193431b5670c54c56a797ad4de687"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed303.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 303,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          112702.0,
+          116229.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0a3ce1e060e332346a93f7070b368969437969930abc14dc5206355b5356d422",
+        "terminal_sha256": "801cad0baeb65a4e50e7ced08c28286516c949a9443e235bffbd91612f7e7420",
+        "events": 337174,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4770,
+          "raw": 46118,
+          "claimed_removed": 19400,
+          "pending_rejected": 26147,
+          "post_pending": 571,
+          "day29_removed": 0,
+          "pre_construct": 571,
+          "selected_stops": 265
+        }
+      },
+      "baseline": {
+        "money": [
+          112702.0,
+          116229.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0a3ce1e060e332346a93f7070b368969437969930abc14dc5206355b5356d422",
+        "terminal_sha256": "801cad0baeb65a4e50e7ced08c28286516c949a9443e235bffbd91612f7e7420"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed303.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 304,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          44630.0,
+          56809.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "334af6e307f23a69fefca5e4b4a62a1255cc70f41bdbc9ddd695bd00006a2997",
+        "terminal_sha256": "0c6bdc4816b1b0bf191874602886285366d2fc85d829b6004a5af2d47aac3fd5",
+        "events": 278921,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4783,
+          "raw": 37543,
+          "claimed_removed": 15937,
+          "pending_rejected": 21207,
+          "post_pending": 399,
+          "day29_removed": 0,
+          "pre_construct": 399,
+          "selected_stops": 218
+        }
+      },
+      "baseline": {
+        "money": [
+          44630.0,
+          56809.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "334af6e307f23a69fefca5e4b4a62a1255cc70f41bdbc9ddd695bd00006a2997",
+        "terminal_sha256": "0c6bdc4816b1b0bf191874602886285366d2fc85d829b6004a5af2d47aac3fd5"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed304.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 304,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          56809.0,
+          44630.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b069a92a987a8a0d61ca75dd387b87ea5b039e705f52f948169b845367c56cdd",
+        "terminal_sha256": "5d0d55834101e14e1c690ae9ea4b1e027b442185063eb4104b3fe2832db5ffc6",
+        "events": 278921,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4783,
+          "raw": 37543,
+          "claimed_removed": 15937,
+          "pending_rejected": 21207,
+          "post_pending": 399,
+          "day29_removed": 0,
+          "pre_construct": 399,
+          "selected_stops": 218
+        }
+      },
+      "baseline": {
+        "money": [
+          56809.0,
+          44630.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b069a92a987a8a0d61ca75dd387b87ea5b039e705f52f948169b845367c56cdd",
+        "terminal_sha256": "5d0d55834101e14e1c690ae9ea4b1e027b442185063eb4104b3fe2832db5ffc6"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed304.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 305,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          108956.0,
+          99631.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b01530364ce3693b22afd29b92a2ba4ffc9f4d3358ca8ebc2430d3a177cf62a2",
+        "terminal_sha256": "2c5f21d18fb607510008b6f0bbe833ddcb9e2c031254709a5b6bc893039fcec5",
+        "events": 386194,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4656,
+          "raw": 51869,
+          "claimed_removed": 21206,
+          "pending_rejected": 29932,
+          "post_pending": 731,
+          "day29_removed": 0,
+          "pre_construct": 731,
+          "selected_stops": 302
+        }
+      },
+      "baseline": {
+        "money": [
+          108956.0,
+          99631.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b01530364ce3693b22afd29b92a2ba4ffc9f4d3358ca8ebc2430d3a177cf62a2",
+        "terminal_sha256": "2c5f21d18fb607510008b6f0bbe833ddcb9e2c031254709a5b6bc893039fcec5"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed305.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 305,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          99630.0,
+          106952.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "667fb59643b49f6471bc83d6ed7cb016ccc3f11c7e1d7f9b3b0e56194f5ac811",
+        "terminal_sha256": "14977437521f5cd082f397e3ba175aa000d72ab124ef96e95cf1a4faa1a82e8e",
+        "events": 388181,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4687,
+          "raw": 52237,
+          "claimed_removed": 21513,
+          "pending_rejected": 29993,
+          "post_pending": 731,
+          "day29_removed": 0,
+          "pre_construct": 733,
+          "selected_stops": 304
+        }
+      },
+      "baseline": {
+        "money": [
+          99630.0,
+          106952.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "667fb59643b49f6471bc83d6ed7cb016ccc3f11c7e1d7f9b3b0e56194f5ac811",
+        "terminal_sha256": "14977437521f5cd082f397e3ba175aa000d72ab124ef96e95cf1a4faa1a82e8e"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed305.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 306,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          111147.0,
+          133281.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "dc6e528aa8ded72f2dd94213facc1f4c0d1707b4de4ea104a44da7034a1c2cc1",
+        "terminal_sha256": "f5785ef267bab0c6749fac05fa4d9583e17e24432aeda93e55b3d03949e675c3",
+        "events": 446009,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4088,
+          "raw": 60162,
+          "claimed_removed": 23643,
+          "pending_rejected": 35273,
+          "post_pending": 1246,
+          "day29_removed": 0,
+          "pre_construct": 1246,
+          "selected_stops": 406
+        }
+      },
+      "baseline": {
+        "money": [
+          111147.0,
+          133281.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "dc6e528aa8ded72f2dd94213facc1f4c0d1707b4de4ea104a44da7034a1c2cc1",
+        "terminal_sha256": "f5785ef267bab0c6749fac05fa4d9583e17e24432aeda93e55b3d03949e675c3"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed306.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 306,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          133281.0,
+          111147.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "e9b1884f2866900e24af0d67c31637daea6060837718975690a63c1e558eb7de",
+        "terminal_sha256": "7782810721aeec35d9a511d2b70a93ff584f4bbb470201a2d8118b362b4e3bd2",
+        "events": 446009,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4088,
+          "raw": 60162,
+          "claimed_removed": 23643,
+          "pending_rejected": 35273,
+          "post_pending": 1246,
+          "day29_removed": 0,
+          "pre_construct": 1246,
+          "selected_stops": 406
+        }
+      },
+      "baseline": {
+        "money": [
+          133281.0,
+          111147.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "e9b1884f2866900e24af0d67c31637daea6060837718975690a63c1e558eb7de",
+        "terminal_sha256": "7782810721aeec35d9a511d2b70a93ff584f4bbb470201a2d8118b362b4e3bd2"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed306.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 307,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          66644.0,
+          78372.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0549adff8e59ea0283821340bdcfd9b7aa7f11dd5ff6fd4262e5f6bf99180f24",
+        "terminal_sha256": "c3e2d0120ef6c93ad4226026968c7ff90cd87b9714c904480dd7d17907b61936",
+        "events": 252012,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4928,
+          "raw": 32952,
+          "claimed_removed": 13643,
+          "pending_rejected": 18994,
+          "post_pending": 315,
+          "day29_removed": 0,
+          "pre_construct": 315,
+          "selected_stops": 190
+        }
+      },
+      "baseline": {
+        "money": [
+          66644.0,
+          78372.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0549adff8e59ea0283821340bdcfd9b7aa7f11dd5ff6fd4262e5f6bf99180f24",
+        "terminal_sha256": "c3e2d0120ef6c93ad4226026968c7ff90cd87b9714c904480dd7d17907b61936"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed307.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 307,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          78401.0,
+          66645.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "789d2a9c1d46792bcc425e8932bea0e8b97cb13531b161db0f884ce51a2df329",
+        "terminal_sha256": "af664b344e4213ccdc378ebc98d0f06a4a215b14837a864a5606b80a59ed158b",
+        "events": 251824,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4926,
+          "raw": 32938,
+          "claimed_removed": 13642,
+          "pending_rejected": 18981,
+          "post_pending": 315,
+          "day29_removed": 0,
+          "pre_construct": 315,
+          "selected_stops": 190
+        }
+      },
+      "baseline": {
+        "money": [
+          78401.0,
+          66645.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "789d2a9c1d46792bcc425e8932bea0e8b97cb13531b161db0f884ce51a2df329",
+        "terminal_sha256": "af664b344e4213ccdc378ebc98d0f06a4a215b14837a864a5606b80a59ed158b"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed307.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 308,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          82704.0,
+          92850.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0549adff8e59ea0283821340bdcfd9b7aa7f11dd5ff6fd4262e5f6bf99180f24",
+        "terminal_sha256": "eb6d9583079c46e8e23690bf8fd63b18178b9f9bf180f6ee301fb5e221d1bc32",
+        "events": 258001,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4808,
+          "raw": 35637,
+          "claimed_removed": 15885,
+          "pending_rejected": 19383,
+          "post_pending": 369,
+          "day29_removed": 0,
+          "pre_construct": 369,
+          "selected_stops": 208
+        }
+      },
+      "baseline": {
+        "money": [
+          82704.0,
+          92850.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0549adff8e59ea0283821340bdcfd9b7aa7f11dd5ff6fd4262e5f6bf99180f24",
+        "terminal_sha256": "eb6d9583079c46e8e23690bf8fd63b18178b9f9bf180f6ee301fb5e221d1bc32"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed308.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 308,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          92850.0,
+          82704.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "789d2a9c1d46792bcc425e8932bea0e8b97cb13531b161db0f884ce51a2df329",
+        "terminal_sha256": "9bfe2a197d83b1538e9c7262f7151116e2d84ae5ac948597a0cb36cd6fd24965",
+        "events": 258001,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4808,
+          "raw": 35637,
+          "claimed_removed": 15885,
+          "pending_rejected": 19383,
+          "post_pending": 369,
+          "day29_removed": 0,
+          "pre_construct": 369,
+          "selected_stops": 208
+        }
+      },
+      "baseline": {
+        "money": [
+          92850.0,
+          82704.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "789d2a9c1d46792bcc425e8932bea0e8b97cb13531b161db0f884ce51a2df329",
+        "terminal_sha256": "9bfe2a197d83b1538e9c7262f7151116e2d84ae5ac948597a0cb36cd6fd24965"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed308.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 309,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          122954.0,
+          157148.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "8c60ff52d311187094ced60719b8e7c707b26eec96e6e4aa5eef83cfa606daca",
+        "terminal_sha256": "2043a5ef2ec66d80ea945da6593e6a25c05f2d250b18b96309d87bba30d9ff35",
+        "events": 448854,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4025,
+          "raw": 58594,
+          "claimed_removed": 22181,
+          "pending_rejected": 35171,
+          "post_pending": 1242,
+          "day29_removed": 0,
+          "pre_construct": 1242,
+          "selected_stops": 402
+        }
+      },
+      "baseline": {
+        "money": [
+          122954.0,
+          157148.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "8c60ff52d311187094ced60719b8e7c707b26eec96e6e4aa5eef83cfa606daca",
+        "terminal_sha256": "2043a5ef2ec66d80ea945da6593e6a25c05f2d250b18b96309d87bba30d9ff35"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed309.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 309,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          157130.0,
+          123185.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "6a3ffc6e48601973c53c4f8965fc6e7c651ec226436d0888e8167f9b4f39c209",
+        "terminal_sha256": "96addc935cb11ecbca978c5d13d52d402e17a26de8a7a505291ba54b78e608e1",
+        "events": 449514,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4020,
+          "raw": 58509,
+          "claimed_removed": 22041,
+          "pending_rejected": 35226,
+          "post_pending": 1242,
+          "day29_removed": 0,
+          "pre_construct": 1242,
+          "selected_stops": 402
+        }
+      },
+      "baseline": {
+        "money": [
+          157130.0,
+          123185.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "6a3ffc6e48601973c53c4f8965fc6e7c651ec226436d0888e8167f9b4f39c209",
+        "terminal_sha256": "96addc935cb11ecbca978c5d13d52d402e17a26de8a7a505291ba54b78e608e1"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed309.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 310,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          120218.0,
+          116325.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "8c60ff52d311187094ced60719b8e7c707b26eec96e6e4aa5eef83cfa606daca",
+        "terminal_sha256": "ad0a82c2d02920c64e80345b90dac963f1048ee7fbfc33d38a481c6a58708be8",
+        "events": 352937,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4384,
+          "raw": 47248,
+          "claimed_removed": 19077,
+          "pending_rejected": 27472,
+          "post_pending": 699,
+          "day29_removed": 0,
+          "pre_construct": 699,
+          "selected_stops": 297
+        }
+      },
+      "baseline": {
+        "money": [
+          120218.0,
+          116325.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "8c60ff52d311187094ced60719b8e7c707b26eec96e6e4aa5eef83cfa606daca",
+        "terminal_sha256": "ad0a82c2d02920c64e80345b90dac963f1048ee7fbfc33d38a481c6a58708be8"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed310.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 310,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          116325.0,
+          120218.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "6a3ffc6e48601973c53c4f8965fc6e7c651ec226436d0888e8167f9b4f39c209",
+        "terminal_sha256": "9db9e6fcde4f9d49ef05757cc9f1293a6888151e502885a87d2876b0495f9c70",
+        "events": 352937,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4384,
+          "raw": 47248,
+          "claimed_removed": 19077,
+          "pending_rejected": 27472,
+          "post_pending": 699,
+          "day29_removed": 0,
+          "pre_construct": 699,
+          "selected_stops": 297
+        }
+      },
+      "baseline": {
+        "money": [
+          116325.0,
+          120218.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "6a3ffc6e48601973c53c4f8965fc6e7c651ec226436d0888e8167f9b4f39c209",
+        "terminal_sha256": "9db9e6fcde4f9d49ef05757cc9f1293a6888151e502885a87d2876b0495f9c70"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed310.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 311,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          109466.0,
+          104315.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "7a733714954d3d381b8845d80dbf2182ad91798b88683d2fc628d1fc1779cef4",
+        "terminal_sha256": "d08e3e91a03d638027a8b2414566768af0c3287a3b2ca4bde820f493fba00ac9",
+        "events": 420938,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4520,
+          "raw": 57603,
+          "claimed_removed": 24272,
+          "pending_rejected": 32369,
+          "post_pending": 962,
+          "day29_removed": 0,
+          "pre_construct": 965,
+          "selected_stops": 350
+        }
+      },
+      "baseline": {
+        "money": [
+          109466.0,
+          104315.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "7a733714954d3d381b8845d80dbf2182ad91798b88683d2fc628d1fc1779cef4",
+        "terminal_sha256": "d08e3e91a03d638027a8b2414566768af0c3287a3b2ca4bde820f493fba00ac9"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed311.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 311,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          104315.0,
+          109466.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0a3ce1e060e332346a93f7070b368969437969930abc14dc5206355b5356d422",
+        "terminal_sha256": "6e5a9af2448eb081e7f3a0629bf58c34749aa86aa81fdf4789f23b80d26e6a2f",
+        "events": 420938,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4520,
+          "raw": 57603,
+          "claimed_removed": 24272,
+          "pending_rejected": 32369,
+          "post_pending": 962,
+          "day29_removed": 0,
+          "pre_construct": 965,
+          "selected_stops": 350
+        }
+      },
+      "baseline": {
+        "money": [
+          104315.0,
+          109466.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0a3ce1e060e332346a93f7070b368969437969930abc14dc5206355b5356d422",
+        "terminal_sha256": "6e5a9af2448eb081e7f3a0629bf58c34749aa86aa81fdf4789f23b80d26e6a2f"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed311.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 312,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          51936.0,
+          59727.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b01530364ce3693b22afd29b92a2ba4ffc9f4d3358ca8ebc2430d3a177cf62a2",
+        "terminal_sha256": "e981f08a9db6f32e3e9fcb317bd6b98272c59eae0d19c86515fbadba625711e6",
+        "events": 286258,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4975,
+          "raw": 41844,
+          "claimed_removed": 19692,
+          "pending_rejected": 21705,
+          "post_pending": 447,
+          "day29_removed": 0,
+          "pre_construct": 449,
+          "selected_stops": 236
+        }
+      },
+      "baseline": {
+        "money": [
+          51936.0,
+          59727.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b01530364ce3693b22afd29b92a2ba4ffc9f4d3358ca8ebc2430d3a177cf62a2",
+        "terminal_sha256": "e981f08a9db6f32e3e9fcb317bd6b98272c59eae0d19c86515fbadba625711e6"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed312.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 312,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          59727.0,
+          51936.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "667fb59643b49f6471bc83d6ed7cb016ccc3f11c7e1d7f9b3b0e56194f5ac811",
+        "terminal_sha256": "c21b5a162edc17876c95172bfc9e9002069525ca5117de696ef95194d02ed3ff",
+        "events": 286258,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4975,
+          "raw": 41844,
+          "claimed_removed": 19692,
+          "pending_rejected": 21705,
+          "post_pending": 447,
+          "day29_removed": 0,
+          "pre_construct": 449,
+          "selected_stops": 236
+        }
+      },
+      "baseline": {
+        "money": [
+          59727.0,
+          51936.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "667fb59643b49f6471bc83d6ed7cb016ccc3f11c7e1d7f9b3b0e56194f5ac811",
+        "terminal_sha256": "c21b5a162edc17876c95172bfc9e9002069525ca5117de696ef95194d02ed3ff"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed312.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 313,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          106123.0,
+          105917.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b01530364ce3693b22afd29b92a2ba4ffc9f4d3358ca8ebc2430d3a177cf62a2",
+        "terminal_sha256": "5f6e8a7ab044f2f517c4fc955af18016905d319d48ed04c32e4b7f2822372d10",
+        "events": 308090,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4637,
+          "raw": 41970,
+          "claimed_removed": 17669,
+          "pending_rejected": 23786,
+          "post_pending": 515,
+          "day29_removed": 0,
+          "pre_construct": 515,
+          "selected_stops": 251
+        }
+      },
+      "baseline": {
+        "money": [
+          106123.0,
+          105917.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b01530364ce3693b22afd29b92a2ba4ffc9f4d3358ca8ebc2430d3a177cf62a2",
+        "terminal_sha256": "5f6e8a7ab044f2f517c4fc955af18016905d319d48ed04c32e4b7f2822372d10"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed313.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 313,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          106015.0,
+          106123.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "667fb59643b49f6471bc83d6ed7cb016ccc3f11c7e1d7f9b3b0e56194f5ac811",
+        "terminal_sha256": "b4ed7f24e6ec79479d6a705ca40b6b7e0ca86e2a0252f311a8f33feded223368",
+        "events": 308090,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4637,
+          "raw": 41970,
+          "claimed_removed": 17669,
+          "pending_rejected": 23786,
+          "post_pending": 515,
+          "day29_removed": 0,
+          "pre_construct": 515,
+          "selected_stops": 251
+        }
+      },
+      "baseline": {
+        "money": [
+          106015.0,
+          106123.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "667fb59643b49f6471bc83d6ed7cb016ccc3f11c7e1d7f9b3b0e56194f5ac811",
+        "terminal_sha256": "b4ed7f24e6ec79479d6a705ca40b6b7e0ca86e2a0252f311a8f33feded223368"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed313.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 314,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          155510.0,
+          126552.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "1a788558036cdc0f6abb252f6e2fb1d507725a51ba762fb93fd72a3081ccc1cb",
+        "terminal_sha256": "91d885f8a584dcf195efff9d1a8e4c86947f5b582880bb34e84d7b3a20aefbbc",
+        "events": 459394,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4221,
+          "raw": 59287,
+          "claimed_removed": 22269,
+          "pending_rejected": 35886,
+          "post_pending": 1132,
+          "day29_removed": 0,
+          "pre_construct": 1135,
+          "selected_stops": 382
+        }
+      },
+      "baseline": {
+        "money": [
+          155510.0,
+          126552.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "1a788558036cdc0f6abb252f6e2fb1d507725a51ba762fb93fd72a3081ccc1cb",
+        "terminal_sha256": "91d885f8a584dcf195efff9d1a8e4c86947f5b582880bb34e84d7b3a20aefbbc"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed314.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 314,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          125579.0,
+          155807.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "a4da6143ea67b8e87afc310a7056f31f1f0ec2854f0b694f46ebe8cd1f5cd266",
+        "terminal_sha256": "50427851bd259db53920f97d684f87145cc6f2b2f26bf072db796a9dce0fb980",
+        "events": 459394,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4221,
+          "raw": 59287,
+          "claimed_removed": 22269,
+          "pending_rejected": 35886,
+          "post_pending": 1132,
+          "day29_removed": 0,
+          "pre_construct": 1135,
+          "selected_stops": 382
+        }
+      },
+      "baseline": {
+        "money": [
+          125579.0,
+          155807.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "a4da6143ea67b8e87afc310a7056f31f1f0ec2854f0b694f46ebe8cd1f5cd266",
+        "terminal_sha256": "50427851bd259db53920f97d684f87145cc6f2b2f26bf072db796a9dce0fb980"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed314.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 315,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          75485.0,
+          86457.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0549adff8e59ea0283821340bdcfd9b7aa7f11dd5ff6fd4262e5f6bf99180f24",
+        "terminal_sha256": "61e6b1720c5feed0296a4316f5ab46a019a79c78db652a7035a504e687901ce7",
+        "events": 252493,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4935,
+          "raw": 33001,
+          "claimed_removed": 13613,
+          "pending_rejected": 19073,
+          "post_pending": 315,
+          "day29_removed": 0,
+          "pre_construct": 316,
+          "selected_stops": 191
+        }
+      },
+      "baseline": {
+        "money": [
+          75485.0,
+          86457.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0549adff8e59ea0283821340bdcfd9b7aa7f11dd5ff6fd4262e5f6bf99180f24",
+        "terminal_sha256": "61e6b1720c5feed0296a4316f5ab46a019a79c78db652a7035a504e687901ce7"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed315.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 315,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          86457.0,
+          75485.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "789d2a9c1d46792bcc425e8932bea0e8b97cb13531b161db0f884ce51a2df329",
+        "terminal_sha256": "eb68f64056da44c47c876f9e3bfb9c1dc747831d2352b50f1dccc3c36a752f54",
+        "events": 252493,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4935,
+          "raw": 33001,
+          "claimed_removed": 13613,
+          "pending_rejected": 19073,
+          "post_pending": 315,
+          "day29_removed": 0,
+          "pre_construct": 316,
+          "selected_stops": 191
+        }
+      },
+      "baseline": {
+        "money": [
+          86457.0,
+          75485.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "789d2a9c1d46792bcc425e8932bea0e8b97cb13531b161db0f884ce51a2df329",
+        "terminal_sha256": "eb68f64056da44c47c876f9e3bfb9c1dc747831d2352b50f1dccc3c36a752f54"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed315.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 316,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          106226.0,
+          110054.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "8c60ff52d311187094ced60719b8e7c707b26eec96e6e4aa5eef83cfa606daca",
+        "terminal_sha256": "ca8c0f2c1df81c581cab6fccf3601c149613ace06b76caf7afce60bae5196eae",
+        "events": 355918,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4435,
+          "raw": 47860,
+          "claimed_removed": 19414,
+          "pending_rejected": 27747,
+          "post_pending": 699,
+          "day29_removed": 0,
+          "pre_construct": 700,
+          "selected_stops": 298
+        }
+      },
+      "baseline": {
+        "money": [
+          106226.0,
+          110054.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "8c60ff52d311187094ced60719b8e7c707b26eec96e6e4aa5eef83cfa606daca",
+        "terminal_sha256": "ca8c0f2c1df81c581cab6fccf3601c149613ace06b76caf7afce60bae5196eae"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed316.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 316,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          110054.0,
+          106226.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "6a3ffc6e48601973c53c4f8965fc6e7c651ec226436d0888e8167f9b4f39c209",
+        "terminal_sha256": "c35d9f14ad43bff6400eb56060e2b9216277b78849454a4f85b3888e859ecac4",
+        "events": 355918,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4435,
+          "raw": 47860,
+          "claimed_removed": 19414,
+          "pending_rejected": 27747,
+          "post_pending": 699,
+          "day29_removed": 0,
+          "pre_construct": 700,
+          "selected_stops": 298
+        }
+      },
+      "baseline": {
+        "money": [
+          110054.0,
+          106226.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "6a3ffc6e48601973c53c4f8965fc6e7c651ec226436d0888e8167f9b4f39c209",
+        "terminal_sha256": "c35d9f14ad43bff6400eb56060e2b9216277b78849454a4f85b3888e859ecac4"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed316.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 317,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          108571.0,
+          103404.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b01530364ce3693b22afd29b92a2ba4ffc9f4d3358ca8ebc2430d3a177cf62a2",
+        "terminal_sha256": "860d37428b2f46a1873780ce9ee228feefe2c1943a9be5137670b5b8f6beb97d",
+        "events": 361068,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4651,
+          "raw": 49409,
+          "claimed_removed": 20903,
+          "pending_rejected": 27835,
+          "post_pending": 671,
+          "day29_removed": 0,
+          "pre_construct": 675,
+          "selected_stops": 294
+        }
+      },
+      "baseline": {
+        "money": [
+          108571.0,
+          103404.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b01530364ce3693b22afd29b92a2ba4ffc9f4d3358ca8ebc2430d3a177cf62a2",
+        "terminal_sha256": "860d37428b2f46a1873780ce9ee228feefe2c1943a9be5137670b5b8f6beb97d"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed317.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 317,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          103404.0,
+          108571.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "667fb59643b49f6471bc83d6ed7cb016ccc3f11c7e1d7f9b3b0e56194f5ac811",
+        "terminal_sha256": "b500537d322185fca1443a85fbf73d4f5fd5dd1bac14a5ac300d556bc0187da2",
+        "events": 360752,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4649,
+          "raw": 49385,
+          "claimed_removed": 20901,
+          "pending_rejected": 27813,
+          "post_pending": 671,
+          "day29_removed": 0,
+          "pre_construct": 675,
+          "selected_stops": 294
+        }
+      },
+      "baseline": {
+        "money": [
+          103404.0,
+          108571.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "667fb59643b49f6471bc83d6ed7cb016ccc3f11c7e1d7f9b3b0e56194f5ac811",
+        "terminal_sha256": "b500537d322185fca1443a85fbf73d4f5fd5dd1bac14a5ac300d556bc0187da2"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed317.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 318,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          73308.0,
+          93102.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b01530364ce3693b22afd29b92a2ba4ffc9f4d3358ca8ebc2430d3a177cf62a2",
+        "terminal_sha256": "3b5d4a1bd4b9f0179529ef0150d510c5d9fef15060b6d77f1228c6601a94dc50",
+        "events": 485399,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4571,
+          "raw": 64433,
+          "claimed_removed": 24770,
+          "pending_rejected": 38519,
+          "post_pending": 1144,
+          "day29_removed": 0,
+          "pre_construct": 1144,
+          "selected_stops": 385
+        }
+      },
+      "baseline": {
+        "money": [
+          73308.0,
+          93102.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b01530364ce3693b22afd29b92a2ba4ffc9f4d3358ca8ebc2430d3a177cf62a2",
+        "terminal_sha256": "3b5d4a1bd4b9f0179529ef0150d510c5d9fef15060b6d77f1228c6601a94dc50"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed318.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 318,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          93098.0,
+          73315.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "667fb59643b49f6471bc83d6ed7cb016ccc3f11c7e1d7f9b3b0e56194f5ac811",
+        "terminal_sha256": "ad778129fbede0d78b97bae503325ce297a708887e42e9a277b78adb4900b3ca",
+        "events": 484909,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4569,
+          "raw": 64399,
+          "claimed_removed": 24770,
+          "pending_rejected": 38485,
+          "post_pending": 1144,
+          "day29_removed": 0,
+          "pre_construct": 1144,
+          "selected_stops": 385
+        }
+      },
+      "baseline": {
+        "money": [
+          93098.0,
+          73315.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "667fb59643b49f6471bc83d6ed7cb016ccc3f11c7e1d7f9b3b0e56194f5ac811",
+        "terminal_sha256": "ad778129fbede0d78b97bae503325ce297a708887e42e9a277b78adb4900b3ca"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed318.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 319,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          79964.0,
+          91804.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b01530364ce3693b22afd29b92a2ba4ffc9f4d3358ca8ebc2430d3a177cf62a2",
+        "terminal_sha256": "ccb7555d73ef2138c135a2384352b4d3a9b614fb5aab464d4b8827e2c2b65712",
+        "events": 277923,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4786,
+          "raw": 40143,
+          "claimed_removed": 18538,
+          "pending_rejected": 21158,
+          "post_pending": 447,
+          "day29_removed": 0,
+          "pre_construct": 449,
+          "selected_stops": 236
+        }
+      },
+      "baseline": {
+        "money": [
+          79964.0,
+          91804.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b01530364ce3693b22afd29b92a2ba4ffc9f4d3358ca8ebc2430d3a177cf62a2",
+        "terminal_sha256": "ccb7555d73ef2138c135a2384352b4d3a9b614fb5aab464d4b8827e2c2b65712"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed319.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 319,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          91805.0,
+          79971.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "667fb59643b49f6471bc83d6ed7cb016ccc3f11c7e1d7f9b3b0e56194f5ac811",
+        "terminal_sha256": "a6ebf42cb61bf2a1e34a79b8f28aa80d000e933c4736a260683dc269afc498fb",
+        "events": 277422,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4764,
+          "raw": 39945,
+          "claimed_removed": 18463,
+          "pending_rejected": 21035,
+          "post_pending": 447,
+          "day29_removed": 0,
+          "pre_construct": 449,
+          "selected_stops": 236
+        }
+      },
+      "baseline": {
+        "money": [
+          91805.0,
+          79971.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "667fb59643b49f6471bc83d6ed7cb016ccc3f11c7e1d7f9b3b0e56194f5ac811",
+        "terminal_sha256": "a6ebf42cb61bf2a1e34a79b8f28aa80d000e933c4736a260683dc269afc498fb"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed319.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 320,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          105750.0,
+          106971.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b01530364ce3693b22afd29b92a2ba4ffc9f4d3358ca8ebc2430d3a177cf62a2",
+        "terminal_sha256": "9da445ffd27b5df01c5e6dafbcef7bd20403b07e5c41ba51d96b716f4460ef38",
+        "events": 322491,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4861,
+          "raw": 44206,
+          "claimed_removed": 18836,
+          "pending_rejected": 24855,
+          "post_pending": 515,
+          "day29_removed": 0,
+          "pre_construct": 516,
+          "selected_stops": 252
+        }
+      },
+      "baseline": {
+        "money": [
+          105750.0,
+          106971.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b01530364ce3693b22afd29b92a2ba4ffc9f4d3358ca8ebc2430d3a177cf62a2",
+        "terminal_sha256": "9da445ffd27b5df01c5e6dafbcef7bd20403b07e5c41ba51d96b716f4460ef38"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed320.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 320,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          106971.0,
+          105750.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "667fb59643b49f6471bc83d6ed7cb016ccc3f11c7e1d7f9b3b0e56194f5ac811",
+        "terminal_sha256": "6fdd01ecbcdff67f0a514240bea2e31e356a3f8a9b24b87c3a4a9d8ddbfec307",
+        "events": 322632,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4862,
+          "raw": 44216,
+          "claimed_removed": 18836,
+          "pending_rejected": 24865,
+          "post_pending": 515,
+          "day29_removed": 0,
+          "pre_construct": 516,
+          "selected_stops": 252
+        }
+      },
+      "baseline": {
+        "money": [
+          106971.0,
+          105750.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "667fb59643b49f6471bc83d6ed7cb016ccc3f11c7e1d7f9b3b0e56194f5ac811",
+        "terminal_sha256": "6fdd01ecbcdff67f0a514240bea2e31e356a3f8a9b24b87c3a4a9d8ddbfec307"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed320.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 321,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          66455.0,
+          95701.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "ef8de26788e5595c9dcd92cbde59e123ade104a48b2b28a0cb873b9914399866",
+        "terminal_sha256": "0c3ab8a4c22327ddea77ffc5676681b3e753f0a1035f914169395a672509e662",
+        "events": 455273,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4110,
+          "raw": 59604,
+          "claimed_removed": 22353,
+          "pending_rejected": 36028,
+          "post_pending": 1223,
+          "day29_removed": 0,
+          "pre_construct": 1223,
+          "selected_stops": 402
+        }
+      },
+      "baseline": {
+        "money": [
+          66455.0,
+          95701.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "ef8de26788e5595c9dcd92cbde59e123ade104a48b2b28a0cb873b9914399866",
+        "terminal_sha256": "0c3ab8a4c22327ddea77ffc5676681b3e753f0a1035f914169395a672509e662"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed321.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 321,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          95701.0,
+          66455.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f24e5964e2f699cbd10e323124da4f1d806a7b837aa4852974b682d46906a66d",
+        "terminal_sha256": "5f3bb37eb427ce155c2a0ffd0c90d4ce7e732d4523df61f849ed9cb91f82bb7d",
+        "events": 455273,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4110,
+          "raw": 59604,
+          "claimed_removed": 22353,
+          "pending_rejected": 36028,
+          "post_pending": 1223,
+          "day29_removed": 0,
+          "pre_construct": 1223,
+          "selected_stops": 402
+        }
+      },
+      "baseline": {
+        "money": [
+          95701.0,
+          66455.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f24e5964e2f699cbd10e323124da4f1d806a7b837aa4852974b682d46906a66d",
+        "terminal_sha256": "5f3bb37eb427ce155c2a0ffd0c90d4ce7e732d4523df61f849ed9cb91f82bb7d"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed321.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 322,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          74480.0,
+          94393.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "8e9ea6872282f8568d843d444735e75b41e47fd78adb560f9f555da0cb226f3f",
+        "terminal_sha256": "ee60df58e11ea291a3637fb806c33d1a9049d73ecefb50dc02fe1f03437322f5",
+        "events": 453029,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4203,
+          "raw": 62030,
+          "claimed_removed": 24877,
+          "pending_rejected": 35912,
+          "post_pending": 1241,
+          "day29_removed": 0,
+          "pre_construct": 1242,
+          "selected_stops": 407
+        }
+      },
+      "baseline": {
+        "money": [
+          74480.0,
+          94393.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "8e9ea6872282f8568d843d444735e75b41e47fd78adb560f9f555da0cb226f3f",
+        "terminal_sha256": "ee60df58e11ea291a3637fb806c33d1a9049d73ecefb50dc02fe1f03437322f5"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed322.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 322,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          94393.0,
+          74480.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "3f0ed73d3b5aee392ae72fef98c3d0cc0c7451d6520d105770cf6e93e10273c8",
+        "terminal_sha256": "05baa198f407659b5034e1c08db4e266f630ee5983a514b1bcc1f9f8c5bc4c1d",
+        "events": 453029,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4203,
+          "raw": 62030,
+          "claimed_removed": 24877,
+          "pending_rejected": 35912,
+          "post_pending": 1241,
+          "day29_removed": 0,
+          "pre_construct": 1242,
+          "selected_stops": 407
+        }
+      },
+      "baseline": {
+        "money": [
+          94393.0,
+          74480.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "3f0ed73d3b5aee392ae72fef98c3d0cc0c7451d6520d105770cf6e93e10273c8",
+        "terminal_sha256": "05baa198f407659b5034e1c08db4e266f630ee5983a514b1bcc1f9f8c5bc4c1d"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed322.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 323,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          76220.0,
+          85134.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "a36a60bc7f1e365de1bd73bedbf6bc445b85f4d3f3f45e33110af2af7074c3da",
+        "terminal_sha256": "3f00c06b142567ae52d3d5f423ee1b7e61a3f41720387bd6078b7eb298f23230",
+        "events": 287149,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4805,
+          "raw": 40190,
+          "claimed_removed": 17806,
+          "pending_rejected": 21943,
+          "post_pending": 441,
+          "day29_removed": 0,
+          "pre_construct": 441,
+          "selected_stops": 232
+        }
+      },
+      "baseline": {
+        "money": [
+          76220.0,
+          85134.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "a36a60bc7f1e365de1bd73bedbf6bc445b85f4d3f3f45e33110af2af7074c3da",
+        "terminal_sha256": "3f00c06b142567ae52d3d5f423ee1b7e61a3f41720387bd6078b7eb298f23230"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed323.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 323,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          85134.0,
+          76220.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "55f242ffeb1bf4b10900f54a71d7f3425f1a38351f507b1e432efe87f4d89957",
+        "terminal_sha256": "eb7ac210ee6524252d1752136f1acd84cf672e5e79b6094748d32b8306d6b641",
+        "events": 287149,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4805,
+          "raw": 40190,
+          "claimed_removed": 17806,
+          "pending_rejected": 21943,
+          "post_pending": 441,
+          "day29_removed": 0,
+          "pre_construct": 441,
+          "selected_stops": 232
+        }
+      },
+      "baseline": {
+        "money": [
+          85134.0,
+          76220.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "55f242ffeb1bf4b10900f54a71d7f3425f1a38351f507b1e432efe87f4d89957",
+        "terminal_sha256": "eb7ac210ee6524252d1752136f1acd84cf672e5e79b6094748d32b8306d6b641"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed323.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 324,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          87753.0,
+          95893.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0549adff8e59ea0283821340bdcfd9b7aa7f11dd5ff6fd4262e5f6bf99180f24",
+        "terminal_sha256": "b6a063c618f64ed1d0a4549c18e559d2b243599b3d0ae89605c019dccf1f4876",
+        "events": 255558,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4802,
+          "raw": 35589,
+          "claimed_removed": 16002,
+          "pending_rejected": 19218,
+          "post_pending": 369,
+          "day29_removed": 0,
+          "pre_construct": 369,
+          "selected_stops": 208
+        }
+      },
+      "baseline": {
+        "money": [
+          87753.0,
+          95893.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0549adff8e59ea0283821340bdcfd9b7aa7f11dd5ff6fd4262e5f6bf99180f24",
+        "terminal_sha256": "b6a063c618f64ed1d0a4549c18e559d2b243599b3d0ae89605c019dccf1f4876"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed324.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 324,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          95893.0,
+          87753.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "789d2a9c1d46792bcc425e8932bea0e8b97cb13531b161db0f884ce51a2df329",
+        "terminal_sha256": "dae3141ca97b97923b8e9222bc8564d56fe35b0936ba33bc5d7c3764cb7509b7",
+        "events": 255558,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4802,
+          "raw": 35589,
+          "claimed_removed": 16002,
+          "pending_rejected": 19218,
+          "post_pending": 369,
+          "day29_removed": 0,
+          "pre_construct": 369,
+          "selected_stops": 208
+        }
+      },
+      "baseline": {
+        "money": [
+          95893.0,
+          87753.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "789d2a9c1d46792bcc425e8932bea0e8b97cb13531b161db0f884ce51a2df329",
+        "terminal_sha256": "dae3141ca97b97923b8e9222bc8564d56fe35b0936ba33bc5d7c3764cb7509b7"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed324.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 325,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          105799.0,
+          114349.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0549adff8e59ea0283821340bdcfd9b7aa7f11dd5ff6fd4262e5f6bf99180f24",
+        "terminal_sha256": "6682356139f3f6e5c2a8812f6ef10564a2e3bfe290c89d9ee35831eb18839f87",
+        "events": 308646,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4649,
+          "raw": 43471,
+          "claimed_removed": 19595,
+          "pending_rejected": 23332,
+          "post_pending": 544,
+          "day29_removed": 0,
+          "pre_construct": 544,
+          "selected_stops": 256
+        }
+      },
+      "baseline": {
+        "money": [
+          105799.0,
+          114349.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0549adff8e59ea0283821340bdcfd9b7aa7f11dd5ff6fd4262e5f6bf99180f24",
+        "terminal_sha256": "6682356139f3f6e5c2a8812f6ef10564a2e3bfe290c89d9ee35831eb18839f87"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed325.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 325,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          114349.0,
+          105799.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "789d2a9c1d46792bcc425e8932bea0e8b97cb13531b161db0f884ce51a2df329",
+        "terminal_sha256": "a198dfa3a8b4625f2245567921b2c14b6df23dbd5e9684c6972cd4929938e9aa",
+        "events": 308646,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4649,
+          "raw": 43471,
+          "claimed_removed": 19595,
+          "pending_rejected": 23332,
+          "post_pending": 544,
+          "day29_removed": 0,
+          "pre_construct": 544,
+          "selected_stops": 256
+        }
+      },
+      "baseline": {
+        "money": [
+          114349.0,
+          105799.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "789d2a9c1d46792bcc425e8932bea0e8b97cb13531b161db0f884ce51a2df329",
+        "terminal_sha256": "a198dfa3a8b4625f2245567921b2c14b6df23dbd5e9684c6972cd4929938e9aa"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed325.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 326,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          51629.0,
+          76258.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f89f45251a44e0e6b3ef819b95a95463f82b089fb887ac641c56a5cb0609c1fd",
+        "terminal_sha256": "baa6726c30f1edfb85f4068388dd4768a91dcd765d2408d14827948cbe1e4d68",
+        "events": 421753,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4073,
+          "raw": 57428,
+          "claimed_removed": 23274,
+          "pending_rejected": 33004,
+          "post_pending": 1150,
+          "day29_removed": 0,
+          "pre_construct": 1156,
+          "selected_stops": 392
+        }
+      },
+      "baseline": {
+        "money": [
+          51629.0,
+          76258.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f89f45251a44e0e6b3ef819b95a95463f82b089fb887ac641c56a5cb0609c1fd",
+        "terminal_sha256": "baa6726c30f1edfb85f4068388dd4768a91dcd765d2408d14827948cbe1e4d68"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed326.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 326,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          76258.0,
+          51629.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "252727f8a2de7a97c37a54d24978eccd71904c00683ba386b97d83e0dcb00ec3",
+        "terminal_sha256": "4872111e0a611a9f99802868d8abfca85b6e84e4e328149fd790ac581f40f402",
+        "events": 421753,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4073,
+          "raw": 57428,
+          "claimed_removed": 23274,
+          "pending_rejected": 33004,
+          "post_pending": 1150,
+          "day29_removed": 0,
+          "pre_construct": 1156,
+          "selected_stops": 392
+        }
+      },
+      "baseline": {
+        "money": [
+          76258.0,
+          51629.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "252727f8a2de7a97c37a54d24978eccd71904c00683ba386b97d83e0dcb00ec3",
+        "terminal_sha256": "4872111e0a611a9f99802868d8abfca85b6e84e4e328149fd790ac581f40f402"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed326.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 327,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          81658.0,
+          92292.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b01530364ce3693b22afd29b92a2ba4ffc9f4d3358ca8ebc2430d3a177cf62a2",
+        "terminal_sha256": "10ebc23af28f3eaafdf5f94925068529fb063b0e157da05a91165430fd389049",
+        "events": 279914,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4839,
+          "raw": 40620,
+          "claimed_removed": 18922,
+          "pending_rejected": 21251,
+          "post_pending": 447,
+          "day29_removed": 0,
+          "pre_construct": 449,
+          "selected_stops": 236
+        }
+      },
+      "baseline": {
+        "money": [
+          81658.0,
+          92292.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b01530364ce3693b22afd29b92a2ba4ffc9f4d3358ca8ebc2430d3a177cf62a2",
+        "terminal_sha256": "10ebc23af28f3eaafdf5f94925068529fb063b0e157da05a91165430fd389049"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed327.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 327,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          92292.0,
+          81658.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "667fb59643b49f6471bc83d6ed7cb016ccc3f11c7e1d7f9b3b0e56194f5ac811",
+        "terminal_sha256": "4694a89bf4f65178adb561e034f7acbbddea8ddcc8b6c0723bf4264713bb751d",
+        "events": 279914,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4839,
+          "raw": 40620,
+          "claimed_removed": 18922,
+          "pending_rejected": 21251,
+          "post_pending": 447,
+          "day29_removed": 0,
+          "pre_construct": 449,
+          "selected_stops": 236
+        }
+      },
+      "baseline": {
+        "money": [
+          92292.0,
+          81658.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "667fb59643b49f6471bc83d6ed7cb016ccc3f11c7e1d7f9b3b0e56194f5ac811",
+        "terminal_sha256": "4694a89bf4f65178adb561e034f7acbbddea8ddcc8b6c0723bf4264713bb751d"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed327.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 328,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          38592.0,
+          53255.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "334af6e307f23a69fefca5e4b4a62a1255cc70f41bdbc9ddd695bd00006a2997",
+        "terminal_sha256": "9dc7ad1f9120a6dbb5459d8eb2a767fc6ca0d01c64f024387454ba7561c3a272",
+        "events": 329787,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4645,
+          "raw": 47694,
+          "claimed_removed": 21710,
+          "pending_rejected": 25330,
+          "post_pending": 654,
+          "day29_removed": 0,
+          "pre_construct": 656,
+          "selected_stops": 285
+        }
+      },
+      "baseline": {
+        "money": [
+          38592.0,
+          53255.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "334af6e307f23a69fefca5e4b4a62a1255cc70f41bdbc9ddd695bd00006a2997",
+        "terminal_sha256": "9dc7ad1f9120a6dbb5459d8eb2a767fc6ca0d01c64f024387454ba7561c3a272"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed328.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 328,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          53255.0,
+          38592.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b069a92a987a8a0d61ca75dd387b87ea5b039e705f52f948169b845367c56cdd",
+        "terminal_sha256": "33e47ce07fe6993f38b02314b51f9488bb6d86cd9f1ecf373c1bbb2260b704cc",
+        "events": 329787,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4645,
+          "raw": 47694,
+          "claimed_removed": 21710,
+          "pending_rejected": 25330,
+          "post_pending": 654,
+          "day29_removed": 0,
+          "pre_construct": 656,
+          "selected_stops": 285
+        }
+      },
+      "baseline": {
+        "money": [
+          53255.0,
+          38592.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b069a92a987a8a0d61ca75dd387b87ea5b039e705f52f948169b845367c56cdd",
+        "terminal_sha256": "33e47ce07fe6993f38b02314b51f9488bb6d86cd9f1ecf373c1bbb2260b704cc"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed328.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 329,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          106927.0,
+          106926.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "fd17bc99068feaba0ebfcef58e349a1b471957cf5cd7720ca81976d7a358a198",
+        "terminal_sha256": "dcbef36176821be2e79c0d20e443e0bc284b107d7132c59f3607f6a57eaedb2d",
+        "events": 463497,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4284,
+          "raw": 62992,
+          "claimed_removed": 24557,
+          "pending_rejected": 37212,
+          "post_pending": 1223,
+          "day29_removed": 0,
+          "pre_construct": 1224,
+          "selected_stops": 403
+        }
+      },
+      "baseline": {
+        "money": [
+          106927.0,
+          106926.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "fd17bc99068feaba0ebfcef58e349a1b471957cf5cd7720ca81976d7a358a198",
+        "terminal_sha256": "dcbef36176821be2e79c0d20e443e0bc284b107d7132c59f3607f6a57eaedb2d"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed329.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 329,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          106926.0,
+          106927.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "c30b60eb488e5bc348ae44dd56e25f960d69861965408f3bd15cc366df2cb5fa",
+        "terminal_sha256": "89aaf649cfc2949a6f172491af4d67ca7fcbe351362d78b4f335a55bfe4cf22d",
+        "events": 463497,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4284,
+          "raw": 62992,
+          "claimed_removed": 24557,
+          "pending_rejected": 37212,
+          "post_pending": 1223,
+          "day29_removed": 0,
+          "pre_construct": 1224,
+          "selected_stops": 403
+        }
+      },
+      "baseline": {
+        "money": [
+          106926.0,
+          106927.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "c30b60eb488e5bc348ae44dd56e25f960d69861965408f3bd15cc366df2cb5fa",
+        "terminal_sha256": "89aaf649cfc2949a6f172491af4d67ca7fcbe351362d78b4f335a55bfe4cf22d"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed329.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 330,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          70640.0,
+          92918.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "7a733714954d3d381b8845d80dbf2182ad91798b88683d2fc628d1fc1779cef4",
+        "terminal_sha256": "623f505e595c8d03b5a15b4acd61c5db67c9280827d745f407fe796d1b16f24b",
+        "events": 468756,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4428,
+          "raw": 62269,
+          "claimed_removed": 23744,
+          "pending_rejected": 37381,
+          "post_pending": 1144,
+          "day29_removed": 0,
+          "pre_construct": 1145,
+          "selected_stops": 386
+        }
+      },
+      "baseline": {
+        "money": [
+          70640.0,
+          92918.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "7a733714954d3d381b8845d80dbf2182ad91798b88683d2fc628d1fc1779cef4",
+        "terminal_sha256": "623f505e595c8d03b5a15b4acd61c5db67c9280827d745f407fe796d1b16f24b"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed330.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 330,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          92918.0,
+          70640.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0a3ce1e060e332346a93f7070b368969437969930abc14dc5206355b5356d422",
+        "terminal_sha256": "564015fc6d7004759e82569564dfcbabc4a7772525755cea8b1d07d7706eb262",
+        "events": 468756,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4428,
+          "raw": 62269,
+          "claimed_removed": 23744,
+          "pending_rejected": 37381,
+          "post_pending": 1144,
+          "day29_removed": 0,
+          "pre_construct": 1145,
+          "selected_stops": 386
+        }
+      },
+      "baseline": {
+        "money": [
+          92918.0,
+          70640.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0a3ce1e060e332346a93f7070b368969437969930abc14dc5206355b5356d422",
+        "terminal_sha256": "564015fc6d7004759e82569564dfcbabc4a7772525755cea8b1d07d7706eb262"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed330.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 331,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          114661.0,
+          139290.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "ef8de26788e5595c9dcd92cbde59e123ade104a48b2b28a0cb873b9914399866",
+        "terminal_sha256": "db9d4039f3c831399cd12a3c4e773baeb706fb595d7988961b52b7d9b8a5dfa7",
+        "events": 463743,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4240,
+          "raw": 61946,
+          "claimed_removed": 23926,
+          "pending_rejected": 36787,
+          "post_pending": 1233,
+          "day29_removed": 0,
+          "pre_construct": 1233,
+          "selected_stops": 404
+        }
+      },
+      "baseline": {
+        "money": [
+          114661.0,
+          139290.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "ef8de26788e5595c9dcd92cbde59e123ade104a48b2b28a0cb873b9914399866",
+        "terminal_sha256": "db9d4039f3c831399cd12a3c4e773baeb706fb595d7988961b52b7d9b8a5dfa7"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed331.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 331,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          139290.0,
+          114661.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f24e5964e2f699cbd10e323124da4f1d806a7b837aa4852974b682d46906a66d",
+        "terminal_sha256": "cc09a65943e461f091a1742a0b47d38e7987a5320798cc3aabeff338e788fd94",
+        "events": 463743,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4240,
+          "raw": 61946,
+          "claimed_removed": 23926,
+          "pending_rejected": 36787,
+          "post_pending": 1233,
+          "day29_removed": 0,
+          "pre_construct": 1233,
+          "selected_stops": 404
+        }
+      },
+      "baseline": {
+        "money": [
+          139290.0,
+          114661.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f24e5964e2f699cbd10e323124da4f1d806a7b837aa4852974b682d46906a66d",
+        "terminal_sha256": "cc09a65943e461f091a1742a0b47d38e7987a5320798cc3aabeff338e788fd94"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed331.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 332,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          102250.0,
+          128101.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0549adff8e59ea0283821340bdcfd9b7aa7f11dd5ff6fd4262e5f6bf99180f24",
+        "terminal_sha256": "135f4b81a2cddcee8faedb3f39de2addd4dfbeee60370abe59eb4d33b22032c5",
+        "events": 452813,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4413,
+          "raw": 60804,
+          "claimed_removed": 23861,
+          "pending_rejected": 35817,
+          "post_pending": 1126,
+          "day29_removed": 0,
+          "pre_construct": 1126,
+          "selected_stops": 380
+        }
+      },
+      "baseline": {
+        "money": [
+          102250.0,
+          128101.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0549adff8e59ea0283821340bdcfd9b7aa7f11dd5ff6fd4262e5f6bf99180f24",
+        "terminal_sha256": "135f4b81a2cddcee8faedb3f39de2addd4dfbeee60370abe59eb4d33b22032c5"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed332.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 332,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          128101.0,
+          102250.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "789d2a9c1d46792bcc425e8932bea0e8b97cb13531b161db0f884ce51a2df329",
+        "terminal_sha256": "b7c32c0f8f75a93ec33c6f9b9d2fe9a4ca9e22b95973f42d4e2f079d21b4fb66",
+        "events": 452813,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4413,
+          "raw": 60804,
+          "claimed_removed": 23861,
+          "pending_rejected": 35817,
+          "post_pending": 1126,
+          "day29_removed": 0,
+          "pre_construct": 1126,
+          "selected_stops": 380
+        }
+      },
+      "baseline": {
+        "money": [
+          128101.0,
+          102250.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "789d2a9c1d46792bcc425e8932bea0e8b97cb13531b161db0f884ce51a2df329",
+        "terminal_sha256": "b7c32c0f8f75a93ec33c6f9b9d2fe9a4ca9e22b95973f42d4e2f079d21b4fb66"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed332.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 333,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          50374.0,
+          56674.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "334af6e307f23a69fefca5e4b4a62a1255cc70f41bdbc9ddd695bd00006a2997",
+        "terminal_sha256": "0837623ff2d24da27a7328f533aa26a1906d9ca9bc2fcd87330238566d7b9917",
+        "events": 239898,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4809,
+          "raw": 32119,
+          "claimed_removed": 13672,
+          "pending_rejected": 18132,
+          "post_pending": 315,
+          "day29_removed": 0,
+          "pre_construct": 315,
+          "selected_stops": 190
+        }
+      },
+      "baseline": {
+        "money": [
+          50374.0,
+          56674.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "334af6e307f23a69fefca5e4b4a62a1255cc70f41bdbc9ddd695bd00006a2997",
+        "terminal_sha256": "0837623ff2d24da27a7328f533aa26a1906d9ca9bc2fcd87330238566d7b9917"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed333.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 333,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          56674.0,
+          50374.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b069a92a987a8a0d61ca75dd387b87ea5b039e705f52f948169b845367c56cdd",
+        "terminal_sha256": "5c023ca019f7f1d9f4c04172148b7b6f5957544a6cc61ea4ff71de98deb91d55",
+        "events": 239698,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4807,
+          "raw": 32105,
+          "claimed_removed": 13672,
+          "pending_rejected": 18118,
+          "post_pending": 315,
+          "day29_removed": 0,
+          "pre_construct": 315,
+          "selected_stops": 190
+        }
+      },
+      "baseline": {
+        "money": [
+          56674.0,
+          50374.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b069a92a987a8a0d61ca75dd387b87ea5b039e705f52f948169b845367c56cdd",
+        "terminal_sha256": "5c023ca019f7f1d9f4c04172148b7b6f5957544a6cc61ea4ff71de98deb91d55"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed333.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 334,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          105899.0,
+          124936.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "ef8de26788e5595c9dcd92cbde59e123ade104a48b2b28a0cb873b9914399866",
+        "terminal_sha256": "eee991c8c2ed67e1b4e2a5f5bceaff91281bf6a0824fcd126423de1458baac53",
+        "events": 451412,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4208,
+          "raw": 61307,
+          "claimed_removed": 24308,
+          "pending_rejected": 35768,
+          "post_pending": 1231,
+          "day29_removed": 0,
+          "pre_construct": 1231,
+          "selected_stops": 402
+        }
+      },
+      "baseline": {
+        "money": [
+          105899.0,
+          124936.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "ef8de26788e5595c9dcd92cbde59e123ade104a48b2b28a0cb873b9914399866",
+        "terminal_sha256": "eee991c8c2ed67e1b4e2a5f5bceaff91281bf6a0824fcd126423de1458baac53"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed334.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 334,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          124936.0,
+          105899.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f24e5964e2f699cbd10e323124da4f1d806a7b837aa4852974b682d46906a66d",
+        "terminal_sha256": "127d695b63bcd4368a9571f62c5d1c275bcff841bfc82e67888b59f9a7d63b47",
+        "events": 451412,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4208,
+          "raw": 61307,
+          "claimed_removed": 24308,
+          "pending_rejected": 35768,
+          "post_pending": 1231,
+          "day29_removed": 0,
+          "pre_construct": 1231,
+          "selected_stops": 402
+        }
+      },
+      "baseline": {
+        "money": [
+          124936.0,
+          105899.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f24e5964e2f699cbd10e323124da4f1d806a7b837aa4852974b682d46906a66d",
+        "terminal_sha256": "127d695b63bcd4368a9571f62c5d1c275bcff841bfc82e67888b59f9a7d63b47"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed334.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 335,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          86574.0,
+          89173.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "7a733714954d3d381b8845d80dbf2182ad91798b88683d2fc628d1fc1779cef4",
+        "terminal_sha256": "94c8a02a39ab0ce2ece454c00f5f47e383bf0324614cf0a238bf87f05fa647a2",
+        "events": 338856,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4643,
+          "raw": 46019,
+          "claimed_removed": 19395,
+          "pending_rejected": 26025,
+          "post_pending": 599,
+          "day29_removed": 0,
+          "pre_construct": 599,
+          "selected_stops": 272
+        }
+      },
+      "baseline": {
+        "money": [
+          86574.0,
+          89173.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "7a733714954d3d381b8845d80dbf2182ad91798b88683d2fc628d1fc1779cef4",
+        "terminal_sha256": "94c8a02a39ab0ce2ece454c00f5f47e383bf0324614cf0a238bf87f05fa647a2"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed335.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 335,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          89173.0,
+          86574.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0a3ce1e060e332346a93f7070b368969437969930abc14dc5206355b5356d422",
+        "terminal_sha256": "e8584dca4cfa33b23a86d4c541c9e3860bf56a9e15ce018d4d54b81032caf0bc",
+        "events": 338856,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4643,
+          "raw": 46019,
+          "claimed_removed": 19395,
+          "pending_rejected": 26025,
+          "post_pending": 599,
+          "day29_removed": 0,
+          "pre_construct": 599,
+          "selected_stops": 272
+        }
+      },
+      "baseline": {
+        "money": [
+          89173.0,
+          86574.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "0a3ce1e060e332346a93f7070b368969437969930abc14dc5206355b5356d422",
+        "terminal_sha256": "e8584dca4cfa33b23a86d4c541c9e3860bf56a9e15ce018d4d54b81032caf0bc"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed335.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 336,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          40607.0,
+          64966.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "334af6e307f23a69fefca5e4b4a62a1255cc70f41bdbc9ddd695bd00006a2997",
+        "terminal_sha256": "4ae62fe10c9d3a1524c856801ba6458bb80d5271e0200ace0bbb5250cbaf79b3",
+        "events": 435697,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4368,
+          "raw": 59547,
+          "claimed_removed": 23834,
+          "pending_rejected": 34639,
+          "post_pending": 1074,
+          "day29_removed": 0,
+          "pre_construct": 1074,
+          "selected_stops": 370
+        }
+      },
+      "baseline": {
+        "money": [
+          40607.0,
+          64966.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "334af6e307f23a69fefca5e4b4a62a1255cc70f41bdbc9ddd695bd00006a2997",
+        "terminal_sha256": "4ae62fe10c9d3a1524c856801ba6458bb80d5271e0200ace0bbb5250cbaf79b3"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed336.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 336,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          64966.0,
+          40607.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b069a92a987a8a0d61ca75dd387b87ea5b039e705f52f948169b845367c56cdd",
+        "terminal_sha256": "86280f1cf51b114b7e33562d1fab8cff0c864e108b13b09e4b75237e8b4b35b0",
+        "events": 435697,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4368,
+          "raw": 59547,
+          "claimed_removed": 23834,
+          "pending_rejected": 34639,
+          "post_pending": 1074,
+          "day29_removed": 0,
+          "pre_construct": 1074,
+          "selected_stops": 370
+        }
+      },
+      "baseline": {
+        "money": [
+          64966.0,
+          40607.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b069a92a987a8a0d61ca75dd387b87ea5b039e705f52f948169b845367c56cdd",
+        "terminal_sha256": "86280f1cf51b114b7e33562d1fab8cff0c864e108b13b09e4b75237e8b4b35b0"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed336.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 337,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          132228.0,
+          119689.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "8c60ff52d311187094ced60719b8e7c707b26eec96e6e4aa5eef83cfa606daca",
+        "terminal_sha256": "bf8706cbd8c8e662d7f22a92516390254f69c4f7310f72bf44a7ed12225de59c",
+        "events": 418624,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4339,
+          "raw": 56777,
+          "claimed_removed": 23109,
+          "pending_rejected": 32680,
+          "post_pending": 988,
+          "day29_removed": 0,
+          "pre_construct": 989,
+          "selected_stops": 356
+        }
+      },
+      "baseline": {
+        "money": [
+          132228.0,
+          119689.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "8c60ff52d311187094ced60719b8e7c707b26eec96e6e4aa5eef83cfa606daca",
+        "terminal_sha256": "bf8706cbd8c8e662d7f22a92516390254f69c4f7310f72bf44a7ed12225de59c"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed337.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 337,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          119632.0,
+          134502.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "6a3ffc6e48601973c53c4f8965fc6e7c651ec226436d0888e8167f9b4f39c209",
+        "terminal_sha256": "bd1f81f6b904b86ce77fb0d0145ed84749fe09f758dcc9b7060ea978aaca7c4f",
+        "events": 417740,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4311,
+          "raw": 56357,
+          "claimed_removed": 22754,
+          "pending_rejected": 32615,
+          "post_pending": 988,
+          "day29_removed": 0,
+          "pre_construct": 989,
+          "selected_stops": 356
+        }
+      },
+      "baseline": {
+        "money": [
+          119632.0,
+          134502.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "6a3ffc6e48601973c53c4f8965fc6e7c651ec226436d0888e8167f9b4f39c209",
+        "terminal_sha256": "bd1f81f6b904b86ce77fb0d0145ed84749fe09f758dcc9b7060ea978aaca7c4f"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed337.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 338,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          55719.0,
+          76832.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "334af6e307f23a69fefca5e4b4a62a1255cc70f41bdbc9ddd695bd00006a2997",
+        "terminal_sha256": "6954f97f07ab6f173b382f9c372961815355d9a03b5dddc2bafa3514de8f89f1",
+        "events": 319231,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4548,
+          "raw": 44160,
+          "claimed_removed": 18843,
+          "pending_rejected": 24715,
+          "post_pending": 602,
+          "day29_removed": 0,
+          "pre_construct": 603,
+          "selected_stops": 271
+        }
+      },
+      "baseline": {
+        "money": [
+          55719.0,
+          76832.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "334af6e307f23a69fefca5e4b4a62a1255cc70f41bdbc9ddd695bd00006a2997",
+        "terminal_sha256": "6954f97f07ab6f173b382f9c372961815355d9a03b5dddc2bafa3514de8f89f1"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed338.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 338,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          76832.0,
+          55719.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b069a92a987a8a0d61ca75dd387b87ea5b039e705f52f948169b845367c56cdd",
+        "terminal_sha256": "94fee8434ec5cbe041c619dec7120b54ed26fafc4ebf7f54dd31167fe9780753",
+        "events": 319231,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4548,
+          "raw": 44160,
+          "claimed_removed": 18843,
+          "pending_rejected": 24715,
+          "post_pending": 602,
+          "day29_removed": 0,
+          "pre_construct": 603,
+          "selected_stops": 271
+        }
+      },
+      "baseline": {
+        "money": [
+          76832.0,
+          55719.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "b069a92a987a8a0d61ca75dd387b87ea5b039e705f52f948169b845367c56cdd",
+        "terminal_sha256": "94fee8434ec5cbe041c619dec7120b54ed26fafc4ebf7f54dd31167fe9780753"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed338.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 339,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          77743.0,
+          70490.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f89f45251a44e0e6b3ef819b95a95463f82b089fb887ac641c56a5cb0609c1fd",
+        "terminal_sha256": "e8c49201388826ec2077948e60a4bb7518f20f4f345764fd9d7f1c800a22c836",
+        "events": 382808,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4155,
+          "raw": 50439,
+          "claimed_removed": 19830,
+          "pending_rejected": 29744,
+          "post_pending": 865,
+          "day29_removed": 0,
+          "pre_construct": 871,
+          "selected_stops": 335
+        }
+      },
+      "baseline": {
+        "money": [
+          77743.0,
+          70490.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f89f45251a44e0e6b3ef819b95a95463f82b089fb887ac641c56a5cb0609c1fd",
+        "terminal_sha256": "e8c49201388826ec2077948e60a4bb7518f20f4f345764fd9d7f1c800a22c836"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed339.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 339,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          70490.0,
+          77743.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "252727f8a2de7a97c37a54d24978eccd71904c00683ba386b97d83e0dcb00ec3",
+        "terminal_sha256": "64c57feb5daf757b574403a51fb1686fd2cc305085420994f6110f75c836a97e",
+        "events": 382808,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4155,
+          "raw": 50439,
+          "claimed_removed": 19830,
+          "pending_rejected": 29744,
+          "post_pending": 865,
+          "day29_removed": 0,
+          "pre_construct": 871,
+          "selected_stops": 335
+        }
+      },
+      "baseline": {
+        "money": [
+          70490.0,
+          77743.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "252727f8a2de7a97c37a54d24978eccd71904c00683ba386b97d83e0dcb00ec3",
+        "terminal_sha256": "64c57feb5daf757b574403a51fb1686fd2cc305085420994f6110f75c836a97e"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed339.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 340,
+      "seat": 0,
+      "parity": true,
+      "observed": {
+        "money": [
+          58595.0,
+          62703.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f89f45251a44e0e6b3ef819b95a95463f82b089fb887ac641c56a5cb0609c1fd",
+        "terminal_sha256": "037a73de8e7f631f603092a625aaae75ef91bb786e9cfa3e638c61671395a51a",
+        "events": 277359,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4574,
+          "raw": 38085,
+          "claimed_removed": 16577,
+          "pending_rejected": 21067,
+          "post_pending": 441,
+          "day29_removed": 0,
+          "pre_construct": 442,
+          "selected_stops": 233
+        }
+      },
+      "baseline": {
+        "money": [
+          58595.0,
+          62703.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "f89f45251a44e0e6b3ef819b95a95463f82b089fb887ac641c56a5cb0609c1fd",
+        "terminal_sha256": "037a73de8e7f631f603092a625aaae75ef91bb786e9cfa3e638c61671395a51a"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat0_seed340.jsonl.gz"
+    },
+    {
+      "opponent": "peter",
+      "seed": 340,
+      "seat": 1,
+      "parity": true,
+      "observed": {
+        "money": [
+          62746.0,
+          58461.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "9b614a79b4dd45818d1d8d037cee852687c1a76c6a54fb7fc98b61e20dbfd33a",
+        "terminal_sha256": "80669c4f346f79c1d8c9960c5a37c73e31478c9f4c873ecd744c1f669cc8e671",
+        "events": 260018,
+        "semantic_event_counts": {
+          "seed_labor_reduction": 0,
+          "seed_reject_zero_quantity": 0
+        },
+        "route_semantic_validation": {
+          "route_calls_checked": 4406,
+          "raw": 36578,
+          "claimed_removed": 16620,
+          "pending_rejected": 19517,
+          "post_pending": 441,
+          "day29_removed": 0,
+          "pre_construct": 442,
+          "selected_stops": 233
+        }
+      },
+      "baseline": {
+        "money": [
+          62746.0,
+          58461.0
+        ],
+        "steps": 719,
+        "errors": 0,
+        "actions_sha256": "9b614a79b4dd45818d1d8d037cee852687c1a76c6a54fb7fc98b61e20dbfd33a",
+        "terminal_sha256": "80669c4f346f79c1d8c9960c5a37c73e31478c9f4c873ecd744c1f669cc8e671"
+      },
+      "log": "adaptive/logs/animal_route_upstream_panel_scoped_s301_340/peter/peter_seat1_seed340.jsonl.gz"
+    }
+  ]
+}
