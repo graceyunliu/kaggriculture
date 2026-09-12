@@ -19,6 +19,7 @@ def A(event, text, *, node=None, parent_test=None):
  return {"event":event,"text":text,"node":node,"parent_test":parent_test}
 
 ANCHORS={
+ "perceive":[A("perceive_animal_guard",'if "animal" in t:',node="If"),A("perceive_animal_append",'v["animals"].append(((x, y), t))',node="Expr",parent_test='"animal" in t')],
  "economy":[
   A("seed_candidate_reached",'if c in excluded or day > sp_["cutoff"] or day < sp_.get("start", 0):',node="If"),
   A("seed_reject_eligibility",'continue',node="Continue",parent_test='c in excluded or day > sp_["cutoff"] or day < sp_.get("start", 0)'),A("seed_strawberry_delay_guard",'if c == "STRAWBERRY" and day < KNOBS["straw_delay"]:',node="If"),
@@ -129,9 +130,9 @@ def validate_route_provenance(events):
  return {"route_calls_checked":checked,**dict(counts)}
 
 class Provenance:
- def __init__(self,mod,route_only=False):
-  self.mod=mod;self.file=str(O42.resolve());self.events=[];self.context={};self.lines={};self.stack=[];self.pending_depth=0;self.seq=0;self.manifest=[];self.route_only=route_only
-  self.active_functions={"_build_route","_animal_pending","_feed_useful","_care_useful"} if route_only else set(ANCHORS)
+ def __init__(self,mod,route_only=False,formation_only=False):
+  self.mod=mod;self.file=str(O42.resolve());self.events=[];self.context={};self.lines={};self.stack=[];self.pending_depth=0;self.pending_perceive_append=None;self.seq=0;self.manifest=[];self.route_only=route_only
+  self.active_functions=({"perceive","_pick_site","_build_route"} if formation_only else ({"_build_route","_animal_pending","_feed_useful","_care_useful"} if route_only else set(ANCHORS)))
   source=O42.read_text().splitlines();self.source=source;tree=ast.parse("\n".join(source),filename=self.file)
   parents={child:parent for parent in ast.walk(tree) for child in ast.iter_child_nodes(parent)}
   funcs={n.name:n for n in tree.body if isinstance(n,(ast.FunctionDef,ast.AsyncFunctionDef))}
@@ -157,7 +158,7 @@ class Provenance:
     nonblank_after=next((source[i-1].strip() for i in range(ln+1,len(source)+1) if source[i-1].strip()),None)
     textual_matches=[i for i in range(fnode.lineno,fnode.end_lineno+1) if source[i-1].strip()==spec["text"]]
     self.manifest.append({"event":spec["event"],"intended_function":fn,"resolved_line":ln,"exact_source_text":source[ln-1].strip(),"ast_node":type(node).__name__,"enclosing_control":actual_parent,"expected_enclosing_control":spec["parent_test"],"predecessor_nonblank":nonblank_before,"successor_nonblank":nonblank_after,"surrounding_context":context,"context_sha256":hashlib.sha256("\n".join(x["text"] for x in context).encode()).hexdigest(),"textual_match_lines":textual_matches,"structural_match_count":len(matches),"uniqueness_status":"unique"})
-  self.manifest.extend([{"event":e,"intended_function":None,"resolved_line":None,"exact_source_text":None,"surrounding_context":None,"context_sha256":None,"uniqueness_status":"synthetic_not_source_anchored"} for e in ("function_enter","function_return","engine_commit")])
+  self.manifest.extend([{"event":e,"intended_function":None,"resolved_line":None,"exact_source_text":None,"surrounding_context":None,"context_sha256":None,"uniqueness_status":"synthetic_not_source_anchored"} for e in ("function_enter","function_return","engine_commit","perceive_animal_append_committed")])
   self._validate_repaired_seed_bindings()
  def _animal(self,pos,t):
   return {"position":clean(pos),"species":t.get("animal"),"placed_day":t.get("placed_day"),"fed_today":t.get("fed_today"),"cared_today":t.get("cared_today"),"consecutive_unfed":t.get("consecutive_unfed"),"fertilizer_available":t.get("fertilizer_available"),"yield_units":t.get("yield_units")}
@@ -183,6 +184,9 @@ class Provenance:
     extra["raw_candidates"]=[self._animal(p,t) for p,t in raw];extra["claimed_positions"]=clean(frame.f_locals.get("claimed",set()))
    elif event in {"route_candidates_built","route_candidates_after_day29_filter","route_candidates_before_construction"}:
     extra["candidates"]=[self._animal(p,t) for p,t in frame.f_locals.get("cands",[])]
+  if fn=="perceive" and event in {"perceive_animal_guard","perceive_animal_append"}:
+   t=frame.f_locals.get("t",{});extra["candidate"]=self._animal((frame.f_locals.get("x"),frame.f_locals.get("y")),t);extra["v_animals_size_before"]=len(frame.f_locals.get("v",{}).get("animals",[]))
+   if event=="perceive_animal_append":self.pending_perceive_append={"candidate":extra["candidate"],"before":extra["v_animals_size_before"],"line":frame.f_lineno}
   if fn=="_animal_pending" and event=="function_return":
    t=frame.f_locals.get("t",{});pos=None
    for ctx in reversed(self.stack):
@@ -202,6 +206,11 @@ class Provenance:
   if frame.f_code.co_filename!=self.file:return None
   fn=frame.f_code.co_name
   if fn not in self.active_functions:return None
+  if fn=="perceive" and self.pending_perceive_append is not None and not (event=="line" and frame.f_lineno==self.pending_perceive_append["line"]):
+   pending=self.pending_perceive_append;after=len(frame.f_locals.get("v",{}).get("animals",[]))
+   if after!=pending["before"]+1:raise RuntimeError("perceive conservation failure: animal append did not increase v['animals'] by one")
+   self.seq+=1;self.events.append({"seq":self.seq,"event":"perceive_animal_append_committed","family":"perceive","day":self.context.get("day"),"hour":self.context.get("hour"),"line":pending["line"],"code_path":f"perceive:{pending['line']}","source":self.source[pending["line"]-1].strip(),"candidate":pending["candidate"],"v_animals_size_before":pending["before"],"v_animals_size_after":after});self.pending_perceive_append=None
+  if fn=="perceive" and event=="line" and (fn,frame.f_lineno) in self.lines and not (isinstance(frame.f_locals.get("t"),dict) and "animal" in frame.f_locals["t"]):return self.trace
   if fn in {"_feed_useful","_care_useful"} and self.pending_depth<=0:return self.trace
   if event=="call":
    if fn=="_build_route":self.stack.append({"kind":"route","positions":{id(t):p for p,t in frame.f_locals.get("v",{}).get("animals",[])}})
@@ -209,7 +218,7 @@ class Provenance:
    self.emit("function_enter",fn,frame)
   elif event=="line" and (fn,frame.f_lineno) in self.lines:self.emit(self.lines[(fn,frame.f_lineno)],fn,frame)
   elif event=="return":
-   self.emit("function_return",fn,frame,returned=clean(arg))
+   returned=({"animals":[self._animal(p,t) for p,t in arg.get("animals",[])]} if fn=="perceive" and isinstance(arg,dict) else clean(arg));self.emit("function_return",fn,frame,returned=returned)
    if fn=="_animal_pending":self.pending_depth-=1
    if fn=="_build_route":
     if not self.stack or self.stack[-1].get("kind")!="route":raise RuntimeError("route provenance stack mismatch")
