@@ -1,0 +1,109 @@
+{
+  "hypotheses": [
+    {
+      "confidence": "WEAK",
+      "contradicting_evidence": [
+        {
+          "experiment": "n/a",
+          "note": "Not a controlled test: Adaptive v0.2 and O42 share zero opponents, so we cannot rule out that Adaptive's opponent pool was simply weaker (favorable variance on margin) rather than the rating mechanism being the full story. This hypothesis is about the SCORE GAP, not a claim that Adaptive v0.2 has no real weaknesses."
+        }
+      ],
+      "experiments": [
+        "adaptive_v0.2_ladder_56200714"
+      ],
+      "hypothesis_id": "H_RATING",
+      "last_tested": "2026-09-13",
+      "next_test_priority": "high",
+      "source": "derived/KAGGLE_SCORE_RECONSTRUCTION.md section 'Score trajectory summary' + derived/LADDER_ADAPTIVE_V0_2_RAW_EVIDENCE.md section 3",
+      "statement": "The 895.9-vs-1174.0 public-score gap is substantially explained by rating path-dependence and incomplete convergence, not by Adaptive v0.2 playing worse than O42: raw per-game win rate (48.8% vs 50.7%) and mean money margin (+3,367 vs +1,929, nominally favoring Adaptive v0.2) are close to parity, while the rating mechanism (starts at 600, large per-game step early, decaying toward single digits by ~40-70 games) means a submission with fewer games (41 vs 71) and one early loss while its step size was still large (game 5: peak ~988 -> ~877) can sit well below a submission that happened to string together early wins before its step size shrank.",
+      "status": "ACTIVE",
+      "supporting_evidence": [
+        {
+          "experiment": "adaptive_v0.2_ladder_56200714",
+          "note": "win rate 20/41 (48.8%) vs O42 36/71 (50.7%) -- not a large gap; mean margin +3367 vs +1929, favoring Adaptive v0.2 nominally."
+        },
+        {
+          "experiment": "adaptive_v0.2_ladder_56200714",
+          "note": "chained initialScore/updatedScore directly shows a sequential rating starting at 600 with a large, decaying per-game step -- KAGGLE_SCORE_RECONSTRUCTION.md."
+        }
+      ]
+    },
+    {
+      "confidence": "WEAK",
+      "contradicting_evidence": [
+        {
+          "experiment": "adaptive_v0.2_ladder_56200714",
+          "note": "Adaptive v0.2's raw ladder win rate/margin are close to O42's, not dramatically worse -- if thin-support B picks were routinely harmful, a larger raw-margin gap would be a more expected signature than the rating-gap pattern actually observed (see H_RATING)."
+        }
+      ],
+      "experiments": [
+        "adaptive-v0.3-ladder-candidate (built, not yet submitted)"
+      ],
+      "hypothesis_id": "H1",
+      "last_tested": null,
+      "next_test_priority": "medium",
+      "source": "candidate/adaptive-v0.3-ladder-candidate/provenance_manifest.json 'v0_3_change' block + adaptive_v0.2_learner_frozen.json",
+      "statement": "In several regimes the frozen learner's arm-B (B_ONE_PER_ORDER) empirical mean rests on very few real games (n=1-6), and frozen selection is effectively greedy on that noisy mean (no live explore bonus at eval time). This can make the deployed policy confidently choose B in states where the evidence does not actually support deviating from O42's behavior (A).",
+      "status": "ACTIVE",
+      "supporting_evidence": [
+        {
+          "experiment": "offline_certified_v0.2_study",
+          "note": "7 regimes x 2 arms (A_FULL_O42, B_ONE_PER_ORDER). Several regimes have thin B support: late|high|roomy (B n=4), late|high|tight (B n=2), mid|low|roomy (B n=4), mid|high|tight (B n=6, but A already wins on raw mean)."
+        }
+      ]
+    },
+    {
+      "confidence": "NO_EVIDENCE",
+      "contradicting_evidence": [],
+      "experiments": [],
+      "hypothesis_id": "H2",
+      "last_tested": null,
+      "next_test_priority": "low",
+      "source": "inference from controller design docs (24-turn reward window); not yet checked against any ladder or offline data -- flagged as untested rather than assumed true or false",
+      "statement": "The controller's training-time reward window (24 turns) may not track final-game outcome well, so the frozen policy could be optimized for a proxy that diverges from what actually wins games -- a generic short-horizon-reward risk that has not been directly tested against ladder outcomes because ladder replay data lacks controller decision traces.",
+      "status": "NEW",
+      "supporting_evidence": []
+    },
+    {
+      "confidence": "NO_EVIDENCE",
+      "contradicting_evidence": [],
+      "experiments": [],
+      "hypothesis_id": "H3",
+      "last_tested": null,
+      "next_test_priority": "low",
+      "source": "adaptive_v0.2_learner_frozen.json regime list",
+      "statement": "The controller's regime partition (early/mid/late x high/low x roomy/tight, 7 observed cells) may be too coarse, merging game states that actually call for different arm choices and diluting each cell's empirical mean toward noise.",
+      "status": "NEW",
+      "supporting_evidence": [
+        {
+          "experiment": "offline_certified_v0.2_study",
+          "note": "Only 7 regimes observed with n ranging 1-53; several near-boundary cells (e.g. mid|high|tight, B n=6 but A wins) are exactly where a coarse partition would blur a real effect."
+        }
+      ]
+    },
+    {
+      "confidence": "WEAK",
+      "contradicting_evidence": [
+        {
+          "experiment": "adaptive_v0.2_ladder_56200714",
+          "note": "Adaptive v0.2's raw ladder margin/win-rate are close to O42's despite the distribution difference, which is some (weak) evidence the offline mechanism DID transfer reasonably -- undercutting a strong version of H5."
+        }
+      ],
+      "experiments": [
+        "adaptive_v0.2_ladder_56200714"
+      ],
+      "hypothesis_id": "H5",
+      "last_tested": "2026-09-13",
+      "next_test_priority": "low",
+      "source": "derived/LADDER_ADAPTIVE_V0_2_RAW_EVIDENCE.md section 4 (opponent overlap) + provenance_manifest.json opponent list",
+      "statement": "The live ladder's opponent population differs from the 4 named offline opponents (scenario_v14, o42_selfplay, frontier_v12, soil_v25) the certified v0.2 study trained/evaluated against, so offline-validated mechanism generalization may not transfer as-is to ladder play.",
+      "status": "ACTIVE",
+      "supporting_evidence": [
+        {
+          "experiment": "adaptive_v0.2_ladder_56200714",
+          "note": "Zero opponent-ID overlap between Adaptive v0.2's and O42's ladder games, and neither set overlaps the offline study's 4 named opponents/8 fixed seeds."
+        }
+      ]
+    }
+  ]
+}
