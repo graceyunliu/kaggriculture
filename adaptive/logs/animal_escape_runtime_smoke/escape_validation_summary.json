@@ -1,0 +1,34 @@
+{
+  "scope": "deterministic validation fixture; not a strategy or outcome experiment",
+  "fixture_setup": "matching cow pasture and one cow inventory item; placement/escape/replacement use real engine functions",
+  "o42_sha256": "154d1ff480e9aa05084e323604a1a09ce73b68adbff95dd4f410e6acf4f52813",
+  "engine_path": "/Users/graceliu/Claude/Projects/Kaggriculture/vendor/kaggle_environments_engine_master/kaggriculture.py",
+  "escape_event_count": 1,
+  "animal_left_farm_tiles_count": 1,
+  "retired_asset_id": "p0:x4y4:d0:e1",
+  "replacement_asset_id": "p0:x4y4:d1:e2",
+  "invariants": {
+    "real_engine_escape_event_observed": true,
+    "animal_left_farm_tiles_observed": true,
+    "pre_removal_identity_matches": true,
+    "pre_removal_state_matches_engine": true,
+    "removal_cause_is_escape": true,
+    "escape_and_leave_positions_match": true,
+    "surrogate_id_retired_immediately": true,
+    "post_removal_collection_empty": true,
+    "shrink_conservation": true,
+    "replacement_received_new_id": true,
+    "retired_id_not_reused": true,
+    "post_refresh_engine_state_parity": true,
+    "fixture_action_stream_parity": true,
+    "fixture_terminal_state_parity": true
+  },
+  "untested": [
+    "natural O42 gameplay producing an escape",
+    "multiple simultaneous escapes",
+    "non-escape animal removal causes",
+    "escape of sheep or goose",
+    "surrogate identity across position changes (animals do not move in the engine)"
+  ],
+  "event_log": "adaptive/logs/animal_escape_runtime_smoke/escape_lifecycle.jsonl"
+}
