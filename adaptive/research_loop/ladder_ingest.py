@@ -126,5 +126,18 @@ def load_v0_2_ladder_summary() -> dict:
     return summary
 
 
+def load_checkpoint_summary(diagnostic_path: str) -> dict:
+    """Reads one ladder_watcher.py checkpoint diagnostic (already-computed,
+    not re-derived here) and returns it plus a hash of the file it was
+    read from, mirroring load_v0_2_ladder_summary's own pattern: this
+    function does not re-pull Kaggle or recompute statistics, it only
+    reads and hashes evidence someone else (the watcher) already wrote."""
+    diagnostic = _read_json(diagnostic_path)
+    diagnostic = dict(diagnostic)
+    diagnostic["_diagnostic_hash"] = sha256_file(diagnostic_path)
+    diagnostic["_diagnostic_source_file"] = os.path.relpath(diagnostic_path, REPO_ROOT)
+    return diagnostic
+
+
 if __name__ == "__main__":
     print(json.dumps(load_v0_2_ladder_summary(), indent=2))
