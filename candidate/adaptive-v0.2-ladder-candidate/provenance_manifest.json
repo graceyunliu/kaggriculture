@@ -1,0 +1,74 @@
+{
+  "candidate_id": "adaptive-v0.2-ladder-candidate",
+  "candidate_version": "1.0.0",
+  "created_at_utc": "2026-09-13T05:30:00Z",
+  "relationship_to_certified_v0_2": "This candidate packages, unmodified, the exact controller, runner, frozen learner state, and configuration that were independently audited and CLEARED (verdict A) in ADAPTIVE_EVAL_V0_2_FINAL_AUDIT.md. It adds packaging, provenance, and fail-closed tooling only. It does not re-run, re-tune, or extend the certified experiment, and it does not itself establish or claim performance superiority.",
+  "hashes": {
+    "o42_candidate": {
+      "path_on_disk": "/Users/graceliu/Claude/Projects/Kaggriculture/candidates/O42_MAX_HANDS_LATE_EXPAND.py",
+      "sha256": "154d1ff480e9aa05084e323604a1a09ce73b68adbff95dd4f410e6acf4f52813",
+      "note": "Immutable. Lives outside this repo (separate connected project folder) and is not copied into the candidate package; referenced by absolute path and pinned by hash only. Never modified."
+    },
+    "controller_adaptive_slice_v0": {
+      "candidate_path": "candidate/adaptive-v0.2-ladder-candidate/controller/adaptive_slice_v0.py",
+      "sha256": "9ff99b50656c1ed19b4410d773a83946082bb6f88d605020615dcb3c8e735687",
+      "certified_source": "adaptive/provenance/adaptive-eval-v0.2/controller/adaptive_slice_v0.py (also tools/adaptive_slice_v0.py)",
+      "verified_byte_identical_to_certified": true
+    },
+    "runner_adaptive_eval_v0_2": {
+      "candidate_path": "candidate/adaptive-v0.2-ladder-candidate/runner/adaptive_eval_v0_2.py",
+      "sha256": "f434cffccd641e545bba7bc97da6658740b4d5537f789eaf57e1f051f1df0113",
+      "certified_source": "adaptive/provenance/adaptive-eval-v0.2/runner/adaptive_eval_v0_2.py",
+      "verified_byte_identical_to_certified": true
+    },
+    "frozen_learner_state": {
+      "candidate_path": "candidate/adaptive-v0.2-ladder-candidate/state/learner_frozen.json",
+      "sha256": "d8864c049b78da94329a9cb10184acec31582bff7c2afb062400af2c42173c64",
+      "certified_source": "adaptive/logs/adaptive-eval-v0.2-run1/learner_frozen.json (byte-identical to adaptive-eval-v0.2-run2/learner_frozen.json)",
+      "verified_byte_identical_to_certified": true,
+      "note": "This is the v0.2-certified learner state, distinct from the older adaptive-slice-v0 learner_frozen.json (sha256 adc17c3c211ccbcd41c8acd9910681e465504a7611248461d904935504897594), which belongs to the earlier v0.1/slice-v0 lineage and is NOT part of this candidate."
+    },
+    "experiment_configuration": {
+      "candidate_path": "candidate/adaptive-v0.2-ladder-candidate/config/experiment_configuration.json",
+      "sha256": "ab1922217cc06fc160d8f513f576e321321c52561da137cb8ed6c6434c17adc3"
+    },
+    "seed_manifest": {
+      "candidate_path": "candidate/adaptive-v0.2-ladder-candidate/config/seed_manifest.json",
+      "sha256": "837be728116269b38f4e445cac83e4bd422ed9c2a4031d77833a3be326b5fabc"
+    },
+    "opponent_manifest": {
+      "candidate_path": "candidate/adaptive-v0.2-ladder-candidate/config/opponent_manifest.json",
+      "sha256": "6b18166995b117c1b607f1576a0e09ed7bc26da567ff7f477fab8d083802cb2d"
+    },
+    "environment_record": {
+      "candidate_path": "candidate/adaptive-v0.2-ladder-candidate/config/environment.json",
+      "sha256": "7465a2e2592c138c3b90aa8336cc17ce11c936804d89ed0a9bb77b109586cb40"
+    },
+    "opponents": {
+      "scenario_v14": {"path": "research_current/Opponents/opp_scenario_v14.py", "sha256": "344e50cae6c8a597c7b56fe0bcc99f267dee5aae1632eb30e1c8173f0ef3b786"},
+      "frontier_v12": {"path": "research_current/Opponents/opp_frontier_v12.py", "sha256": "41793bfd5c87c27ed23ddcee2c7aa0e6ef3f2590b43326154451f8020f4ee430"},
+      "soil_v25": {"path": "research_current/Opponents/opp_soil_v25.py", "sha256": "71fa6519e9c6a251e69a8bbf254a8a46c71bfac26a3e89dce118738acb8eb9b0"}
+    }
+  },
+  "certified_v0_2_headline_facts": {
+    "training_updates": 158, "training_a": 31, "training_b": 127,
+    "held_out_decisions": 309, "held_out_a": 48, "held_out_b": 261,
+    "evaluation_learner_updates": 0,
+    "shadow_parity_rows_passed": 8,
+    "run1_run2_shared_artifacts_byte_identical": true,
+    "adaptive_minus_fixed_a_mean": 423.84,
+    "adaptive_minus_fixed_a_ci95": [-6088.21, 6935.90],
+    "adaptive_minus_fixed_b_mean": -1392.97,
+    "adaptive_minus_fixed_b_ci95": [-6058.44, 3272.51],
+    "performance_superiority_established": false
+  },
+  "runtime_environment_recorded_at_certification": {
+    "python": "3.12.13",
+    "kaggle_environments": "1.32.3",
+    "platform": "macOS-26.4.1-arm64-arm-64bit",
+    "python_executable": "/Users/graceliu/Claude/Projects/Kaggriculture/.venv/bin/python"
+  },
+  "hardening_environment_used_for_this_package": {
+    "note": "Hash/provenance verification for this hardening pass was performed on a different shell (python3 3.10.12, kaggle_environments not installed) than the certified run environment. No game was re-run in this environment. Verification here is limited to byte-for-byte hash comparison against the certified v0.2 artifacts, which is sufficient to prove the candidate files are unmodified copies but does not itself re-execute the experiment."
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "candidate_id": "adaptive-v0.3-ladder-candidate",
+  "candidate_version": "0.3.0",
+  "created_at_utc": "2026-09-13T13:00:00Z",
+  "relationship_to_certified_v0_2": "v0.3 is a single, minimal controller-only change on top of the certified/audited v0.2 mechanism: it adds a minimum-sample-size guard (MIN_N_TO_TRUST_B=10) so that frozen (ladder-eval) decisions only select variant B_ONE_PER_ORDER when the frozen learner state has at least 10 training observations for B in that regime; otherwise it falls back to A_FULL_O42 (O42's own unmodified behavior). The frozen learner state (learner_frozen.json), the runner, and all config/seed/opponent manifests are byte-identical to the certified v0.2 package (see hashes below, unchanged from v0.2's provenance_manifest.json). No retraining was performed. v0.2 itself is left intact and unmodified; see candidate/adaptive-v0.2-ladder-candidate (packaged 2026-09-13, hash-verified in artifacts/ladder_adaptive_v0.2_diagnostic_2026-09-13).",
+  "hashes": {
+    "o42_candidate": {
+      "path_on_disk": "/Users/graceliu/Claude/Projects/Kaggriculture/candidates/O42_MAX_HANDS_LATE_EXPAND.py",
+      "sha256": "154d1ff480e9aa05084e323604a1a09ce73b68adbff95dd4f410e6acf4f52813",
+      "note": "Immutable. Lives outside this repo (separate connected project folder) and is not copied into the candidate package; referenced by absolute path and pinned by hash only. Never modified.",
+      "path_on_disk_note_v0_3": "v0.2's provenance_manifest.json recorded an absolute macOS path (/Users/graceliu/Claude/Projects/Kaggriculture/candidates/O42_MAX_HANDS_LATE_EXPAND.py), which does not resolve inside the Cowork device_bash Linux VM used to build/validate v0.3 (that VM mounts the same folder tree under a different absolute root). The content and hash are unchanged (154d1ff480e9aa05084e323604a1a09ce73b68adbff95dd4f410e6acf4f52813, reconfirmed directly during v0.3 hardening); only the path recorded here was relativized so preflight.py can actually run in that VM. path_on_disk_relative_to_repo_root is authoritative for preflight.",
+      "path_on_disk_relative_to_repo_root": "candidates/O42_MAX_HANDS_LATE_EXPAND.py"
+    },
+    "controller_adaptive_slice_v0": {
+      "candidate_path": "candidate/adaptive-v0.3-ladder-candidate/controller/adaptive_slice_v0.py",
+      "sha256": "1e7393a52664558ff5bc132121f30f39fceb7a41401ad40097e0f72874afbe4f",
+      "certified_source": "NONE -- this is the v0.3 modified controller, not byte-identical to v0.2's certified controller",
+      "verified_byte_identical_to_certified": false,
+      "v0_2_controller_sha256_for_diff_reference": "9ff99b50656c1ed19b4410d773a83946082bb6f88d605020615dcb3c8e735687",
+      "change_summary": "Added MIN_N_TO_TRUST_B=10 constant and a guard in Learner.choose(): when frozen=True and the greedy/UCB1 pick is B_ONE_PER_ORDER but that regime's B sample count is below 10, fall back to A_FULL_O42. Regime definition, reward window, state_vector, UCB1 training-time formula, and all other logic are unchanged (verify via diff against v0.2 controller)."
+    },
+    "runner_adaptive_eval_v0_2": {
+      "candidate_path": "candidate/adaptive-v0.2-ladder-candidate/runner/adaptive_eval_v0_2.py",
+      "sha256": "f434cffccd641e545bba7bc97da6658740b4d5537f789eaf57e1f051f1df0113",
+      "certified_source": "adaptive/provenance/adaptive-eval-v0.2/runner/adaptive_eval_v0_2.py",
+      "verified_byte_identical_to_certified": true
+    },
+    "frozen_learner_state": {
+      "candidate_path": "candidate/adaptive-v0.2-ladder-candidate/state/learner_frozen.json",
+      "sha256": "d8864c049b78da94329a9cb10184acec31582bff7c2afb062400af2c42173c64",
+      "certified_source": "adaptive/logs/adaptive-eval-v0.2-run1/learner_frozen.json (byte-identical to adaptive-eval-v0.2-run2/learner_frozen.json)",
+      "verified_byte_identical_to_certified": true,
+      "note": "Byte-identical to the v0.2-certified learner state -- v0.3 intentionally does NOT retrain or alter the learner. The v0.3 change only affects which arm frozen-mode selection trusts, not the learner's own (n, mean) statistics."
+    },
+    "experiment_configuration": {
+      "candidate_path": "candidate/adaptive-v0.2-ladder-candidate/config/experiment_configuration.json",
+      "sha256": "ab1922217cc06fc160d8f513f576e321321c52561da137cb8ed6c6434c17adc3"
+    },
+    "seed_manifest": {
+      "candidate_path": "candidate/adaptive-v0.2-ladder-candidate/config/seed_manifest.json",
+      "sha256": "837be728116269b38f4e445cac83e4bd422ed9c2a4031d77833a3be326b5fabc"
+    },
+    "opponent_manifest": {
+      "candidate_path": "candidate/adaptive-v0.2-ladder-candidate/config/opponent_manifest.json",
+      "sha256": "6b18166995b117c1b607f1576a0e09ed7bc26da567ff7f477fab8d083802cb2d"
+    },
+    "environment_record": {
+      "candidate_path": "candidate/adaptive-v0.2-ladder-candidate/config/environment.json",
+      "sha256": "7465a2e2592c138c3b90aa8336cc17ce11c936804d89ed0a9bb77b109586cb40"
+    },
+    "opponents": {
+      "scenario_v14": {
+        "path": "Opponents/opp_scenario_v14.py",
+        "sha256": "344e50cae6c8a597c7b56fe0bcc99f267dee5aae1632eb30e1c8173f0ef3b786",
+        "path_v0_2_recorded": "research_current/Opponents/opp_scenario_v14.py"
+      },
+      "frontier_v12": {
+        "path": "Opponents/opp_frontier_v12.py",
+        "sha256": "41793bfd5c87c27ed23ddcee2c7aa0e6ef3f2590b43326154451f8020f4ee430",
+        "path_v0_2_recorded": "research_current/Opponents/opp_frontier_v12.py"
+      },
+      "soil_v25": {
+        "path": "Opponents/opp_soil_v25.py",
+        "sha256": "71fa6519e9c6a251e69a8bbf254a8a46c71bfac26a3e89dce118738acb8eb9b0",
+        "path_v0_2_recorded": "research_current/Opponents/opp_soil_v25.py"
+      }
+    },
+    "opponents_path_note_v0_3": "v0.2's manifest recorded opponent paths under 'research_current/Opponents/', which does not exist in this repo checkout (opponents actually live at 'Opponents/' from repo root). Hashes were reconfirmed identical at the corrected relative path during v0.3 hardening -- this is a path-bookkeeping fix inherited from v0.2 packaging, not a content change to any opponent file."
+  },
+  "certified_v0_2_headline_facts": {
+    "training_updates": 158,
+    "training_a": 31,
+    "training_b": 127,
+    "held_out_decisions": 309,
+    "held_out_a": 48,
+    "held_out_b": 261,
+    "evaluation_learner_updates": 0,
+    "shadow_parity_rows_passed": 8,
+    "run1_run2_shared_artifacts_byte_identical": true,
+    "adaptive_minus_fixed_a_mean": 423.84,
+    "adaptive_minus_fixed_a_ci95": [
+      -6088.21,
+      6935.9
+    ],
+    "adaptive_minus_fixed_b_mean": -1392.97,
+    "adaptive_minus_fixed_b_ci95": [
+      -6058.44,
+      3272.51
+    ],
+    "performance_superiority_established": false
+  },
+  "runtime_environment_recorded_at_certification": {
+    "python": "3.12.13",
+    "kaggle_environments": "1.32.3",
+    "platform": "macOS-26.4.1-arm64-arm-64bit",
+    "python_executable": "/Users/graceliu/Claude/Projects/Kaggriculture/.venv/bin/python"
+  },
+  "hardening_environment_used_for_this_package": {
+    "note": "Hash/provenance verification for this hardening pass was performed on a different shell (python3 3.10.12, kaggle_environments not installed) than the certified run environment. No game was re-run in this environment. Verification here is limited to byte-for-byte hash comparison against the certified v0.2 artifacts, which is sufficient to prove the candidate files are unmodified copies but does not itself re-execute the experiment."
+  },
+  "v0_3_change": {
+    "hypothesis": "The v0.2 frozen learner state has several regimes where B_ONE_PER_ORDER's empirical mean is estimated from very few (1-6) real games; frozen-eval selection is effectively plain greedy on these noisy means (UCB1's explore bonus is negligible once totals are fixed at eval time). This risks the deployed policy deviating from O42 in states where the evidence for B does not actually support that deviation.",
+    "test_performed": "Re-ran Learner.choose() over all 7 certified v0.2 regimes with frozen=True, comparing the pre-existing (v0.2) selection to the new MIN_N_TO_TRUST_B=10 guarded selection.",
+    "result": {
+      "regimes_total": 7,
+      "regimes_where_b_flips_to_a": [
+        "late|high|roomy (B n=4)",
+        "late|high|tight (B n=2)",
+        "mid|low|roomy (B n=4)"
+      ],
+      "regimes_unchanged_b_well_supported": [
+        "early|high|tight (B n=45)",
+        "early|low|tight (B n=13)",
+        "mid|high|roomy (B n=53)"
+      ],
+      "regimes_unchanged_a_already_selected": [
+        "mid|high|tight (B n=6, A already wins on raw mean)"
+      ]
+    },
+    "not_changed": [
+      "learner_frozen.json (byte-identical to v0.2)",
+      "regime() partition function",
+      "state_vector() features",
+      "reward window (24 turns)",
+      "training-time UCB1 formula/behavior (guard only applies when frozen=True)",
+      "O42 (unmodified, hash 154d1ff480e9aa05084e323604a1a09ce73b68adbff95dd4f410e6acf4f52813)"
+    ]
+  },
+  "submission_build": {
+    "main_py_sha256": "ac2f63786894d1dfb132019b0cdc701a8910523150627262164f196363e764eb",
+    "main_py_bytes": 101889,
+    "submission_zip": "adaptive-v0.3-ladder-submission.zip",
+    "submission_zip_sha256": "5d5a2e249f0dcd59fd2d8a00edb2a61bca3c4a46f7aff2cc7225a7c802d2d212",
+    "built_by": "build_submission.py",
+    "method": "Same flat-inline method as v0.2 submission v2 (56200714): embeds O42 (base64, agent->_o42_agent renamed), the controller runtime verbatim (v0.3: includes MIN_N_TO_TRUST_B guard), and the frozen learner state as a literal dict, with import-time fail-closed hash gates on the embedded O42 source and learner state.",
+    "smoke_tested": "Imported the built main.py directly (importlib) and confirmed: agent is callable, _o42_agent (renamed O42 entrypoint) is callable, MIN_N_TO_TRUST_B == 10, and all 7 certified regimes loaded into the frozen learner with correct (n, mean). Not run through a live kaggle_environments game in this pass (kaggle_environments availability in this session's shell was not confirmed) -- this is the same scope of pre-submission check documented for v0.2's package (byte/hash verification, not a live re-run).",
+    "not_yet_done": "Actual Kaggle submission (requires interactive Kaggle CLI/credentials on Grace's machine) -- see ADAPTIVE_V0_3_SUBMISSION_HANDOFF.md."
+  }
+}

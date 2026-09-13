@@ -1,0 +1,19 @@
+{
+  "design_frozen_before_execution": true,
+  "primary_outcome": "paired adaptive_frozen minus baseline_a final money",
+  "secondary_outcome": "paired adaptive_frozen minus baseline_b final money",
+  "unit_of_analysis": "held-out opponent-seed-seat episode",
+  "training_opponents": ["scenario_v14", "o42_selfplay"],
+  "evaluation_opponents": ["scenario_v14", "o42_selfplay", "frontier_v12", "soil_v25"],
+  "unseen_evaluation_opponents": ["frontier_v12", "soil_v25"],
+  "training_seeds": [1001, 1002, 1003, 1004],
+  "evaluation_seeds": [1101, 1102, 1103, 1104],
+  "seats": [0, 1],
+  "conditions": ["baseline_a", "baseline_b", "adaptive_frozen"],
+  "training_episodes": 16,
+  "heldout_evaluation_episodes": 96,
+  "parity_control_episodes": 8,
+  "complete_reproduction_required": true,
+  "multiplicity": "one primary contrast; secondary contrasts and strata descriptive; no p-value tests",
+  "early_stopping": false
+}
