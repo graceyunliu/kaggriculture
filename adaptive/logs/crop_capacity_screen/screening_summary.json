@@ -1,0 +1,30 @@
+{
+  "status": "stopped_not_promoted",
+  "mode": "measurement_only_existing_artifacts",
+  "new_games_run": 0,
+  "o42_modified": false,
+  "tracer_modified": false,
+  "source_panel": {
+    "games": 320,
+    "seeds": "301-340",
+    "opponents": 4,
+    "seats": 2,
+    "parity_certified": true
+  },
+  "promotion_rule_met": false,
+  "reason": "No reproducible O42-controlled crop decision divergence precedes already-diverged workload, capacity, committed-output, and demand-room state.",
+  "stage_findings": {
+    "availability": "no divergence",
+    "actual_choice_set_size": "no divergence",
+    "best_crop_selected": "no divergence",
+    "seed_orders": "weak higher; state-conditioned and directionally inconsistent with seed deprivation",
+    "seed_commits": "weak higher; no engine commit rejection observed",
+    "plant_task_pool": "weak higher from day 8; already-diverged workload state",
+    "plant_assignments": "weak higher",
+    "crop_capacity_created": "no robust strong advantage",
+    "productive_occupancy": "no robust strong advantage",
+    "production": "melon yield higher in strong games without an earlier robust melon decision/capacity divergence",
+    "sale_use": "not asset-linked in the existing certified trace"
+  },
+  "next_action": "stop"
+}
