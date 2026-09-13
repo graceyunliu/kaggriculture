@@ -1,5 +1,5 @@
 {
-  "status": "stopped_not_promoted",
+  "status": "superseded_audit_pending",
   "mode": "measurement_only_existing_artifacts",
   "new_games_run": 0,
   "o42_modified": false,
@@ -11,8 +11,8 @@
     "seats": 2,
     "parity_certified": true
   },
-  "promotion_rule_met": false,
-  "reason": "No reproducible O42-controlled crop decision divergence precedes already-diverged workload, capacity, committed-output, and demand-room state.",
+  "promotion_rule_met": null,
+  "reason": "The prior STOP overinterpreted first-observed provenance timing as upstream evidence. Exact reruns reproduce the statistics, but independent audit is required before STOP/PROMOTE.",
   "stage_findings": {
     "availability": "no divergence",
     "actual_choice_set_size": "no divergence",
@@ -26,5 +26,5 @@
     "production": "melon yield higher in strong games without an earlier robust melon decision/capacity divergence",
     "sale_use": "not asset-linked in the existing certified trace"
   },
-  "next_action": "stop"
+  "next_action": "independent_claude_audit"
 }

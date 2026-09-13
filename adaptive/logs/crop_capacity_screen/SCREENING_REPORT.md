@@ -1,6 +1,10 @@
 # Early/Midgame Crop Capacity Formation — Screening Result
 
-Status: **STOP — do not promote**.
+Status: **SUPERSEDED — verdict suspended pending independent audit**.
+
+The original STOP assignment in this file must not be relied upon. See
+`../crop_capacity_evidence_repair/AUDIT_HANDOFF.md` for the repaired evidence
+chain and its narrower conclusions.
 
 This is measurement-only synthesis of existing certified artifacts. No games were
 run, no tracer was changed, and O42 was not modified. The screen reuses:
