@@ -89,7 +89,7 @@ Effect on the 7 certified v0.2 regimes (recomputed directly, see `provenance_man
 
 ## 9. Git commit SHA
 
-See the commit that introduces this report and the `candidate/adaptive-v0.3-ladder-candidate/` and `candidate/adaptive-v0.2-ladder-candidate/` directories in this repository (this report is committed in the same commit; check `git log -1` for the SHA at HEAD after this commit).
+`d9b14de062f69a006378a4fc1d3a42c2a5f39833` -- "Adaptive v0.3: minimum-sample guard on frozen B-selection". 26 files changed, all under `candidate/` plus this report and the submission handoff; no other repo files touched.
 
 ## 10. Submission readiness
 
