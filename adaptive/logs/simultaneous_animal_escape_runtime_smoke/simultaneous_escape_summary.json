@@ -1,0 +1,35 @@
+{
+  "scope": "simultaneous lifecycle validation fixture only; not natural O42 gameplay",
+  "o42_sha256": "154d1ff480e9aa05084e323604a1a09ce73b68adbff95dd4f410e6acf4f52813",
+  "engine_path": "/Users/graceliu/Claude/Projects/Kaggriculture/vendor/kaggle_environments_engine_master/kaggriculture.py",
+  "runs": 2,
+  "byte_identical_event_logs": true,
+  "event_log_sha256": "e0f31fcdc1bdefc345c1be3fb019b34d9013c954d5293362379ff2069c5477a8",
+  "retired_asset_ids": [
+    "p0:x4y4:d0:e1",
+    "p0:x3y4:d0:e2"
+  ],
+  "replacement_asset_ids": [
+    "p0:x4y4:d1:e3",
+    "p0:x3y4:d1:e4"
+  ],
+  "invariants": {
+    "two_escapes_same_refresh": true,
+    "two_corresponding_leaves": true,
+    "each_surrogate_retired_once": true,
+    "removals_not_collapsed": true,
+    "collection_shrank_by_two": true,
+    "ledger_matches_engine_after_removal": true,
+    "ids_retired_immediately": true,
+    "replacement_ids_fresh": true,
+    "event_sequence_preserves_all_removals": true,
+    "post_refresh_engine_state_parity": true,
+    "fixture_action_stream_parity": true,
+    "fixture_terminal_state_parity": true
+  },
+  "untested": [
+    "simultaneous escapes arising naturally in O42 gameplay",
+    "more than two simultaneous escapes",
+    "non-escape removal causes"
+  ]
+}
