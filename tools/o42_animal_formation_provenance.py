@@ -43,7 +43,10 @@ class Ledger:
    if L.own(farm) and op=="BUY_ANIMAL":L.emit("animal_purchase",species=item,committed=bool(ok),before=before,after=(farm.get("money"),private.get("shed",{}).get(item,0)))
    return ok
   def apply(farm,private,idx,action,board_size,day,turns_per_day,shed_capacity=100):
-   pos=tuple(farm["farmer"] if idx==0 else farm["hands"][idx-1]);bt=copy.deepcopy(farm["tiles"][pos[1]][pos[0]]);bi=copy.deepcopy(private["inventories"][idx]);L.oa(farm,private,idx,action,board_size,day,turns_per_day,shed_capacity);at=copy.deepcopy(farm["tiles"][pos[1]][pos[0]]);ai=copy.deepcopy(private["inventories"][idx])
+   raw_pos=L.eng._farmer_position(farm,idx)
+   if raw_pos is None:
+    L.oa(farm,private,idx,action,board_size,day,turns_per_day,shed_capacity);return
+   pos=tuple(raw_pos);bt=copy.deepcopy(farm["tiles"][pos[1]][pos[0]]);bi=copy.deepcopy(private["inventories"][idx]);L.oa(farm,private,idx,action,board_size,day,turns_per_day,shed_capacity);at=copy.deepcopy(farm["tiles"][pos[1]][pos[0]]);ai=copy.deepcopy(private["inventories"][idx])
    if L.own(farm) and isinstance(action,list) and len(action)>=2 and action[0] in {"PICKUP","PLACE"} and action[1] in {"COW","SHEEP","GOOSE"}:
     success=bt!=at or bi!=ai;L.emit("animal_unit_action",unit=idx,position=pos,action=action,success=success,tile_before=bt,tile_after=at,inventory_before=bi,inventory_after=ai)
     if action[0]=="PLACE" and success:L.placements.append((pos,at))
