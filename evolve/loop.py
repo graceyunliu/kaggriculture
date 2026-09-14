@@ -125,7 +125,18 @@ class Loop:
                     "pattern_death_day": DEFAULTS["pattern_death_day"],
                     "pattern_death_weeds": DEFAULTS["pattern_death_weeds"],
                     "pattern_death_cash_days": DEFAULTS["pattern_death_cash_days"],
-                    "pattern_death_enabled": not args.no_pattern_death}
+                    "pattern_death_enabled": not args.no_pattern_death,
+                    "clone": args.clone, "frontier": args.frontier,
+                    "panel_floor": args.panel_floor, "own_floor": args.own_floor,
+                    "champion": args.champion, "champion_floor": args.champion_floor,
+                    "champion_own_floor": args.champion_own_floor}
+        # AGE-360: enforce fixed-shops mode for every eval the loop runs.
+        # mini_engine reads KAGG_FIXED_SHOPS at eval time; if unset, the loop
+        # runs in default-shops mode and promotes candidates that lose to the
+        # champion (the exact failure found on Sep 14). Belt-and-suspenders with
+        # the supervisor.sh export: this covers direct Loop() construction too.
+        import os as _os
+        _os.environ.setdefault("KAGG_FIXED_SHOPS", "1")
         self.engine_sha = sha(ROOT / "vendor" / "kaggle_environments_engine_master" / "kaggriculture.py")
         snap, self.k_sha = space.freeze_base(args.base) if args.base else space.freeze_base()
         space.set_frontier(args.frontier)   # keys candidates by (params, chassis, frontier) so switching the
@@ -217,7 +228,7 @@ class Loop:
         if blocks:
             desc += " blocks=" + ",".join(sorted(blocks))
         self.log(f"#{self.stats['evaluated']+1} {origin} {key} [{island}] {desc}")
-        status = run_cascade(self.db, key, path, self.args.frontier, self.args.clone, self.cfg, jobs=self.args.jobs, log=self.log)
+        status = run_cascade(self.db, key, path, self.args.frontier, self.args.clone, self.cfg, jobs=self.args.jobs, log=self.log, champion=self.args.champion)
         self.stats["evaluated"] += 1
         self.stats[status] += 1
         if status == "held_pass":
@@ -584,6 +595,11 @@ def export_archive(db, run_id, k_sha, frontier=None):
 
 
 def main():
+    import os as _os
+    # AGE-360: enforce fixed-shops mode even if the supervisor forgot to export it.
+    # mini_engine reads KAGG_FIXED_SHOPS at eval time; if unset the loop runs in
+    # default-shops mode and promotes candidates that lose to the champion.
+    _os.environ.setdefault("KAGG_FIXED_SHOPS", "1")
     ap = argparse.ArgumentParser()
     ap.add_argument("--hours", type=float, default=0.0)
     ap.add_argument("--minutes", type=float, default=0.0)
@@ -593,10 +609,11 @@ def main():
                     help="head-to-head yardstick (selection score). Sep 11: O33 experimental champion; O26 remains the immutable control")
     ap.add_argument("--clone", default=",".join(str(ROOT / "Opponents" / t) for t in (
                         "tape_peterparker_106816877.py", "tape_alaylm_106813359.py",
-                        "tape_bahaenes_106828159.py", "tape_yangkuang2_106819729.py")),
-                    help="comma-separated fixed-opponent panel (default: the 4 real ladder-loss tapes; the old clone "
-                         "opp_scenario_v14 is not a ladder proxy). Mean panel margin is reported; held-out promotion "
-                         "requires the candidate's panel mean >= the frontier's (--panel-floor).")
+                        "tape_bahaenes_106828159.py", "tape_yangkuang2_106819729.py", "tape_pensukesan_107199477.py")),
+                    help="comma-separated fixed-opponent panel (default: the 5 real ladder tapes). "
+                         "Held-out promotion requires: (1) beats frontier head-to-head t>=2; (2) panel mean >= frontier's (--panel-floor); "
+                         "(3) own money >= frontier's (--own-floor); (4) beats the champion on the SAME panel (--champion, default O42) "
+                         "with margin >= --champion-floor AND own money >= --champion-own-floor.")
     ap.add_argument("--panel-floor", type=float, default=0.0, help="min (candidate - frontier) mean panel margin for held_pass")
     ap.add_argument("--own-floor", type=float, default=0.0,
                     help="min (candidate - frontier) OWN money per game on the panel for held_pass; a candidate above the margin "
@@ -608,6 +625,13 @@ def main():
                     help="minimum margin delta versus the frontier on the quarantined population panel")
     ap.add_argument("--population-own-floor", type=float, default=0.0,
                     help="minimum own-money delta on the quarantined population panel")
+    ap.add_argument("--champion", default=str(ROOT / "candidates" / "O42_MAX_HANDS_LATE_EXPAND.py"),
+                    help="current ladder champion: candidate must beat this on the tape panel to pass held-out (AGE-360). "
+                         "Default: O42_MAX_HANDS_LATE_EXPAND.py")
+    ap.add_argument("--champion-floor", type=float, default=0.0,
+                    help="min (candidate - champion) mean panel margin for held_pass (AGE-360)")
+    ap.add_argument("--champion-own-floor", type=float, default=0.0,
+                    help="min (candidate - champion) own-money per game on the panel for held_pass (AGE-360)")
     ap.add_argument("--run-id", default=None)
     ap.add_argument("--seed", type=int, default=None)
     ap.add_argument("--smoke-floor", type=float, default=DEFAULTS["smoke_floor"])

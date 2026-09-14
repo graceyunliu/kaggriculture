@@ -6,6 +6,11 @@
 set -uo pipefail
 cd "$(dirname "$0")/.."
 export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
+export KAGG_FIXED_SHOPS=1   # AGE-360: node evaluation MUST use fixed-shops mode so shop-unlock
+                              # lottery does not convolve with candidate quality. Without this the loop
+                              # promotes candidates that beat the frontier but lose to the champion.
+                              # Confirmed: default-shops cohort beat O15 on the tapes but lost to O42
+                              # under fixed shops (Sep 14 held-pass re-evaluation).
 PY="${PYTHON:-python3}"
 SEGMENT_HOURS="${SEGMENT_HOURS:-2}"
 if [ -x /usr/sbin/sysctl ]; then CORES=$(/usr/sbin/sysctl -n hw.ncpu); else CORES=$(nproc 2>/dev/null || echo 4); fi

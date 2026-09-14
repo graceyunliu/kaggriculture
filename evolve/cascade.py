@@ -255,7 +255,7 @@ def collect_trajectory_summary(cand_path, frontier, seeds, engine):
     return trace_mod.fold_trace_to_summary([r["trace"][0] for r in runs], seeds=seeds)
 
 
-def run_cascade(db, key, cand_path, frontier, clone, cfg, jobs=None, log=print):
+def run_cascade(db, key, cand_path, frontier, clone, cfg, jobs=None, log=print, champion=None):
     """Push one candidate through the cascade, updating the DB as it goes. Returns final status."""
     engine = cfg.get("engine", "master")
     # ---- stage 0: fingerprint
@@ -359,14 +359,31 @@ def run_cascade(db, key, cand_path, frontier, clone, cfg, jobs=None, log=print):
     panel_delta_held = rc["mean_margin_per_game"] - fp_held if fp_held is not None else None
     own_delta_held = rc["own_money_per_game"] - fo_held if fo_held is not None else None
     kind_held = classify_gain(panel_delta_held, own_delta_held)
+    # Champion check (AGE-360 fix): candidate must beat the current champion on the same
+    # tape panel under the same held-out seeds. Without this, candidates that beat the
+    # frontier but lose to the champion still pass as held_pass (the exact failure we saw:
+    # candidates beating O15/O33 on the tapes but losing to O42 under fixed shops).
+    champ_margin = None
+    champ_own = None
+    if champion:
+        rc_champ, dtc_champ = eval_panel(cand_path, champion, HELD_SEEDS, engine, jobs)
+        db.add_games(key, 2 * len(HELD_SEEDS), dtc_champ)
+        champ_margin = rc_champ["mean_margin_per_game"]
+        champ_own = rc_champ["own_money_per_game"]
+        db.update(key, note=f"champ_panel={rc_champ['per_opp']} champ_margin={champ_margin:+,.0f} champ_own={champ_own:+,.0f}")
+        log(f"    CHAMPION {champ_margin:+,.0f} (own {champ_own:+,.0f}) vs {Path(champion).stem}")
     # Promotion is two-dimensional (Sep 11): (1) beats the frontier head-to-head (t>=2); (2) does not lose ground on
     # the tape panel's paired MARGIN (Sep 9: O-vs-O gains such as melon late-fert were null on the tapes); (3) does
     # not lower our OWN money on the panel (Sep 11: the capital checkpoint's +margin was an input-price attack with
     # own money -$1k -- an exploit, never core architecture). A candidate that fails only (3) is recorded as an exploit.
+    # (AGE-360) (4) beats the current champion on the same tape panel: without this, candidates that beat the frontier
+    # but lose to the champion pass as held_pass (see fixed-shops re-evaluation of the Sep 14 held-pass cohort).
     passed = (not cfg.get("panel_baseline_error")
               and r["mean_margin_per_game"] > 0 and r["t"] >= 2.0
               and (panel_delta_held is None or panel_delta_held >= cfg.get("panel_floor", 0.0))
-              and (own_delta_held is None or own_delta_held >= cfg.get("own_floor", 0.0)))
+              and (own_delta_held is None or own_delta_held >= cfg.get("own_floor", 0.0))
+              and (champ_margin is None or champ_margin >= cfg.get("champion_floor", 0.0))
+              and (champ_own is None or champ_own >= cfg.get("champion_own_floor", 0.0)))
     population = cfg.get("population_panel")
     population_delta = population_own_delta = None
     population_per_opp = None
@@ -385,10 +402,13 @@ def run_cascade(db, key, cand_path, frontier, clone, cfg, jobs=None, log=print):
     db.update(key, stage=3, status=status,
               held_margin=r["mean_margin_per_game"], held_t=r["t"], held_wins=r["wins"], held_losses=r["losses"],
               held_clone_margin=rc["mean_margin_per_game"], population_margin=population_delta,
-              population_own=population_own_delta, ladder_status="pending_external_validation" if passed else None,
-              note=f"panel_held={rc['per_opp']} panel_delta_held={panel_delta_held} own_held={rc['per_opp_own']} own_delta_held={own_delta_held} kind_held={kind_held} population={population_per_opp} population_delta={population_delta} population_own_delta={population_own_delta}")
+              population_own=population_own_delta,
+              champ_margin=champ_margin, champ_own=champ_own,
+              ladder_status="pending_external_validation" if passed else None,
+              note=f"panel_held={rc['per_opp']} panel_delta_held={panel_delta_held} own_held={rc['per_opp_own']} own_delta_held={own_delta_held} kind_held={kind_held} population={population_per_opp} population_delta={population_delta} population_own_delta={population_own_delta} champ_margin={champ_margin} champ_own={champ_own}")
     log(f"    HELD-OUT {r['mean_margin_per_game']:+,.0f} (t={r['t']:.1f}, {r['wins']}-{r['losses']})  "
         f"panel {rc['mean_margin_per_game']:+,.0f}" + (f" (delta vs frontier {panel_delta_held:+,.0f}, own {own_delta_held:+,.0f}, {kind_held})" if panel_delta_held is not None and own_delta_held is not None else "")
         + (f" population delta {population_delta:+,.0f}, own {population_own_delta:+,.0f}" if population_delta is not None else "")
+        + (f" CHAMPION {champ_margin:+,.0f} (own {champ_own:+,.0f})" if champ_margin is not None else "")
         + f"  -> {status.upper()}")
     return "held_pass" if passed else "held_fail"
