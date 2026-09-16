@@ -1,5 +1,3 @@
-# evolve/chassis.py -- frozen copy of O162_THREE_SHOPS65.py with typed mutation blocks.
-# source sha256 db483790d62e. Rebuild: python3 evolve/blocks.py build
 #!/usr/bin/env python3
 """O162_THREE_SHOPS65: Current ladder champion. O15_SALE_PRIORITY + X1 global crop orchestrator
 (per-turn cost matrix over free units x open crop tasks, flat priorities, commitment bonus 0.75) +
