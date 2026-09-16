@@ -611,10 +611,10 @@ def main():
                     help="head-to-head yardstick (selection score). Sep 15: O162_THREE_SHOPS65 (rebased from O15 on Sep 15); "
                          "O33/O26 remain the immutable controls for dose-response.")
     ap.add_argument("--clone", default=", ".join(str(ROOT / "Opponents" / t) for t in (
-                        "tape_peterparker_106816877.py", "tape_alaylm_106813359.py",
-                        "tape_bahaenes_106828159.py", "tape_yangkuang2_106819729.py")),
-                    help="comma-separated fixed-opponent panel (default: matches yardstick.conf CLONE — the 4 real ladder-loss tapes; "
-                         "the old clone opp_scenario_v14 is not a ladder proxy). Mean panel margin is reported; held-out promotion "
+                        "tape_majkel1337_107852724.py", "tape_ymgaq_106415741.py",
+                        "tape_unknownmothergoose_107932246.py", "tape_feeltheagi_107564195.py")),
+                    help="comma-separated fixed-opponent panel (default: matches yardstick.conf CLONE — current top-ladder players: "
+                         "Majkel1337, ymg_aq, Unknown Mother-Goose, feel_the_agi). Mean panel margin is reported; held-out promotion "
                          "requires: (1) beats frontier head-to-head t>=2; (2) panel mean >= frontier's (--panel-floor); "
                          "(3) own money >= frontier's (--own-floor); (4) beats the champion on the SAME panel (--champion, default O42) "
                          "with margin >= --champion-floor AND own money >= --champion-own-floor.")
