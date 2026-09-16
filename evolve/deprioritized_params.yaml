@@ -48,6 +48,50 @@ params:
       day 15 versus 17. Keep fixed until a mechanism-specific hypothesis exists.
       See docs/cloud-evolution-results-sep11.md.
 
+  wheat_stock:
+    reason: >
+      O171 (wheat_stock=20 + wheat_hold_days=1 + feed_spare_poor=3 combined, on O162) -- decisive
+      ABANDON, own-money negative on 2 independent 20-seed sets; the combo compounds each knob's
+      individual loss rather than cancelling it. See kaggriculture-o171-wheat-reserve-cluster-abandon-sep16.md.
+  wheat_hold_days:
+    reason: >
+      Same O171 finding as wheat_stock -- combined-mode ABANDON on O162, replicated. Individually also
+      ABANDON on O42 (panel-qualified, contract depth, 320 games, 2 independent seed sets).
+      See kaggriculture-wheat-hold-days-panel-abandon-sep13.md and -o171-wheat-reserve-cluster-abandon-sep16.md.
+  feed_spare_poor:
+    reason: >
+      Same O171 combined-mode finding as wheat_stock/wheat_hold_days. Also individually ABANDON in the
+      min_hands=2 + feed_spare_poor=3 combo test. See kaggriculture-min-hands-fsp3-combo-abandon-sep12.md
+      and -o171-wheat-reserve-cluster-abandon-sep16.md.
+  wheat_water_tier:
+    reason: >
+      wheat_water_tier_engagement CONFIRMED ABANDON via three independent instruments (binding trace,
+      dose sweep, engagement audit) -- reprioritizing wheat-watering ahead of harvest in dispatch tier
+      order does not measurably delay other crops' harvests, and the direct effect is null.
+      See kaggriculture-wheat-water-tier-binding-trace-sep13.md.
+  drop_min:
+    reason: >
+      O170 (drop_min=3 + drop_radius=3 together, on O162) -- decisive ABANDON on own money, replicated
+      across 2 independent 20-seed sets (t=-4.23, t=-3.11). Corrects an earlier scoping-bug "noop"
+      verdict (O61) -- this is the first valid test of the combined mechanism and it is a confirmed
+      loser. See kaggriculture-o170-drop-min-radius-corrected-retest-abandon-sep16.md.
+  drop_radius:
+    reason: >
+      Same O170 finding as drop_min -- the two knobs only do anything together (drop_radius alone
+      cannot fire without drop_min > 0 gating the code path), and the combined mechanism is a confirmed
+      loser. See kaggriculture-o170-drop-min-radius-corrected-retest-abandon-sep16.md.
+  melon_rush:
+    reason: >
+      melon_rush binding trace + contract-depth panel: population-level melon sale price is ~3% higher
+      under rush but the effect does not survive to a real own-money/margin gain at contract depth --
+      two independent seed sets flip sign entirely on every metric and every tape.
+      See kaggriculture-melon-rush-contract-panel-abandon-sep13.md.
+  straw_delay:
+    reason: >
+      straw_delay binding trace (Sep 12): pre-day-10 strawberry plantings do not realize worse
+      economics than day-10+ plantings in the same baseline games -- the mechanism this knob targets
+      does not exist. See kaggriculture-straw-delay-binding-trace-abandon-sep12.md.
+
 blocks:
   dispatch:
     reason: >
