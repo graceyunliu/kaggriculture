@@ -37,7 +37,9 @@ CREATE TABLE IF NOT EXISTS candidates (
     failure_profile TEXT,
     games INTEGER DEFAULT 0,
     seconds REAL DEFAULT 0,
-    note TEXT
+    note TEXT,
+    champ_margin REAL,
+    champ_own REAL
 );
 CREATE TABLE IF NOT EXISTS runs (
     run_id TEXT PRIMARY KEY,
