@@ -1,28 +1,30 @@
 {
- "generated": "2026-09-16T07:48:54",
- "run_id": "20260916-074723",
+ "generated": "2026-09-16T08:00:35",
+ "run_id": "20260916-075036",
  "chassis_sha": "3b070353e431",
  "frontier": "candidates/O162_THREE_SHOPS65.py",
  "clone": "Opponents/tape_majkel1337_107852724.py,Opponents/tape_ymgaq_106415741.py,Opponents/tape_unknownmothergoose_107932246.py,Opponents/tape_feeltheagi_107564195.py,Opponents/tape_majkel1337_109144271.py",
  "summary": {
-  "elapsed_s": 83,
-  "evaluated": 0,
+  "elapsed_s": 593,
+  "evaluated": 24,
   "counts": {
-   "alive": 1
+   "alive": 14,
+   "dead_pattern": 5,
+   "noop": 6
   },
-  "games": 448,
-  "games_per_hour": 19443
+  "games": 2654,
+  "games_per_hour": 16110
  },
  "counts_all_runs": {
-  "alive": 29046,
-  "dead_pattern": 11802,
+  "alive": 29060,
+  "dead_pattern": 11807,
   "dead_smoke": 10054,
   "error": 2152,
   "held_exploit": 1,
   "held_fail": 534,
   "held_pass": 2686,
   "new": 10,
-  "noop": 17104
+  "noop": 17110
  },
  "islands": {
   "wide": [
@@ -2162,6 +2164,99 @@
     "note": "champ_panel={'O42_MAX_HANDS_LATE_EXPAND': 3407.225} champ_margin=+3,407 champ_own=+84,647"
    },
    {
+    "key": "172713ebf0fb",
+    "island": "queue",
+    "origin": "archive_crossover:crossover_g000025_20260916-075858_0",
+    "status": "alive",
+    "dev": 3851.8333333333335,
+    "dev_t": 3.4284540223103988,
+    "dev_wl": [
+     22,
+     8
+    ],
+    "clone": 22312.39,
+    "held": null,
+    "held_t": null,
+    "held_clone": null,
+    "diff_vs_c1": {
+     "max_animals": [
+      17,
+      15
+     ],
+     "wheat_sell_price": [
+      30,
+      34
+     ],
+     "wheat_hold_days": [
+      0,
+      1
+     ],
+     "MAX_HANDS": [
+      14,
+      15
+     ],
+     "ROUTE_LEN": [
+      3,
+      2
+     ],
+     "CROP_SWEEP_LEN": [
+      6,
+      7
+     ],
+     "MELON_PRICE_CUSHION": [
+      100,
+      58
+     ],
+     "NEAR_RADIUS": [
+      2,
+      3
+     ],
+     "OPP_GROWTH": [
+      1.4,
+      1.0
+     ],
+     "OPENING_MELONS": [
+      14,
+      13
+     ],
+     "MELON_MORNING": [
+      1,
+      0
+     ]
+    },
+    "blocks": [],
+    "ablation": null,
+    "diag": "cand falls behind C1 from day 26 (gap -1,760 -> final -2,760); days 24-29 drivers: sales_rev -4,104, missed_water +9, water_hour +1.16, idle_turns +16. Hands 4 vs 5, animals 11 vs 11, plants 2 vs 2.",
+    "exec": {
+     "final_networth": 88344,
+     "sales": 105215,
+     "buys": 16500,
+     "missed_feed": 15,
+     "missed_water": 331,
+     "escapes": 0,
+     "chores_enumerated": 1551,
+     "chores_completed": 1269,
+     "skipped_feed_not_due": 6,
+     "weeds_new": 7,
+     "unit_turns": 6316,
+     "move_share": 0.467,
+     "idle_share": 0.119,
+     "travel_per_task": 1.13,
+     "reversals": 51,
+     "feed_hour": 7.5,
+     "water_hour": 13.7,
+     "max_hands": 12,
+     "max_animals": 11
+    },
+    "descriptor": {
+     "animals_d15": 11,
+     "land_final": 3,
+     "hands_max": 4,
+     "money_d10": 3703
+    },
+    "note": "champ_panel={'O42_MAX_HANDS_LATE_EXPAND': 2742.575} champ_margin=+2,743 champ_own=+84,775"
+   },
+   {
     "key": "9aed2d120813",
     "island": "queue",
     "origin": "archive_crossover:crossover_g000025_20260916-035918_0",
@@ -2435,6 +2530,123 @@
      "money_d10": 2306
     },
     "note": "champ_panel={'O42_MAX_HANDS_LATE_EXPAND': 2662.65} champ_margin=+2,663 champ_own=+83,885"
+   },
+   {
+    "key": "ac0ae8f124ab",
+    "island": "queue",
+    "origin": "crossover",
+    "status": "alive",
+    "dev": 3475.7833333333333,
+    "dev_t": 2.557655302430305,
+    "dev_wl": [
+     19,
+     11
+    ],
+    "clone": 22102.190000000002,
+    "held": null,
+    "held_t": null,
+    "held_clone": null,
+    "diff_vs_c1": {
+     "load_per_hand": [
+      20,
+      18
+     ],
+     "open_cows": [
+      2,
+      1
+     ],
+     "max_animals": [
+      17,
+      16
+     ],
+     "wheat_cap": [
+      22,
+      25
+     ],
+     "wheat_hold_days": [
+      0,
+      1
+     ],
+     "MAX_HANDS": [
+      14,
+      15
+     ],
+     "ROUTE_LEN": [
+      3,
+      2
+     ],
+     "CROP_SWEEP_LEN": [
+      6,
+      7
+     ],
+     "CROP_SWEEP_RADIUS": [
+      5,
+      3
+     ],
+     "STRAW_CUTOFF": [
+      19,
+      20
+     ],
+     "OPP_GROWTH": [
+      1.4,
+      1.5
+     ],
+     "OPENING_MELONS": [
+      14,
+      7
+     ],
+     "FERT_RADIUS": [
+      3,
+      4
+     ],
+     "SPREAD_W": [
+      1.25,
+      1.5
+     ],
+     "MELON_MORNING": [
+      1,
+      0
+     ],
+     "MELON_MORNING_LAST_HOUR": [
+      8,
+      7
+     ],
+     "MELON_MORNING_MIN_YIELD": [
+      6,
+      5
+     ]
+    },
+    "blocks": [],
+    "ablation": null,
+    "diag": "cand falls behind C1 from day 26 (gap -1,869 -> final -4,335); days 24-29 drivers: sales_rev -3,594, water_hour +2.32, idle_turns +24. Hands 5 vs 5, animals 11 vs 11, plants 3 vs 2.",
+    "exec": {
+     "final_networth": 86769,
+     "sales": 109861,
+     "buys": 21609,
+     "missed_feed": 14,
+     "missed_water": 327,
+     "escapes": 0,
+     "chores_enumerated": 1644,
+     "chores_completed": 1337,
+     "skipped_feed_not_due": 5,
+     "weeds_new": 3,
+     "unit_turns": 6821,
+     "move_share": 0.485,
+     "idle_share": 0.112,
+     "travel_per_task": 1.2,
+     "reversals": 70,
+     "feed_hour": 8.3,
+     "water_hour": 13.7,
+     "max_hands": 12,
+     "max_animals": 11
+    },
+    "descriptor": {
+     "animals_d15": 11,
+     "land_final": 3,
+     "hands_max": 5,
+     "money_d10": 2218
+    },
+    "note": "panel_dev={'tape_majkel1337_107852724': 13267.6, 'tape_ymgaq_106415741': 91892.2, 'tape_unknownmothergoose_107932246': 3022.15, 'tape_feeltheagi_107564195': 16572.9, 'tape_majkel1337_109144271': -14243.9} panel_delta_dev=-3983.959999999999 own_delta_dev=-3851.179999999993 kind_dev=failure"
    },
    {
     "key": "6ba1bfe15e01",
@@ -2823,188 +3035,6 @@
      "money_d10": 3325
     },
     "note": "panel_dev={'tape_majkel1337_107852724': 10574.45, 'tape_ymgaq_106415741': 91480.1, 'tape_unknownmothergoose_107932246': -532.65, 'tape_feeltheagi_107564195': 16095.25, 'tape_majkel1337_109144271': -15396.45} panel_delta_dev=-5642.009999999998 own_delta_dev=-5793.280000000013 kind_dev=failure"
-   },
-   {
-    "key": "b45dcf5334cc",
-    "island": "queue",
-    "origin": "mutate",
-    "status": "alive",
-    "dev": 2839.2,
-    "dev_t": 2.678887471205889,
-    "dev_wl": [
-     22,
-     8
-    ],
-    "clone": 22569.75,
-    "held": null,
-    "held_t": null,
-    "held_clone": null,
-    "diff_vs_c1": {
-     "min_hands": [
-      3,
-      4
-     ],
-     "load_per_hand": [
-      20,
-      21
-     ],
-     "early_hire_days": [
-      3,
-      2
-     ],
-     "max_animals": [
-      17,
-      14
-     ],
-     "wheat_hold_days": [
-      0,
-      1
-     ],
-     "MAX_HANDS": [
-      14,
-      15
-     ],
-     "ROUTE_LEN": [
-      3,
-      2
-     ],
-     "MELON_PRICE_CUSHION": [
-      100,
-      108
-     ],
-     "NEAR_RADIUS": [
-      2,
-      3
-     ],
-     "OPP_GROWTH": [
-      1.4,
-      1.2
-     ],
-     "FERT_RADIUS": [
-      3,
-      1
-     ],
-     "SPREAD_W": [
-      1.25,
-      1.0
-     ],
-     "MELON_MORNING_LAST_HOUR": [
-      8,
-      9
-     ]
-    },
-    "blocks": [],
-    "ablation": null,
-    "diag": "cand falls behind C1 from day 26 (gap -3,148 -> final -1,536); days 24-29 drivers: sales_rev -1,425, water_hour +1.82, missed_water +5. Hands 4 vs 5, animals 11 vs 11, plants 3 vs 2.",
-    "exec": {
-     "final_networth": 89568,
-     "sales": 110281,
-     "buys": 20891,
-     "missed_feed": 15,
-     "missed_water": 317,
-     "escapes": 0,
-     "chores_enumerated": 1548,
-     "chores_completed": 1285,
-     "skipped_feed_not_due": 6,
-     "weeds_new": 3,
-     "unit_turns": 6312,
-     "move_share": 0.471,
-     "idle_share": 0.108,
-     "travel_per_task": 1.12,
-     "reversals": 60,
-     "feed_hour": 8.1,
-     "water_hour": 14.2,
-     "max_hands": 12,
-     "max_animals": 11
-    },
-    "descriptor": {
-     "animals_d15": 11,
-     "land_final": 3,
-     "hands_max": 4,
-     "money_d10": 4040
-    },
-    "note": "champ_panel={'O42_MAX_HANDS_LATE_EXPAND': 1633.675} champ_margin=+1,634 champ_own=+84,850"
-   },
-   {
-    "key": "53606ba8c875",
-    "island": "queue",
-    "origin": "crossover",
-    "status": "alive",
-    "dev": 2805.8166666666666,
-    "dev_t": 2.6155414995311097,
-    "dev_wl": [
-     21,
-     9
-    ],
-    "clone": 22379.57,
-    "held": null,
-    "held_t": null,
-    "held_clone": null,
-    "diff_vs_c1": {
-     "open_melons": [
-      10,
-      9
-     ],
-     "wheat_per_animal": [
-      0.0,
-      0.1
-     ],
-     "wheat_hold_days": [
-      0,
-      1
-     ],
-     "MAX_HANDS": [
-      14,
-      15
-     ],
-     "ROUTE_LEN": [
-      3,
-      2
-     ],
-     "CROP_SWEEP_LEN": [
-      6,
-      3
-     ],
-     "SPREAD_CAP": [
-      3,
-      5
-     ],
-     "MELON_MORNING": [
-      1,
-      0
-     ]
-    },
-    "blocks": [],
-    "ablation": null,
-    "diag": "cand falls behind C1 from day 25 (gap -1,652 -> final -3,732); days 23-29 drivers: sales_rev -4,487, missed_water +13, water_hour +0.57. Hands 5 vs 5, animals 11 vs 11, plants 6 vs 2.",
-    "exec": {
-     "final_networth": 87372,
-     "sales": 107100,
-     "buys": 18590,
-     "missed_feed": 15,
-     "missed_water": 334,
-     "escapes": 0,
-     "chores_enumerated": 1598,
-     "chores_completed": 1307,
-     "skipped_feed_not_due": 6,
-     "weeds_new": 3,
-     "unit_turns": 6394,
-     "move_share": 0.476,
-     "idle_share": 0.107,
-     "travel_per_task": 1.14,
-     "reversals": 64,
-     "feed_hour": 8.1,
-     "water_hour": 13.5,
-     "max_hands": 12,
-     "max_animals": 11
-    },
-    "descriptor": {
-     "animals_d15": 11,
-     "land_final": 3,
-     "hands_max": 5,
-     "money_d10": 2994
-    },
-    "note": "panel_dev={'tape_majkel1337_107852724': 12007.3, 'tape_ymgaq_106415741': 94023.0, 'tape_unknownmothergoose_107932246': 1182.7, 'tape_feeltheagi_107564195': 17385.75, 'tape_majkel1337_109144271': -12700.9} panel_delta_dev=-3706.5800000000017 own_delta_dev=-4639.809999999998 kind_dev=failure"
    }
   ],
   "o15": [
@@ -4037,8 +4067,8 @@
      "n": 44
     },
     "92": {
-     "mean": -2308,
-     "n": 3005
+     "mean": -2309,
+     "n": 3010
     },
     "102": {
      "mean": -2341,
@@ -4597,9 +4627,9 @@
      "n": 2
     }
    },
-   "total_candidates": 23875,
+   "total_candidates": 23880,
    "n_values_tested": 149,
-   "sampling_balance": 57.66,
+   "sampling_balance": 57.65,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
   },
   {
@@ -4627,8 +4657,8 @@
      "n": 132
     },
     "107": {
-     "mean": -1320,
-     "n": 334
+     "mean": -1305,
+     "n": 336
     },
     "68": {
      "mean": -6903,
@@ -4662,13 +4692,13 @@
      "mean": -13293,
      "n": 288
     },
+    "113": {
+     "mean": -13503,
+     "n": 72
+    },
     "92": {
      "mean": -13655,
      "n": 445
-    },
-    "113": {
-     "mean": -13946,
-     "n": 69
     },
     "102": {
      "mean": -14174,
@@ -4726,6 +4756,10 @@
      "mean": -17617,
      "n": 36
     },
+    "58": {
+     "mean": -17627,
+     "n": 20
+    },
     "111": {
      "mean": -17867,
      "n": 106
@@ -4753,10 +4787,6 @@
     "88": {
      "mean": -18707,
      "n": 225
-    },
-    "58": {
-     "mean": -18758,
-     "n": 19
     },
     "118": {
      "mean": -18841,
@@ -4843,8 +4873,8 @@
      "n": 14
     },
     "100": {
-     "mean": -22250,
-     "n": 18755
+     "mean": -22243,
+     "n": 18761
     },
     "64": {
      "mean": -22364,
@@ -4898,13 +4928,13 @@
      "mean": -24584,
      "n": 28
     },
+    "117": {
+     "mean": -24653,
+     "n": 179
+    },
     "126": {
      "mean": -24758,
      "n": 47
-    },
-    "117": {
-     "mean": -24803,
-     "n": 178
     },
     "106": {
      "mean": -25273,
@@ -4963,8 +4993,8 @@
      "n": 31
     },
     "125": {
-     "mean": -27677,
-     "n": 119
+     "mean": -27439,
+     "n": 120
     },
     "93": {
      "mean": -28166,
@@ -5015,9 +5045,9 @@
      "n": 553
     }
    },
-   "total_candidates": 32267,
+   "total_candidates": 32281,
    "n_values_tested": 101,
-   "sampling_balance": 57.71,
+   "sampling_balance": 57.7,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
   },
   {
@@ -5085,8 +5115,8 @@
      "n": 194
     },
     "0": {
-     "mean": -21160,
-     "n": 25931
+     "mean": -21149,
+     "n": 25944
     },
     "5": {
      "mean": -21821,
@@ -5101,8 +5131,8 @@
      "n": 2
     },
     "2": {
-     "mean": -22551,
-     "n": 424
+     "mean": -22494,
+     "n": 425
     },
     "38": {
      "mean": -22701,
@@ -5185,30 +5215,30 @@
      "n": 48
     }
    },
-   "total_candidates": 32267,
+   "total_candidates": 32281,
    "n_values_tested": 39,
    "sampling_balance": 30.34,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
   },
   {
    "param": "fert_buy",
-   "spread": 33763,
+   "spread": 33716,
    "best_value": 4,
-   "best_mean": 6650,
+   "best_mean": 6603,
    "c1_value": 4,
    "c1_mean": null,
    "means": {
     "4": {
-     "mean": 6650,
-     "n": 1889
+     "mean": 6603,
+     "n": 1902
+    },
+    "3": {
+     "mean": -21888,
+     "n": 12459
     },
     "0": {
      "mean": -21889,
      "n": 8875
-    },
-    "3": {
-     "mean": -21890,
-     "n": 12458
     },
     "1": {
      "mean": -25051,
@@ -5219,22 +5249,22 @@
      "n": 4999
     }
    },
-   "total_candidates": 32267,
+   "total_candidates": 32281,
    "n_values_tested": 5,
    "sampling_balance": 0.93,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
   },
   {
    "param": "wheat_sell_price",
-   "spread": 32119,
+   "spread": 32122,
    "best_value": 29,
-   "best_mean": -500,
+   "best_mean": -497,
    "c1_value": 30,
    "c1_mean": null,
    "means": {
     "29": {
-     "mean": -500,
-     "n": 1237
+     "mean": -497,
+     "n": 1238
     },
     "42": {
      "mean": -3015,
@@ -5281,24 +5311,24 @@
      "n": 68
     },
     "30": {
-     "mean": -18838,
-     "n": 12935
+     "mean": -18824,
+     "n": 12945
     },
     "36": {
      "mean": -18946,
      "n": 150
     },
     "34": {
-     "mean": -19211,
-     "n": 215
+     "mean": -19104,
+     "n": 216
     },
     "40": {
      "mean": -20185,
      "n": 43
     },
     "26": {
-     "mean": -20430,
-     "n": 1431
+     "mean": -20405,
+     "n": 1433
     },
     "47": {
      "mean": -22327,
@@ -5333,14 +5363,14 @@
      "n": 4
     }
    },
-   "total_candidates": 32266,
+   "total_candidates": 32280,
    "n_values_tested": 26,
-   "sampling_balance": 9.02,
+   "sampling_balance": 9.03,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
   },
   {
    "param": "CROP_SWEEP_LEN",
-   "spread": 31680,
+   "spread": 31648,
    "best_value": 10,
    "best_mean": 2791,
    "c1_value": 6,
@@ -5355,33 +5385,33 @@
      "n": 1288
     },
     "9": {
-     "mean": -1277,
-     "n": 317
+     "mean": -1288,
+     "n": 319
     },
     "3": {
-     "mean": -8834,
-     "n": 876
+     "mean": -8824,
+     "n": 877
     },
     "7": {
-     "mean": -9317,
-     "n": 2402
+     "mean": -9296,
+     "n": 2406
     },
     "5": {
      "mean": -20765,
      "n": 1888
     },
     "6": {
-     "mean": -24596,
-     "n": 24503
+     "mean": -24590,
+     "n": 24509
     },
     "4": {
-     "mean": -28889,
-     "n": 779
+     "mean": -28857,
+     "n": 780
     }
    },
-   "total_candidates": 32267,
+   "total_candidates": 32281,
    "n_values_tested": 8,
-   "sampling_balance": 5.08,
+   "sampling_balance": 5.07,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
   },
   {
@@ -5409,8 +5439,8 @@
      "n": 17
     },
     "11": {
-     "mean": -17534,
-     "n": 750
+     "mean": -17521,
+     "n": 751
     },
     "4": {
      "mean": -17619,
@@ -5429,15 +5459,15 @@
      "n": 76
     },
     "14": {
-     "mean": -23590,
-     "n": 23706
+     "mean": -23577,
+     "n": 23719
     },
     "5": {
      "mean": -24624,
      "n": 8
     }
    },
-   "total_candidates": 32267,
+   "total_candidates": 32281,
    "n_values_tested": 11,
    "sampling_balance": 7.08,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
@@ -5463,8 +5493,8 @@
      "n": 525
     },
     "25": {
-     "mean": -12148,
-     "n": 3582
+     "mean": -12127,
+     "n": 3588
     },
     "15": {
      "mean": -12233,
@@ -5511,16 +5541,16 @@
      "n": 58
     },
     "23": {
-     "mean": -25699,
-     "n": 1146
+     "mean": -25634,
+     "n": 1149
     },
     "9": {
      "mean": -25730,
      "n": 99
     },
     "22": {
-     "mean": -27406,
-     "n": 11500
+     "mean": -27394,
+     "n": 11505
     },
     "17": {
      "mean": -28320,
@@ -5535,30 +5565,30 @@
      "n": 95
     }
    },
-   "total_candidates": 32267,
+   "total_candidates": 32281,
    "n_values_tested": 21,
    "sampling_balance": 6.48,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
   },
   {
    "param": "MAX_HANDS",
-   "spread": 24317,
+   "spread": 24322,
    "best_value": 16,
-   "best_mean": -6313,
+   "best_mean": -6308,
    "c1_value": 14,
    "c1_mean": null,
    "means": {
     "16": {
-     "mean": -6313,
-     "n": 1303
+     "mean": -6308,
+     "n": 1304
     },
     "15": {
-     "mean": -10997,
-     "n": 1608
+     "mean": -10948,
+     "n": 1615
     },
     "14": {
-     "mean": -15931,
-     "n": 6675
+     "mean": -15922,
+     "n": 6679
     },
     "12": {
      "mean": -22400,
@@ -5569,8 +5599,8 @@
      "n": 1289
     },
     "13": {
-     "mean": -25224,
-     "n": 16188
+     "mean": -25221,
+     "n": 16190
     },
     "10": {
      "mean": -26444,
@@ -5585,30 +5615,30 @@
      "n": 95
     }
    },
-   "total_candidates": 32267,
+   "total_candidates": 32281,
    "n_values_tested": 9,
-   "sampling_balance": 3.52,
+   "sampling_balance": 3.51,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
   },
   {
    "param": "OPENING_MELONS",
-   "spread": 23933,
+   "spread": 23940,
    "best_value": 14,
-   "best_mean": -5036,
+   "best_mean": -5030,
    "c1_value": 14,
    "c1_mean": null,
    "means": {
     "14": {
-     "mean": -5036,
-     "n": 4596
+     "mean": -5030,
+     "n": 4605
     },
     "13": {
-     "mean": -6900,
-     "n": 1741
+     "mean": -6894,
+     "n": 1742
     },
     "12": {
-     "mean": -16102,
-     "n": 1422
+     "mean": -16065,
+     "n": 1425
     },
     "11": {
      "mean": -23915,
@@ -5627,34 +5657,34 @@
      "n": 484
     },
     "7": {
-     "mean": -28000,
-     "n": 1028
+     "mean": -27969,
+     "n": 1029
     },
     "8": {
      "mean": -28969,
      "n": 2834
     }
    },
-   "total_candidates": 32267,
+   "total_candidates": 32281,
    "n_values_tested": 9,
    "sampling_balance": 2.36,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
   },
   {
    "param": "ROUTE_LEN",
-   "spread": 23330,
+   "spread": 23342,
    "best_value": 2,
-   "best_mean": -5657,
+   "best_mean": -5644,
    "c1_value": 3,
    "c1_mean": null,
    "means": {
     "2": {
-     "mean": -5657,
-     "n": 5944
+     "mean": -5644,
+     "n": 5957
     },
     "3": {
-     "mean": -24903,
-     "n": 25341
+     "mean": -24902,
+     "n": 25342
     },
     "4": {
      "mean": -26985,
@@ -5665,22 +5695,22 @@
      "n": 62
     }
    },
-   "total_candidates": 32267,
+   "total_candidates": 32281,
    "n_values_tested": 4,
    "sampling_balance": 2.14,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
   },
   {
    "param": "open_melons",
-   "spread": 22715,
+   "spread": 22719,
    "best_value": 9,
-   "best_mean": -6686,
+   "best_mean": -6682,
    "c1_value": 10,
    "c1_mean": null,
    "means": {
     "9": {
-     "mean": -6686,
-     "n": 2711
+     "mean": -6682,
+     "n": 2712
     },
     "11": {
      "mean": -9881,
@@ -5699,8 +5729,8 @@
      "n": 356
     },
     "8": {
-     "mean": -16056,
-     "n": 4486
+     "mean": -16054,
+     "n": 4487
     },
     "12": {
      "mean": -17759,
@@ -5715,15 +5745,15 @@
      "n": 71
     },
     "10": {
-     "mean": -25847,
-     "n": 20211
+     "mean": -25832,
+     "n": 20223
     },
     "13": {
      "mean": -29401,
      "n": 74
     }
    },
-   "total_candidates": 32267,
+   "total_candidates": 32281,
    "n_values_tested": 11,
    "sampling_balance": 5.89,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
@@ -5761,15 +5791,15 @@
      "n": 776
     },
     "7": {
-     "mean": -24826,
-     "n": 22090
+     "mean": -24821,
+     "n": 22095
     },
     "6": {
      "mean": -30788,
      "n": 1273
     }
    },
-   "total_candidates": 30773,
+   "total_candidates": 30778,
    "n_values_tested": 8,
    "sampling_balance": 4.74,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
@@ -5791,8 +5821,8 @@
      "n": 2801
     },
     "17": {
-     "mean": -18184,
-     "n": 9590
+     "mean": -18158,
+     "n": 9604
     },
     "19": {
      "mean": -23648,
@@ -5819,9 +5849,9 @@
      "n": 927
     }
    },
-   "total_candidates": 32267,
+   "total_candidates": 32281,
    "n_values_tested": 9,
-   "sampling_balance": 1.67,
+   "sampling_balance": 1.68,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
   },
   {
@@ -5837,8 +5867,8 @@
      "n": 698
     },
     "0.7": {
-     "mean": -18331,
-     "n": 51
+     "mean": -17675,
+     "n": 53
     },
     "0.5": {
      "mean": -19360,
@@ -5849,24 +5879,24 @@
      "n": 1652
     },
     "0.0": {
-     "mean": -21488,
-     "n": 27055
+     "mean": -21482,
+     "n": 27063
     },
     "0.4": {
-     "mean": -21605,
-     "n": 247
+     "mean": -21519,
+     "n": 248
     },
     "0.6": {
-     "mean": -22165,
-     "n": 160
+     "mean": -22078,
+     "n": 161
     },
     "0.9": {
      "mean": -22458,
      "n": 22
     },
     "0.1": {
-     "mean": -22782,
-     "n": 2069
+     "mean": -22758,
+     "n": 2071
     },
     "0.8": {
      "mean": -22897,
@@ -5885,50 +5915,50 @@
      "n": 29
     }
    },
-   "total_candidates": 32267,
+   "total_candidates": 32281,
    "n_values_tested": 13,
    "sampling_balance": 9.9,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
   },
   {
    "param": "max_animals",
-   "spread": 16744,
+   "spread": 16766,
    "best_value": 16,
-   "best_mean": -9205,
+   "best_mean": -9184,
    "c1_value": 17,
    "c1_mean": null,
    "means": {
     "16": {
-     "mean": -9205,
-     "n": 1185
+     "mean": -9184,
+     "n": 1188
     },
     "15": {
-     "mean": -10075,
-     "n": 766
+     "mean": -10026,
+     "n": 769
     },
     "12": {
      "mean": -12018,
      "n": 115
     },
     "14": {
-     "mean": -15265,
-     "n": 347
+     "mean": -15217,
+     "n": 348
     },
     "11": {
      "mean": -17098,
      "n": 21
     },
     "10": {
-     "mean": -17681,
-     "n": 39
+     "mean": -17445,
+     "n": 40
     },
     "17": {
-     "mean": -17718,
-     "n": 12509
+     "mean": -17711,
+     "n": 12514
     },
     "13": {
-     "mean": -19572,
-     "n": 92
+     "mean": -19399,
+     "n": 93
     },
     "18": {
      "mean": -23643,
@@ -5943,22 +5973,22 @@
      "n": 14079
     }
    },
-   "total_candidates": 32267,
+   "total_candidates": 32281,
    "n_values_tested": 11,
    "sampling_balance": 3.8,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
   },
   {
    "param": "load_per_hand",
-   "spread": 16598,
+   "spread": 16384,
    "best_value": 18,
-   "best_mean": -12478,
+   "best_mean": -12467,
    "c1_value": 20,
    "c1_mean": null,
    "means": {
     "18": {
-     "mean": -12478,
-     "n": 1496
+     "mean": -12467,
+     "n": 1497
     },
     "15": {
      "mean": -14645,
@@ -5980,13 +6010,13 @@
      "mean": -20821,
      "n": 136
     },
-    "20": {
-     "mean": -21021,
-     "n": 18375
-    },
     "22": {
-     "mean": -21215,
-     "n": 465
+     "mean": -20988,
+     "n": 470
+    },
+    "20": {
+     "mean": -21013,
+     "n": 18382
     },
     "21": {
      "mean": -23513,
@@ -6013,52 +6043,52 @@
      "n": 167
     },
     "26": {
-     "mean": -29076,
-     "n": 94
+     "mean": -28851,
+     "n": 95
     }
    },
-   "total_candidates": 32267,
+   "total_candidates": 32281,
    "n_values_tested": 15,
    "sampling_balance": 7.54,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
   },
   {
    "param": "SPREAD_CAP",
-   "spread": 16281,
+   "spread": 16297,
    "best_value": 3,
-   "best_mean": -12236,
+   "best_mean": -12214,
    "c1_value": 3,
    "c1_mean": null,
    "means": {
     "3": {
-     "mean": -12236,
-     "n": 4711
+     "mean": -12214,
+     "n": 4720
     },
     "7": {
      "mean": -16490,
      "n": 847
     },
     "4": {
-     "mean": -21951,
-     "n": 3633
+     "mean": -21938,
+     "n": 3635
     },
     "6": {
      "mean": -25197,
      "n": 1602
     },
     "5": {
-     "mean": -28517,
-     "n": 14581
+     "mean": -28511,
+     "n": 14584
     }
    },
-   "total_candidates": 25374,
+   "total_candidates": 25388,
    "n_values_tested": 5,
    "sampling_balance": 1.87,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
   },
   {
    "param": "demand_share",
-   "spread": 15338,
+   "spread": 15319,
    "best_value": 0.6,
    "best_mean": -12558,
    "c1_value": 0.55,
@@ -6085,20 +6115,20 @@
      "n": 37
     },
     "0.75": {
-     "mean": -21425,
-     "n": 247
+     "mean": -21370,
+     "n": 248
     },
     "0.55": {
-     "mean": -21657,
-     "n": 16071
+     "mean": -21643,
+     "n": 16081
     },
     "0.4": {
      "mean": -22048,
      "n": 475
     },
     "0.5": {
-     "mean": -22209,
-     "n": 7968
+     "mean": -22204,
+     "n": 7970
     },
     "0.95": {
      "mean": -22850,
@@ -6121,67 +6151,117 @@
      "n": 603
     },
     "0.65": {
-     "mean": -27896,
-     "n": 1596
+     "mean": -27877,
+     "n": 1597
     }
    },
-   "total_candidates": 32267,
+   "total_candidates": 32281,
    "n_values_tested": 15,
    "sampling_balance": 6.47,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
   },
   {
    "param": "OPP_GROWTH",
-   "spread": 14666,
+   "spread": 14677,
    "best_value": 1.2,
-   "best_mean": -12148,
+   "best_mean": -12138,
    "c1_value": 1.4,
    "c1_mean": null,
    "means": {
     "1.2": {
-     "mean": -12148,
-     "n": 3669
+     "mean": -12138,
+     "n": 3673
     },
     "1.5": {
-     "mean": -15503,
-     "n": 1450
+     "mean": -15478,
+     "n": 1452
     },
     "1.3": {
-     "mean": -19211,
-     "n": 6759
+     "mean": -19208,
+     "n": 6760
     },
     "1.7": {
      "mean": -20143,
      "n": 656
     },
     "1.4": {
-     "mean": -21165,
-     "n": 7458
+     "mean": -21159,
+     "n": 7460
     },
     "1.8": {
-     "mean": -23282,
-     "n": 392
+     "mean": -23131,
+     "n": 395
     },
     "1.6": {
      "mean": -24996,
      "n": 903
     },
     "1.0": {
-     "mean": -25657,
-     "n": 2402
+     "mean": -25633,
+     "n": 2404
     },
     "1.1": {
      "mean": -26815,
      "n": 8578
     }
    },
-   "total_candidates": 32267,
+   "total_candidates": 32281,
    "n_values_tested": 9,
    "sampling_balance": 1.39,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
   }
  ],
  "recent_dead": [
+  {
+   "origin": "mutate",
+   "note": "3 weeds created by day 12",
+   "smoke_margin": null,
+   "status": "dead_pattern",
+   "diagnosis": null,
+   "failure_profile": "{\"primary_class\": \"EXECUTION_FAILURE\", \"classes\": [{\"class\": \"EXECUTION_FAILURE\", \"confidence\": 0.5, \"evidence\": [{\"metric\": \"pattern_death_reason\", \"value\": \"3 weeds created by day 12\"}]}], \"notes\": \"single fingerprint-trace signal, not a full trajectory\", \"source\": \"pattern\"}",
+   "exec_summary": null,
+   "params": "{\"opening\": \"frontier\", \"wheat_tiles\": 0, \"wheat_stock\": 0, \"min_hands\": 3, \"load_per_hand\": 26, \"open_melons\": 7, \"open_cows\": 2, \"open_sheep\": 2, \"early_hire_days\": 1, \"feed_spare_poor\": 0, \"fert_keep\": 0, \"fert_buy\": 4, \"demand_share\": 0.55, \"max_animals\": 15, \"wheat_per_animal\": 0.0, \"wheat_cap\": 15, \"wheat_water_tier\": 0, \"wheat_sell_price\": 29, \"wheat_hold_days\": 1, \"MAX_HANDS\": 13, \"ROUTE_LEN\": 2, \"CROP_SWEEP_LEN\": 7, \"CROP_SWEEP_RADIUS\": 4, \"STRAW_CUTOFF\": 19, \"MELON_PRICE_CUSHION\": 107, \"HERD_LAST_DAY\": 17, \"NEAR_RADIUS\": 4, \"OPP_GROWTH\": 1.0, \"MAX_SHEEP\": 14, \"OPENING_MELONS\": 14, \"FERT_RADIUS\": 2, \"SPREAD_W\": 1.0, \"SPREAD_CAP\": 5, \"HIRE_MAX_MARGINAL\": 144, \"MELON_MORNING\": 0, \"MELON_MORNING_LAST_HOUR\": 9, \"MELON_MORNING_MIN_YIELD\": 5}"
+  },
+  {
+   "origin": "migrate",
+   "note": "6 weeds created by day 12",
+   "smoke_margin": null,
+   "status": "dead_pattern",
+   "diagnosis": null,
+   "failure_profile": "{\"primary_class\": \"EXECUTION_FAILURE\", \"classes\": [{\"class\": \"EXECUTION_FAILURE\", \"confidence\": 0.5, \"evidence\": [{\"metric\": \"pattern_death_reason\", \"value\": \"6 weeds created by day 12\"}]}], \"notes\": \"single fingerprint-trace signal, not a full trajectory\", \"source\": \"pattern\"}",
+   "exec_summary": null,
+   "params": "{\"opening\": \"frontier\", \"wheat_tiles\": 1, \"wheat_stock\": 0, \"min_hands\": 3, \"load_per_hand\": 22, \"open_melons\": 9, \"open_cows\": 2, \"open_sheep\": 2, \"early_hire_days\": 3, \"feed_spare_poor\": 0, \"fert_keep\": 0, \"fert_buy\": 4, \"demand_share\": 0.55, \"max_animals\": 15, \"wheat_per_animal\": 0.0, \"wheat_cap\": 22, \"wheat_water_tier\": 0, \"wheat_sell_price\": 29, \"wheat_hold_days\": 1, \"MAX_HANDS\": 13, \"ROUTE_LEN\": 2, \"CROP_SWEEP_LEN\": 5, \"CROP_SWEEP_RADIUS\": 3, \"STRAW_CUTOFF\": 19, \"MELON_PRICE_CUSHION\": 107, \"HERD_LAST_DAY\": 17, \"NEAR_RADIUS\": 4, \"OPP_GROWTH\": 1.0, \"MAX_SHEEP\": 14, \"OPENING_MELONS\": 14, \"FERT_RADIUS\": 2, \"SPREAD_W\": 1.0, \"SPREAD_CAP\": 6, \"HIRE_MAX_MARGINAL\": 144, \"MELON_MORNING\": 1, \"MELON_MORNING_LAST_HOUR\": 6, \"MELON_MORNING_MIN_YIELD\": 6}"
+  },
+  {
+   "origin": "crossover",
+   "note": "animal escaped by day 9: COW",
+   "smoke_margin": null,
+   "status": "dead_pattern",
+   "diagnosis": null,
+   "failure_profile": "{\"primary_class\": \"EXECUTION_FAILURE\", \"classes\": [{\"class\": \"EXECUTION_FAILURE\", \"confidence\": 0.5, \"evidence\": [{\"metric\": \"pattern_death_reason\", \"value\": \"animal escaped by day 9: COW\"}]}], \"notes\": \"single fingerprint-trace signal, not a full trajectory\", \"source\": \"pattern\"}",
+   "exec_summary": null,
+   "params": "{\"opening\": \"frontier\", \"wheat_tiles\": 0, \"wheat_stock\": 0, \"min_hands\": 3, \"load_per_hand\": 20, \"open_melons\": 9, \"open_cows\": 2, \"open_sheep\": 2, \"early_hire_days\": 3, \"feed_spare_poor\": 0, \"fert_keep\": 0, \"fert_buy\": 4, \"demand_share\": 0.55, \"max_animals\": 15, \"wheat_per_animal\": 0.0, \"wheat_cap\": 22, \"wheat_water_tier\": 0, \"wheat_sell_price\": 33, \"wheat_hold_days\": 1, \"MAX_HANDS\": 16, \"ROUTE_LEN\": 2, \"CROP_SWEEP_LEN\": 7, \"CROP_SWEEP_RADIUS\": 5, \"STRAW_CUTOFF\": 19, \"MELON_PRICE_CUSHION\": 107, \"HERD_LAST_DAY\": 17, \"NEAR_RADIUS\": 3, \"OPP_GROWTH\": 1.3, \"MAX_SHEEP\": 14, \"OPENING_MELONS\": 14, \"FERT_RADIUS\": 3, \"SPREAD_W\": 1.0, \"SPREAD_CAP\": 5, \"HIRE_MAX_MARGINAL\": 144, \"MELON_MORNING\": 0, \"MELON_MORNING_LAST_HOUR\": 9, \"MELON_MORNING_MIN_YIELD\": 5}"
+  },
+  {
+   "origin": "mutate",
+   "note": "animal escaped by day 2: SHEEP",
+   "smoke_margin": null,
+   "status": "dead_pattern",
+   "diagnosis": null,
+   "failure_profile": "{\"primary_class\": \"EXECUTION_FAILURE\", \"classes\": [{\"class\": \"EXECUTION_FAILURE\", \"confidence\": 0.5, \"evidence\": [{\"metric\": \"pattern_death_reason\", \"value\": \"animal escaped by day 2: SHEEP\"}]}], \"notes\": \"single fingerprint-trace signal, not a full trajectory\", \"source\": \"pattern\"}",
+   "exec_summary": null,
+   "params": "{\"opening\": \"frontier\", \"wheat_tiles\": 0, \"wheat_stock\": 0, \"min_hands\": 3, \"load_per_hand\": 22, \"open_melons\": 10, \"open_cows\": 3, \"open_sheep\": 2, \"early_hire_days\": 3, \"feed_spare_poor\": 0, \"fert_keep\": 0, \"fert_buy\": 4, \"demand_share\": 0.65, \"max_animals\": 16, \"wheat_per_animal\": 0.0, \"wheat_cap\": 17, \"wheat_water_tier\": 0, \"wheat_sell_price\": 30, \"wheat_hold_days\": 1, \"MAX_HANDS\": 15, \"ROUTE_LEN\": 2, \"CROP_SWEEP_LEN\": 7, \"CROP_SWEEP_RADIUS\": 2, \"STRAW_CUTOFF\": 20, \"MELON_PRICE_CUSHION\": 100, \"HERD_LAST_DAY\": 17, \"NEAR_RADIUS\": 2, \"OPP_GROWTH\": 1.5, \"MAX_SHEEP\": 14, \"OPENING_MELONS\": 12, \"FERT_RADIUS\": 4, \"SPREAD_W\": 1.25, \"SPREAD_CAP\": 3, \"HIRE_MAX_MARGINAL\": 144, \"MELON_MORNING\": 0, \"MELON_MORNING_LAST_HOUR\": 7, \"MELON_MORNING_MIN_YIELD\": 5}"
+  },
+  {
+   "origin": "crossover",
+   "note": "4 weeds created by day 12",
+   "smoke_margin": null,
+   "status": "dead_pattern",
+   "diagnosis": null,
+   "failure_profile": "{\"primary_class\": \"EXECUTION_FAILURE\", \"classes\": [{\"class\": \"EXECUTION_FAILURE\", \"confidence\": 0.5, \"evidence\": [{\"metric\": \"pattern_death_reason\", \"value\": \"4 weeds created by day 12\"}]}], \"notes\": \"single fingerprint-trace signal, not a full trajectory\", \"source\": \"pattern\"}",
+   "exec_summary": null,
+   "params": "{\"opening\": \"frontier\", \"wheat_tiles\": 0, \"wheat_stock\": 0, \"min_hands\": 3, \"load_per_hand\": 22, \"open_melons\": 9, \"open_cows\": 2, \"open_sheep\": 2, \"early_hire_days\": 3, \"feed_spare_poor\": 0, \"fert_keep\": 0, \"fert_buy\": 4, \"demand_share\": 0.55, \"max_animals\": 15, \"wheat_per_animal\": 0.0, \"wheat_cap\": 22, \"wheat_water_tier\": 0, \"wheat_sell_price\": 29, \"wheat_hold_days\": 1, \"MAX_HANDS\": 16, \"ROUTE_LEN\": 2, \"CROP_SWEEP_LEN\": 7, \"CROP_SWEEP_RADIUS\": 4, \"STRAW_CUTOFF\": 19, \"MELON_PRICE_CUSHION\": 107, \"HERD_LAST_DAY\": 17, \"NEAR_RADIUS\": 3, \"OPP_GROWTH\": 1.0, \"MAX_SHEEP\": 14, \"OPENING_MELONS\": 14, \"FERT_RADIUS\": 3, \"SPREAD_W\": 1.0, \"SPREAD_CAP\": 3, \"HIRE_MAX_MARGINAL\": 144, \"MELON_MORNING\": 1, \"MELON_MORNING_LAST_HOUR\": 9, \"MELON_MORNING_MIN_YIELD\": 5}"
+  },
   {
    "origin": "block_pair",
    "note": "4 weeds created by day 12",
@@ -6531,65 +6611,15 @@
    "failure_profile": "{\"primary_class\": \"EXECUTION_FAILURE\", \"classes\": [{\"class\": \"EXECUTION_FAILURE\", \"confidence\": 0.8, \"evidence\": [{\"metric\": \"missed_water\", \"value\": 291}, {\"metric\": \"missed_feed\", \"value\": 21}, {\"metric\": \"chore_completion_ratio\", \"value\": 0.82}]}], \"notes\": \"whole-game totals only, one seed; diagnosis: cand falls behind C1 from day 26 (gap -4,452 -> final -4,426); days 24-29 drivers: sales_rev -3,943, missed_water +6, missed_feed +5, water_hour +0.46. Hands 6 \", \"source\": \"exec_summary\"}",
    "exec_summary": "{\"final_networth\": 86678, \"sales\": 104869, \"buys\": 17953, \"missed_feed\": 21, \"missed_water\": 291, \"escapes\": 0, \"chores_enumerated\": 1470, \"chores_completed\": 1206, \"skipped_feed_not_due\": 11, \"weeds_new\": 4, \"unit_turns\": 6254, \"move_share\": 0.496, \"idle_share\": 0.105, \"travel_per_task\": 1.25, \"reversals\": 72, \"feed_hour\": 8.5, \"water_hour\": 13.3, \"max_hands\": 12, \"max_animals\": 12}",
    "params": "{\"opening\": \"v312\", \"wheat_tiles\": 0, \"wheat_stock\": 0, \"min_hands\": 3, \"load_per_hand\": 20, \"open_melons\": 10, \"open_cows\": 2, \"open_sheep\": 2, \"early_hire_days\": 4, \"feed_spare_poor\": 0, \"fert_keep\": 0, \"fert_buy\": 4, \"demand_share\": 0.55, \"max_animals\": 14, \"wheat_per_animal\": 0.4, \"wheat_cap\": 22, \"wheat_water_tier\": 0, \"wheat_sell_price\": 34, \"wheat_hold_days\": 1, \"MAX_HANDS\": 16, \"ROUTE_LEN\": 2, \"CROP_SWEEP_LEN\": 5, \"CROP_SWEEP_RADIUS\": 6, \"STRAW_CUTOFF\": 16, \"MELON_PRICE_CUSHION\": 58, \"HERD_LAST_DAY\": 17, \"NEAR_RADIUS\": 3, \"OPP_GROWTH\": 1.3, \"MAX_SHEEP\": 14, \"OPENING_MELONS\": 14, \"FERT_RADIUS\": 2, \"SPREAD_W\": 1.25, \"SPREAD_CAP\": 4, \"HIRE_MAX_MARGINAL\": 144, \"MELON_MORNING\": 0, \"MELON_MORNING_LAST_HOUR\": 8, \"MELON_MORNING_MIN_YIELD\": 5}"
-  },
-  {
-   "origin": "mutate",
-   "note": "animal escaped by day 9: COW",
-   "smoke_margin": null,
-   "status": "dead_pattern",
-   "diagnosis": null,
-   "failure_profile": "{\"primary_class\": \"EXECUTION_FAILURE\", \"classes\": [{\"class\": \"EXECUTION_FAILURE\", \"confidence\": 0.5, \"evidence\": [{\"metric\": \"pattern_death_reason\", \"value\": \"animal escaped by day 9: COW\"}]}], \"notes\": \"single fingerprint-trace signal, not a full trajectory\", \"source\": \"pattern\"}",
-   "exec_summary": null,
-   "params": "{\"opening\": \"frontier\", \"wheat_tiles\": 0, \"wheat_stock\": 0, \"min_hands\": 3, \"load_per_hand\": 20, \"open_melons\": 7, \"open_cows\": 2, \"open_sheep\": 2, \"early_hire_days\": 3, \"feed_spare_poor\": 0, \"fert_keep\": 0, \"fert_buy\": 4, \"demand_share\": 0.7, \"max_animals\": 17, \"wheat_per_animal\": 0.0, \"wheat_cap\": 16, \"wheat_water_tier\": 0, \"wheat_sell_price\": 29, \"wheat_hold_days\": 1, \"MAX_HANDS\": 13, \"ROUTE_LEN\": 2, \"CROP_SWEEP_LEN\": 7, \"CROP_SWEEP_RADIUS\": 6, \"STRAW_CUTOFF\": 19, \"MELON_PRICE_CUSHION\": 50, \"HERD_LAST_DAY\": 17, \"NEAR_RADIUS\": 2, \"OPP_GROWTH\": 1.3, \"MAX_SHEEP\": 14, \"OPENING_MELONS\": 14, \"FERT_RADIUS\": 3, \"SPREAD_W\": 1.25, \"SPREAD_CAP\": 3, \"HIRE_MAX_MARGINAL\": 144, \"MELON_MORNING\": 0, \"MELON_MORNING_LAST_HOUR\": 9, \"MELON_MORNING_MIN_YIELD\": 6}"
-  },
-  {
-   "origin": "block_pair",
-   "note": "3 weeds created by day 12",
-   "smoke_margin": null,
-   "status": "dead_pattern",
-   "diagnosis": null,
-   "failure_profile": "{\"primary_class\": \"EXECUTION_FAILURE\", \"classes\": [{\"class\": \"EXECUTION_FAILURE\", \"confidence\": 0.5, \"evidence\": [{\"metric\": \"pattern_death_reason\", \"value\": \"3 weeds created by day 12\"}]}], \"notes\": \"single fingerprint-trace signal, not a full trajectory\", \"source\": \"pattern\"}",
-   "exec_summary": null,
-   "params": "{\"opening\": \"v312\", \"wheat_tiles\": 0, \"wheat_stock\": 0, \"min_hands\": 3, \"load_per_hand\": 22, \"open_melons\": 10, \"open_cows\": 2, \"open_sheep\": 2, \"early_hire_days\": 3, \"feed_spare_poor\": 0, \"fert_keep\": 0, \"fert_buy\": 4, \"demand_share\": 0.55, \"max_animals\": 14, \"wheat_per_animal\": 0.0, \"wheat_cap\": 22, \"wheat_water_tier\": 0, \"wheat_sell_price\": 30, \"wheat_hold_days\": 1, \"MAX_HANDS\": 15, \"ROUTE_LEN\": 2, \"CROP_SWEEP_LEN\": 6, \"CROP_SWEEP_RADIUS\": 5, \"STRAW_CUTOFF\": 19, \"MELON_PRICE_CUSHION\": 113, \"HERD_LAST_DAY\": 17, \"NEAR_RADIUS\": 3, \"OPP_GROWTH\": 1.0, \"MAX_SHEEP\": 14, \"OPENING_MELONS\": 14, \"FERT_RADIUS\": 3, \"SPREAD_W\": 1.0, \"SPREAD_CAP\": 3, \"HIRE_MAX_MARGINAL\": 144, \"MELON_MORNING\": 0, \"MELON_MORNING_LAST_HOUR\": 9, \"MELON_MORNING_MIN_YIELD\": 6}"
-  },
-  {
-   "origin": "mutate",
-   "note": "7 weeds created by day 12",
-   "smoke_margin": null,
-   "status": "dead_pattern",
-   "diagnosis": null,
-   "failure_profile": "{\"primary_class\": \"EXECUTION_FAILURE\", \"classes\": [{\"class\": \"EXECUTION_FAILURE\", \"confidence\": 0.5, \"evidence\": [{\"metric\": \"pattern_death_reason\", \"value\": \"7 weeds created by day 12\"}]}], \"notes\": \"single fingerprint-trace signal, not a full trajectory\", \"source\": \"pattern\"}",
-   "exec_summary": null,
-   "params": "{\"melon_floor\": 0, \"harvest_min\": 1, \"opening\": \"frontier\", \"wheat_tiles\": 0, \"wheat_stock\": 0, \"min_hands\": 3, \"load_per_hand\": 22, \"geese\": 0, \"open_melons\": 8, \"open_wheat\": 7, \"open_cows\": 2, \"open_sheep\": 1, \"early_hire_days\": 3, \"feed_spare_poor\": 0, \"fert_keep\": 0, \"fert_buy\": 4, \"fert_carry\": 2, \"demand_share\": 0.55, \"max_animals\": 14, \"wheat_per_animal\": 0.0, \"wheat_cap\": 22, \"wheat_water_tier\": 0, \"wheat_sell_price\": 26, \"wheat_hold_days\": 1, \"setup_capital_share\": 0.25, \"labor_reserve_buffer\": 92, \"MAX_HANDS\": 15, \"ROUTE_LEN\": 2, \"CROP_SWEEP_LEN\": 3, \"CROP_SWEEP_RADIUS\": 5, \"STRAW_CUTOFF\": 19, \"MELON_PRICE_CUSHION\": 70, \"HERD_LAST_DAY\": 17, \"NEAR_RADIUS\": 3, \"OPP_GROWTH\": 1.0, \"MAX_SHEEP\": 14, \"OPENING_MELONS\": 14, \"FERT_RADIUS\": 3, \"SPREAD_W\": 1.25, \"SPREAD_CAP\": 5, \"ORCH_COMMIT\": 0.75, \"ORCH_SLACK_HOUR\": 14, \"STRAW_UNITS\": 7.5, \"HIRE_MAX_MARGINAL\": 144, \"MELON_MORNING\": 1, \"MELON_MORNING_LAST_HOUR\": 7, \"MELON_MORNING_MIN_YIELD\": 5}"
-  },
-  {
-   "origin": "crossover",
-   "note": "animal escaped by day 2: SHEEP",
-   "smoke_margin": null,
-   "status": "dead_pattern",
-   "diagnosis": null,
-   "failure_profile": "{\"primary_class\": \"EXECUTION_FAILURE\", \"classes\": [{\"class\": \"EXECUTION_FAILURE\", \"confidence\": 0.5, \"evidence\": [{\"metric\": \"pattern_death_reason\", \"value\": \"animal escaped by day 2: SHEEP\"}]}], \"notes\": \"single fingerprint-trace signal, not a full trajectory\", \"source\": \"pattern\"}",
-   "exec_summary": null,
-   "params": "{\"opening\": \"frontier\", \"wheat_tiles\": 0, \"wheat_stock\": 0, \"min_hands\": 3, \"load_per_hand\": 18, \"open_melons\": 10, \"open_cows\": 3, \"open_sheep\": 2, \"early_hire_days\": 3, \"feed_spare_poor\": 0, \"fert_keep\": 0, \"fert_buy\": 4, \"demand_share\": 0.65, \"max_animals\": 14, \"wheat_per_animal\": 0.0, \"wheat_cap\": 23, \"wheat_water_tier\": 0, \"wheat_sell_price\": 30, \"wheat_hold_days\": 1, \"MAX_HANDS\": 14, \"ROUTE_LEN\": 2, \"CROP_SWEEP_LEN\": 5, \"CROP_SWEEP_RADIUS\": 5, \"STRAW_CUTOFF\": 20, \"MELON_PRICE_CUSHION\": 118, \"HERD_LAST_DAY\": 17, \"NEAR_RADIUS\": 2, \"OPP_GROWTH\": 1.4, \"MAX_SHEEP\": 14, \"OPENING_MELONS\": 14, \"FERT_RADIUS\": 3, \"SPREAD_W\": 1.25, \"SPREAD_CAP\": 4, \"HIRE_MAX_MARGINAL\": 144, \"MELON_MORNING\": 1, \"MELON_MORNING_LAST_HOUR\": 8, \"MELON_MORNING_MIN_YIELD\": 6}"
-  },
-  {
-   "origin": "paired",
-   "note": null,
-   "smoke_margin": -6424.0,
-   "status": "dead_smoke",
-   "diagnosis": "cand vs C1: net worth never diverged by >$1,500 (final +499).",
-   "failure_profile": "{\"primary_class\": \"EXECUTION_FAILURE\", \"classes\": [{\"class\": \"EXECUTION_FAILURE\", \"confidence\": 0.8, \"evidence\": [{\"metric\": \"missed_water\", \"value\": 322}, {\"metric\": \"missed_feed\", \"value\": 10}, {\"metric\": \"chore_completion_ratio\", \"value\": 0.808}]}], \"notes\": \"whole-game totals only, one seed; diagnosis: cand vs C1: net worth never diverged by >$1,500 (final +499).\", \"source\": \"exec_summary\"}",
-   "exec_summary": "{\"final_networth\": 91603, \"sales\": 109993, \"buys\": 16371, \"missed_feed\": 10, \"missed_water\": 322, \"escapes\": 0, \"chores_enumerated\": 1498, \"chores_completed\": 1211, \"skipped_feed_not_due\": 4, \"weeds_new\": 4, \"unit_turns\": 6268, \"move_share\": 0.496, \"idle_share\": 0.105, \"travel_per_task\": 1.25, \"reversals\": 73, \"feed_hour\": 9.0, \"water_hour\": 13.0, \"max_hands\": 12, \"max_animals\": 8}",
-   "params": "{\"opening\": \"frontier\", \"wheat_tiles\": 0, \"wheat_stock\": 0, \"min_hands\": 3, \"load_per_hand\": 20, \"open_melons\": 10, \"open_cows\": 2, \"open_sheep\": 1, \"early_hire_days\": 3, \"feed_spare_poor\": 0, \"fert_keep\": 0, \"fert_buy\": 4, \"demand_share\": 0.35, \"max_animals\": 12, \"wheat_per_animal\": 0.0, \"wheat_cap\": 22, \"wheat_water_tier\": 0, \"wheat_sell_price\": 30, \"wheat_hold_days\": 3, \"MAX_HANDS\": 14, \"ROUTE_LEN\": 2, \"CROP_SWEEP_LEN\": 6, \"CROP_SWEEP_RADIUS\": 5, \"STRAW_CUTOFF\": 19, \"MELON_PRICE_CUSHION\": 107, \"HERD_LAST_DAY\": 17, \"NEAR_RADIUS\": 4, \"OPP_GROWTH\": 1.3, \"MAX_SHEEP\": 14, \"OPENING_MELONS\": 14, \"FERT_RADIUS\": 3, \"SPREAD_W\": 1.0, \"SPREAD_CAP\": 4, \"HIRE_MAX_MARGINAL\": 144, \"MELON_MORNING\": 0, \"MELON_MORNING_LAST_HOUR\": 8, \"MELON_MORNING_MIN_YIELD\": 5}"
   }
  ],
  "failure_observations": [
   {
    "class": "EXECUTION_FAILURE",
-   "n": 11913,
+   "n": 11918,
    "seeds": "multiple",
    "outcome": "sales=110,524; missed_water=504; idle_share=0.11",
-   "param_ranges": "wheat_tiles=0\u20138 (n=11913); wheat_stock=0\u201340 (n=11913); min_hands=3\u20136 (n=11913); load_per_hand=12\u201326 (n=11913); open_melons=4\u201314 (n=11913); open_cows=1\u20133 (n=11913); open_sheep=0\u20133 (n=11913); early_hire_days=0\u20138 (n=11913)",
+   "param_ranges": "wheat_tiles=0\u20138 (n=11918); wheat_stock=0\u201340 (n=11918); min_hands=3\u20136 (n=11918); load_per_hand=12\u201326 (n=11918); open_melons=4\u201314 (n=11918); open_cows=1\u20133 (n=11918); open_sheep=0\u20133 (n=11918); early_hire_days=0\u20138 (n=11918)",
    "confidence": "high"
   },
   {
@@ -6629,216 +6659,216 @@
   "by_action_horizon": {
    "SELL": {
     "early": {
-     "mean_dev": -1064,
-     "n": 4378,
-     "total_events": 9238
+     "mean_dev": -1031,
+     "n": 4569,
+     "total_events": 9639
     },
     "mid": {
-     "mean_dev": -1088,
-     "n": 2268,
-     "total_events": 9238
+     "mean_dev": -1052,
+     "n": 2366,
+     "total_events": 9639
     },
     "late": {
-     "mean_dev": -1088,
-     "n": 2592,
-     "total_events": 9238
+     "mean_dev": -1052,
+     "n": 2704,
+     "total_events": 9639
     }
    },
    "BUY_ANIMAL": {
     "early": {
-     "mean_dev": -1189,
-     "n": 2129,
-     "total_events": 2550
+     "mean_dev": -1148,
+     "n": 2219,
+     "total_events": 2658
     },
     "mid": {
-     "mean_dev": -1381,
-     "n": 421,
-     "total_events": 2550
+     "mean_dev": -1347,
+     "n": 439,
+     "total_events": 2658
     }
    },
    "BUY_SEED": {
     "early": {
-     "mean_dev": -989,
-     "n": 3194,
-     "total_events": 5034
+     "mean_dev": -958,
+     "n": 3332,
+     "total_events": 5248
     },
     "mid": {
-     "mean_dev": -1151,
-     "n": 1278,
-     "total_events": 5034
+     "mean_dev": -1107,
+     "n": 1334,
+     "total_events": 5248
     },
     "late": {
-     "mean_dev": -1372,
-     "n": 562,
-     "total_events": 5034
+     "mean_dev": -1317,
+     "n": 582,
+     "total_events": 5248
     }
    },
    "BUY_LAND": {
     "early": {
-     "mean_dev": -1090,
-     "n": 1204,
-     "total_events": 1530
+     "mean_dev": -1038,
+     "n": 1253,
+     "total_events": 1592
     },
     "mid": {
-     "mean_dev": -994,
-     "n": 326,
-     "total_events": 1530
+     "mean_dev": -1031,
+     "n": 339,
+     "total_events": 1592
     }
    },
    "BUY_PRODUCT": {
     "early": {
-     "mean_dev": -1088,
-     "n": 4843,
-     "total_events": 9307
+     "mean_dev": -1053,
+     "n": 5052,
+     "total_events": 9711
     },
     "mid": {
-     "mean_dev": -1088,
-     "n": 2268,
-     "total_events": 9307
+     "mean_dev": -1052,
+     "n": 2366,
+     "total_events": 9711
     },
     "late": {
-     "mean_dev": -1074,
-     "n": 2196,
-     "total_events": 9307
+     "mean_dev": -1040,
+     "n": 2293,
+     "total_events": 9711
     }
    },
    "HIRE": {
     "early": {
-     "mean_dev": -1123,
-     "n": 2272,
-     "total_events": 4188
+     "mean_dev": -1075,
+     "n": 2362,
+     "total_events": 4357
     },
     "mid": {
-     "mean_dev": -1108,
-     "n": 1234,
-     "total_events": 4188
+     "mean_dev": -1078,
+     "n": 1285,
+     "total_events": 4357
     },
     "late": {
-     "mean_dev": -773,
-     "n": 682,
-     "total_events": 4188
+     "mean_dev": -699,
+     "n": 710,
+     "total_events": 4357
     }
    },
    "WATER_MISSED": {
     "early": {
-     "mean_dev": -944,
-     "n": 3492,
-     "total_events": 8323
+     "mean_dev": -917,
+     "n": 3647,
+     "total_events": 8687
     },
     "mid": {
-     "mean_dev": -1088,
-     "n": 2268,
-     "total_events": 8323
+     "mean_dev": -1052,
+     "n": 2366,
+     "total_events": 8687
     },
     "late": {
-     "mean_dev": -1086,
-     "n": 2563,
-     "total_events": 8323
+     "mean_dev": -1047,
+     "n": 2674,
+     "total_events": 8687
     }
    },
    "FEED_MISSED": {
     "early": {
-     "mean_dev": -1043,
-     "n": 1893,
-     "total_events": 2986
+     "mean_dev": -1008,
+     "n": 1977,
+     "total_events": 3118
     },
     "mid": {
-     "mean_dev": -1615,
-     "n": 432,
-     "total_events": 2986
+     "mean_dev": -1583,
+     "n": 452,
+     "total_events": 3118
     },
     "late": {
-     "mean_dev": -1222,
-     "n": 661,
-     "total_events": 2986
+     "mean_dev": -1181,
+     "n": 689,
+     "total_events": 3118
     }
    }
   },
   "by_action_context": {
    "SELL": {
     "('low', 'low', 'mid', 'high')": {
-     "mean_dev": -2197,
-     "n": 315
+     "mean_dev": -2139,
+     "n": 338
     },
     "('low', 'low', 'low', 'high')": {
-     "mean_dev": -816,
-     "n": 1027
+     "mean_dev": -782,
+     "n": 1071
     },
     "('low', 'mid', 'mid', 'high')": {
-     "mean_dev": -2403,
-     "n": 336
+     "mean_dev": -2264,
+     "n": 349
     },
     "('mid', 'mid', 'mid', 'high')": {
-     "mean_dev": -1278,
-     "n": 221
+     "mean_dev": -1256,
+     "n": 231
     },
     "('mid', 'high', 'high', 'high')": {
-     "mean_dev": -1050,
-     "n": 3419
+     "mean_dev": -986,
+     "n": 3545
     },
     "('mid', 'mid', 'high', 'high')": {
-     "mean_dev": -586,
-     "n": 2678
+     "mean_dev": -570,
+     "n": 2806
     },
     "('mid', 'low', 'high', 'mid')": {
-     "mean_dev": -1358,
-     "n": 160
+     "mean_dev": -1234,
+     "n": 168
     },
     "('low', 'low', 'mid', 'mid')": {
-     "mean_dev": -56,
-     "n": 240
+     "mean_dev": -77,
+     "n": 249
     },
     "('low', 'mid', 'high', 'high')": {
-     "mean_dev": -1784,
-     "n": 283
+     "mean_dev": -1693,
+     "n": 290
     },
     "('mid', 'low', 'mid', 'high')": {
-     "mean_dev": 875,
-     "n": 46
+     "mean_dev": 733,
+     "n": 48
     },
     "('low', 'mid', 'low', 'high')": {
      "mean_dev": -1623,
      "n": 52
     },
     "('mid', 'low', 'high', 'low')": {
-     "mean_dev": -523,
-     "n": 154
+     "mean_dev": -541,
+     "n": 159
     },
     "('low', 'mid', 'high', 'mid')": {
-     "mean_dev": 1258,
-     "n": 9
+     "mean_dev": 308,
+     "n": 10
     },
     "('mid', 'mid', 'high', 'mid')": {
      "mean_dev": -59,
      "n": 7
     },
     "('low', 'low', 'low', 'mid')": {
-     "mean_dev": -1934,
-     "n": 28
+     "mean_dev": -2004,
+     "n": 29
     },
     "('low', 'low', 'high', 'high')": {
-     "mean_dev": -4690,
-     "n": 76
+     "mean_dev": -4605,
+     "n": 79
+    },
+    "('low', 'high', 'high', 'high')": {
+     "mean_dev": -5463,
+     "n": 66
     },
     "('low', 'mid', 'mid', 'mid')": {
      "mean_dev": -2155,
      "n": 18
     },
     "('mid', 'low', 'high', 'high')": {
-     "mean_dev": -2546,
-     "n": 10
+     "mean_dev": -2382,
+     "n": 12
     },
     "('mid', 'high', 'mid', 'high')": {
      "mean_dev": -4781,
      "n": 14
     },
-    "('low', 'high', 'high', 'high')": {
-     "mean_dev": -5632,
-     "n": 64
-    },
     "('high', 'mid', 'high', 'high')": {
-     "mean_dev": -2308,
-     "n": 7
+     "mean_dev": -6111,
+     "n": 23
     },
     "('high', 'high', 'high', 'high')": {
      "mean_dev": -5104,
@@ -6865,8 +6895,8 @@
      "n": 2
     },
     "('high', 'low', 'high', 'mid')": {
-     "mean_dev": -7666,
-     "n": 2
+     "mean_dev": -7702,
+     "n": 3
     },
     "('mid', 'high', 'low', 'high')": {
      "mean_dev": -12743,
@@ -6875,36 +6905,36 @@
    },
    "BUY_ANIMAL": {
     "('low', 'low', 'mid', 'high')": {
-     "mean_dev": -1155,
-     "n": 90
+     "mean_dev": -1104,
+     "n": 98
     },
     "('low', 'low', 'low', 'high')": {
-     "mean_dev": -530,
-     "n": 526
+     "mean_dev": -510,
+     "n": 549
     },
     "('low', 'mid', 'mid', 'high')": {
-     "mean_dev": -4180,
-     "n": 124
+     "mean_dev": -4013,
+     "n": 127
     },
     "('mid', 'mid', 'mid', 'high')": {
-     "mean_dev": -1319,
-     "n": 215
+     "mean_dev": -1308,
+     "n": 224
     },
     "('mid', 'high', 'high', 'high')": {
-     "mean_dev": -1526,
-     "n": 215
+     "mean_dev": -1430,
+     "n": 220
     },
     "('mid', 'mid', 'high', 'high')": {
-     "mean_dev": -751,
-     "n": 1161
+     "mean_dev": -721,
+     "n": 1214
     },
     "('mid', 'low', 'mid', 'high')": {
-     "mean_dev": 875,
-     "n": 46
+     "mean_dev": 733,
+     "n": 48
     },
     "('low', 'low', 'low', 'mid')": {
-     "mean_dev": -1643,
-     "n": 27
+     "mean_dev": -1726,
+     "n": 28
     },
     "('low', 'low', 'mid', 'mid')": {
      "mean_dev": -5792,
@@ -6918,17 +6948,17 @@
      "mean_dev": -3078,
      "n": 19
     },
+    "('low', 'mid', 'high', 'high')": {
+     "mean_dev": -4346,
+     "n": 34
+    },
     "('mid', 'high', 'mid', 'high')": {
      "mean_dev": -4781,
      "n": 14
     },
-    "('low', 'mid', 'high', 'high')": {
-     "mean_dev": -4503,
-     "n": 33
-    },
     "('high', 'mid', 'high', 'high')": {
-     "mean_dev": -3626,
-     "n": 2
+     "mean_dev": -6115,
+     "n": 5
     },
     "('high', 'high', 'high', 'high')": {
      "mean_dev": -4970,
@@ -6961,64 +6991,64 @@
    },
    "BUY_SEED": {
     "('low', 'low', 'mid', 'high')": {
-     "mean_dev": -970,
-     "n": 179
+     "mean_dev": -971,
+     "n": 192
     },
     "('low', 'low', 'low', 'high')": {
-     "mean_dev": -687,
-     "n": 831
+     "mean_dev": -661,
+     "n": 866
     },
     "('low', 'mid', 'mid', 'high')": {
-     "mean_dev": -3720,
-     "n": 152
+     "mean_dev": -3483,
+     "n": 158
     },
     "('mid', 'mid', 'mid', 'high')": {
-     "mean_dev": -1200,
-     "n": 217
+     "mean_dev": -1181,
+     "n": 227
     },
     "('mid', 'high', 'high', 'high')": {
-     "mean_dev": -1146,
-     "n": 1382
+     "mean_dev": -1053,
+     "n": 1434
     },
     "('mid', 'mid', 'high', 'high')": {
      "mean_dev": -544,
-     "n": 1939
+     "n": 2023
     },
     "('low', 'mid', 'high', 'high')": {
-     "mean_dev": -3189,
-     "n": 105
+     "mean_dev": -3107,
+     "n": 107
     },
     "('mid', 'low', 'mid', 'high')": {
-     "mean_dev": 875,
-     "n": 46
+     "mean_dev": 733,
+     "n": 48
     },
     "('low', 'low', 'low', 'mid')": {
      "mean_dev": 1628,
      "n": 3
     },
     "('low', 'low', 'high', 'high')": {
-     "mean_dev": -3398,
-     "n": 23
+     "mean_dev": -3404,
+     "n": 24
+    },
+    "('low', 'high', 'high', 'high')": {
+     "mean_dev": -5283,
+     "n": 32
     },
     "('low', 'low', 'mid', 'mid')": {
      "mean_dev": -6093,
      "n": 54
     },
     "('mid', 'low', 'high', 'high')": {
-     "mean_dev": -2546,
-     "n": 10
+     "mean_dev": -2237,
+     "n": 11
     },
     "('low', 'mid', 'low', 'high')": {
      "mean_dev": -3078,
      "n": 19
     },
-    "('low', 'high', 'high', 'high')": {
-     "mean_dev": -5566,
-     "n": 31
-    },
     "('high', 'mid', 'high', 'high')": {
-     "mean_dev": -3626,
-     "n": 4
+     "mean_dev": -6266,
+     "n": 11
     },
     "('high', 'high', 'high', 'high')": {
      "mean_dev": -5029,
@@ -7047,28 +7077,28 @@
    },
    "BUY_LAND": {
     "('low', 'mid', 'mid', 'high')": {
-     "mean_dev": -4207,
-     "n": 115
+     "mean_dev": -4091,
+     "n": 117
     },
     "('mid', 'mid', 'high', 'high')": {
-     "mean_dev": -713,
-     "n": 902
+     "mean_dev": -693,
+     "n": 940
     },
     "('mid', 'high', 'high', 'high')": {
-     "mean_dev": -917,
-     "n": 232
+     "mean_dev": -820,
+     "n": 240
     },
     "('mid', 'low', 'mid', 'high')": {
-     "mean_dev": 1285,
-     "n": 44
+     "mean_dev": 1119,
+     "n": 46
     },
     "('mid', 'mid', 'mid', 'high')": {
-     "mean_dev": -207,
-     "n": 141
+     "mean_dev": -205,
+     "n": 146
     },
     "('low', 'low', 'mid', 'high')": {
-     "mean_dev": -747,
-     "n": 26
+     "mean_dev": -511,
+     "n": 28
     },
     "('low', 'mid', 'low', 'high')": {
      "mean_dev": -1444,
@@ -7079,20 +7109,20 @@
      "n": 8
     },
     "('low', 'high', 'high', 'high')": {
-     "mean_dev": -3435,
-     "n": 8
+     "mean_dev": -3446,
+     "n": 9
+    },
+    "('low', 'mid', 'high', 'high')": {
+     "mean_dev": -5482,
+     "n": 34
     },
     "('high', 'mid', 'high', 'high')": {
-     "mean_dev": -3626,
-     "n": 2
+     "mean_dev": -6115,
+     "n": 5
     },
     "('high', 'high', 'high', 'high')": {
      "mean_dev": -3830,
      "n": 2
-    },
-    "('low', 'mid', 'high', 'high')": {
-     "mean_dev": -5639,
-     "n": 33
     },
     "('mid', 'low', 'high', 'high')": {
      "mean_dev": -6493,
@@ -7109,84 +7139,84 @@
    },
    "BUY_PRODUCT": {
     "('low', 'low', 'high', 'low')": {
-     "mean_dev": -1078,
-     "n": 323
-    },
-    "('low', 'low', 'mid', 'high')": {
-     "mean_dev": -1825,
-     "n": 392
-    },
-    "('low', 'low', 'low', 'high')": {
-     "mean_dev": -738,
-     "n": 1042
-    },
-    "('low', 'mid', 'mid', 'high')": {
-     "mean_dev": -2403,
+     "mean_dev": -1042,
      "n": 337
     },
+    "('low', 'low', 'mid', 'high')": {
+     "mean_dev": -1772,
+     "n": 419
+    },
+    "('low', 'low', 'low', 'high')": {
+     "mean_dev": -712,
+     "n": 1085
+    },
+    "('low', 'mid', 'mid', 'high')": {
+     "mean_dev": -2264,
+     "n": 350
+    },
     "('mid', 'mid', 'mid', 'high')": {
-     "mean_dev": -1278,
-     "n": 221
+     "mean_dev": -1256,
+     "n": 231
     },
     "('mid', 'high', 'high', 'high')": {
-     "mean_dev": -1051,
-     "n": 3380
+     "mean_dev": -987,
+     "n": 3505
     },
     "('mid', 'mid', 'high', 'high')": {
-     "mean_dev": -576,
-     "n": 2650
+     "mean_dev": -561,
+     "n": 2778
     },
     "('low', 'low', 'mid', 'mid')": {
-     "mean_dev": -1077,
-     "n": 287
+     "mean_dev": -1048,
+     "n": 297
     },
     "('low', 'mid', 'high', 'high')": {
-     "mean_dev": -1756,
-     "n": 281
+     "mean_dev": -1666,
+     "n": 288
     },
     "('mid', 'low', 'mid', 'high')": {
-     "mean_dev": 875,
-     "n": 46
+     "mean_dev": 733,
+     "n": 48
     },
     "('low', 'mid', 'low', 'high')": {
      "mean_dev": -1623,
      "n": 52
     },
     "('low', 'mid', 'high', 'mid')": {
-     "mean_dev": 1258,
-     "n": 9
+     "mean_dev": 308,
+     "n": 10
     },
     "('mid', 'mid', 'high', 'mid')": {
      "mean_dev": 984,
      "n": 5
     },
     "('low', 'low', 'low', 'mid')": {
-     "mean_dev": -1934,
-     "n": 28
+     "mean_dev": -2004,
+     "n": 29
     },
     "('low', 'low', 'high', 'high')": {
-     "mean_dev": -4690,
-     "n": 76
+     "mean_dev": -4605,
+     "n": 79
+    },
+    "('low', 'high', 'high', 'high')": {
+     "mean_dev": -5465,
+     "n": 65
     },
     "('low', 'mid', 'mid', 'mid')": {
      "mean_dev": -2268,
      "n": 19
     },
     "('mid', 'low', 'high', 'high')": {
-     "mean_dev": -2546,
-     "n": 10
+     "mean_dev": -2382,
+     "n": 12
     },
     "('mid', 'high', 'mid', 'high')": {
      "mean_dev": -4781,
      "n": 14
     },
-    "('low', 'high', 'high', 'high')": {
-     "mean_dev": -5637,
-     "n": 63
-    },
     "('high', 'mid', 'high', 'high')": {
-     "mean_dev": -2308,
-     "n": 7
+     "mean_dev": -6111,
+     "n": 23
     },
     "('high', 'high', 'high', 'high')": {
      "mean_dev": -5074,
@@ -7215,44 +7245,48 @@
    },
    "HIRE": {
     "('low', 'mid', 'mid', 'high')": {
-     "mean_dev": -2111,
-     "n": 280
+     "mean_dev": -1969,
+     "n": 292
     },
     "('mid', 'mid', 'mid', 'high')": {
-     "mean_dev": -2335,
-     "n": 115
+     "mean_dev": -2297,
+     "n": 120
     },
     "('mid', 'high', 'high', 'high')": {
-     "mean_dev": -825,
-     "n": 1739
+     "mean_dev": -749,
+     "n": 1805
     },
     "('mid', 'mid', 'high', 'high')": {
-     "mean_dev": -408,
-     "n": 1121
+     "mean_dev": -398,
+     "n": 1172
     },
     "('low', 'low', 'mid', 'high')": {
-     "mean_dev": -1636,
-     "n": 148
+     "mean_dev": -1641,
+     "n": 154
     },
     "('low', 'low', 'low', 'high')": {
-     "mean_dev": -1321,
-     "n": 336
+     "mean_dev": -1255,
+     "n": 347
     },
     "('low', 'mid', 'high', 'high')": {
-     "mean_dev": -1064,
-     "n": 244
+     "mean_dev": -979,
+     "n": 251
     },
     "('low', 'mid', 'low', 'high')": {
      "mean_dev": -1059,
      "n": 46
     },
     "('low', 'mid', 'high', 'mid')": {
-     "mean_dev": 1258,
-     "n": 9
+     "mean_dev": 308,
+     "n": 10
     },
     "('low', 'low', 'high', 'high')": {
      "mean_dev": -4920,
      "n": 46
+    },
+    "('low', 'high', 'high', 'high')": {
+     "mean_dev": -5200,
+     "n": 40
     },
     "('low', 'mid', 'mid', 'mid')": {
      "mean_dev": -1443,
@@ -7266,21 +7300,17 @@
      "mean_dev": -4781,
      "n": 14
     },
-    "('low', 'high', 'high', 'high')": {
-     "mean_dev": -5472,
-     "n": 38
-    },
     "('high', 'high', 'high', 'high')": {
      "mean_dev": -4734,
      "n": 28
     },
     "('high', 'mid', 'high', 'high')": {
-     "mean_dev": -415,
-     "n": 2
+     "mean_dev": -6139,
+     "n": 9
     },
     "('mid', 'low', 'mid', 'high')": {
-     "mean_dev": -4369,
-     "n": 2
+     "mean_dev": -5504,
+     "n": 3
     },
     "('low', 'high', 'mid', 'high')": {
      "mean_dev": -7299,
@@ -7305,88 +7335,88 @@
    },
    "WATER_MISSED": {
     "('low', 'low', 'low', 'high')": {
-     "mean_dev": -849,
-     "n": 634
+     "mean_dev": -813,
+     "n": 662
     },
     "('low', 'low', 'mid', 'high')": {
-     "mean_dev": -1284,
-     "n": 254
+     "mean_dev": -1283,
+     "n": 271
     },
     "('low', 'mid', 'mid', 'high')": {
-     "mean_dev": -1727,
-     "n": 288
+     "mean_dev": -1595,
+     "n": 301
     },
     "('mid', 'mid', 'mid', 'high')": {
-     "mean_dev": -2307,
-     "n": 143
+     "mean_dev": -2318,
+     "n": 149
     },
     "('mid', 'high', 'high', 'high')": {
-     "mean_dev": -1047,
-     "n": 3418
+     "mean_dev": -983,
+     "n": 3544
     },
     "('mid', 'mid', 'high', 'high')": {
-     "mean_dev": -585,
-     "n": 2675
+     "mean_dev": -569,
+     "n": 2803
     },
     "('mid', 'low', 'high', 'mid')": {
-     "mean_dev": -1426,
-     "n": 157
+     "mean_dev": -1296,
+     "n": 165
     },
     "('low', 'mid', 'high', 'high')": {
-     "mean_dev": -1556,
-     "n": 269
+     "mean_dev": -1471,
+     "n": 275
     },
     "('mid', 'low', 'mid', 'high')": {
-     "mean_dev": 1718,
-     "n": 33
+     "mean_dev": 1475,
+     "n": 35
     },
     "('low', 'mid', 'low', 'high')": {
      "mean_dev": -1087,
      "n": 48
     },
     "('mid', 'low', 'high', 'low')": {
-     "mean_dev": -404,
-     "n": 133
+     "mean_dev": -371,
+     "n": 137
     },
     "('low', 'mid', 'high', 'mid')": {
-     "mean_dev": 1485,
-     "n": 7
+     "mean_dev": 270,
+     "n": 8
     },
     "('mid', 'mid', 'high', 'mid')": {
      "mean_dev": 317,
      "n": 6
     },
     "('low', 'low', 'mid', 'mid')": {
-     "mean_dev": 197,
-     "n": 17
+     "mean_dev": -35,
+     "n": 18
     },
     "('low', 'low', 'low', 'mid')": {
-     "mean_dev": -1934,
-     "n": 28
+     "mean_dev": -2004,
+     "n": 29
     },
     "('low', 'low', 'high', 'high')": {
-     "mean_dev": -2955,
-     "n": 34
+     "mean_dev": -2897,
+     "n": 36
+    },
+    "('low', 'high', 'high', 'high')": {
+     "mean_dev": -5463,
+     "n": 66
     },
     "('low', 'mid', 'mid', 'mid')": {
      "mean_dev": -2132,
      "n": 12
     },
     "('mid', 'low', 'high', 'high')": {
-     "mean_dev": -2546,
-     "n": 10
+     "mean_dev": -2382,
+     "n": 12
     },
     "('mid', 'high', 'mid', 'high')": {
      "mean_dev": -4495,
      "n": 13
     },
-    "('low', 'high', 'high', 'high')": {
-     "mean_dev": -5632,
-     "n": 64
-    },
     "('high', 'mid', 'high', 'high')": {
-     "mean_dev": -2308,
-     "n": 7
+     "mean_dev": -6111,
+     "n": 23
     },
     "('high', 'high', 'high', 'high')": {
      "mean_dev": -5104,
@@ -7413,8 +7443,8 @@
      "n": 2
     },
     "('high', 'low', 'high', 'mid')": {
-     "mean_dev": -7666,
-     "n": 2
+     "mean_dev": -7702,
+     "n": 3
     },
     "('mid', 'high', 'low', 'high')": {
      "mean_dev": -12743,
@@ -7423,48 +7453,48 @@
    },
    "FEED_MISSED": {
     "('low', 'low', 'mid', 'high')": {
-     "mean_dev": -1155,
-     "n": 90
+     "mean_dev": -1104,
+     "n": 98
     },
     "('low', 'low', 'low', 'high')": {
-     "mean_dev": -5,
-     "n": 467
+     "mean_dev": 1,
+     "n": 489
     },
     "('low', 'mid', 'mid', 'high')": {
-     "mean_dev": -4191,
-     "n": 122
+     "mean_dev": -4021,
+     "n": 125
     },
     "('mid', 'mid', 'mid', 'high')": {
-     "mean_dev": -605,
-     "n": 185
+     "mean_dev": -626,
+     "n": 194
     },
     "('mid', 'high', 'high', 'high')": {
-     "mean_dev": -2164,
-     "n": 272
+     "mean_dev": -2070,
+     "n": 280
     },
     "('mid', 'mid', 'high', 'high')": {
-     "mean_dev": -861,
-     "n": 1307
+     "mean_dev": -829,
+     "n": 1367
     },
     "('mid', 'low', 'high', 'mid')": {
-     "mean_dev": -1358,
-     "n": 160
+     "mean_dev": -1234,
+     "n": 168
     },
     "('mid', 'low', 'mid', 'high')": {
-     "mean_dev": 841,
-     "n": 45
+     "mean_dev": 697,
+     "n": 47
     },
     "('mid', 'low', 'high', 'low')": {
-     "mean_dev": -523,
-     "n": 154
+     "mean_dev": -541,
+     "n": 159
     },
     "('mid', 'mid', 'high', 'mid')": {
      "mean_dev": 37,
      "n": 6
     },
     "('low', 'low', 'low', 'mid')": {
-     "mean_dev": -1682,
-     "n": 26
+     "mean_dev": -1767,
+     "n": 27
     },
     "('mid', 'low', 'high', 'high')": {
      "mean_dev": -1737,
@@ -7478,17 +7508,17 @@
      "mean_dev": -2211,
      "n": 16
     },
+    "('low', 'mid', 'high', 'high')": {
+     "mean_dev": -4466,
+     "n": 31
+    },
     "('mid', 'high', 'mid', 'high')": {
      "mean_dev": -3478,
      "n": 9
     },
-    "('low', 'mid', 'high', 'high')": {
-     "mean_dev": -4643,
-     "n": 30
-    },
     "('high', 'mid', 'high', 'high')": {
-     "mean_dev": -1781,
-     "n": 5
+     "mean_dev": -4445,
+     "n": 9
     },
     "('high', 'high', 'high', 'high')": {
      "mean_dev": -4110,
@@ -7523,72 +7553,72 @@
      "n": 2
     },
     "('high', 'low', 'high', 'mid')": {
-     "mean_dev": -7666,
-     "n": 2
+     "mean_dev": -7702,
+     "n": 3
     }
    }
   },
   "postponement_curves": {
    "SELL": {
     "0": {
-     "mean_dev": -1030,
-     "n": 1786
+     "mean_dev": -1001,
+     "n": 1865
     },
     "1": {
-     "mean_dev": -1088,
-     "n": 648
+     "mean_dev": -1052,
+     "n": 676
     },
     "2": {
-     "mean_dev": -1225,
-     "n": 555
+     "mean_dev": -1184,
+     "n": 579
     },
     "3": {
-     "mean_dev": -846,
-     "n": 386
+     "mean_dev": -841,
+     "n": 403
     },
     "4": {
-     "mean_dev": -1065,
-     "n": 334
+     "mean_dev": -1032,
+     "n": 348
     },
     "5": {
-     "mean_dev": -1092,
-     "n": 5529
+     "mean_dev": -1055,
+     "n": 5768
     }
    },
    "BUY_ANIMAL": {
     "0": {
-     "mean_dev": -1759,
-     "n": 394
+     "mean_dev": -1713,
+     "n": 409
     },
     "4": {
-     "mean_dev": -165,
-     "n": 281
+     "mean_dev": -168,
+     "n": 295
     },
     "5": {
-     "mean_dev": -1266,
-     "n": 1875
+     "mean_dev": -1223,
+     "n": 1954
     }
    },
    "BUY_SEED": {
     "0": {
-     "mean_dev": -1465,
-     "n": 468
+     "mean_dev": -1417,
+     "n": 488
     },
     "4": {
-     "mean_dev": -94,
-     "n": 258
+     "mean_dev": -87,
+     "n": 271
     },
     "5": {
-     "mean_dev": -1087,
-     "n": 4021
+     "mean_dev": -1050,
+     "n": 4192
     },
     "1": {
-     "mean_dev": -1042,
-     "n": 282
+     "mean_dev": -1003,
+     "n": 291
     },
     "2": {
-     "mean_dev": -4103,
-     "n": 4
+     "mean_dev": -3341,
+     "n": 5
     },
     "3": {
      "mean_dev": -10299,
@@ -7597,60 +7627,60 @@
    },
    "BUY_LAND": {
     "2": {
-     "mean_dev": -989,
-     "n": 310
+     "mean_dev": -939,
+     "n": 322
     },
     "5": {
-     "mean_dev": -987,
-     "n": 1024
+     "mean_dev": -959,
+     "n": 1066
     },
     "4": {
-     "mean_dev": -38,
-     "n": 139
+     "mean_dev": 23,
+     "n": 144
     },
     "3": {
-     "mean_dev": -5507,
-     "n": 57
+     "mean_dev": -5494,
+     "n": 60
     }
    },
    "BUY_PRODUCT": {
     "0": {
-     "mean_dev": -1084,
-     "n": 9307
+     "mean_dev": -1050,
+     "n": 9711
     }
    },
    "HIRE": {
     "0": {
-     "mean_dev": -1062,
-     "n": 4188
+     "mean_dev": -1015,
+     "n": 4357
     }
    },
    "WATER_MISSED": {
     "2": {
-     "mean_dev": -1088,
-     "n": 324
+     "mean_dev": -1052,
+     "n": 338
     },
     "3": {
-     "mean_dev": -697,
-     "n": 108
+     "mean_dev": -684,
+     "n": 114
     },
     "4": {
-     "mean_dev": -1088,
-     "n": 324
+     "mean_dev": -1052,
+     "n": 338
     },
     "5": {
-     "mean_dev": -1026,
-     "n": 7567
+     "mean_dev": -993,
+     "n": 7897
     }
    },
    "FEED_MISSED": {
     "1": {
-     "mean_dev": -1120,
-     "n": 318
+     "mean_dev": -1083,
+     "n": 332
     },
     "5": {
-     "mean_dev": -1162,
-     "n": 2656
+     "mean_dev": -1127,
+     "n": 2774
     },
     "2": {
      "mean_dev": -3146,
@@ -7659,178 +7689,178 @@
    }
   },
   "action_type_counts": {
-   "SELL": 9238,
-   "BUY_ANIMAL": 2550,
-   "BUY_SEED": 5034,
-   "BUY_LAND": 1530,
-   "BUY_PRODUCT": 9307,
-   "HIRE": 4188,
-   "WATER_MISSED": 8323,
-   "FEED_MISSED": 2986
+   "SELL": 9639,
+   "BUY_ANIMAL": 2658,
+   "BUY_SEED": 5248,
+   "BUY_LAND": 1592,
+   "BUY_PRODUCT": 9711,
+   "HIRE": 4357,
+   "WATER_MISSED": 8687,
+   "FEED_MISSED": 3118
   },
   "totals": {
-   "total_candidates_with_at": 324,
-   "total_events": 43156
+   "total_candidates_with_at": 338,
+   "total_events": 45010
   },
   "top_signals": [
    [
     "FEED_MISSED",
     "\u2014",
     "mid",
-    -1615,
-    432,
-    -0.39
+    -1583,
+    452,
+    -0.38
    ],
    [
     "BUY_ANIMAL",
     "\u2014",
     "mid",
-    -1381,
-    421,
-    -0.34
+    -1347,
+    439,
+    -0.33
    ],
    [
     "BUY_SEED",
     "\u2014",
     "late",
-    -1372,
-    562,
-    -0.34
+    -1317,
+    582,
+    -0.33
    ],
    [
     "FEED_MISSED",
     "\u2014",
     "late",
-    -1222,
-    661,
-    -0.3
-   ],
-   [
-    "BUY_ANIMAL",
-    "\u2014",
-    "early",
-    -1189,
-    2129,
-    -0.3
-   ],
-   [
-    "BUY_SEED",
-    "\u2014",
-    "mid",
-    -1151,
-    1278,
+    -1181,
+    689,
     -0.29
    ],
    [
-    "HIRE",
+    "BUY_ANIMAL",
     "\u2014",
     "early",
-    -1123,
-    2272,
+    -1148,
+    2219,
+    -0.29
+   ],
+   [
+    "BUY_SEED",
+    "\u2014",
+    "mid",
+    -1107,
+    1334,
     -0.28
    ],
    [
     "HIRE",
     "\u2014",
     "mid",
-    -1108,
-    1234,
-    -0.28
+    -1078,
+    1285,
+    -0.27
+   ],
+   [
+    "HIRE",
+    "\u2014",
+    "early",
+    -1075,
+    2362,
+    -0.27
+   ],
+   [
+    "BUY_PRODUCT",
+    "\u2014",
+    "early",
+    -1053,
+    5052,
+    -0.27
+   ],
+   [
+    "SELL",
+    "\u2014",
+    "mid",
+    -1052,
+    2366,
+    -0.27
+   ],
+   [
+    "SELL",
+    "\u2014",
+    "late",
+    -1052,
+    2704,
+    -0.27
+   ],
+   [
+    "BUY_PRODUCT",
+    "\u2014",
+    "mid",
+    -1052,
+    2366,
+    -0.27
+   ],
+   [
+    "WATER_MISSED",
+    "\u2014",
+    "mid",
+    -1052,
+    2366,
+    -0.27
+   ],
+   [
+    "WATER_MISSED",
+    "\u2014",
+    "late",
+    -1047,
+    2674,
+    -0.27
+   ],
+   [
+    "BUY_PRODUCT",
+    "\u2014",
+    "late",
+    -1040,
+    2293,
+    -0.26
    ],
    [
     "BUY_LAND",
     "\u2014",
     "early",
-    -1090,
-    1204,
-    -0.28
-   ],
-   [
-    "SELL",
-    "\u2014",
-    "mid",
-    -1088,
-    2268,
-    -0.28
-   ],
-   [
-    "SELL",
-    "\u2014",
-    "late",
-    -1088,
-    2592,
-    -0.28
-   ],
-   [
-    "BUY_PRODUCT",
-    "\u2014",
-    "early",
-    -1088,
-    4843,
-    -0.28
-   ],
-   [
-    "BUY_PRODUCT",
-    "\u2014",
-    "mid",
-    -1088,
-    2268,
-    -0.28
-   ],
-   [
-    "WATER_MISSED",
-    "\u2014",
-    "mid",
-    -1088,
-    2268,
-    -0.28
-   ],
-   [
-    "WATER_MISSED",
-    "\u2014",
-    "late",
-    -1086,
-    2563,
-    -0.28
-   ],
-   [
-    "BUY_PRODUCT",
-    "\u2014",
-    "late",
-    -1074,
-    2196,
-    -0.27
+    -1038,
+    1253,
+    -0.26
    ],
    [
     "SELL",
     "\u2014",
     "early",
-    -1064,
-    4378,
-    -0.27
+    -1031,
+    4569,
+    -0.26
+   ],
+   [
+    "BUY_LAND",
+    "\u2014",
+    "mid",
+    -1031,
+    339,
+    -0.26
    ],
    [
     "FEED_MISSED",
     "\u2014",
     "early",
-    -1043,
-    1893,
-    -0.27
-   ],
-   [
-    "BUY_LAND",
-    "\u2014",
-    "mid",
-    -994,
-    326,
+    -1008,
+    1977,
     -0.26
    ],
    [
     "BUY_SEED",
     "\u2014",
     "early",
-    -989,
-    3194,
+    -958,
+    3332,
     -0.25
    ]
   ]
