@@ -1,5 +1,26 @@
-# evolve/chassis.py -- frozen copy of O26_CARROT_SIZING.py with typed mutation blocks.
-# source sha256 c982f399aa94. Rebuild: python3 evolve/blocks.py build
+# evolve/chassis.py -- frozen copy of O162_THREE_SHOPS65.py with typed mutation blocks.
+# source sha256 d5f91d4917b0. Rebuild: python3 evolve/blocks.py build
+# O42_MAX_HANDS_LATE_EXPAND: O36_MIN_HANDS2 with MAX_HANDS day-gated 14 (day<19) -> 16 (day>=19), replacing
+# the flat MAX_HANDS=14 cap. Both throttle call sites (BUY_ANIMAL ~L519, BUY_SEED ~L594) and the _load_model
+# clamp now read a _max_hands_for_day(day) helper consistently. Motivated by the idle-land/MAX_HANDS thread
+# (evolve/directions.yaml: idle_land_labor_pressure_response / max_hands_cap_relief): population-scale trace
+# found land idle 392/2410 capital-hour observations days 11-25, 100% MAX_HANDS-throttled not cash/demand-
+# bound; exposure ~$1,613/game gross value blocked, concentrated days 19-25; tractability net +$676/game
+# after wage cost (raw need vs fib-cost hire price). Three candidates screened positive at Stage-0
+# (MAX_HANDS=15, MAX_HANDS=16 blanket, this day-gated variant) -- all clear, dose-response pattern.
+# FULL CONTRACT-DEPTH PANEL (tools/knob_panel.py, 4 tapes, both seats, 2 fresh 20-seed sets 301-320/321-340,
+# 320 games each, vs O36_MIN_HANDS2, KAGG_FIXED_SHOPS=1) reversed the screening ranking: blanket
+# MAX_HANDS=16 clears own+margin combined (own +249.8 t=4.33, margin +304.9 t=4.46) but goes OWN-MONEY
+# NEGATIVE on tape peterparker (-76.4, margin still +11.6) -- not robust on every tape. THIS candidate
+# (day-gated 14->16 at day>=19) is stronger AND robust: own +315.2 (t=6.23), margin +333.5 (t=5.28),
+# POSITIVE ON BOTH METRICS ON ALL FOUR TAPES (own: peter +145.3, alaylm +448.2, bahaen +303.7, yangk
+# +363.6). One seed set (301-320) was bit-identical to blanket +2 game-for-game (the pre-day-19 relaxation
+# never bound in that set, own +43.5 t=0.83 both); the other set (321-340) differentiated them and is
+# where this candidate's advantage shows. Per the project's own architecture/threshold evidence contract
+# (parent_comparison=True, dose_response=True) this is the promotion candidate for the MAX_HANDS branch,
+# not the blanket +2 that screening alone would have suggested -- see docs/discovery-phase-sep11.md
+# Section 14 and evolve/directions.yaml id max_hands_cap_relief for full evidence.
+# O36_MIN_HANDS2: O26_CARROT_SIZING with min_hands 3 -> 2 (lower floor on standing workforce outside the early-hire window) -- open-ended K_SELFMODEL scout, dev-seed screen +1,530 h2h.
 # O26_CARROT_SIZING: O25_STRAW_HIREGATE with the seed allocator's carrot yield assumption corrected 4.0 -> 3.0 units/planting (measured 3.0 on both farms). Effect: carrots mostly drop out of the plan (34 -> 12 plantings), the freed labour goes to wheat (64 -> 90 plantings, wheat purchases 260 -> 203), labour+land 11.3k -> 8.5k. Fixed shops vs O25: own +1.6k/+1.4k (t2.6/4.6), margin +0.8k/+0.2k/+1.5k (real tapes >= 0 on all three seed sets, clone negative). Wheat units 5.0 -> 3.9 (true) is -2k own: do not apply.
 # O25_STRAW_HIREGATE: O24_STRAW_SIZING + H_GATE144 (refuse hires priced above 144 on the daily fibonacci curve; other session's confirmed +1.3k own gain on O16).
 # O24_STRAW_SIZING: O22_MELON_MORNING with the seed allocator's strawberry yield assumption corrected from 4.5 to 7.5 units per planting (tools/allocation_matrix.py: tapes get 7.5 u/planting from 33 plantings; O16 planted 47 for the same ~250 units). Fewer plantings -> less seed, less labour, higher realised strawberry price. Own-money panel vs O22 +4.7-5.5k (t8-10); 9.0 +3.3k, 12.0 +1.7k, 20.0 -0.9k.
@@ -53,7 +74,7 @@ Knobs (default = V3.12 behaviour):
 import math
 import sys
 
-KNOBS = {'melon_floor': 0, 'harvest_min': 1, 'opening': 'frontier', 'wheat_tiles': 0, 'wheat_stock': 0, 'min_hands': 3, 'load_per_hand': 20, 'geese': 0, 'open_melons': 10, 'open_wheat': 7, 'open_cows': 2, 'open_sheep': 2, 'early_hire_days': 3, 'feed_spare_poor': 0, 'fert_keep': 0, 'fert_buy': 3, 'fert_carry': 2, 'demand_share': 0.55, 'max_animals': 17, 'wheat_per_animal': 0.0, 'wheat_cap': 22, 'wheat_water_tier': 0, 'wheat_sell_price': 30, 'wheat_hold_days': 0, 'sell_hourly': 0, 'drop_min': 0, 'drop_radius': 0, 'capital_hour2': -1, 'melon_rush': 0, 'straw_delay': 0, 'hands_early': 0, 'setup_capital_share': 0.25, 'labor_reserve_buffer': 92}
+KNOBS = {'melon_floor': 0, 'harvest_min': 1, 'opening': 'frontier', 'wheat_tiles': 0, 'wheat_stock': 0, 'min_hands': 2, 'load_per_hand': 20, 'geese': 0, 'open_melons': 10, 'open_wheat': 7, 'open_cows': 2, 'open_sheep': 2, 'early_hire_days': 3, 'feed_spare_poor': 0, 'fert_keep': 0, 'fert_buy': 3, 'fert_carry': 2, 'demand_share': 0.55, 'max_animals': 17, 'wheat_per_animal': 0.0, 'wheat_cap': 22, 'wheat_water_tier': 0, 'wheat_sell_price': 30, 'wheat_hold_days': 0, 'sell_hourly': 0, 'drop_min': 0, 'drop_radius': 0, 'capital_hour2': -1, 'capital_period': 1, 'melon_rush': 0, 'straw_delay': 0, 'hands_early': 0, 'setup_capital_share': 0.25, 'labor_reserve_buffer': 92}
 # ---- O5 end-of-game knobs
 EG = {"same_turn_sell": 3,   # 2 = day 29 only (default), 1 = all game (tested: wash, see header), 0 = off (O4 behaviour)
       "deadline_return": 1,  # day-29 go-home-by-h22 rule for any carried product
@@ -92,6 +113,18 @@ DEMAND_SHARE = 0.5                            # my share of daily town demand (t
 OPP_GROWTH = 1.4# opponent's visible supply is assumed to grow
 CFG = {"center_interval": 24, "shop_interval": 4, "turns_per_day": 24}
 MAX_HANDS = 14
+# Candidate C (Sep 13): mechanism-targeted -- keep the baseline cap until the observed labor-throttle
+# congestion window (days 19-25, kaggriculture-max-hands-shortfall-value-sep13.md) begins, then allow
+# 2 more hands. Conditional on day only (not on idle-land/opportunity detection -- that would require
+# duplicating the throttle-site logic; kept as the simplest faithful operationalization for a screening
+# probe per Grace's spec).
+MAX_HANDS_LATE_DAY = 19
+MAX_HANDS_LATE_BONUS = 2
+
+
+def _max_hands_for_day(day):
+    return MAX_HANDS + MAX_HANDS_LATE_BONUS if day >= MAX_HANDS_LATE_DAY else MAX_HANDS
+
 LOAD_ANIMAL, LOAD_CROP_TASK, LOAD_SETUP = 6, 3, 8
 ROUTE_LEN = 3
 CROP_SWEEP_LEN = 6
@@ -291,7 +324,7 @@ def _load_model(v, seeds_planned, n_animals_total, n_setup, day):
     load += LOAD_SETUP * n_setup
     tgt = int(math.ceil(load / KNOBS["load_per_hand"]))
     floor = KNOBS["hands_early"] if (KNOBS["hands_early"] and day <= 10) else KNOBS["min_hands"]
-    tgt = max(floor, min(MAX_HANDS, tgt))
+    tgt = max(floor, min(_max_hands_for_day(day), tgt))
     if day >= 29:
         tgt = min(tgt, 6)
     return tgt
@@ -412,7 +445,8 @@ def economy(obs, v, pending_drop=None):
                 orders.append(["SELL", "WHEAT", surplus])
                 revenue_est += surplus * prices.get("WHEAT", 0) * 0.9
     capital_hour = hour if event else (0 if day == 0 else 1)          # V3.10: capital decisions on exact post-sale cash at hour 1
-    if hour != capital_hour and not (KNOBS["capital_hour2"] >= 0 and hour == KNOBS["capital_hour2"] and day >= 1):
+    extra_capital = (KNOBS["capital_period"] > 0 and 1 <= day <= 24 and hour >= 2 and hour % KNOBS["capital_period"] == 0)
+    if hour != capital_hour and not ((KNOBS["capital_hour2"] >= 0 and hour == KNOBS["capital_hour2"] and day >= 1) or extra_capital):
         if hour == 0:
             spare = 3 if cash + revenue_est >= 300 else KNOBS["feed_spare_poor"]
             feed_need = max(0, due_feed + spare - shed.get("WHEAT", 0)) if day < 29 else 0
@@ -517,7 +551,7 @@ def economy(obs, v, pending_drop=None):
                 if _instances(obs, "MILK") == 0 and day >= 9:
                     room = min(room, 4 - my_counts[sp])
             k = min(6, room, KNOBS["max_animals"] - n_total, int(free // ANIMALS[sp]), empty_count - 4)
-            while k > 0 and _load_model(v, seeds_on_hand, n_total + k, pending_place + k, day) > MAX_HANDS:
+            while k > 0 and _load_model(v, seeds_on_hand, n_total + k, pending_place + k, day) > _max_hands_for_day(day):
                 k -= 1
             while k > 0:
                 cash_after = free - ANIMALS[sp] * k + reserve - wheat_cost - labor_cost_today
@@ -578,7 +612,8 @@ def economy(obs, v, pending_drop=None):
                     continue
                 inv_c = obs["market"]["inventory"].get(c, I0)
                 cushion_left = max(0.0, sp_.get("cushion", 0) - max(0.0, inv_c - I0))
-                pool = DEMAND_SHARE * (max(0.0, I0 - inv_c) + cushion_left + _daily_demand(obs, c, day, day + sp_["first"]) * (29 - day))
+                regime_share = 0.65 if _instances(obs, "STRAWBERRY") >= 3 else DEMAND_SHARE
+                pool = regime_share * (max(0.0, I0 - inv_c) + cushion_left + _daily_demand(obs, c, day, day + sp_["first"]) * (29 - day))
                 room_units = pool - committed[c] - seed_orders.get(c, 0) * sp_["units"]
                 if room_units < sp_["units"] * 0.5:
                     continue
@@ -592,7 +627,7 @@ def economy(obs, v, pending_drop=None):
                 break
             _val, c, room_units = best
             k = min(space, int(room_units // CROP_SPECS[c]["units"]), int(free // CROP_SPECS[c]["seed"]), 20)
-            while k > 0 and _load_model(v, seeds_on_hand + k, n_total, pending_place, day) >= MAX_HANDS:
+            while k > 0 and _load_model(v, seeds_on_hand + k, n_total, pending_place, day) >= _max_hands_for_day(day):
                 k -= 1
             if k <= 0:
                 excluded.add(c)
