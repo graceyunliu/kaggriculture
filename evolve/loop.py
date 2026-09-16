@@ -135,6 +135,8 @@ class Loop:
         # runs in default-shops mode and promotes candidates that lose to the
         # champion (the exact failure found on Sep 14). Belt-and-suspenders with
         # the supervisor.sh export: this covers direct Loop() construction too.
+        # Also enforce the yardstick's frontier (O162_THREE_SHOPS65 since Sep 15
+        # rebase) so the loop's default --frontier always tracks the yardstick.
         import os as _os
         _os.environ.setdefault("KAGG_FIXED_SHOPS", "1")
         self.engine_sha = sha(ROOT / "vendor" / "kaggle_environments_engine_master" / "kaggriculture.py")
@@ -605,13 +607,15 @@ def main():
     ap.add_argument("--minutes", type=float, default=0.0)
     ap.add_argument("--max-candidates", type=int, default=0)
     ap.add_argument("--jobs", type=int, default=None)
-    ap.add_argument("--frontier", default=str(ROOT / "candidates" / "O33_FERT_DENIAL4.py"),
-                    help="head-to-head yardstick (selection score). Sep 11: O33 experimental champion; O26 remains the immutable control")
-    ap.add_argument("--clone", default=",".join(str(ROOT / "Opponents" / t) for t in (
+    ap.add_argument("--frontier", default=str(ROOT / "candidates" / "O162_THREE_SHOPS65.py"),
+                    help="head-to-head yardstick (selection score). Sep 15: O162_THREE_SHOPS65 (rebased from O15 on Sep 15); "
+                         "O33/O26 remain the immutable controls for dose-response.")
+    ap.add_argument("--clone", default=", ".join(str(ROOT / "Opponents" / t) for t in (
                         "tape_peterparker_106816877.py", "tape_alaylm_106813359.py",
-                        "tape_bahaenes_106828159.py", "tape_yangkuang2_106819729.py", "tape_pensukesan_107199477.py")),
-                    help="comma-separated fixed-opponent panel (default: the 5 real ladder tapes). "
-                         "Held-out promotion requires: (1) beats frontier head-to-head t>=2; (2) panel mean >= frontier's (--panel-floor); "
+                        "tape_bahaenes_106828159.py", "tape_yangkuang2_106819729.py")),
+                    help="comma-separated fixed-opponent panel (default: matches yardstick.conf CLONE — the 4 real ladder-loss tapes; "
+                         "the old clone opp_scenario_v14 is not a ladder proxy). Mean panel margin is reported; held-out promotion "
+                         "requires: (1) beats frontier head-to-head t>=2; (2) panel mean >= frontier's (--panel-floor); "
                          "(3) own money >= frontier's (--own-floor); (4) beats the champion on the SAME panel (--champion, default O42) "
                          "with margin >= --champion-floor AND own money >= --champion-own-floor.")
     ap.add_argument("--panel-floor", type=float, default=0.0, help="min (candidate - frontier) mean panel margin for held_pass")
