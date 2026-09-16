@@ -1,22 +1,22 @@
-# Evolution run 20260916-000841
+# Evolution run 20260916-001244
 
 Frontier opponent: `O15_SALE_PRIORITY.py` · clone: `tape_majkel1337_109144271.py` · engine sha `bc8a54879ef0` · chassis snapshot `K_3b070353e431.py` (sha `3b070353e431`)
-Elapsed 0.03 h · candidates evaluated this run: 0 · games 608 (18,199/h)
+Elapsed 0.04 h · candidates evaluated this run: 2 · games 778 (18,291/h)
 
 ## Cascade counts (this run)
 
 | status | candidates | games |
 |---|---:|---:|
-| noop | 0 | 0 |
+| noop | 1 | 2 |
 | dead_pattern | 0 | 0 |
 | dead_smoke | 0 | 0 |
-| alive | 1 | 608 |
+| alive | 2 | 776 |
 | held_fail | 0 | 0 |
 | held_exploit | 0 | 0 |
 | held_pass | 0 | 0 |
 | error | 0 | 0 |
 
-Population (all runs, reached dev): 1600 · held-out evaluated: 908 · held-out PASS: 894
+Population (all runs, reached dev): 1602 · held-out evaluated: 908 · held-out PASS: 894
 
 ## Reference points
 
@@ -78,8 +78,8 @@ _direction ledger unavailable: AssertionError("min_hands_knob_interactions: ABAN
 
 ## Islands (best dev margin, population size)
 
-- best: best +15,151 (`51435ac9641b`), n=596
-- o15: best +14,660 (`a75ac7f5628a`), n=325
+- best: best +15,151 (`51435ac9641b`), n=597
+- o15: best +14,660 (`a75ac7f5628a`), n=326
 - queue: best +14,471 (`5716cad50618`), n=281
 - wide: best +14,856 (`69f83ba942be`), n=398
 
@@ -91,55 +91,55 @@ Per-value sample counts (`n=`) let you judge reliability: n<5 is fragile, n>=30 
 
 | param | observed spread ($, best−worst mean) | best value | C1 value | values tested | total n | sampling balance | per-value means (value: $mean, n) |
 |---|---:|---|---|---:|---:|---:|---|
-| ROUTE_LEN | +17,690 | 2 | 3 | 4 | 1600 | 1.88 | 2: +9,442 (n=1152), 3: +5,177 (n=423), 4: +686 (n=22), 5: -8,248 (n=3) |
+| ROUTE_LEN | +17,683 | 2 | 3 | 4 | 1602 | 1.88 | 2: +9,435 (n=1154), 3: +5,177 (n=423), 4: +686 (n=22), 5: -8,248 (n=3) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| MAX_HANDS | +15,820 | 16 | 14 | 8 | 1600 | 1.99 | 16: +9,416 (n=598), 15: +8,758 (n=496), 13: +7,893 (n=48), 12: +7,140 (n=23), 14: +5,946 (n=424), 11: +4,721 (n=7), 10: -616 (n=2), 8: -6,404 (n=2) |
+| MAX_HANDS | +15,825 | 16 | 14 | 8 | 1602 | 1.99 | 16: +9,421 (n=599), 15: +8,738 (n=497), 13: +7,893 (n=48), 12: +7,140 (n=23), 14: +5,946 (n=424), 11: +4,721 (n=7), 10: -616 (n=2), 8: -6,404 (n=2) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| MELON_PRICE_CUSHION | +13,911 | 81 | 100 | 64 | 1582 | 23.1 | 81: +13,020 (n=2), 53: +12,736 (n=3), 73: +12,491 (n=2), 119: +11,101 (n=7), 103: +11,085 (n=5), 60: +11,063 (n=4), 50: +10,875 (n=6), 86: +10,542 (n=8), 112: +10,537 (n=50), 117: +10,236 (n=5), 54: +10,157 (n=2), 133: +10,154 (n=2), 146: +10,055 (n=3), 82: +9,954 (n=235), 80: +9,899 (n=12), 127: +9,869 (n=20), 63: +9,835 (n=2), 101: +9,491 (n=15), 99: +8,609 (n=11), 88: +8,576 (n=2), 120: +8,564 (n=22), 96: +8,485 (n=3), 68: +8,143 (n=29), 100: +8,009 (n=829), 94: +7,681 (n=5), 111: +7,630 (n=11), 106: +7,054 (n=10), 107: +6,914 (n=149), 148: +6,535 (n=2), 114: +6,129 (n=2), 131: +6,008 (n=4), 116: +5,946 (n=66), 84: +5,799 (n=4), 93: +5,643 (n=6), 128: +5,640 (n=11), 143: +3,933 (n=3), 150: +3,570 (n=4), 136: +3,537 (n=3), 87: +3,081 (n=2), 90: +2,614 (n=2), 92: +2,237 (n=4), 85: +1,681 (n=2), 76: +1,491 (n=2), 77: +1,272 (n=2), 134: +712 (n=7), 118: -891 (n=2) |
+| MELON_PRICE_CUSHION | +13,911 | 81 | 100 | 64 | 1584 | 23.07 | 81: +13,020 (n=2), 53: +12,736 (n=3), 73: +12,491 (n=2), 119: +11,101 (n=7), 103: +11,085 (n=5), 60: +11,063 (n=4), 50: +10,875 (n=6), 86: +10,542 (n=8), 112: +10,537 (n=50), 117: +10,236 (n=5), 54: +10,157 (n=2), 133: +10,154 (n=2), 146: +10,055 (n=3), 82: +9,907 (n=236), 80: +9,899 (n=12), 127: +9,869 (n=20), 63: +9,835 (n=2), 101: +9,491 (n=15), 99: +8,609 (n=11), 88: +8,576 (n=2), 120: +8,564 (n=22), 96: +8,485 (n=3), 68: +8,143 (n=29), 100: +8,009 (n=829), 94: +7,681 (n=5), 111: +7,630 (n=11), 106: +7,054 (n=10), 107: +6,950 (n=150), 148: +6,535 (n=2), 114: +6,129 (n=2), 131: +6,008 (n=4), 116: +5,946 (n=66), 84: +5,799 (n=4), 93: +5,643 (n=6), 128: +5,640 (n=11), 143: +3,933 (n=3), 150: +3,570 (n=4), 136: +3,537 (n=3), 87: +3,081 (n=2), 90: +2,614 (n=2), 92: +2,237 (n=4), 85: +1,681 (n=2), 76: +1,491 (n=2), 77: +1,272 (n=2), 134: +712 (n=7), 118: -891 (n=2) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| wheat_stock | +12,264 | 3 | 0 | 27 | 1592 | 12.59 | 3: +9,768 (n=13), 13: +9,459 (n=4), 5: +9,086 (n=53), 2: +9,016 (n=6), 4: +8,779 (n=7), 9: +8,563 (n=8), 0: +8,520 (n=1139), 17: +7,175 (n=5), 7: +7,048 (n=7), 1: +7,044 (n=315), 10: +6,704 (n=15), 6: +5,817 (n=2), 8: +5,801 (n=4), 12: +5,266 (n=4), 11: +3,818 (n=2), 25: +1,654 (n=2), 40: +930 (n=2), 14: +563 (n=2), 22: -2,496 (n=2) |
+| wheat_stock | +12,264 | 3 | 0 | 27 | 1594 | 12.6 | 3: +9,768 (n=13), 13: +9,459 (n=4), 5: +9,086 (n=53), 2: +9,016 (n=6), 4: +8,779 (n=7), 9: +8,563 (n=8), 0: +8,515 (n=1141), 17: +7,175 (n=5), 7: +7,048 (n=7), 1: +7,044 (n=315), 10: +6,704 (n=15), 6: +5,817 (n=2), 8: +5,801 (n=4), 12: +5,266 (n=4), 11: +3,818 (n=2), 25: +1,654 (n=2), 40: +930 (n=2), 14: +563 (n=2), 22: -2,496 (n=2) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| max_animals | +11,063 | 16 | 17 | 11 | 1599 | 4.94 | 16: +10,003 (n=359), 15: +9,823 (n=159), 14: +7,744 (n=21), 17: +7,718 (n=950), 19: +6,601 (n=10), 13: +5,004 (n=5), 18: +3,969 (n=62), 20: +2,810 (n=24), 10: +1,562 (n=3), 12: -1,060 (n=6) |
+| max_animals | +11,032 | 16 | 17 | 11 | 1601 | 4.93 | 16: +9,972 (n=360), 15: +9,838 (n=160), 14: +7,744 (n=21), 17: +7,718 (n=950), 19: +6,601 (n=10), 13: +5,004 (n=5), 18: +3,969 (n=62), 20: +2,810 (n=24), 10: +1,562 (n=3), 12: -1,060 (n=6) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| wheat_sell_price | +10,858 | 33 | 30 | 21 | 1599 | 7.92 | 33: +10,969 (n=4), 37: +10,903 (n=2), 31: +9,321 (n=8), 29: +9,215 (n=713), 39: +9,053 (n=2), 28: +8,889 (n=15), 38: +8,824 (n=4), 25: +8,657 (n=369), 32: +8,344 (n=8), 26: +7,917 (n=104), 27: +7,664 (n=18), 36: +6,988 (n=6), 42: +6,603 (n=18), 34: +6,461 (n=16), 30: +5,496 (n=285), 35: +4,663 (n=14), 44: +3,195 (n=2), 43: +3,122 (n=6), 40: +2,392 (n=3), 41: +110 (n=2) |
+| wheat_sell_price | +10,858 | 33 | 30 | 21 | 1601 | 7.91 | 33: +10,969 (n=4), 37: +10,903 (n=2), 31: +9,321 (n=8), 29: +9,215 (n=713), 39: +9,053 (n=2), 28: +8,889 (n=15), 38: +8,824 (n=4), 25: +8,640 (n=371), 32: +8,344 (n=8), 26: +7,917 (n=104), 27: +7,664 (n=18), 36: +6,988 (n=6), 42: +6,603 (n=18), 34: +6,461 (n=16), 30: +5,496 (n=285), 35: +4,663 (n=14), 44: +3,195 (n=2), 43: +3,122 (n=6), 40: +2,392 (n=3), 41: +110 (n=2) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| wheat_cap | +10,626 | 23 | 22 | 18 | 1597 | 5.34 | 23: +10,942 (n=10), 17: +10,018 (n=12), 14: +9,946 (n=40), 20: +9,804 (n=507), 11: +8,240 (n=19), 21: +7,585 (n=675), 25: +7,368 (n=59), 19: +7,115 (n=8), 22: +6,831 (n=174), 5: +6,324 (n=7), 16: +6,028 (n=4), 13: +5,940 (n=4), 18: +5,898 (n=62), 24: +5,470 (n=6), 15: +315 (n=10) |
+| wheat_cap | +10,626 | 23 | 22 | 18 | 1599 | 5.33 | 23: +10,942 (n=10), 17: +10,018 (n=12), 14: +9,946 (n=40), 20: +9,788 (n=509), 11: +8,240 (n=19), 21: +7,585 (n=675), 25: +7,368 (n=59), 19: +7,115 (n=8), 22: +6,831 (n=174), 5: +6,324 (n=7), 16: +6,028 (n=4), 13: +5,940 (n=4), 18: +5,898 (n=62), 24: +5,470 (n=6), 15: +315 (n=10) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| HERD_LAST_DAY | +10,584 | 22 | 17 | 8 | 1599 | 2.83 | 22: +13,287 (n=5), 18: +9,198 (n=23), 20: +9,137 (n=875), 16: +8,738 (n=2), 17: +6,867 (n=690), 21: +5,275 (n=2), 19: +2,703 (n=2) |
+| HERD_LAST_DAY | +10,584 | 22 | 17 | 8 | 1601 | 2.83 | 22: +13,287 (n=5), 18: +9,198 (n=23), 20: +9,125 (n=876), 16: +8,738 (n=2), 17: +6,875 (n=691), 21: +5,275 (n=2), 19: +2,703 (n=2) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| open_melons | +10,227 | 7 | 10 | 11 | 1600 | 7.46 | 7: +9,535 (n=19), 11: +8,912 (n=50), 10: +8,430 (n=74), 6: +8,419 (n=67), 9: +8,314 (n=1231), 8: +7,286 (n=102), 12: +6,931 (n=16), 5: +6,249 (n=8), 4: +3,991 (n=25), 13: +2,857 (n=3), 14: -692 (n=5) |
+| open_melons | +10,227 | 7 | 10 | 11 | 1602 | 7.47 | 7: +9,535 (n=19), 11: +8,912 (n=50), 10: +8,430 (n=74), 6: +8,419 (n=67), 9: +8,309 (n=1233), 8: +7,286 (n=102), 12: +6,931 (n=16), 5: +6,249 (n=8), 4: +3,991 (n=25), 13: +2,857 (n=3), 14: -692 (n=5) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| opening | +9,440 | frontier | frontier | 2 | 1600 | 0.79 | frontier: +9,164 (n=1430), v312: -276 (n=170) |
+| opening | +9,435 | frontier | frontier | 2 | 1602 | 0.79 | frontier: +9,159 (n=1432), v312: -276 (n=170) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| wheat_per_animal | +9,372 | 0.0 | 0.0 | 9 | 1599 | 6.49 | 0.0: +8,331 (n=1497), 0.3: +7,294 (n=18), 0.2: +6,431 (n=41), 0.1: +5,367 (n=21), 0.4: +5,261 (n=8), 0.6: +4,309 (n=4), 0.5: +2,999 (n=8), 0.7: -1,041 (n=2) |
+| wheat_per_animal | +9,368 | 0.0 | 0.0 | 9 | 1601 | 6.49 | 0.0: +8,327 (n=1499), 0.3: +7,294 (n=18), 0.2: +6,431 (n=41), 0.1: +5,367 (n=21), 0.4: +5,261 (n=8), 0.6: +4,309 (n=4), 0.5: +2,999 (n=8), 0.7: -1,041 (n=2) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| open_sheep | +9,220 | 2 | 2 | 4 | 1600 | 2.75 | 2: +8,379 (n=1502), 1: +6,007 (n=68), 0: +3,593 (n=20), 3: -841 (n=10) |
+| open_sheep | +9,217 | 2 | 2 | 4 | 1602 | 2.76 | 2: +8,376 (n=1504), 1: +6,007 (n=68), 0: +3,593 (n=20), 3: -841 (n=10) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| demand_share | +9,189 | 0.55 | 0.55 | 14 | 1600 | 9.87 | 0.55: +8,638 (n=1242), 0.6: +8,471 (n=39), 0.45: +7,670 (n=30), 0.4: +7,603 (n=11), 0.5: +7,547 (n=120), 0.65: +7,304 (n=27), 0.75: +7,015 (n=11), 0.85: +6,133 (n=4), 0.9: +4,856 (n=5), 0.8: +4,568 (n=26), 0.7: +4,446 (n=45), 0.35: +4,433 (n=13), 0.3: +3,220 (n=25), 1.0: -551 (n=2) |
+| demand_share | +9,184 | 0.55 | 0.55 | 14 | 1602 | 9.87 | 0.55: +8,633 (n=1244), 0.6: +8,471 (n=39), 0.45: +7,670 (n=30), 0.4: +7,603 (n=11), 0.5: +7,547 (n=120), 0.65: +7,304 (n=27), 0.75: +7,015 (n=11), 0.85: +6,133 (n=4), 0.9: +4,856 (n=5), 0.8: +4,568 (n=26), 0.7: +4,446 (n=45), 0.35: +4,433 (n=13), 0.3: +3,220 (n=25), 1.0: -551 (n=2) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| MELON_MORNING_LAST_HOUR | +8,936 | 9 | 8 | 9 | 1600 | 3.87 | 9: +9,527 (n=865), 10: +8,842 (n=41), 5: +8,778 (n=6), 11: +7,626 (n=21), 7: +7,109 (n=15), 8: +6,829 (n=537), 4: +6,433 (n=34), 12: +3,234 (n=76), 6: +591 (n=5) |
+| MELON_MORNING_LAST_HOUR | +8,927 | 9 | 8 | 9 | 1602 | 3.87 | 9: +9,518 (n=867), 10: +8,842 (n=41), 5: +8,778 (n=6), 11: +7,626 (n=21), 7: +7,109 (n=15), 8: +6,829 (n=537), 4: +6,433 (n=34), 12: +3,234 (n=76), 6: +591 (n=5) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| OPP_GROWTH | +8,354 | 1.1 | 1.4 | 9 | 1600 | 2.34 | 1.1: +9,830 (n=593), 1.5: +8,635 (n=160), 1.2: +7,752 (n=109), 1.3: +7,120 (n=508), 1.4: +6,557 (n=147), 1.8: +6,509 (n=12), 1.0: +6,161 (n=38), 1.6: +6,101 (n=13), 1.7: +1,476 (n=20) |
+| OPP_GROWTH | +8,336 | 1.1 | 1.4 | 9 | 1602 | 2.34 | 1.1: +9,811 (n=594), 1.5: +8,635 (n=160), 1.2: +7,794 (n=110), 1.3: +7,120 (n=508), 1.4: +6,557 (n=147), 1.8: +6,509 (n=12), 1.0: +6,161 (n=38), 1.6: +6,101 (n=13), 1.7: +1,476 (n=20) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| load_per_hand | +8,000 | 21 | 20 | 15 | 1600 | 7.36 | 21: +10,307 (n=45), 19: +9,695 (n=382), 20: +8,045 (n=892), 16: +7,829 (n=26), 17: +7,468 (n=86), 25: +7,430 (n=3), 22: +7,405 (n=22), 18: +7,305 (n=50), 14: +6,635 (n=11), 24: +5,475 (n=6), 23: +4,719 (n=11), 26: +3,301 (n=4), 13: +3,027 (n=3), 15: +2,348 (n=52), 12: +2,307 (n=7) |
+| load_per_hand | +8,000 | 21 | 20 | 15 | 1602 | 7.35 | 21: +10,307 (n=45), 19: +9,666 (n=383), 20: +8,045 (n=892), 16: +7,829 (n=26), 17: +7,468 (n=86), 25: +7,430 (n=3), 22: +7,405 (n=22), 18: +7,305 (n=50), 14: +6,635 (n=11), 24: +5,475 (n=6), 23: +5,355 (n=12), 26: +3,301 (n=4), 13: +3,027 (n=3), 15: +2,348 (n=52), 12: +2,307 (n=7) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| MAX_SHEEP | +7,655 | 13 | 14 | 10 | 1597 | 3.9 | 13: +9,486 (n=402), 14: +7,981 (n=1118), 12: +7,487 (n=19), 11: +6,305 (n=9), 8: +6,166 (n=3), 9: +3,009 (n=23), 10: +1,832 (n=23) |
+| MAX_SHEEP | +7,655 | 13 | 14 | 10 | 1599 | 3.9 | 13: +9,486 (n=402), 14: +7,977 (n=1120), 12: +7,487 (n=19), 11: +6,305 (n=9), 8: +6,166 (n=3), 9: +3,009 (n=23), 10: +1,832 (n=23) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| STRAW_CUTOFF | +7,235 | 16 | 19 | 8 | 1599 | 4.56 | 16: +9,905 (n=72), 17: +8,295 (n=24), 19: +8,160 (n=1271), 20: +7,711 (n=202), 18: +7,514 (n=25), 14: +5,891 (n=2), 15: +2,670 (n=3) |
+| STRAW_CUTOFF | +7,235 | 16 | 19 | 8 | 1601 | 4.56 | 16: +9,905 (n=72), 17: +8,295 (n=24), 19: +8,152 (n=1272), 20: +7,734 (n=203), 18: +7,514 (n=25), 14: +5,891 (n=2), 15: +2,670 (n=3) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| OPENING_MELONS | +6,488 | 10 | 14 | 8 | 1599 | 2.87 | 10: +10,817 (n=8), 11: +9,813 (n=175), 13: +9,649 (n=481), 8: +8,647 (n=6), 12: +7,848 (n=39), 14: +7,047 (n=885), 9: +4,329 (n=5) |
+| OPENING_MELONS | +6,488 | 10 | 14 | 8 | 1601 | 2.87 | 10: +10,817 (n=8), 11: +9,813 (n=175), 13: +9,654 (n=482), 8: +8,647 (n=6), 12: +7,624 (n=40), 14: +7,047 (n=885), 9: +4,329 (n=5) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
-| CROP_SWEEP_LEN | +6,058 | 8 | 6 | 8 | 1600 | 3.54 | 8: +8,884 (n=908), 7: +8,249 (n=83), 10: +8,070 (n=65), 5: +7,685 (n=33), 6: +7,203 (n=393), 9: +6,895 (n=61), 3: +5,512 (n=43), 4: +2,826 (n=14) |
+| CROP_SWEEP_LEN | +6,051 | 8 | 6 | 8 | 1602 | 3.54 | 8: +8,877 (n=910), 7: +8,249 (n=83), 10: +8,070 (n=65), 5: +7,685 (n=33), 6: +7,203 (n=393), 9: +6,895 (n=61), 3: +5,512 (n=43), 4: +2,826 (n=14) |
   __Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only.__
 
 ## Behavioural cells (animals@d15, land, max hands) → best dev margin, n
 
 - (9, 3, 5): +15,151 (n=64)
 - (9, 3, 4): +14,873 (n=155)
-- (11, 3, 6): +14,856 (n=149)
+- (11, 3, 6): +14,856 (n=150)
 - (11, 3, 5): +14,836 (n=358)
 - (10, 3, 6): +14,801 (n=45)
-- (10, 3, 5): +14,696 (n=186)
+- (10, 3, 5): +14,696 (n=187)
 - (11, 3, 4): +14,581 (n=201)
 - (10, 3, 4): +14,370 (n=181)
 - (13, 3, 5): +13,609 (n=11)
@@ -250,7 +250,7 @@ __Observational. Exact per-cell counterfactual against deterministic tapes; unce
 
 A wide CI here is the measurement telling you the panel is too thin for that class, not that the class is worthless -- lumpy investments (animals, land) need more cells than the 12-cell margin panel provides. See `docs/AGE-360-horizon-roi.md`.
 
-_Generated 2026-09-16 00:10. Candidate files in `evolve/gen/`, DB `evolve/evolve.db`._
+_Generated 2026-09-16 00:15. Candidate files in `evolve/gen/`, DB `evolve/evolve.db`._
 
 ## Recent failure observations (grouped by failure class)
 
@@ -264,21 +264,21 @@ _Generated 2026-09-16 00:10. Candidate files in `evolve/gen/`, DB `evolve/evolve
 
 ## Action timing patterns (AGE-359: observational — correlations, not causes)
 
-**1600 candidates** with action_table data, **218906 total action events** extracted (SELL/BUY item counts are averaged across the 5 trajectory seeds — see trace.py SUMMARY_FIELDS).
+**1602 candidates** with action_table data, **219181 total action events** extracted (SELL/BUY item counts are averaged across the 5 trajectory seeds — see trace.py SUMMARY_FIELDS).
 
 Action timing vs outcome correlation. For each action type, the table shows mean dev_margin of candidates that performed that action in each horizon bucket. Higher dev_margin = better outcome. This is NOT causal — a candidate that sells early may also have other good properties. Use as a guide for what to test, not as a proven mechanism.
 
 | action_type | early (days 1-14) | mid (days 15-21) | late (days 22-29) | total events |
 |---|---|---:|---|---|---:|
-| SELL |         +8,209 (n=21607) |         +8,161 (n=11200) |         +8,161 (n=12800) | 45607 |
-| BUY_ANIMAL |         +7,794 (n=10606) |         +7,865 (n=2494) |              — (n=0) | 13100 |
-| BUY_SEED |         +8,388 (n=17809) |         +8,156 (n=5903) |         +7,919 (n=2386) | 26098 |
-| BUY_LAND |         +8,349 (n=6045) |         +8,014 (n=1170) |              — (n=0) | 7215 |
-| BUY_PRODUCT |         +8,161 (n=23975) |         +8,161 (n=11200) |         +8,196 (n=10942) | 46117 |
-| HIRE |         +8,205 (n=12094) |         +8,231 (n=5880) |         +8,552 (n=4038) | 22012 |
-| WATER_MISSED |         +8,321 (n=18901) |         +8,161 (n=11200) |         +8,168 (n=12664) | 42765 |
+| SELL |         +8,206 (n=21633) |         +8,158 (n=11214) |         +8,158 (n=12816) | 45663 |
+| BUY_ANIMAL |         +7,791 (n=10619) |         +7,853 (n=2499) |              — (n=0) | 13118 |
+| BUY_SEED |         +8,386 (n=17828) |         +8,149 (n=5913) |         +7,917 (n=2388) | 26129 |
+| BUY_LAND |         +8,345 (n=6052) |         +8,017 (n=1171) |              — (n=0) | 7223 |
+| BUY_PRODUCT |         +8,158 (n=24005) |         +8,158 (n=11214) |         +8,193 (n=10955) | 46174 |
+| HIRE |         +8,202 (n=12109) |         +8,227 (n=5891) |         +8,549 (n=4042) | 22042 |
+| WATER_MISSED |         +8,317 (n=18925) |         +8,158 (n=11214) |         +8,165 (n=12680) | 42819 |
   _Water missed = postponement signal. Negative = candidates that missed water had lower dev_margin._
-| FEED_MISSED |         +7,935 (n=9648) |         +6,951 (n=2845) |         +7,567 (n=3499) | 15992 |
+| FEED_MISSED |         +7,932 (n=9660) |         +6,941 (n=2850) |         +7,565 (n=3503) | 16013 |
   _Feed missed = postponement signal. Negative = candidates that missed feed had lower dev_margin._
 
 ## Postponement cost curves (mean dev_margin by days postponed)
@@ -287,14 +287,14 @@ For each action type, how does outcome vary with how late the action was taken? 
 
 | action_type | on-time (0d) | 1d late | 2d late | 3d late | 4d late | 5+d late |
 |---|---|---:|---:|---:|---:|---:|---:|
-| SELL |      +8,297 |      +8,170 |      +7,785 |      +8,727 |      +8,022 |      +8,142 |
-| BUY_ANIMAL |      +7,265 |           — |           — |         -35 |      +9,164 |      +7,716 |
-| BUY_SEED |      +8,116 |      +8,677 |      +4,264 |      +2,156 |      +9,385 |      +8,242 |
-| BUY_LAND |           — |      +3,123 |      +8,211 |      +1,344 |      +8,832 |      +8,346 |
-| BUY_PRODUCT |      +8,170 |           — |           — |           — |           — |           — |
-| HIRE |      +8,275 |           — |           — |           — |           — |           — |
-| WATER_MISSED |           — |           — |      +8,161 |      +8,637 |      +8,161 |      +8,225 |
-| FEED_MISSED |           — |      +8,179 |      +5,542 |           — |           — |      +7,644 |
+| SELL |      +8,295 |      +8,167 |      +7,785 |      +8,726 |      +8,019 |      +8,138 |
+| BUY_ANIMAL |      +7,263 |           — |           — |         -35 |      +9,159 |      +7,710 |
+| BUY_SEED |      +8,112 |      +8,680 |      +4,264 |      +2,156 |      +9,388 |      +8,238 |
+| BUY_LAND |           — |      +3,123 |      +8,207 |      +1,344 |      +8,821 |      +8,344 |
+| BUY_PRODUCT |      +8,166 |           — |           — |           — |           — |           — |
+| HIRE |      +8,272 |           — |           — |           — |           — |           — |
+| WATER_MISSED |           — |           — |      +8,158 |      +8,632 |      +8,158 |      +8,222 |
+| FEED_MISSED |           — |      +8,176 |      +5,542 |           — |           — |      +7,640 |
 
 ## Action contexts with strongest outcome signal (top 10)
 
@@ -302,36 +302,36 @@ Action × horizon combinations sorted by |mean_dev|. These are the patterns most
 
 | rank | action_type | horizon | mean_dev | n | signal/noise |
 |---|---|---:|---:|---:|---:|
-| 1 | HIRE | late | +8,552 | 4038 | 1.83 |
-| 2 | BUY_SEED | early | +8,388 | 17809 | 1.8 |
-| 3 | BUY_LAND | early | +8,349 | 6045 | 1.75 |
-| 4 | WATER_MISSED | early | +8,321 | 18901 | 1.79 |
-| 5 | HIRE | mid | +8,231 | 5880 | 1.7 |
-| 6 | SELL | early | +8,209 | 21607 | 1.73 |
-| 7 | HIRE | early | +8,205 | 12094 | 1.71 |
-| 8 | BUY_PRODUCT | late | +8,196 | 10942 | 1.71 |
-| 9 | WATER_MISSED | late | +8,168 | 12664 | 1.7 |
-| 10 | SELL | mid | +8,161 | 11200 | 1.7 |
+| 1 | HIRE | late | +8,549 | 4042 | 1.83 |
+| 2 | BUY_SEED | early | +8,386 | 17828 | 1.8 |
+| 3 | BUY_LAND | early | +8,345 | 6052 | 1.74 |
+| 4 | WATER_MISSED | early | +8,317 | 18925 | 1.79 |
+| 5 | HIRE | mid | +8,227 | 5891 | 1.7 |
+| 6 | SELL | early | +8,206 | 21633 | 1.73 |
+| 7 | HIRE | early | +8,202 | 12109 | 1.71 |
+| 8 | BUY_PRODUCT | late | +8,193 | 10955 | 1.71 |
+| 9 | WATER_MISSED | late | +8,165 | 12680 | 1.7 |
+| 10 | SELL | mid | +8,158 | 11214 | 1.7 |
 
 ## Action × context bucket (mean dev_margin, n≥3)
 
 **Context key:** (animals: low<8/mid8-12/high>12, hands: low<6/mid6-10/high>10, cash: low<500/mid500-2000/high>2000, crops: low<5/mid5-15/high>15)
 
 - **BUY_SEED** in ('low', 'low', 'low', 'mid'): +11,381 (n=224)
-- **FEED_MISSED** in ('low', 'low', 'low', 'mid'): +10,103 (n=371)
-- **WATER_MISSED** in ('low', 'low', 'low', 'mid'): +10,096 (n=355)
-- **SELL** in ('low', 'low', 'low', 'mid'): +10,089 (n=376)
-- **BUY_PRODUCT** in ('low', 'low', 'low', 'mid'): +10,089 (n=376)
-- **BUY_ANIMAL** in ('low', 'low', 'low', 'mid'): +10,084 (n=374)
+- **FEED_MISSED** in ('low', 'low', 'low', 'mid'): +10,073 (n=372)
+- **WATER_MISSED** in ('low', 'low', 'low', 'mid'): +10,064 (n=356)
+- **SELL** in ('low', 'low', 'low', 'mid'): +10,059 (n=377)
+- **BUY_PRODUCT** in ('low', 'low', 'low', 'mid'): +10,059 (n=377)
+- **BUY_ANIMAL** in ('low', 'low', 'low', 'mid'): +10,054 (n=375)
 - **FEED_MISSED** in ('mid', 'low', 'mid', 'high'): +9,584 (n=167)
 - **BUY_LAND** in ('mid', 'low', 'mid', 'high'): +9,542 (n=172)
 - **BUY_ANIMAL** in ('mid', 'low', 'mid', 'high'): +9,499 (n=173)
 - **WATER_MISSED** in ('mid', 'low', 'mid', 'high'): +9,476 (n=173)
-- **BUY_LAND** in ('mid', 'mid', 'mid', 'high'): +9,459 (n=1030)
 - **SELL** in ('mid', 'low', 'mid', 'high'): +9,451 (n=175)
 - **BUY_SEED** in ('mid', 'low', 'mid', 'high'): +9,451 (n=175)
 - **BUY_PRODUCT** in ('mid', 'low', 'mid', 'high'): +9,451 (n=175)
-- **FEED_MISSED** in ('low', 'low', 'low', 'high'): +9,326 (n=2183)
+- **BUY_LAND** in ('mid', 'mid', 'mid', 'high'): +9,441 (n=1033)
+- **FEED_MISSED** in ('low', 'low', 'low', 'high'): +9,324 (n=2186)
 
 ## Remaining-horizon ROI (AGE-360)
 
@@ -433,4 +433,4 @@ __Observational. Exact per-cell counterfactual against deterministic tapes; unce
 
 A wide CI here is the measurement telling you the panel is too thin for that class, not that the class is worthless -- lumpy investments (animals, land) need more cells than the 12-cell margin panel provides. See `docs/AGE-360-horizon-roi.md`.
 
-_Generated 2026-09-16 00:10. Candidate files in `evolve/gen/`, DB `evolve/evolve.db`._
+_Generated 2026-09-16 00:15. Candidate files in `evolve/gen/`, DB `evolve/evolve.db`._
