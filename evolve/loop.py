@@ -146,7 +146,7 @@ class Loop:
         space.validate_behavioral_space()   # fail before games if an active control cannot render
         self.cfg["base"] = str(snap)
         self.chassis_text = snap.read_text()
-        self.cfg["reference"] = str(space.render(space.o15_params()))   # diagnosis baseline = O15 (chassis, ORCH_ON=0)
+        self.cfg["reference"] = str(space.render(space.o15_params()))   # diagnosis baseline = current frontier chassis (O162 via base_params()); name is legacy, function tracks frontier
         self.cfg["panel_floor"] = args.panel_floor
         self.cfg["own_floor"] = args.own_floor
         self.cfg["dev_confirm_blocks"] = DEV_CONFIRM_BLOCKS
@@ -537,7 +537,11 @@ class Loop:
 
 def export_archive(db, run_id, k_sha, frontier=None):
     """Machine-readable state for the proposer and the Mac-side task."""
-    c1 = space.o15_params()   # diff reference for the archive = O15 (the yardstick frontier)
+    # stable archive diff reference = current frontier chassis (O162 via base_params()); "C1" name is legacy
+    base = space.o15_params()
+    base_key = space.params_key(base)
+    base_path = space.render(base)
+    ref = db.get(base_key)
     rows = db.alive(k_sha=k_sha, frontier=frontier)
     by = defaultdict(list)
     for r in rows:
@@ -548,7 +552,7 @@ def export_archive(db, run_id, k_sha, frontier=None):
         return {"key": r["key"], "island": r.get("island"), "origin": r["origin"], "status": r["status"],
                 "dev": r["dev_margin"], "dev_t": r["dev_t"], "dev_wl": [r["dev_wins"], r["dev_losses"]],
                 "clone": r["clone_margin"], "held": r["held_margin"], "held_t": r["held_t"], "held_clone": r["held_clone_margin"],
-                "diff_vs_c1": {k: [a, b] for k, (a, b) in space.diff(p, c1).items()},
+                "diff_vs_c1": {k: [a, b] for k, (a, b) in space.diff(p, base).items()},
                 "blocks": sorted(json.loads(r["blocks"]).keys()) if r.get("blocks") else [],
                 "ablation": json.loads(r["ablation"]) if r.get("ablation") else None,
                 "diag": r.get("diagnosis"),
@@ -558,7 +562,7 @@ def export_archive(db, run_id, k_sha, frontier=None):
 
     counts_all = db.counts()
     held = sorted([r for r in rows if r["status"] in ("held_pass", "held_fail")], key=lambda r: -(r["held_margin"] or -1e9))
-    imp = report_mod.param_exploration(db.all(), c1)
+    imp = report_mod.param_exploration(db.all(), base)
     dead = [dict(r) for r in db.conn.execute(
         "SELECT origin, note, smoke_margin, status, diagnosis, failure_profile, exec_summary, params FROM candidates WHERE status IN ('dead_smoke','dead_pattern','held_fail','error') ORDER BY created DESC LIMIT 40")]
     # grouped failure observations (observational only — present in archive for LLM context)
@@ -570,7 +574,7 @@ def export_archive(db, run_id, k_sha, frontier=None):
     frontier_gap = None
     try:
         import trace as trace_mod
-        c1_path = space.render(c1)
+        c1_path = ref_path
         if run.get("clone"):
             tape0 = str(run["clone"]).split(",")[0].strip()   # first opponent of the panel
             g = trace_mod.traced(str(c1_path), tape0, 1)
@@ -590,7 +594,7 @@ def export_archive(db, run_id, k_sha, frontier=None):
         "failure_observations": failure_groups,
         "action_table_summary": action_table_summary,
         "frontier_gap": frontier_gap,
-        "reference": {"c1": slim(db.get(space.params_key(c1))) if db.get(space.params_key(c1)) else None},
+        "reference": {"c1": slim(ref) if ref else None},
     }
     ARCHIVE.write_text(json.dumps(out, indent=1, default=str))
     return ARCHIVE
@@ -608,8 +612,9 @@ def main():
     ap.add_argument("--max-candidates", type=int, default=0)
     ap.add_argument("--jobs", type=int, default=None)
     ap.add_argument("--frontier", default=str(ROOT / "candidates" / "O162_THREE_SHOPS65.py"),
-                    help="head-to-head yardstick (selection score). Sep 15: O162_THREE_SHOPS65 (rebased from O15 on Sep 15); "
-                         "O33/O26 remain the immutable controls for dose-response.")
+                    help="head-to-head yardstick (selection score). Sep 16: O162_THREE_SHOPS65 (current ladder champion,"
+                         " O15 was ~150 own-code generations stale). Rebuilt via evolve/blocks.py build from"
+                         " candidates/O162_THREE_SHOPS65.py. O33/O26 remain immutable controls for dose-response.")
     ap.add_argument("--clone", default=", ".join(str(ROOT / "Opponents" / t) for t in (
                         "tape_majkel1337_107852724.py", "tape_ymgaq_106415741.py",
                         "tape_unknownmothergoose_107932246.py", "tape_feeltheagi_107564195.py")),

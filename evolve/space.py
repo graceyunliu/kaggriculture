@@ -231,15 +231,21 @@ def base_params():
 
 
 def c1_params():
-    """C1 = K.py with the frontier-opening knobs (docs/candidates-C1-H10-sep03.md)."""
+    """C1 = K.py with the frontier-opening knobs (docs/candidates-C1-H10-sep03.md).
+    LEGACY NAME: kept for backward compat of archived diff_vs_c1 results; params now
+    come from base_params() which reads the current frontier chassis (O162), so this
+    tracks the frontier automatically rather than being a fixed V3.12 baseline."""
     p = base_params()
-    p.update({"opening": "frontier", "early_hire_days": 5, "feed_spare_poor": 0, "open_melons": 8})
+    p.update(O15_OVERRIDES)   # O15_OVERRIDES is empty — no fixed overrides, tracks frontier
     return p
 
 
 O15_OVERRIDES = {}
 def o15_params():
-    """Legacy island reference, rebased to the exact O26 default because O26 is the frozen frontier."""
+    """Legacy island reference name. Params now come from base_params() which reads the
+    current frontier chassis (O162_THREE_SHOPS65), so this tracks the frontier automatically.
+    The \"O15\" name is preserved for backward compat; O15_OVERRIDES is empty so there are
+    no fixed knob overrides — this is the exact current frontier, not a stale O15 snapshot."""
     p = base_params()
     for k, v in O15_OVERRIDES.items():
         if k in p:
