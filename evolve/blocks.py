@@ -16,7 +16,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-K_LIVE = ROOT / "candidates" / "O26_CARROT_SIZING.py"   # Frozen behavioral source of truth for the exact O26 chassis.
+K_LIVE = ROOT / "candidates" / "O162_THREE_SHOPS65.py"   # Frozen behavioral source of truth for the current ladder champion (rebased Sep 16 2026, was O26_CARROT_SIZING.py).
 CHASSIS = ROOT / "evolve" / "chassis.py"
 
 # block name -> top-level function names (must be contiguous in the file, in this order)
