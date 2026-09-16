@@ -1,22 +1,20 @@
 {
- "generated": "2026-09-16T06:33:11",
- "run_id": "20260916-062635",
+ "generated": "2026-09-16T06:36:23",
+ "run_id": "20260916-063453",
  "chassis_sha": "3b070353e431",
  "frontier": "candidates/O162_THREE_SHOPS65.py",
  "clone": "Opponents/tape_majkel1337_107852724.py,Opponents/tape_ymgaq_106415741.py,Opponents/tape_unknownmothergoose_107932246.py,Opponents/tape_feeltheagi_107564195.py,Opponents/tape_majkel1337_109144271.py",
  "summary": {
-  "elapsed_s": 390,
-  "evaluated": 13,
+  "elapsed_s": 83,
+  "evaluated": 0,
   "counts": {
-   "alive": 9,
-   "dead_pattern": 1,
-   "noop": 4
+   "alive": 1
   },
-  "games": 1802,
-  "games_per_hour": 16634
+  "games": 448,
+  "games_per_hour": 19470
  },
  "counts_all_runs": {
-  "alive": 28989,
+  "alive": 28990,
   "dead_pattern": 11785,
   "dead_smoke": 10040,
   "error": 2152,
@@ -273,6 +271,115 @@
      "money_d10": 3325
     },
     "note": "champ_panel={'O42_MAX_HANDS_LATE_EXPAND': 3943.575} champ_margin=+3,944 champ_own=+84,901"
+   },
+   {
+    "key": "c02870cadd2a",
+    "island": "best",
+    "origin": "crossover",
+    "status": "alive",
+    "dev": 4129.566666666667,
+    "dev_t": 3.957544918975415,
+    "dev_wl": [
+     23,
+     7
+    ],
+    "clone": 22152.170000000002,
+    "held": null,
+    "held_t": null,
+    "held_clone": null,
+    "diff_vs_c1": {
+     "max_animals": [
+      17,
+      15
+     ],
+     "wheat_per_animal": [
+      0.0,
+      0.4
+     ],
+     "wheat_sell_price": [
+      30,
+      34
+     ],
+     "wheat_hold_days": [
+      0,
+      1
+     ],
+     "MAX_HANDS": [
+      14,
+      16
+     ],
+     "ROUTE_LEN": [
+      3,
+      2
+     ],
+     "CROP_SWEEP_LEN": [
+      6,
+      7
+     ],
+     "CROP_SWEEP_RADIUS": [
+      5,
+      6
+     ],
+     "MELON_PRICE_CUSHION": [
+      100,
+      58
+     ],
+     "NEAR_RADIUS": [
+      2,
+      4
+     ],
+     "OPP_GROWTH": [
+      1.4,
+      1.0
+     ],
+     "FERT_RADIUS": [
+      3,
+      2
+     ],
+     "SPREAD_CAP": [
+      3,
+      4
+     ],
+     "MELON_MORNING": [
+      1,
+      0
+     ],
+     "MELON_MORNING_MIN_YIELD": [
+      6,
+      5
+     ]
+    },
+    "blocks": [],
+    "ablation": null,
+    "diag": "cand falls behind C1 from day 28 (gap -1,505 -> final -1,349); days 26-29 drivers: missed_water +7, sales_rev -1,355, water_hour +1.22. Hands 5 vs 5, animals 11 vs 11, plants 3 vs 2.",
+    "exec": {
+     "final_networth": 89755,
+     "sales": 106665,
+     "buys": 16539,
+     "missed_feed": 15,
+     "missed_water": 331,
+     "escapes": 0,
+     "chores_enumerated": 1557,
+     "chores_completed": 1280,
+     "skipped_feed_not_due": 6,
+     "weeds_new": 3,
+     "unit_turns": 6316,
+     "move_share": 0.463,
+     "idle_share": 0.117,
+     "travel_per_task": 1.1,
+     "reversals": 65,
+     "feed_hour": 7.5,
+     "water_hour": 13.6,
+     "max_hands": 12,
+     "max_animals": 11
+    },
+    "descriptor": {
+     "animals_d15": 11,
+     "land_final": 3,
+     "hands_max": 5,
+     "money_d10": 3703
+    },
+    "note": "champ_panel={'O42_MAX_HANDS_LATE_EXPAND': 2817.4} champ_margin=+2,817 champ_own=+84,681"
    },
    {
     "key": "64a40dcea97c",
@@ -1020,99 +1127,6 @@
      "money_d10": 2289
     },
     "note": "champ_panel={'O42_MAX_HANDS_LATE_EXPAND': -539.175} champ_margin=-539 champ_own=+83,317"
-   },
-   {
-    "key": "71f0e801cb50",
-    "island": "best",
-    "origin": "crossover",
-    "status": "alive",
-    "dev": 3278.9333333333334,
-    "dev_t": 2.879590427712398,
-    "dev_wl": [
-     24,
-     6
-    ],
-    "clone": 20536.4,
-    "held": null,
-    "held_t": null,
-    "held_clone": null,
-    "diff_vs_c1": {
-     "load_per_hand": [
-      20,
-      22
-     ],
-     "max_animals": [
-      17,
-      14
-     ],
-     "wheat_hold_days": [
-      0,
-      1
-     ],
-     "MAX_HANDS": [
-      14,
-      15
-     ],
-     "ROUTE_LEN": [
-      3,
-      2
-     ],
-     "MELON_PRICE_CUSHION": [
-      100,
-      113
-     ],
-     "NEAR_RADIUS": [
-      2,
-      3
-     ],
-     "OPP_GROWTH": [
-      1.4,
-      1.0
-     ],
-     "SPREAD_W": [
-      1.25,
-      1.0
-     ],
-     "MELON_MORNING": [
-      1,
-      0
-     ],
-     "MELON_MORNING_LAST_HOUR": [
-      8,
-      9
-     ]
-    },
-    "blocks": [],
-    "ablation": null,
-    "diag": "cand falls behind C1 from day 28 (gap -2,049 -> final -3,134); days 26-29 drivers: sales_rev -4,109, water_hour +2.55, weeds_new +2. Hands 5 vs 5, animals 11 vs 11, plants 4 vs 2.",
-    "exec": {
-     "final_networth": 87970,
-     "sales": 107445,
-     "buys": 19411,
-     "missed_feed": 15,
-     "missed_water": 353,
-     "escapes": 0,
-     "chores_enumerated": 1639,
-     "chores_completed": 1326,
-     "skipped_feed_not_due": 6,
-     "weeds_new": 16,
-     "unit_turns": 6302,
-     "move_share": 0.478,
-     "idle_share": 0.094,
-     "travel_per_task": 1.12,
-     "reversals": 49,
-     "feed_hour": 8.1,
-     "water_hour": 13.8,
-     "max_hands": 12,
-     "max_animals": 11
-    },
-    "descriptor": {
-     "animals_d15": 11,
-     "land_final": 3,
-     "hands_max": 5,
-     "money_d10": 3211
-    },
-    "note": "champ_panel={'O42_MAX_HANDS_LATE_EXPAND': 2972.55} champ_margin=+2,973 champ_own=+85,607"
    }
   ],
   "wide": [
@@ -4642,6 +4656,10 @@
      "mean": -21013,
      "n": 79
     },
+    "58": {
+     "mean": -21027,
+     "n": 17
+    },
     "103": {
      "mean": -21278,
      "n": 64
@@ -4673,10 +4691,6 @@
     "50": {
      "mean": -22466,
      "n": 445
-    },
-    "58": {
-     "mean": -22600,
-     "n": 16
     },
     "144": {
      "mean": -22658,
@@ -4839,22 +4853,22 @@
      "n": 553
     }
    },
-   "total_candidates": 32210,
+   "total_candidates": 32211,
    "n_values_tested": 101,
    "sampling_balance": 57.75,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
   },
   {
    "param": "fert_buy",
-   "spread": 33968,
+   "spread": 33966,
    "best_value": 4,
-   "best_mean": 6856,
+   "best_mean": 6854,
    "c1_value": 4,
    "c1_mean": null,
    "means": {
     "4": {
-     "mean": 6856,
-     "n": 1833
+     "mean": 6854,
+     "n": 1834
     },
     "0": {
      "mean": -21889,
@@ -4873,7 +4887,7 @@
      "n": 4999
     }
    },
-   "total_candidates": 32210,
+   "total_candidates": 32211,
    "n_values_tested": 5,
    "sampling_balance": 0.93,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
@@ -4943,8 +4957,8 @@
      "n": 194
     },
     "0": {
-     "mean": -21205,
-     "n": 25875
+     "mean": -21204,
+     "n": 25876
     },
     "5": {
      "mean": -21821,
@@ -5043,7 +5057,7 @@
      "n": 48
     }
    },
-   "total_candidates": 32210,
+   "total_candidates": 32211,
    "n_values_tested": 39,
    "sampling_balance": 30.33,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
@@ -5113,8 +5127,8 @@
      "n": 67
     },
     "34": {
-     "mean": -19424,
-     "n": 213
+     "mean": -19314,
+     "n": 214
     },
     "26": {
      "mean": -20490,
@@ -5157,7 +5171,7 @@
      "n": 4
     }
    },
-   "total_candidates": 32209,
+   "total_candidates": 32210,
    "n_values_tested": 26,
    "sampling_balance": 9.02,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
@@ -5187,8 +5201,8 @@
      "n": 860
     },
     "7": {
-     "mean": -9361,
-     "n": 2391
+     "mean": -9355,
+     "n": 2392
     },
     "5": {
      "mean": -20856,
@@ -5203,7 +5217,7 @@
      "n": 777
     }
    },
-   "total_candidates": 32210,
+   "total_candidates": 32211,
    "n_values_tested": 8,
    "sampling_balance": 5.08,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
@@ -5253,15 +5267,15 @@
      "n": 76
     },
     "14": {
-     "mean": -23640,
-     "n": 23657
+     "mean": -23639,
+     "n": 23658
     },
     "5": {
      "mean": -24624,
      "n": 8
     }
    },
-   "total_candidates": 32210,
+   "total_candidates": 32211,
    "n_values_tested": 11,
    "sampling_balance": 7.08,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
@@ -5343,8 +5357,8 @@
      "n": 1139
     },
     "22": {
-     "mean": -27476,
-     "n": 11471
+     "mean": -27473,
+     "n": 11472
     },
     "17": {
      "mean": -28320,
@@ -5359,22 +5373,22 @@
      "n": 95
     }
    },
-   "total_candidates": 32210,
+   "total_candidates": 32211,
    "n_values_tested": 21,
    "sampling_balance": 6.48,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
   },
   {
    "param": "MAX_HANDS",
-   "spread": 24239,
+   "spread": 24248,
    "best_value": 16,
-   "best_mean": -6391,
+   "best_mean": -6382,
    "c1_value": 14,
    "c1_mean": null,
    "means": {
     "16": {
-     "mean": -6391,
-     "n": 1285
+     "mean": -6382,
+     "n": 1286
     },
     "15": {
      "mean": -11093,
@@ -5409,22 +5423,22 @@
      "n": 95
     }
    },
-   "total_candidates": 32210,
+   "total_candidates": 32211,
    "n_values_tested": 9,
    "sampling_balance": 3.52,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
   },
   {
    "param": "OPENING_MELONS",
-   "spread": 23884,
+   "spread": 23886,
    "best_value": 14,
-   "best_mean": -5085,
+   "best_mean": -5083,
    "c1_value": 14,
    "c1_mean": null,
    "means": {
     "14": {
-     "mean": -5085,
-     "n": 4547
+     "mean": -5083,
+     "n": 4548
     },
     "13": {
      "mean": -6900,
@@ -5459,22 +5473,22 @@
      "n": 2834
     }
    },
-   "total_candidates": 32210,
+   "total_candidates": 32211,
    "n_values_tested": 9,
    "sampling_balance": 2.37,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
   },
   {
    "param": "ROUTE_LEN",
-   "spread": 23277,
+   "spread": 23279,
    "best_value": 2,
-   "best_mean": -5709,
+   "best_mean": -5708,
    "c1_value": 3,
    "c1_mean": null,
    "means": {
     "2": {
-     "mean": -5709,
-     "n": 5890
+     "mean": -5708,
+     "n": 5891
     },
     "3": {
      "mean": -24905,
@@ -5489,7 +5503,7 @@
      "n": 62
     }
    },
-   "total_candidates": 32210,
+   "total_candidates": 32211,
    "n_values_tested": 4,
    "sampling_balance": 2.15,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
@@ -5539,15 +5553,15 @@
      "n": 70
     },
     "10": {
-     "mean": -25887,
-     "n": 20181
+     "mean": -25886,
+     "n": 20182
     },
     "13": {
      "mean": -29741,
      "n": 73
     }
    },
-   "total_candidates": 32210,
+   "total_candidates": 32211,
    "n_values_tested": 11,
    "sampling_balance": 5.89,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
@@ -5615,8 +5629,8 @@
      "n": 2801
     },
     "17": {
-     "mean": -18292,
-     "n": 9533
+     "mean": -18290,
+     "n": 9534
     },
     "19": {
      "mean": -23648,
@@ -5643,7 +5657,7 @@
      "n": 927
     }
    },
-   "total_candidates": 32210,
+   "total_candidates": 32211,
    "n_values_tested": 9,
    "sampling_balance": 1.66,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
@@ -5677,8 +5691,8 @@
      "n": 27017
     },
     "0.4": {
-     "mean": -21989,
-     "n": 243
+     "mean": -21882,
+     "n": 244
     },
     "0.9": {
      "mean": -22458,
@@ -5709,7 +5723,7 @@
      "n": 29
     }
    },
-   "total_candidates": 32210,
+   "total_candidates": 32211,
    "n_values_tested": 13,
    "sampling_balance": 9.9,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
@@ -5727,8 +5741,8 @@
      "n": 1184
     },
     "15": {
-     "mean": -10252,
-     "n": 754
+     "mean": -10233,
+     "n": 755
     },
     "12": {
      "mean": -12092,
@@ -5767,7 +5781,7 @@
      "n": 14079
     }
    },
-   "total_candidates": 32210,
+   "total_candidates": 32211,
    "n_values_tested": 11,
    "sampling_balance": 3.81,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
@@ -5805,8 +5819,8 @@
      "n": 135
     },
     "20": {
-     "mean": -21058,
-     "n": 18343
+     "mean": -21057,
+     "n": 18344
     },
     "22": {
      "mean": -22182,
@@ -5841,7 +5855,7 @@
      "n": 94
     }
    },
-   "total_candidates": 32210,
+   "total_candidates": 32211,
    "n_values_tested": 15,
    "sampling_balance": 7.54,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
@@ -5863,8 +5877,8 @@
      "n": 847
     },
     "4": {
-     "mean": -22022,
-     "n": 3621
+     "mean": -22015,
+     "n": 3622
     },
     "6": {
      "mean": -25210,
@@ -5875,7 +5889,7 @@
      "n": 14564
     }
    },
-   "total_candidates": 25317,
+   "total_candidates": 25318,
    "n_values_tested": 5,
    "sampling_balance": 1.88,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
@@ -5913,8 +5927,8 @@
      "n": 247
     },
     "0.55": {
-     "mean": -21721,
-     "n": 16025
+     "mean": -21719,
+     "n": 16026
     },
     "0.4": {
      "mean": -22048,
@@ -5949,7 +5963,7 @@
      "n": 1595
     }
    },
-   "total_candidates": 32210,
+   "total_candidates": 32211,
    "n_values_tested": 15,
    "sampling_balance": 6.46,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
@@ -5991,15 +6005,15 @@
      "n": 902
     },
     "1.0": {
-     "mean": -25755,
-     "n": 2393
+     "mean": -25743,
+     "n": 2394
     },
     "1.1": {
      "mean": -26815,
      "n": 8578
     }
    },
-   "total_candidates": 32210,
+   "total_candidates": 32211,
    "n_values_tested": 9,
    "sampling_balance": 1.4,
    "_note": "Observed outcome variation, NOT causal importance. Confounded by interactions, seed variance, selection bias, and outliers. Treat as exploration weight only."
@@ -6453,156 +6467,156 @@
   "by_action_horizon": {
    "SELL": {
     "early": {
-     "mean_dev": -1271,
-     "n": 3614,
-     "total_events": 7619
+     "mean_dev": -1252,
+     "n": 3627,
+     "total_events": 7647
     },
     "mid": {
-     "mean_dev": -1303,
-     "n": 1869,
-     "total_events": 7619
+     "mean_dev": -1283,
+     "n": 1876,
+     "total_events": 7647
     },
     "late": {
-     "mean_dev": -1303,
-     "n": 2136,
-     "total_events": 7619
+     "mean_dev": -1283,
+     "n": 2144,
+     "total_events": 7647
     }
    },
    "BUY_ANIMAL": {
     "early": {
-     "mean_dev": -1403,
-     "n": 1758,
-     "total_events": 2109
+     "mean_dev": -1388,
+     "n": 1763,
+     "total_events": 2116
     },
     "mid": {
-     "mean_dev": -1615,
-     "n": 351,
-     "total_events": 2109
+     "mean_dev": -1583,
+     "n": 353,
+     "total_events": 2116
     }
    },
    "BUY_SEED": {
     "early": {
-     "mean_dev": -1214,
-     "n": 2603,
-     "total_events": 4140
+     "mean_dev": -1194,
+     "n": 2613,
+     "total_events": 4156
     },
     "mid": {
-     "mean_dev": -1366,
-     "n": 1065,
-     "total_events": 4140
+     "mean_dev": -1340,
+     "n": 1070,
+     "total_events": 4156
     },
     "late": {
-     "mean_dev": -1551,
-     "n": 472,
-     "total_events": 4140
+     "mean_dev": -1539,
+     "n": 473,
+     "total_events": 4156
     }
    },
    "BUY_LAND": {
     "early": {
-     "mean_dev": -1324,
-     "n": 996,
-     "total_events": 1269
+     "mean_dev": -1302,
+     "n": 1000,
+     "total_events": 1273
     },
     "mid": {
      "mean_dev": -1286,
      "n": 273,
-     "total_events": 1269
+     "total_events": 1273
     }
    },
    "BUY_PRODUCT": {
     "early": {
-     "mean_dev": -1301,
-     "n": 3991,
-     "total_events": 7668
+     "mean_dev": -1282,
+     "n": 4005,
+     "total_events": 7695
     },
     "mid": {
-     "mean_dev": -1303,
-     "n": 1869,
-     "total_events": 7668
+     "mean_dev": -1283,
+     "n": 1876,
+     "total_events": 7695
     },
     "late": {
-     "mean_dev": -1289,
-     "n": 1808,
-     "total_events": 7668
+     "mean_dev": -1271,
+     "n": 1814,
+     "total_events": 7695
     }
    },
    "HIRE": {
     "early": {
-     "mean_dev": -1319,
-     "n": 1859,
-     "total_events": 3445
+     "mean_dev": -1293,
+     "n": 1868,
+     "total_events": 3459
     },
     "mid": {
-     "mean_dev": -1361,
-     "n": 1021,
-     "total_events": 3445
+     "mean_dev": -1350,
+     "n": 1023,
+     "total_events": 3459
     },
     "late": {
-     "mean_dev": -1025,
-     "n": 565,
-     "total_events": 3445
+     "mean_dev": -997,
+     "n": 568,
+     "total_events": 3459
     }
    },
    "WATER_MISSED": {
     "early": {
-     "mean_dev": -1167,
-     "n": 2858,
-     "total_events": 6840
+     "mean_dev": -1149,
+     "n": 2868,
+     "total_events": 6864
     },
     "mid": {
-     "mean_dev": -1303,
-     "n": 1869,
-     "total_events": 6840
+     "mean_dev": -1283,
+     "n": 1876,
+     "total_events": 6864
     },
     "late": {
-     "mean_dev": -1315,
-     "n": 2113,
-     "total_events": 6840
+     "mean_dev": -1297,
+     "n": 2120,
+     "total_events": 6864
     }
    },
    "FEED_MISSED": {
     "early": {
-     "mean_dev": -1272,
-     "n": 1568,
-     "total_events": 2483
+     "mean_dev": -1255,
+     "n": 1573,
+     "total_events": 2492
     },
     "mid": {
-     "mean_dev": -1856,
-     "n": 366,
-     "total_events": 2483
+     "mean_dev": -1824,
+     "n": 368,
+     "total_events": 2492
     },
     "late": {
-     "mean_dev": -1451,
-     "n": 549,
-     "total_events": 2483
+     "mean_dev": -1431,
+     "n": 551,
+     "total_events": 2492
     }
    }
   },
   "by_action_context": {
    "SELL": {
     "('low', 'low', 'low', 'high')": {
-     "mean_dev": -1033,
-     "n": 855
+     "mean_dev": -1009,
+     "n": 859
     },
     "('low', 'low', 'mid', 'mid')": {
      "mean_dev": -194,
      "n": 197
     },
     "('low', 'mid', 'high', 'high')": {
-     "mean_dev": -1899,
-     "n": 227
+     "mean_dev": -1873,
+     "n": 228
     },
     "('mid', 'low', 'mid', 'high')": {
      "mean_dev": 575,
      "n": 35
     },
     "('mid', 'mid', 'high', 'high')": {
-     "mean_dev": -837,
-     "n": 2175
+     "mean_dev": -816,
+     "n": 2184
     },
     "('mid', 'high', 'high', 'high')": {
-     "mean_dev": -1221,
-     "n": 2858
+     "mean_dev": -1201,
+     "n": 2869
     },
     "('mid', 'low', 'high', 'mid')": {
      "mean_dev": -1710,
@@ -6617,16 +6631,16 @@
      "n": 183
     },
     "('mid', 'low', 'high', 'low')": {
-     "mean_dev": -609,
-     "n": 131
+     "mean_dev": -573,
+     "n": 132
     },
     "('low', 'low', 'mid', 'high')": {
      "mean_dev": -2610,
      "n": 254
     },
     "('low', 'mid', 'mid', 'high')": {
-     "mean_dev": -2552,
-     "n": 286
+     "mean_dev": -2506,
+     "n": 288
     },
     "('low', 'mid', 'high', 'mid')": {
      "mean_dev": 1473,
@@ -6695,16 +6709,16 @@
    },
    "BUY_ANIMAL": {
     "('low', 'low', 'low', 'high')": {
-     "mean_dev": -775,
-     "n": 436
+     "mean_dev": -753,
+     "n": 438
     },
     "('mid', 'low', 'mid', 'high')": {
      "mean_dev": 575,
      "n": 35
     },
     "('mid', 'mid', 'high', 'high')": {
-     "mean_dev": -973,
-     "n": 958
+     "mean_dev": -951,
+     "n": 962
     },
     "('mid', 'high', 'high', 'high')": {
      "mean_dev": -1659,
@@ -6714,6 +6728,10 @@
      "mean_dev": -1557,
      "n": 178
     },
+    "('low', 'mid', 'mid', 'high')": {
+     "mean_dev": -4603,
+     "n": 103
+    },
     "('low', 'low', 'mid', 'high')": {
      "mean_dev": -1214,
      "n": 74
@@ -6721,10 +6739,6 @@
     "('low', 'low', 'low', 'mid')": {
      "mean_dev": -1375,
      "n": 22
-    },
-    "('low', 'mid', 'mid', 'high')": {
-     "mean_dev": -4688,
-     "n": 102
     },
     "('low', 'low', 'mid', 'mid')": {
      "mean_dev": -6096,
@@ -6781,8 +6795,8 @@
    },
    "BUY_SEED": {
     "('low', 'low', 'low', 'high')": {
-     "mean_dev": -918,
-     "n": 686
+     "mean_dev": -896,
+     "n": 689
     },
     "('low', 'low', 'mid', 'high')": {
      "mean_dev": -1114,
@@ -6797,20 +6811,20 @@
      "n": 35
     },
     "('mid', 'mid', 'high', 'high')": {
-     "mean_dev": -772,
-     "n": 1584
+     "mean_dev": -750,
+     "n": 1591
     },
     "('mid', 'high', 'high', 'high')": {
-     "mean_dev": -1310,
-     "n": 1167
+     "mean_dev": -1287,
+     "n": 1172
     },
     "('mid', 'mid', 'mid', 'high')": {
      "mean_dev": -1380,
      "n": 180
     },
     "('low', 'mid', 'mid', 'high')": {
-     "mean_dev": -4315,
-     "n": 122
+     "mean_dev": -4246,
+     "n": 123
     },
     "('low', 'low', 'mid', 'mid')": {
      "mean_dev": -6287,
@@ -6871,24 +6885,24 @@
      "n": 33
     },
     "('mid', 'mid', 'high', 'high')": {
-     "mean_dev": -1007,
-     "n": 745
+     "mean_dev": -993,
+     "n": 747
     },
     "('mid', 'high', 'high', 'high')": {
-     "mean_dev": -917,
-     "n": 196
+     "mean_dev": -892,
+     "n": 197
     },
     "('mid', 'mid', 'mid', 'high')": {
      "mean_dev": -326,
      "n": 118
     },
+    "('low', 'mid', 'mid', 'high')": {
+     "mean_dev": -4650,
+     "n": 97
+    },
     "('low', 'low', 'mid', 'high')": {
      "mean_dev": -59,
      "n": 19
-    },
-    "('low', 'mid', 'mid', 'high')": {
-     "mean_dev": -4742,
-     "n": 96
     },
     "('low', 'mid', 'low', 'high')": {
      "mean_dev": -1563,
@@ -6929,36 +6943,36 @@
    },
    "BUY_PRODUCT": {
     "('low', 'low', 'high', 'low')": {
-     "mean_dev": -1292,
-     "n": 266
+     "mean_dev": -1271,
+     "n": 267
     },
     "('low', 'low', 'low', 'high')": {
-     "mean_dev": -956,
-     "n": 864
+     "mean_dev": -938,
+     "n": 867
     },
     "('low', 'low', 'mid', 'high')": {
      "mean_dev": -2230,
      "n": 314
     },
     "('low', 'low', 'mid', 'mid')": {
-     "mean_dev": -1280,
-     "n": 236
+     "mean_dev": -1257,
+     "n": 237
     },
     "('low', 'mid', 'high', 'high')": {
-     "mean_dev": -1866,
-     "n": 225
+     "mean_dev": -1839,
+     "n": 226
     },
     "('mid', 'low', 'mid', 'high')": {
      "mean_dev": 575,
      "n": 35
     },
     "('mid', 'mid', 'high', 'high')": {
-     "mean_dev": -823,
-     "n": 2152
+     "mean_dev": -802,
+     "n": 2161
     },
     "('mid', 'high', 'high', 'high')": {
-     "mean_dev": -1223,
-     "n": 2824
+     "mean_dev": -1204,
+     "n": 2834
     },
     "('low', 'mid', 'low', 'high')": {
      "mean_dev": -1653,
@@ -6969,8 +6983,8 @@
      "n": 183
     },
     "('low', 'mid', 'mid', 'high')": {
-     "mean_dev": -2551,
-     "n": 287
+     "mean_dev": -2505,
+     "n": 289
     },
     "('low', 'mid', 'high', 'mid')": {
      "mean_dev": 1473,
@@ -7035,28 +7049,28 @@
      "n": 115
     },
     "('low', 'low', 'low', 'high')": {
-     "mean_dev": -1408,
-     "n": 286
+     "mean_dev": -1389,
+     "n": 287
     },
     "('low', 'mid', 'high', 'high')": {
-     "mean_dev": -1206,
-     "n": 201
+     "mean_dev": -1179,
+     "n": 202
     },
     "('mid', 'mid', 'high', 'high')": {
-     "mean_dev": -708,
-     "n": 895
+     "mean_dev": -686,
+     "n": 899
     },
     "('mid', 'high', 'high', 'high')": {
-     "mean_dev": -1013,
-     "n": 1460
+     "mean_dev": -992,
+     "n": 1466
     },
     "('low', 'mid', 'low', 'high')": {
      "mean_dev": -954,
      "n": 34
     },
     "('low', 'mid', 'mid', 'high')": {
-     "mean_dev": -2185,
-     "n": 237
+     "mean_dev": -2132,
+     "n": 239
     },
     "('low', 'mid', 'high', 'mid')": {
      "mean_dev": 1473,
@@ -7125,24 +7139,24 @@
      "n": 199
     },
     "('low', 'low', 'low', 'high')": {
-     "mean_dev": -1105,
-     "n": 522
+     "mean_dev": -1085,
+     "n": 524
     },
     "('low', 'mid', 'high', 'high')": {
-     "mean_dev": -1674,
-     "n": 215
+     "mean_dev": -1647,
+     "n": 216
     },
     "('mid', 'low', 'mid', 'high')": {
      "mean_dev": 1394,
      "n": 23
     },
     "('mid', 'mid', 'high', 'high')": {
-     "mean_dev": -835,
-     "n": 2172
+     "mean_dev": -815,
+     "n": 2181
     },
     "('mid', 'high', 'high', 'high')": {
-     "mean_dev": -1221,
-     "n": 2858
+     "mean_dev": -1201,
+     "n": 2869
     },
     "('mid', 'low', 'high', 'mid')": {
      "mean_dev": -1805,
@@ -7161,8 +7175,8 @@
      "n": 115
     },
     "('low', 'mid', 'mid', 'high')": {
-     "mean_dev": -1849,
-     "n": 247
+     "mean_dev": -1825,
+     "n": 248
     },
     "('low', 'mid', 'high', 'mid')": {
      "mean_dev": 1455,
@@ -7235,16 +7249,16 @@
    },
    "FEED_MISSED": {
     "('low', 'low', 'low', 'high')": {
-     "mean_dev": -215,
-     "n": 387
+     "mean_dev": -192,
+     "n": 389
     },
     "('mid', 'low', 'mid', 'high')": {
      "mean_dev": 575,
      "n": 35
     },
     "('mid', 'mid', 'high', 'high')": {
-     "mean_dev": -1120,
-     "n": 1085
+     "mean_dev": -1096,
+     "n": 1090
     },
     "('mid', 'high', 'high', 'high')": {
      "mean_dev": -2306,
@@ -7259,8 +7273,12 @@
      "n": 154
     },
     "('mid', 'low', 'high', 'low')": {
-     "mean_dev": -609,
-     "n": 131
+     "mean_dev": -573,
+     "n": 132
+    },
+    "('low', 'mid', 'mid', 'high')": {
+     "mean_dev": -4585,
+     "n": 102
     },
     "('mid', 'mid', 'high', 'mid')": {
      "mean_dev": -765,
@@ -7273,10 +7291,6 @@
     "('low', 'low', 'low', 'mid')": {
      "mean_dev": -1375,
      "n": 22
-    },
-    "('low', 'mid', 'mid', 'high')": {
-     "mean_dev": -4671,
-     "n": 101
     },
     "('mid', 'low', 'high', 'high')": {
      "mean_dev": -1737,
@@ -7339,60 +7353,60 @@
   "postponement_curves": {
    "SELL": {
     "0": {
-     "mean_dev": -1225,
-     "n": 1478
+     "mean_dev": -1207,
+     "n": 1483
     },
     "1": {
-     "mean_dev": -1303,
-     "n": 534
+     "mean_dev": -1283,
+     "n": 536
     },
     "2": {
-     "mean_dev": -1471,
-     "n": 451
+     "mean_dev": -1447,
+     "n": 453
     },
     "3": {
-     "mean_dev": -1076,
-     "n": 306
+     "mean_dev": -1059,
+     "n": 307
     },
     "4": {
-     "mean_dev": -1298,
-     "n": 272
+     "mean_dev": -1279,
+     "n": 273
     },
     "5": {
-     "mean_dev": -1302,
-     "n": 4578
+     "mean_dev": -1282,
+     "n": 4595
     }
    },
    "BUY_ANIMAL": {
     "0": {
-     "mean_dev": -1978,
-     "n": 327
+     "mean_dev": -1960,
+     "n": 328
     },
     "4": {
-     "mean_dev": -338,
-     "n": 231
+     "mean_dev": -318,
+     "n": 232
     },
     "5": {
-     "mean_dev": -1489,
-     "n": 1551
+     "mean_dev": -1471,
+     "n": 1556
     }
    },
    "BUY_SEED": {
     "0": {
-     "mean_dev": -1731,
-     "n": 377
+     "mean_dev": -1715,
+     "n": 378
     },
     "1": {
-     "mean_dev": -1236,
-     "n": 233
+     "mean_dev": -1213,
+     "n": 234
     },
     "4": {
-     "mean_dev": -335,
-     "n": 212
+     "mean_dev": -314,
+     "n": 213
     },
     "5": {
-     "mean_dev": -1305,
-     "n": 3316
+     "mean_dev": -1284,
+     "n": 3329
     },
     "2": {
      "mean_dev": -3703,
@@ -7401,16 +7415,16 @@
    },
    "BUY_LAND": {
     "2": {
-     "mean_dev": -1203,
-     "n": 255
+     "mean_dev": -1182,
+     "n": 256
     },
     "5": {
-     "mean_dev": -1246,
-     "n": 848
+     "mean_dev": -1233,
+     "n": 850
     },
     "4": {
-     "mean_dev": -158,
-     "n": 119
+     "mean_dev": -122,
+     "n": 120
     },
     "3": {
      "mean_dev": -6124,
@@ -7419,42 +7433,42 @@
    },
    "BUY_PRODUCT": {
     "0": {
-     "mean_dev": -1299,
-     "n": 7668
+     "mean_dev": -1280,
+     "n": 7695
     }
    },
    "HIRE": {
     "0": {
-     "mean_dev": -1283,
-     "n": 3445
+     "mean_dev": -1261,
+     "n": 3459
     }
    },
    "WATER_MISSED": {
     "2": {
-     "mean_dev": -1303,
-     "n": 267
+     "mean_dev": -1283,
+     "n": 268
     },
     "3": {
      "mean_dev": -1020,
      "n": 81
     },
     "4": {
-     "mean_dev": -1303,
-     "n": 267
+     "mean_dev": -1283,
+     "n": 268
     },
     "5": {
-     "mean_dev": -1248,
-     "n": 6225
+     "mean_dev": -1229,
+     "n": 6247
     }
    },
    "FEED_MISSED": {
     "1": {
-     "mean_dev": -1328,
-     "n": 264
+     "mean_dev": -1307,
+     "n": 265
     },
     "5": {
-     "mean_dev": -1398,
-     "n": 2210
+     "mean_dev": -1378,
+     "n": 2218
     },
     "2": {
      "mean_dev": -3498,
@@ -7463,147 +7477,99 @@
    }
   },
   "action_type_counts": {
-   "SELL": 7619,
-   "BUY_ANIMAL": 2109,
-   "BUY_SEED": 4140,
-   "BUY_LAND": 1269,
-   "BUY_PRODUCT": 7668,
-   "HIRE": 3445,
-   "WATER_MISSED": 6840,
-   "FEED_MISSED": 2483
+   "SELL": 7647,
+   "BUY_ANIMAL": 2116,
+   "BUY_SEED": 4156,
+   "BUY_LAND": 1273,
+   "BUY_PRODUCT": 7695,
+   "HIRE": 3459,
+   "WATER_MISSED": 6864,
+   "FEED_MISSED": 2492
   },
   "totals": {
-   "total_candidates_with_at": 267,
-   "total_events": 35573
+   "total_candidates_with_at": 268,
+   "total_events": 35702
   },
   "top_signals": [
    [
     "FEED_MISSED",
     "\u2014",
     "mid",
-    -1856,
-    366,
-    -0.44
+    -1824,
+    368,
+    -0.43
    ],
    [
     "BUY_ANIMAL",
     "\u2014",
     "mid",
-    -1615,
-    351,
-    -0.4
+    -1583,
+    353,
+    -0.39
    ],
    [
     "BUY_SEED",
     "\u2014",
     "late",
-    -1551,
-    472,
-    -0.39
+    -1539,
+    473,
+    -0.38
    ],
    [
     "FEED_MISSED",
     "\u2014",
     "late",
-    -1451,
-    549,
-    -0.36
+    -1431,
+    551,
+    -0.35
    ],
    [
     "BUY_ANIMAL",
     "\u2014",
     "early",
-    -1403,
-    1758,
+    -1388,
+    1763,
     -0.35
+   ],
+   [
+    "HIRE",
+    "\u2014",
+    "mid",
+    -1350,
+    1023,
+    -0.34
    ],
    [
     "BUY_SEED",
     "\u2014",
     "mid",
-    -1366,
-    1065,
-    -0.34
-   ],
-   [
-    "HIRE",
-    "\u2014",
-    "mid",
-    -1361,
-    1021,
-    -0.34
+    -1340,
+    1070,
+    -0.33
    ],
    [
     "BUY_LAND",
     "\u2014",
     "early",
-    -1324,
-    996,
+    -1302,
+    1000,
+    -0.33
+   ],
+   [
+    "WATER_MISSED",
+    "\u2014",
+    "late",
+    -1297,
+    2120,
     -0.33
    ],
    [
     "HIRE",
     "\u2014",
     "early",
-    -1319,
-    1859,
-    -0.33
-   ],
-   [
-    "WATER_MISSED",
-    "\u2014",
-    "late",
-    -1315,
-    2113,
-    -0.33
-   ],
-   [
-    "SELL",
-    "\u2014",
-    "mid",
-    -1303,
-    1869,
-    -0.33
-   ],
-   [
-    "SELL",
-    "\u2014",
-    "late",
-    -1303,
-    2136,
-    -0.33
-   ],
-   [
-    "BUY_PRODUCT",
-    "\u2014",
-    "mid",
-    -1303,
-    1869,
-    -0.33
-   ],
-   [
-    "WATER_MISSED",
-    "\u2014",
-    "mid",
-    -1303,
-    1869,
-    -0.33
-   ],
-   [
-    "BUY_PRODUCT",
-    "\u2014",
-    "early",
-    -1301,
-    3991,
-    -0.33
-   ],
-   [
-    "BUY_PRODUCT",
-    "\u2014",
-    "late",
-    -1289,
-    1808,
-    -0.33
+    -1293,
+    1868,
+    -0.32
    ],
    [
     "BUY_LAND",
@@ -7614,28 +7580,76 @@
     -0.32
    ],
    [
+    "SELL",
+    "\u2014",
+    "mid",
+    -1283,
+    1876,
+    -0.32
+   ],
+   [
+    "SELL",
+    "\u2014",
+    "late",
+    -1283,
+    2144,
+    -0.32
+   ],
+   [
+    "BUY_PRODUCT",
+    "\u2014",
+    "mid",
+    -1283,
+    1876,
+    -0.32
+   ],
+   [
+    "WATER_MISSED",
+    "\u2014",
+    "mid",
+    -1283,
+    1876,
+    -0.32
+   ],
+   [
+    "BUY_PRODUCT",
+    "\u2014",
+    "early",
+    -1282,
+    4005,
+    -0.32
+   ],
+   [
+    "BUY_PRODUCT",
+    "\u2014",
+    "late",
+    -1271,
+    1814,
+    -0.32
+   ],
+   [
     "FEED_MISSED",
     "\u2014",
     "early",
-    -1272,
-    1568,
+    -1255,
+    1573,
     -0.32
    ],
    [
     "SELL",
     "\u2014",
     "early",
-    -1271,
-    3614,
+    -1252,
+    3627,
     -0.32
    ],
    [
     "BUY_SEED",
     "\u2014",
     "early",
-    -1214,
-    2603,
-    -0.31
+    -1194,
+    2613,
+    -0.3
    ]
   ]
  },
