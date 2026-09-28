@@ -1,7 +1,7 @@
-# Evolution run 20260928-131842
+# Evolution run 20260928-132113
 
 Frontier opponent: `O162_THREE_SHOPS65.py` · clone: `tape_majkel1337_109144271.py` · engine sha `bc8a54879ef0` · chassis snapshot `K_3b070353e431.py` (sha `3b070353e431`)
-Elapsed 0.01 h · candidates evaluated this run: 1 · games 2 (260/h)
+Elapsed 0.01 h · candidates evaluated this run: 1 · games 2 (254/h)
 
 ## Cascade counts (this run)
 
@@ -250,17 +250,17 @@ __Observational. Exact per-cell counterfactual against deterministic tapes; unce
 
 A wide CI here is the measurement telling you the panel is too thin for that class, not that the class is worthless -- lumpy investments (animals, land) need more cells than the 12-cell margin panel provides. See `docs/AGE-360-horizon-roi.md`.
 
-_Generated 2026-09-28 13:19. Candidate files in `evolve/gen/`, DB `evolve/evolve.db`._
+_Generated 2026-09-28 13:21. Candidate files in `evolve/gen/`, DB `evolve/evolve.db`._
 
 ## Recent failure observations (grouped by failure class)
 
 **Observational only. Correlations, not established causes.** These groups describe parameter ranges frequently seen in recent failures of each class. A parameter appearing here may be part of the failure mechanism, or it may be confounded by the companion parameters tested alongside it, the seeds/matchups used, or RNG-path effects. Do not interpret these as 'avoid this parameter range.'
 
-### EXECUTION_FAILURE (observed in 11013 recent candidates)
+### EXECUTION_FAILURE (observed in 11014 recent candidates)
 
 - **Observed outcome:** unknown
-- **Associated parameter ranges (correlation, not cause):** wheat_tiles=0–8 (n=11013); wheat_stock=0–40 (n=11013); min_hands=3–6 (n=11013); load_per_hand=12–26 (n=11013); open_melons=4–14 (n=11013); open_cows=1–3 (n=11013); open_sheep=0–3 (n=11013); early_hire_days=0–8 (n=11013)
-- **Evidence:** 11013 candidates, multiple seeds. Confidence: high
+- **Associated parameter ranges (correlation, not cause):** wheat_tiles=0–8 (n=11014); wheat_stock=0–40 (n=11014); min_hands=3–6 (n=11014); load_per_hand=12–26 (n=11014); open_melons=4–14 (n=11014); open_cows=1–3 (n=11014); open_sheep=0–3 (n=11014); early_hire_days=0–8 (n=11014)
+- **Evidence:** 11014 candidates, multiple seeds. Confidence: high
 
 ### MARKET_FAILURE (observed in 2 recent candidates)
 
@@ -439,4 +439,4 @@ __Observational. Exact per-cell counterfactual against deterministic tapes; unce
 
 A wide CI here is the measurement telling you the panel is too thin for that class, not that the class is worthless -- lumpy investments (animals, land) need more cells than the 12-cell margin panel provides. See `docs/AGE-360-horizon-roi.md`.
 
-_Generated 2026-09-28 13:19. Candidate files in `evolve/gen/`, DB `evolve/evolve.db`._
+_Generated 2026-09-28 13:21. Candidate files in `evolve/gen/`, DB `evolve/evolve.db`._
