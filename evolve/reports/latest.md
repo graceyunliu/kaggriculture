@@ -1,4 +1,4 @@
-# Evolution run 20261002-045532
+# Evolution run 20261002-045731
 
 Frontier opponent: `O162_THREE_SHOPS65.py` · clone: `tape_thirdfarmclub_111923787.py` · engine sha `bc8a54879ef0` · chassis snapshot `K_3b070353e431.py` (sha `3b070353e431`)
 Elapsed 0.00 h · candidates evaluated this run: 0 · games 0 (0/h)
@@ -250,7 +250,7 @@ __Observational. Exact per-cell counterfactual against deterministic tapes; unce
 
 A wide CI here is the measurement telling you the panel is too thin for that class, not that the class is worthless -- lumpy investments (animals, land) need more cells than the 12-cell margin panel provides. See `docs/AGE-360-horizon-roi.md`.
 
-_Generated 2026-10-02 04:55. Candidate files in `evolve/gen/`, DB `evolve/evolve.db`._
+_Generated 2026-10-02 04:57. Candidate files in `evolve/gen/`, DB `evolve/evolve.db`._
 
 ## Recent failure observations (grouped by failure class)
 
@@ -439,4 +439,4 @@ __Observational. Exact per-cell counterfactual against deterministic tapes; unce
 
 A wide CI here is the measurement telling you the panel is too thin for that class, not that the class is worthless -- lumpy investments (animals, land) need more cells than the 12-cell margin panel provides. See `docs/AGE-360-horizon-roi.md`.
 
-_Generated 2026-10-02 04:56. Candidate files in `evolve/gen/`, DB `evolve/evolve.db`._
+_Generated 2026-10-02 04:58. Candidate files in `evolve/gen/`, DB `evolve/evolve.db`._
